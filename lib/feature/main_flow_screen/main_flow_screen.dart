@@ -6,6 +6,7 @@ import 'package:flex_travel_sim/feature/main_flow_screen/widgets/percentage_widg
 import 'package:flex_travel_sim/feature/my_account_screen/my_account_screen.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/header.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class MainFlowScreen extends StatefulWidget {
@@ -113,7 +114,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   ExpandedContainer(
                     title: AppLocalization.questionsAndAnswers,
                     icon: Assets.icons.faqIconFull.path,
-                    onTap: () => handleTap(2),
+                    onTap: () => openInitialPage(context), // временно меняю чтобы открывало вторую часть фронта 
                   ),
                   const SizedBox(width: 16),
                   ExpandedContainer(

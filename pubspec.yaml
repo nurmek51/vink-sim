@@ -24,7 +24,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/
     - assets/icons/
+    - assets/icons/
+    - assets/icons/figma112/ 
+    - assets/icons/figma141/
+    - assets/icons/figma142/
+    - assets/icons/figma143/
+    - assets/icons/figma149/     
 
 flutter_gen:
   output: lib/gen
@@ -39,3 +46,13 @@ flutter_gen:
 
   integrations:
     flutter_svg: true
+
+  fonts:
+    - family: HelveticaNeue
+      fonts:
+        - asset: assets/fonts/HelveticaNeue_Roman.otf
+          weight: 400
+        - asset: assets/fonts/HelveticaNeue_Medium.otf
+          weight: 500          
+        - asset: assets/fonts/HelveticaNeue_Bold.otf
+          weight: 700    
