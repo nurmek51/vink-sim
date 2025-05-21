@@ -21,4 +21,9 @@ class AppLocalization {
   static const whatsappSupport = 'Поддержка в WhatsApp';
   static const emailSupport = 'Написать на e-mail';
   static const myAccount = 'Мой аккаунт';
+  static const appLanguageTitle = 'Язык';
+  static const appLanguageRu = 'Русский';
+  static const appLanguageEn = 'English';
+  
+
 }

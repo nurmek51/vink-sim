@@ -67,7 +67,7 @@ class PercentageWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '$value \$ на счету',
+                  '${value.round()} \$ на счету',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

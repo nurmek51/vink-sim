@@ -41,6 +41,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/check.svg
   SvgGenImage get check => const SvgGenImage('assets/icons/check.svg');
 
+  /// File path: assets/icons/china_flag.svg
+  SvgGenImage get chinaFlag => const SvgGenImage('assets/icons/china_flag.svg');
+
   /// File path: assets/icons/faq_icon.svg
   SvgGenImage get faqIcon => const SvgGenImage('assets/icons/faq_icon.svg');
 
@@ -67,6 +70,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/purchase_history.svg
   SvgGenImage get purchaseHistory =>
       const SvgGenImage('assets/icons/purchase_history.svg');
+
+  /// File path: assets/icons/russian_flag.svg
+  SvgGenImage get russianFlag =>
+      const SvgGenImage('assets/icons/russian_flag.svg');
 
   /// File path: assets/icons/sim_container.svg
   SvgGenImage get simContainer =>
@@ -96,6 +103,7 @@ class $AssetsIconsGen {
         avatarIcon,
         card,
         check,
+        chinaFlag,
         faqIcon,
         faqIconFull,
         globus,
@@ -104,6 +112,7 @@ class $AssetsIconsGen {
         mailIcon,
         mainIcon,
         purchaseHistory,
+        russianFlag,
         simContainer,
         simIcon,
         telegramIcon,
