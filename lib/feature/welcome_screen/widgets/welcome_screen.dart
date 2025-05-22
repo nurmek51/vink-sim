@@ -1,13 +1,14 @@
-
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/main_flow_screen/main_flow_screen.dart';
+import 'package:flex_travel_sim/feature/screen149/widgets/custom_icon_container.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/button/auth_button.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/button/country_list_button.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/pulsing_circle.dart';
 import 'package:flex_travel_sim/shared/widgets/header.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -135,25 +136,111 @@ class FrameContent extends StatelessWidget {
 
               const SizedBox(height: 20),
               AuthButton(
-                onTap:
-                    () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainFlowScreen(),
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(16),
                       ),
                     ),
-                // async {
-                //   final token = await _getAccessToken(context);
-
-                //   if (token != null) {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) => const MainFlowScreen(),
-                //       ),
-                //     );
-                //   }
-                // },
+                    builder:
+                        (context) => Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(24),
+                                  topRight: Radius.circular(24),
+                                ),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  16,
+                                  60,
+                                  16,
+                                  5,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CustomIconContainer(
+                                          blueIconPath:
+                                              'assets/icons/figma149/blue_icon1.svg',
+                                          text: 'Как установить\neSIM?',
+                                        ),
+                                        SizedBox(width: 15),
+                                        CustomIconContainer(
+                                          blueIconPath:
+                                              'assets/icons/figma149/blue_icon2.svg',
+                                          text: 'Чат\nподдержки',
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        CustomIconContainer(
+                                          blueIconPath:
+                                              'assets/icons/figma149/blue_icon3.svg',
+                                          text: 'Как это\nработает?',
+                                          onTap: () => openGuidePage(context),
+                                        ),
+                                        SizedBox(width: 15),
+                                        CustomIconContainer(
+                                          blueIconPath:
+                                              'assets/icons/figma149/blue_icon4.svg',
+                                          text: 'Страны\nи тарифы',
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) =>
+                                                    const MainFlowScreen(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        height: 52,
+                                        decoration: BoxDecoration(
+                                          gradient:
+                                              AppColors
+                                                  .containerGradientPrimary,
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                        child: const Text(
+                                        'Активировать eSIM',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                  );
+                },
               ),
             ],
           ),
@@ -162,41 +249,3 @@ class FrameContent extends StatelessWidget {
     );
   }
 }
-
-// Future<String?> _getAccessToken(BuildContext context) async {
-//   final url = Uri.parse('https://mit.imsipay.com/b2b/token');
-
-//   const login = 'login@example.com';
-//   const password = 'SecretPassword';
-
-//   try {
-//     final response = await http.post(
-//       url,
-//       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-//       body: {'username': login, 'password': password},
-//     );
-
-//     if (response.statusCode == 200) {
-//       final json = jsonDecode(response.body);
-//       final accessToken = json['access_token'];
-//       print('✅ Token: $accessToken');
-//       return accessToken;
-//     } else {
-//       print('❌ Error: ${response.statusCode}');
-//       print('Response body: ${response.body}');
-
-//       print('👤 Login: "${login.trim()}"');
-//       print('🔐 Password: "${password.trim()}"');
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text('Ошибка авторизации: ${response.statusCode}')),
-//       );
-//       return null;
-//     }
-//   } catch (e) {
-//     print('❌ Exception: $e');
-//     ScaffoldMessenger.of(
-//       context,
-//     ).showSnackBar(SnackBar(content: Text('Ошибка соединения: $e')));
-//     return null;
-//   }
-// }
