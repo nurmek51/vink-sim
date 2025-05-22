@@ -17,8 +17,8 @@ class StepsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 354,
-      height: 106,
+      // width: 354,
+      // height: 106,
       decoration: BoxDecoration(
         color: Color(0xFFF2F2F2),
         borderRadius: BorderRadius.circular(16),

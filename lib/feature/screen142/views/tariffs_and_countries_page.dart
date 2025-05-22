@@ -11,41 +11,43 @@ class TariffsAndCountriesPage extends StatelessWidget {
     // FIGMA NUMBER - 142
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 70, 16, 8),
-            child: Row(
-              children: [
-                GoBackArrow(
-                  onTap: () => Navigator.pop(context),
-                  width: 10,
-                  height: 14,
-                ),
-                  
-                Expanded(
-                  child: Center(
-                    child: HelveticaneueFont(
-                      text: 'Тарифы и страны',
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      height: 1.3,
-                      color: Color(0xFF363C45),
-                    ),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 8),
+              child: Row(
+                children: [
+                  GoBackArrow(
+                    onTap: () => Navigator.pop(context),
+                    width: 10,
+                    height: 14,
                   ),
-                ),                
-              ],
+                    
+                  Expanded(
+                    child: Center(
+                      child: HelveticaneueFont(
+                        text: 'Тарифы и страны',
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        height: 1.3,
+                        color: Color(0xFF363C45),
+                      ),
+                    ),
+                  ),                
+                ],
+              ),
             ),
-          ),
-      
-          const Divider(thickness: 0),
-
-          // body 
-
-          Expanded(child: CountryList()),
-
-        ],
+        
+            const Divider(thickness: 0),
+        
+            // body 
+        
+            Expanded(child: CountryList()),
+        
+          ],
+        ),
       ),
     );
   }

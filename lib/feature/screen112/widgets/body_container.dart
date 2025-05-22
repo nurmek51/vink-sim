@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 class BodyContainer extends StatelessWidget {
   final String stepNum;
   final String description;
-  final double height;
-  final double widgth;
+  final double? height;
+  final double? widgth;
   final Widget? child;
 
   const BodyContainer({
     super.key,
     required this.stepNum,
-    required this.widgth,
-    required this.height,
+    this.widgth,
+    this.height,
     required this.description,
     this.child,
   });
@@ -49,13 +49,15 @@ class BodyContainer extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            HelveticaneueFont(
-              text: description,
-              fontSize: 16,
-              color: Color(0xFF363C45),
+            Center(
+              child: HelveticaneueFont(
+                text: description,
+                fontSize: 16,
+                color: Color(0xFF363C45),
+              ),
             ),  
           
-            if (child != null) child!,           
+            if (child != null) Center(child: child!),           
           ],
         ),
       ),

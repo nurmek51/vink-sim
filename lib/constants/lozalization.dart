@@ -24,6 +24,10 @@ class AppLocalization {
   static const appLanguageTitle = 'Язык';
   static const appLanguageRu = 'Русский';
   static const appLanguageEn = 'English';
+  static const startRegistration = 'Начать регистрацию';
+  static const download = 'Установить';
+  static const close = 'Закрыть';
+
   
 
 }

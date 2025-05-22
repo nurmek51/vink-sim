@@ -1,4 +1,5 @@
-import 'package:flex_travel_sim/components/widgets/blue_button.dart';
+import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/body_container.dart';
 import 'package:flutter/material.dart';
 
@@ -12,11 +13,26 @@ class SetupBody extends StatelessWidget {
         BodyContainer(
           stepNum: '1', 
           description: 'Нажмите “Установить” и разрешите доступ к профилям на своем устройстве',
-          widgth: 354,
-          height: 220,
+          // widgth: 354,
+          // height: 220,
           child: Padding(
             padding: const EdgeInsets.only(top: 30.0),
-            child: BlueButton(buttonText: 'Установить'),
+            child: Container(
+              alignment: Alignment.center,
+              height: 52,
+              decoration: BoxDecoration(
+                gradient: AppColors.containerGradientPrimary,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Text(
+                AppLocalization.download,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
           ),
         ),
     
@@ -25,8 +41,8 @@ class SetupBody extends StatelessWidget {
         BodyContainer(
           stepNum: '2', 
           description: 'Выберите “Основной” для номера по умолчанию и для “iMessage и Facetime”',
-          widgth: 354,
-          height: 438,
+          // widgth: 354,
+          // height: 438,
             child: Center(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -67,12 +83,13 @@ class SetupBody extends StatelessWidget {
         BodyContainer(
           stepNum: '3', 
           description: 'Выберите недавно добавленный план eSIM для передачи сотовых данных',
-          widgth: 354,
-          height: 438,
+          // widgth: 354,
+          // height: 438,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
@@ -95,8 +112,8 @@ class SetupBody extends StatelessWidget {
         BodyContainer(
           stepNum: '4', 
           description: 'Зайдите в Настройки > Сотовая связь > Flex eSIM.\n\nВключите “Роуминг данных”',
-          widgth: 354,
-          height: 470,
+          // widgth: 354,
+          // height: 470,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
