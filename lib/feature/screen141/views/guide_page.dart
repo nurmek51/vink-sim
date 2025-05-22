@@ -3,7 +3,6 @@ import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen141/components/widgets/table_view_cells.dart';
-import 'package:flex_travel_sim/feature/screen141/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class GuidePage extends StatelessWidget {
@@ -29,7 +28,7 @@ class GuidePage extends StatelessWidget {
               SizedBox(height: 20),
         
               HelveticaneueFont(
-                text: 'Как это работает?',
+                text: AppLocalization.howDoesItWork,
                 fontSize: 28,
                 letterSpacing: -1,
                 height: 1.1,
@@ -40,7 +39,7 @@ class GuidePage extends StatelessWidget {
               SizedBox(height: 15),
         
               HelveticaneueFont(
-                text: esimDescription1,
+                text: AppLocalization.esimDescription1,
                 fontSize: 17,
                 letterSpacing: -0.5,
                 height: 1.3,
@@ -50,7 +49,7 @@ class GuidePage extends StatelessWidget {
               SizedBox(height: 12),
         
               HelveticaneueFont(
-                text: esimDescription2,
+                text: AppLocalization.esimDescription2,
                 fontSize: 17,
                 letterSpacing: -0.5,
                 height: 1.3,

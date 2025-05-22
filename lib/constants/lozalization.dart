@@ -13,6 +13,7 @@ class AppLocalization {
   static const trafficUsage = 'Использование трафика';
   static const appLanguage = 'Язык приложения';
   static const howToInstallEsim = 'Как установить eSIM?';
+  static const howToInstallEsim2 = 'Как установить\neSIM?';
   static const supportChat = 'Чат \nподдержки';
   static const questionsAndAnswers = 'Вопросы \nи ответы';
   static const countriesAndRates = 'Страны \nи тарифы';
@@ -27,7 +28,32 @@ class AppLocalization {
   static const startRegistration = 'Начать регистрацию';
   static const download = 'Установить';
   static const close = 'Закрыть';
-
+  static const installESim = 'Установка eSIM';
+  static const connectionWaitMessage = 'Процесс подключения может\nдлиться от 1 минуты до часа.';
+  static const connectionRetryInstruction = 'В случае проблем с подключением –\nвключите “Авиарежим ✈” на 10 секунд и\nпопробуйте еще раз.';
+  static const supportChat2 = 'Чат поддержки';
+  static const successMessage = 'Готово!';
+  static const fastDescriptionStep1 = 'Нажмите “Установить” и разрешите доступ к профилям на своем устройстве';
+  static const fastDescriptionStep2 = 'Выберите “Основной” для номера по умолчанию и для “iMessage и Facetime”';
+  static const fastDescriptionStep3 = 'Выберите недавно добавленный план eSIM для передачи сотовых данных';
+  static const fastDescriptionStep4 = 'Зайдите в Настройки > Сотовая связь > Flex eSIM.\n\nВключите “Роуминг данных”';
+  static const fastSelectedRow = 'Быстрая';
+  static const manualSelectedRow = 'Вручную';
+  static const qrCodeSelectedRow = 'QR код';
+  static const toAnotherDeviceSelectedRow = 'На другое устройство';
+  static const comingSoon = 'Coming Soon';
+  static const howDoesItWork = 'Как это работает?';
+  static const esimDescription1 = '''eSIM — это встроенная SIM-карта, которую не нужно вставлять вручную. Просто выберите тариф в приложении, следуйте инструкции и активируйте eSIM через настройки телефона.''';
+  static const esimDescription2 = '''После активации вы сразу получите доступ к мобильной сети. Чтобы пользоваться интернетом за границей — достаточно пополнить баланс, и связь будет работать в большинстве стран без дополнительных настроек.''';
+  static const tariffsByCountries = 'Тарифы по странам';
+  static const guideForEsimSettings= 'Гид по настройке eSIM';
+  static const smthMore = 'Что-нибудь еще';
+  static const tariffsAndCountries = 'Тарифы и страны';
+  static const balanceAndEsimActivation= 'Пополните баланс в приложении и активируйте eSIM карту';
+  static const profileSetupGuide = 'Настройте профиль в настройках своего телефона';
+  static const readyToTravelMessage = 'Готово! Путешествуйте, не беспокоясь за свой интернет!';
+  static const highSpeedLowCost = 'Высокая скорость и самые низкие\nцены';
+  static const countriesInOneEsim= '180+ стран в одной eSIM';
+  static const activateEsim= 'Активировать eSIM';
   
-
 }

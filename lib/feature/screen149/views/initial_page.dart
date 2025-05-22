@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flex_travel_sim/components/widgets/blue_button.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen149/widgets/custom_icon_container.dart';
 import 'package:flex_travel_sim/feature/screen149/widgets/custom_list_tile.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
@@ -96,7 +97,7 @@ class InitialPage extends StatelessWidget {
                       const SizedBox(height: 20),
                                   
                       HelveticaneueFont(
-                        text: 'Одна eSim для всех поездок',
+                        text: AppLocalization.frameTitle,
                         fontSize: 28,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -109,19 +110,19 @@ class InitialPage extends StatelessWidget {
                         children: [
                           CustomListTile(
                             iconPath: 'assets/icons/figma149/column1.svg',
-                            tileText: '180+ стран в одной eSIM',
+                            tileText: AppLocalization.countriesInOneEsim,
                           ),
                           CustomListTile(
                             iconPath: 'assets/icons/figma149/column2.svg',
-                            tileText: 'Оплата только за потраченное',
+                            tileText: AppLocalization.frameCheckTitle,
                           ),
                           CustomListTile(
                             iconPath: 'assets/icons/figma149/column3.svg',
-                            tileText: 'Без срока действии',
+                            tileText: AppLocalization.infinityTitle,
                           ),
                           CustomListTile(
                             iconPath: 'assets/icons/figma149/column4.svg',
-                            tileText: 'Высокая скорость и самые низкие\nцены',
+                            tileText: AppLocalization.highSpeedLowCost,
                           ),                                                
                         ],
                       ),
@@ -149,12 +150,12 @@ class InitialPage extends StatelessWidget {
                           children: [
                             CustomIconContainer(
                               blueIconPath: 'assets/icons/figma149/blue_icon1.svg',
-                              text: 'Как установить\neSIM?',
+                              text: AppLocalization.howToInstallEsim2,
                             ),
                             SizedBox(width: 15),
                             CustomIconContainer(
                               blueIconPath: 'assets/icons/figma149/blue_icon2.svg',
-                              text: 'Чат\nподдержки',
+                              text: AppLocalization.supportChat,
                             ),                        
                           ],
                         ),
@@ -163,20 +164,20 @@ class InitialPage extends StatelessWidget {
                           children: [
                             CustomIconContainer(
                               blueIconPath: 'assets/icons/figma149/blue_icon3.svg',
-                              text: 'Как это\nработает?',
+                              text: AppLocalization.howDoesItWork,
                               onTap:() => openGuidePage(context),
                             ),                        
                             SizedBox(width: 15),
                             CustomIconContainer(
                               blueIconPath: 'assets/icons/figma149/blue_icon4.svg',
-                              text: 'Страны\nи тарифы',
+                              text: AppLocalization.countriesAndRates,
                             ),                        
                           ],
                         ),
                           
                         Spacer(),
                 
-                        BlueButton(buttonText: "Активировать eSIM")                
+                        BlueButton(buttonText: AppLocalization.activateEsim)                
                         
                       ],
                     ),

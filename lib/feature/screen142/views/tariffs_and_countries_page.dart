@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen142/widgets/country_list.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class TariffsAndCountriesPage extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: HelveticaneueFont(
-                        text: 'Тарифы и страны',
+                        text: AppLocalization.tariffsAndCountries,
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
                         height: 1.3,

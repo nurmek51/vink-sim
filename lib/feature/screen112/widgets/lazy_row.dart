@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 
@@ -23,35 +24,35 @@ class _LazyRowState extends State<LazyRow> {
       child: Row(
         children: [
           CustomContainer(
-            text: 'Быстрая',
+            text: AppLocalization.fastSelectedRow,
             height: 38,
             widgth: 97,
-            isSelected: widget.selected == 'Быстрая',
-            onTap: () => widget.onSelected('Быстрая'),
+            isSelected: widget.selected == AppLocalization.fastSelectedRow,
+            onTap: () => widget.onSelected(AppLocalization.fastSelectedRow),
           ),
           SizedBox(width: 5),
           CustomContainer(
-            text: 'Вручную',
+            text: AppLocalization.manualSelectedRow,
             height: 38,
             widgth: 99,
-            isSelected: widget.selected == 'Вручную',
-            onTap: () => widget.onSelected('Вручную'),            
+            isSelected: widget.selected == AppLocalization.manualSelectedRow,
+            onTap: () => widget.onSelected(AppLocalization.manualSelectedRow),            
           ),
           SizedBox(width: 5),
           CustomContainer(
-            text: 'QR код',
+            text: AppLocalization.qrCodeSelectedRow,
             height: 38,
             widgth: 87,
-            isSelected: widget.selected == 'QR код',
-            onTap: () => widget.onSelected('QR код'),            
+            isSelected: widget.selected == AppLocalization.qrCodeSelectedRow,
+            onTap: () => widget.onSelected(AppLocalization.qrCodeSelectedRow),            
           ),
           SizedBox(width: 5),
           CustomContainer(
-            text: 'На другое устройство',
+            text: AppLocalization.toAnotherDeviceSelectedRow,
             height: 38,
             widgth: 199,
-            isSelected: widget.selected == 'На другое устройство',
-            onTap: () => widget.onSelected('На другое устройство'),            
+            isSelected: widget.selected == AppLocalization.toAnotherDeviceSelectedRow,
+            onTap: () => widget.onSelected(AppLocalization.toAnotherDeviceSelectedRow),            
           ),                    
                                             
         ],

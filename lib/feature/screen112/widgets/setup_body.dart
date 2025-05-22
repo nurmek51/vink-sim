@@ -12,9 +12,7 @@ class SetupBody extends StatelessWidget {
       children: [
         BodyContainer(
           stepNum: '1', 
-          description: 'Нажмите “Установить” и разрешите доступ к профилям на своем устройстве',
-          // widgth: 354,
-          // height: 220,
+          description: AppLocalization.fastDescriptionStep1,
           child: Padding(
             padding: const EdgeInsets.only(top: 30.0),
             child: Container(
@@ -40,9 +38,7 @@ class SetupBody extends StatelessWidget {
     
         BodyContainer(
           stepNum: '2', 
-          description: 'Выберите “Основной” для номера по умолчанию и для “iMessage и Facetime”',
-          // widgth: 354,
-          // height: 438,
+          description: AppLocalization.fastDescriptionStep2,
             child: Center(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -82,9 +78,7 @@ class SetupBody extends StatelessWidget {
     
         BodyContainer(
           stepNum: '3', 
-          description: 'Выберите недавно добавленный план eSIM для передачи сотовых данных',
-          // widgth: 354,
-          // height: 438,
+          description: AppLocalization.fastDescriptionStep3,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -111,9 +105,7 @@ class SetupBody extends StatelessWidget {
     
         BodyContainer(
           stepNum: '4', 
-          description: 'Зайдите в Настройки > Сотовая связь > Flex eSIM.\n\nВключите “Роуминг данных”',
-          // widgth: 354,
-          // height: 470,
+          description: AppLocalization.fastDescriptionStep4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(

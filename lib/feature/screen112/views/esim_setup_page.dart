@@ -15,7 +15,7 @@ class EsimSetupPage extends StatefulWidget {
 }
 
 class _EsimSetupPageState extends State<EsimSetupPage> {
-  String selected = 'Быстрая'; // по умолчанию
+  String selected = AppLocalization.fastSelectedRow; // по умолчанию
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                       SizedBox(height: 20),
                 
                       HelveticaneueFont(
-                        text: 'Установка eSIM',
+                        text: AppLocalization.installESim,
                         fontSize: 28,
                         letterSpacing: -1,
                         height: 1.1,
@@ -69,7 +69,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                       ),
                 
                       // BODY
-                      if (selected == 'Быстрая') ...[
+                      if (selected == AppLocalization.fastSelectedRow) ...[
                         SizedBox(height: 25),
                         SetupBody(),
                       ] else  ...[
@@ -77,7 +77,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                           height: 300,
                           alignment: Alignment.center,
                           child: Text(
-                            'Coming soon',
+                            AppLocalization.comingSoon,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -94,7 +94,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
               // end line
               SizedBox(height:10),
           
-              if (selected == 'Быстрая') ...[
+              if (selected == AppLocalization.fastSelectedRow) ...[
                 SizedBox(height: 10),
                 Container(
                   width: double.infinity,
@@ -113,21 +113,21 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                         ),
                         SizedBox(height: 15),
                         HelveticaneueFont(
-                          text: 'Готово!',
+                          text: AppLocalization.successMessage,
                           fontSize: 18, 
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                         SizedBox(height: 20),
                         HelveticaneueFont(
-                          text: 'Процесс подключения может\nдлиться от 1 минуты до часа.',
+                          text: AppLocalization.connectionWaitMessage,
                           fontSize: 16, 
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),
                         SizedBox(height: 20), 
                         HelveticaneueFont(
-                          text: 'В случае проблем с подключением –\nвключите “Авиарежим ✈” на 10 секунд и\nпопробуйте еще раз.',
+                          text: AppLocalization.connectionRetryInstruction,
                           textAlign: TextAlign.center,
                           fontSize: 16, 
                           color: Color(0xFF7D7D7D),
@@ -145,7 +145,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                           ),
                           child: Center(
                             child: HelveticaneueFont(
-                              text: 'Чат поддержки',
+                              text: AppLocalization.supportChat2,
                               fontSize: 14,
                               color: Color(0xFF1F6FFF),
                             ),

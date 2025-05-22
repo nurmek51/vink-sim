@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen141/components/widgets/custom_list_tile.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
@@ -10,21 +11,21 @@ class TableViewCells extends StatelessWidget {
     final tiles = [
       CustomListTile(
         imagePath: 'assets/icons/figma141/table_view_icon1.svg',
-        listText: 'Тарифы по странам',
+        listText: AppLocalization.tariffsByCountries,
         onTap:() {
           openTariffsAndCountriesPage(context);
         },
       ),
       CustomListTile(
         imagePath: 'assets/icons/figma141/table_view_icon2.svg',
-        listText: 'Гид по настройке eSIM',
+        listText: AppLocalization.guideForEsimSettings,
         onTap: () {
           openSettingsEsimPage(context);
         },
       ),
       CustomListTile(
         imagePath: 'assets/icons/figma141/table_view_icon3.svg',
-        listText: 'Что-нибудь еще',
+        listText: AppLocalization.smthMore,
         onTap: () {
           // JUST FOR TESTING PAGE 112 !
           openEsimSetupPage(context);
@@ -32,7 +33,7 @@ class TableViewCells extends StatelessWidget {
       ),
       CustomListTile(
         imagePath: 'assets/icons/figma141/table_view_icon4.svg',
-        listText: 'Чат поддержки',
+        listText: AppLocalization.supportChat2,
       ),
     ];
 

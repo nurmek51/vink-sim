@@ -30,7 +30,7 @@ class SettingEsimPage extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: HelveticaneueFont(
-                        text: 'Гид по настройке eSIM',
+                        text: AppLocalization.guideForEsimSettings,
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
                         height: 1.3,
@@ -56,7 +56,7 @@ class SettingEsimPage extends StatelessWidget {
                     StepsContainer(
                       iconPath: 'assets/icons/figma143/step1_icon.svg',
                       stepNum: '1',
-                      description: 'Пополните баланс в приложении и активируйте eSIM карту',
+                      description: AppLocalization.balanceAndEsimActivation,
                     ),
                         
                     SizedBox(height: 7),
@@ -64,7 +64,7 @@ class SettingEsimPage extends StatelessWidget {
                     StepsContainer(
                       iconPath: 'assets/icons/figma143/step2_icon.svg',
                       stepNum: '2',
-                      description: 'Настройте профиль в настройках своего телефона',
+                      description: AppLocalization.profileSetupGuide,
                     ),
                         
                     SizedBox(height: 7),
@@ -72,7 +72,7 @@ class SettingEsimPage extends StatelessWidget {
                     StepsContainer(
                       iconPath: 'assets/icons/figma143/step3_icon.svg',
                       stepNum: '3',
-                      description: 'Готово! Путешествуйте, не беспокоясь за свой интернет!',
+                      description: AppLocalization.readyToTravelMessage,
                     ),                                
                   ],
                 ),
@@ -82,7 +82,7 @@ class SettingEsimPage extends StatelessWidget {
             Spacer(),
         
             Padding(
-              padding: const EdgeInsets.only(bottom: 40.0),
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 40.0),
               child: Container(
                 alignment: Alignment.center,
                 height: 52,
