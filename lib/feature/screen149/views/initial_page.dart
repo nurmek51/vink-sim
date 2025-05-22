@@ -1,66 +1,60 @@
-import 'dart:ui';
-
-import 'package:flex_travel_sim/components/widgets/blue_button.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
-import 'package:flex_travel_sim/feature/screen149/widgets/custom_icon_container.dart';
+import 'package:flex_travel_sim/feature/main_flow_screen/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/feature/screen149/widgets/custom_list_tile.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:flex_travel_sim/feature/welcome_screen/widgets/pulsing_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class InitialPage extends StatelessWidget {
+class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
 
+  @override
+  State<InitialPage> createState() => _InitialPageState();
+}
+
+class _InitialPageState extends State<InitialPage> 
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _scaleAnimation;
+
+  static const Duration _animationDuration = Duration(seconds: 3);
+  static const double _circleSize = 600;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: _animationDuration)
+      ..repeat(reverse: true);
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.8,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }      
+      
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-
-          // Top Gradient
           Positioned(
-            left: 273,
-            top: -35,
-            width: 190,
-            height: 185,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  center: const Alignment(0.0981 * 2 - 1, 0.3264 * 2 - 1),
-                  radius: 0.4,
-                  colors: const [Color(0xFF6DC2FF), Color(0xFF0A5CFF)],
-                  stops: const [0.0, 1.0],
-                ),
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100.0, sigmaY: 100.0),
-                child: Container(color: Colors.transparent),
-              ),
-            ),
+            right: -_circleSize / 2,
+            top: MediaQuery.of(context).size.height * 0.25 / 2 - _circleSize / 2,
+            child: PulsingCircle(animation: _scaleAnimation, size: _circleSize),
           ),
-
-          // Bottom Gradient
           Positioned(
-            left: -76,
-            top: 307,
-            width: 300,
-            height: 230,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  center: const Alignment(0.0981 * 2 - 1, 0.3264 * 2 - 1),
-                  radius: 0.4,
-                  colors: const [Color(0xFF6DC2FF), Color(0xFF0A5CFF)],
-                  stops: const [0.0, 1.0],
-                ),
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100.0, sigmaY: 100.0),
-                child: Container(color: Colors.transparent),
-              ),
-            ),
+            left: -_circleSize / 2,
+            top: MediaQuery.of(context).size.height * 0.43 - _circleSize / 2,
+            child: PulsingCircle(animation: _scaleAnimation, size: _circleSize),
           ),
 
           Column(
@@ -96,11 +90,14 @@ class InitialPage extends StatelessWidget {
                                   
                       const SizedBox(height: 20),
                                   
-                      HelveticaneueFont(
-                        text: AppLocalization.frameTitle,
-                        fontSize: 28,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: HelveticaneueFont(
+                          text: AppLocalization.frameTitle,
+                          fontSize: 28,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                                   
                       const SizedBox(height: 20),
@@ -143,41 +140,62 @@ class InitialPage extends StatelessWidget {
                     color: Colors.white,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 60, 16, 5),
+                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            CustomIconContainer(
-                              blueIconPath: 'assets/icons/figma149/blue_icon1.svg',
-                              text: AppLocalization.howToInstallEsim2,
+                            ExpandedContainer(
+                              title: AppLocalization.howToInstallEsim2,
+                              icon: 'assets/icons/figma149/blue_icon11.svg',
+                              onTap: () {},
                             ),
-                            SizedBox(width: 15),
-                            CustomIconContainer(
-                              blueIconPath: 'assets/icons/figma149/blue_icon2.svg',
-                              text: AppLocalization.supportChat,
-                            ),                        
+                            const SizedBox(width: 16),
+                            ExpandedContainer(
+                              title: AppLocalization.supportChat,
+                              icon: 'assets/icons/figma149/blue_icon22.svg',
+                              onTap: () {},
+                            ),
+                                             
                           ],
                         ),
                         SizedBox(height: 20),
                         Row(
                           children: [
-                            CustomIconContainer(
-                              blueIconPath: 'assets/icons/figma149/blue_icon3.svg',
-                              text: AppLocalization.howDoesItWork,
-                              onTap:() => openGuidePage(context),
-                            ),                        
-                            SizedBox(width: 15),
-                            CustomIconContainer(
-                              blueIconPath: 'assets/icons/figma149/blue_icon4.svg',
-                              text: AppLocalization.countriesAndRates,
-                            ),                        
+                            ExpandedContainer(
+                              title: AppLocalization.howDoesItWork,
+                              icon:'assets/icons/figma149/blue_icon33.svg',
+                              onTap: () {},
+                            ),
+                            const SizedBox(width: 16),
+                            ExpandedContainer(
+                              title: AppLocalization.countriesAndRates,
+                              icon: 'assets/icons/figma149/blue_icon44.svg',
+                              onTap: () {},
+                            ),
+                          
                           ],
                         ),
-                          
+
                         Spacer(),
-                
-                        BlueButton(buttonText: AppLocalization.activateEsim)                
+
+                        Container(
+                          alignment: Alignment.center,
+                          height: 52,
+                          decoration: BoxDecoration(
+                            gradient: AppColors.containerGradientPrimary,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Text(
+                            AppLocalization.activateEsim,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ), 
+                            
                         
                       ],
                     ),
