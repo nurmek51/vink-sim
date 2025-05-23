@@ -53,7 +53,14 @@ class AppLocalization {
   static const profileSetupGuide = 'Настройте профиль в настройках своего телефона';
   static const readyToTravelMessage = 'Готово! Путешествуйте, не беспокоясь за свой интернет!';
   static const highSpeedLowCost = 'Высокая скорость и самые низкие\nцены';
-  static const countriesInOneEsim= '180+ стран в одной eSIM';
-  static const activateEsim= 'Активировать eSIM';
+  static const countriesInOneEsim = '180+ стран в одной eSIM';
+  static const activateEsim = 'Активировать eSIM';
+  static const authWithTheHelpOf = 'Войти с помощью';
+  static const whatsApp = 'WhatsApp';
+  static const mobileNumWhatsAppDescription = 'Введите номер телефона,\nассоциированный с WhatsApp';
+  static const authAndRegistration = 'Вход / Регистрация';
+  static const continueWithApple = 'Продолжить с Apple';
+  static const continueWithGoogle = 'Продолжить с Google';
+  static const continueWithEmail = 'Продолжить с Email';
   
 }

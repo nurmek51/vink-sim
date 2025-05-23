@@ -2,6 +2,7 @@ import 'package:flex_travel_sim/components/widgets/blue_button.dart';
 import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/feature/main_flow_screen/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/lazy_row.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/setup_body.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
@@ -140,18 +141,44 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                           child: BlueButton(buttonText: AppLocalization.close),
                         ),
                         SizedBox(height: 30),
-                        Container(
-                          width: 126,
-                          height: 31,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(0xFFE7EFF7),
-                          ),
-                          child: Center(
-                            child: HelveticaneueFont(
-                              text: AppLocalization.supportChat2,
-                              fontSize: 14,
-                              color: Color(0xFF1F6FFF),
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(16),
+                                ),
+                              ),
+                              builder:
+                                  (context) => Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom:
+                                          MediaQuery.of(
+                                            context,
+                                          ).viewInsets.bottom,
+                                    ),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: BottomSheetContent(),
+                                    ),
+                                  ),
+                            );
+                          },
+                          child: Container(
+                            width: 126,
+                            height: 31,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color(0xFFE7EFF7),
+                            ),
+                            child: Center(
+                              child: HelveticaneueFont(
+                                text: AppLocalization.supportChat2,
+                                fontSize: 14,
+                                color: Color(0xFF1F6FFF),
+                              ),
                             ),
                           ),
                         ),                                          

@@ -77,7 +77,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   ExpandedContainer(
                     title: AppLocalization.howToInstallEsim,
                     icon: Assets.icons.simIcon.path,
-                    onTap: () => handleTap(0),
+                    onTap: () => openEsimSetupPage(context),
                   ),
                   const SizedBox(width: 16),
                   ExpandedContainer(
@@ -114,24 +114,25 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   ExpandedContainer(
                     title: AppLocalization.questionsAndAnswers,
                     icon: Assets.icons.faqIconFull.path,
-                    onTap: () => openInitialPage(context), // временно меняю чтобы открывало вторую часть фронта 
+                    onTap: () => openGuidePage(context), 
                   ),
                   const SizedBox(width: 16),
                   ExpandedContainer(
                     title: AppLocalization.countriesAndRates,
                     icon: Assets.icons.globus.path,
-                    onTap: () => handleTap(3),
+                    onTap: () => openTariffsAndCountriesPage(context),
                   ),
                 ],
               ),
               const SizedBox(height: 15),
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    progressValue += 0.1;
-                    if (progressValue > 1) progressValue = 0;
-                  });
-                },
+                onTap:() => openTopUpBalanceScreen(context),
+                // onTap: () {
+                //   setState(() {
+                //     progressValue += 0.1;
+                //     if (progressValue > 1) progressValue = 0;
+                //   });
+                // },
                 child: Container(
                   alignment: Alignment.center,
                   height: 52,

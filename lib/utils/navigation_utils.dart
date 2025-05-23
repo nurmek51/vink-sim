@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/feature/auth_screen/auth_screen.dart';
 import 'package:flex_travel_sim/feature/main_flow_screen/main_flow_screen.dart';
 import 'package:flex_travel_sim/feature/screen112/views/esim_setup_page.dart';
 import 'package:flex_travel_sim/feature/screen141/views/guide_page.dart';
@@ -64,7 +65,7 @@ void openGuidePage(BuildContext context) {
 }
 
 void openInitialPage(BuildContext context) {
-  Navigator.push(
+  Navigator.pushReplacement(
     context,
     PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => const InitialPage(),
@@ -93,10 +94,24 @@ void openTopUpBalanceScreen(BuildContext context) {
 
 
 void openMainFlowScreen(BuildContext context) {
-  Navigator.push(
+  Navigator.pushReplacement(
     context,
     PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => const MainFlowScreen(),
+      transitionDuration: Duration.zero,       
+      reverseTransitionDuration: Duration.zero,   
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return child;  
+      },
+    ),
+  );
+}
+
+void openAuthScreen(BuildContext context) {
+  Navigator.push(
+    context,
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const AuthScreen(),
       transitionDuration: Duration.zero,       
       reverseTransitionDuration: Duration.zero,   
       transitionsBuilder: (context, animation, secondaryAnimation, child) {

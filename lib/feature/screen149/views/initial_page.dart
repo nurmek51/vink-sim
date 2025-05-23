@@ -1,10 +1,11 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/feature/main_flow_screen/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/feature/main_flow_screen/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/feature/screen149/widgets/custom_list_tile.dart';
-import 'package:flex_travel_sim/feature/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/pulsing_circle.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -149,13 +150,36 @@ class _InitialPageState extends State<InitialPage>
                             ExpandedContainer(
                               title: AppLocalization.howToInstallEsim2,
                               icon: 'assets/icons/figma149/blue_icon11.svg',
-                              onTap: () {},
+                              onTap: () => openEsimSetupPage(context),
                             ),
                             const SizedBox(width: 16),
                             ExpandedContainer(
                               title: AppLocalization.supportChat,
                               icon: 'assets/icons/figma149/blue_icon22.svg',
-                              onTap: () {},
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(16),
+                                    ),
+                                  ),
+                                  builder:
+                                      (context) => Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom:
+                                              MediaQuery.of(
+                                                context,
+                                              ).viewInsets.bottom,
+                                        ),
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: BottomSheetContent(),
+                                        ),
+                                      ),
+                                );        
+                              },
                             ),
                                              
                           ],
@@ -166,13 +190,13 @@ class _InitialPageState extends State<InitialPage>
                             ExpandedContainer(
                               title: AppLocalization.howDoesItWork,
                               icon:'assets/icons/figma149/blue_icon33.svg',
-                              onTap: () {},
+                              onTap: () => openGuidePage(context),
                             ),
                             const SizedBox(width: 16),
                             ExpandedContainer(
                               title: AppLocalization.countriesAndRates,
                               icon: 'assets/icons/figma149/blue_icon44.svg',
-                              onTap: () {},
+                              onTap: () => openTariffsAndCountriesPage(context),
                             ),
                           
                           ],
@@ -181,7 +205,7 @@ class _InitialPageState extends State<InitialPage>
                         Spacer(),
 
                         GestureDetector(
-                          onTap: () => TopUpBalanceScreen(),
+                          onTap: () => openTopUpBalanceScreen(context),
                           child: Container(
                             alignment: Alignment.center,
                             height: 52,

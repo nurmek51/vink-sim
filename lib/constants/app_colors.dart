@@ -13,6 +13,9 @@ class AppColors {
   static const grayBlue = Color(0xFF363C45);
   static const containerGray = Color(0xFFE7EFF7);
   static const splashColor = Color((0xFF2875FF));
+  static const whatsAppColor = Color((0xFF25D366));
+  static const accentBlue = Color((0xFF1F6FFF));
+  static const babyBlue = Color((0XFF1EA1F3));
   static const containerGradientPrimary = LinearGradient(
     colors: [Color(0xFF2875FF), Color(0xFF0059F9)],
     begin: Alignment.topLeft,

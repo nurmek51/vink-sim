@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/feature/main_flow_screen/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/feature/screen141/components/widgets/custom_list_tile.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,25 @@ class TableViewCells extends StatelessWidget {
       CustomListTile(
         imagePath: 'assets/icons/figma141/table_view_icon4.svg',
         listText: AppLocalization.supportChat2,
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            builder:
+                (context) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: BottomSheetContent(),
+                  ),
+                ),
+          );
+        }
       ),
     ];
 

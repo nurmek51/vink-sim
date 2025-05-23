@@ -94,6 +94,18 @@ class $AssetsIconsGen {
   SvgGenImage get whatsappIcon =>
       const SvgGenImage('assets/icons/whatsapp_icon.svg');
 
+  /// File path: assets/icons/apple_logo.svg
+  SvgGenImage get appleLogo =>
+      const SvgGenImage('assets/icons/apple_logo.svg');
+
+  /// File path: assets/icons/google_logo.svg
+  SvgGenImage get googleLogo =>
+      const SvgGenImage('assets/icons/google_logo.svg'); 
+
+  /// File path: assets/icons/email_logo.svg
+  SvgGenImage get emailLogo =>
+      const SvgGenImage('assets/icons/email_logo.svg');       
+
   /// List of all assets
   List<SvgGenImage> get values => [
         telegramLogo,
@@ -117,7 +129,10 @@ class $AssetsIconsGen {
         simIcon,
         telegramIcon,
         trafficUsage,
-        whatsappIcon
+        whatsappIcon,
+        appleLogo,
+        googleLogo,
+        emailLogo,
       ];
 }
 
