@@ -9,7 +9,7 @@ void openTariffsAndCountriesPage(BuildContext context) {
   Navigator.push(
     context,
     PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const TariffsAndCountriesPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => const TariffsAndCountriesScreen(),
       transitionDuration: Duration.zero,       
       reverseTransitionDuration: Duration.zero,   
       transitionsBuilder: (context, animation, secondaryAnimation, child) {

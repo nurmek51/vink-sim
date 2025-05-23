@@ -4,8 +4,8 @@ import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen142/widgets/country_list.dart';
 import 'package:flutter/material.dart';
 
-class TariffsAndCountriesPage extends StatelessWidget {
-  const TariffsAndCountriesPage({super.key});
+class TariffsAndCountriesScreen extends StatelessWidget {
+  const TariffsAndCountriesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

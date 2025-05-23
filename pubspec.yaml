@@ -26,7 +26,6 @@ flutter:
   assets:
     - assets/
     - assets/icons/
-    - assets/icons/
     - assets/icons/figma112/ 
     - assets/icons/figma141/
     - assets/icons/figma142/

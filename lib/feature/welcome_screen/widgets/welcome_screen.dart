@@ -1,7 +1,7 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
-import 'package:flex_travel_sim/feature/main_flow_screen/main_flow_screen.dart';
 import 'package:flex_travel_sim/feature/screen149/widgets/custom_icon_container.dart';
+import 'package:flex_travel_sim/feature/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/button/auth_button.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/button/country_list_button.dart';
@@ -208,7 +208,7 @@ class FrameContent extends StatelessWidget {
                                           MaterialPageRoute(
                                             builder:
                                                 (context) =>
-                                                    const MainFlowScreen(),
+                                                    const TopUpBalanceScreen(),
                                           ),
                                         );
                                       },
@@ -224,7 +224,7 @@ class FrameContent extends StatelessWidget {
                                           ),
                                         ),
                                         child: const Text(
-                                        'Активировать eSIM',
+                                          'Активировать eSIM',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 16,
