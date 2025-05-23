@@ -3,6 +3,7 @@ import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/main_flow_screen/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/feature/screen149/widgets/custom_list_tile.dart';
+import 'package:flex_travel_sim/feature/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/pulsing_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -179,19 +180,22 @@ class _InitialPageState extends State<InitialPage>
 
                         Spacer(),
 
-                        Container(
-                          alignment: Alignment.center,
-                          height: 52,
-                          decoration: BoxDecoration(
-                            gradient: AppColors.containerGradientPrimary,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: const Text(
-                            AppLocalization.activateEsim,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                        GestureDetector(
+                          onTap: () => TopUpBalanceScreen(),
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 52,
+                            decoration: BoxDecoration(
+                              gradient: AppColors.containerGradientPrimary,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: const Text(
+                              AppLocalization.activateEsim,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ), 
