@@ -4,6 +4,7 @@ import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/lazy_row.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/setup_body.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -134,7 +135,10 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                           fontWeight: FontWeight.w500,
                         ), 
                         SizedBox(height: 30), 
-                        BlueButton(buttonText: AppLocalization.close),
+                        GestureDetector(
+                          onTap: () => openMainFlowScreen(context),
+                          child: BlueButton(buttonText: AppLocalization.close),
+                        ),
                         SizedBox(height: 30),
                         Container(
                           width: 126,

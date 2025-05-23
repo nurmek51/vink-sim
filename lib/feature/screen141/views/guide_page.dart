@@ -3,6 +3,7 @@ import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen141/components/widgets/table_view_cells.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class GuidePage extends StatelessWidget {
@@ -60,22 +61,25 @@ class GuidePage extends StatelessWidget {
         
               Expanded(child: TableViewCells()), 
         
-              Container(
-                  alignment: Alignment.center,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    gradient: AppColors.containerGradientPrimary,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Text(
-                    AppLocalization.topUpBalance,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+              GestureDetector(
+                onTap: () => openTopUpBalanceScreen(context),
+                child: Container(
+                    alignment: Alignment.center,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      gradient: AppColors.containerGradientPrimary,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Text(
+                      AppLocalization.topUpBalance,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),       
+              ),       
         
             ],
           ),
