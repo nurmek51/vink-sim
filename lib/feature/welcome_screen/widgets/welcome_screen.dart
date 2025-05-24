@@ -1,7 +1,6 @@
+import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
-import 'package:flex_travel_sim/feature/screen149/widgets/custom_icon_container.dart';
-import 'package:flex_travel_sim/feature/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/button/auth_button.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/button/country_list_button.dart';
@@ -94,156 +93,60 @@ class FrameContent extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.only(
-            left: 30,
-            right: 30,
+            left: 20,
+            right: 20,
 
-            top: 20,
-            bottom: 40,
+            top: 5,
+            bottom: 8,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Header(color: AppColors.textColorLight),
-              const SizedBox(height: 30),
-              const Text(
-                AppLocalization.frameTitle,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.backgroundColorLight,
-                ),
-              ),
-              SizedBox(height: 30),
-              BenefitTile(
-                icon: Assets.icons.globus.path,
-                title: AppLocalization.frameGlobusTitle,
-              ),
-              SizedBox(height: 12),
-              BenefitTile(
-                icon: Assets.icons.check.path,
-                title: AppLocalization.frameCheckTitle,
-              ),
-              SizedBox(height: 12),
-              BenefitTile(
-                icon: Assets.icons.infinity.path,
-                title: AppLocalization.infinityTitle,
-              ),
-              SizedBox(height: 12),
-              BenefitTile(icon: Assets.icons.card.path, title: 'Пакеты от 1\$'),
-              const SizedBox(height: 30),
-              WhatIsEsimButton(ontap: () => openInitialPage(context)),
-              Spacer(),
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 45),
+                Header(color: AppColors.textColorLight),
+                const SizedBox(height: 20),
 
-              const SizedBox(height: 20),
-              AuthButton(
-                onTap: () => openAuthScreen(context),
-                // onTap: () {
-                //   showModalBottomSheet(
-                //     context: context,
-                //     shape: const RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.vertical(
-                //         top: Radius.circular(16),
-                //       ),
-                //     ),
-                //     builder:
-                //         (context) => Padding(
-                //           padding: EdgeInsets.only(
-                //             bottom: MediaQuery.of(context).viewInsets.bottom,
-                //           ),
-                //           child: SizedBox(
-                //             width: double.infinity,
-                //             child: Container(
-                //               decoration: BoxDecoration(
-                //                 borderRadius: BorderRadius.only(
-                //                   topLeft: Radius.circular(24),
-                //                   topRight: Radius.circular(24),
-                //                 ),
-                //                 color: Colors.white,
-                //               ),
-                //               child: Padding(
-                //                 padding: const EdgeInsets.fromLTRB(
-                //                   16,
-                //                   60,
-                //                   16,
-                //                   5,
-                //                 ),
-                //                 child: Column(
-                //                   children: [
-                //                     Row(
-                //                       children: [
-                //                         CustomIconContainer(
-                //                           blueIconPath:
-                //                               'assets/icons/figma149/blue_icon1.svg',
-                //                           text: 'Как установить\neSIM?',
-                //                         ),
-                //                         SizedBox(width: 15),
-                //                         CustomIconContainer(
-                //                           blueIconPath:
-                //                               'assets/icons/figma149/blue_icon2.svg',
-                //                           text: 'Чат\nподдержки',
-                //                         ),
-                //                       ],
-                //                     ),
-                //                     SizedBox(height: 20),
-                //                     Row(
-                //                       children: [
-                //                         CustomIconContainer(
-                //                           blueIconPath:
-                //                               'assets/icons/figma149/blue_icon3.svg',
-                //                           text: 'Как это\nработает?',
-                //                           onTap: () => openGuidePage(context),
-                //                         ),
-                //                         SizedBox(width: 15),
-                //                         CustomIconContainer(
-                //                           blueIconPath:
-                //                               'assets/icons/figma149/blue_icon4.svg',
-                //                           text: 'Страны\nи тарифы',
-                //                         ),
-                //                       ],
-                //                     ),
-                //                     SizedBox(height: 20),
-                //                     GestureDetector(
-                //                       onTap: () {
-                //                         Navigator.push(
-                //                           context,
-                //                           MaterialPageRoute(
-                //                             builder:
-                //                                 (context) =>
-                //                                     const TopUpBalanceScreen(),
-                //                           ),
-                //                         );
-                //                       },
-                //                       child: Container(
-                //                         alignment: Alignment.center,
-                //                         height: 52,
-                //                         decoration: BoxDecoration(
-                //                           gradient:
-                //                               AppColors
-                //                                   .containerGradientPrimary,
-                //                           borderRadius: BorderRadius.circular(
-                //                             16,
-                //                           ),
-                //                         ),
-                //                         child: const Text(
-                //                           'Активировать eSIM',
-                //                           style: TextStyle(
-                //                             color: Colors.white,
-                //                             fontSize: 16,
-                //                             fontWeight: FontWeight.w500,
-                //                           ),
-                //                         ),
-                //                       ),
-                //                     ),
-                //                   ],
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //   );
-                // },
-              ),
-            ],
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: const HelveticaneueFont(
+                    text: AppLocalization.frameTitle,
+                    fontSize: 28,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                SizedBox(height: 30),
+                BenefitTile(
+                  icon: Assets.icons.globus.path,
+                  title: AppLocalization.frameGlobusTitle,
+                ),
+                SizedBox(height: 12),
+                BenefitTile(
+                  icon: Assets.icons.check.path,
+                  title: AppLocalization.frameCheckTitle,
+                ),
+                SizedBox(height: 12),
+                BenefitTile(
+                  icon: Assets.icons.infinity.path,
+                  title: AppLocalization.infinityTitle,
+                ),
+                SizedBox(height: 12),
+                BenefitTile(icon: Assets.icons.card.path, title: 'Пакеты от 1\$'),
+                const SizedBox(height: 30),
+                WhatIsEsimButton(ontap: () => openInitialPage(context)),
+                Spacer(),
+            
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: AuthButton(
+                    onTap: () => openAuthScreen(context),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
