@@ -79,6 +79,7 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 65,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),

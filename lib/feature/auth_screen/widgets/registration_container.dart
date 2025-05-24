@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 class RegistrationContainer extends StatelessWidget {
   final String buttonText;
   final Color? color;
+  final Color? iconColor;
   final String? iconPath;
   final BorderSide? borderLine;
   final Color? buttonTextColor;
@@ -17,6 +18,7 @@ class RegistrationContainer extends StatelessWidget {
     this.borderLine,
     this.buttonTextColor,
     this.onTap,
+    this.iconColor,
   });
 
   @override
@@ -42,10 +44,13 @@ class RegistrationContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (iconPath != null) ...[
-                SvgPicture.asset(
-                  iconPath!,
-                  height: 22,
-                  width: 22,
+                SizedBox(
+                  height: 25,
+                  width: 25,
+                  child: SvgPicture.asset(
+                    iconPath!,
+                    colorFilter: iconColor != null ? ColorFilter.mode(iconColor!, BlendMode.srcIn) : null,
+                  ),
                 ),
                 const SizedBox(width: 12),
               ],
