@@ -5,6 +5,7 @@ import 'package:flex_travel_sim/feature/main_flow_screen/widgets/expanded_contai
 import 'package:flex_travel_sim/feature/main_flow_screen/widgets/percentage_widget.dart';
 import 'package:flex_travel_sim/feature/my_account_screen/my_account_screen.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 import 'package:flex_travel_sim/shared/widgets/header.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
@@ -28,14 +29,14 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
 
   Color _getProgressColor(double value) {
     if (value < 0.1) return Colors.red;
-    if (value < 0.5) return Color(0xFF1F6FFF);
+    if (value < 0.5) return Color(0xFF73BAE7);
     if (value < 0.7) return Color(0xFF73BAE7);
     return Colors.green;
   }
 
   Color _getProgressBackgroundColor(double value) {
-    if (value < 0.1) return Colors.purple;
-    if (value < 0.5) return Color(0xFF1F6F12);
+    if (value < 0.1) return Colors.red;
+    if (value < 0.5) return Color(0xFF1F6FFF);
     if (value < 0.7) return Color(0xFF1F6FFF);
     return Colors.green;
   }
@@ -65,13 +66,13 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   );
                 },
               ),
-              const SizedBox(height: 17),
+              const SizedBox(height: 60),
               PercentageWidget(
                 progressValue: progressValue,
                 color: progressColor,
                 backgroundColor: getProgressBackgroundColor,
               ),
-              const SizedBox(height: 25),
+              Spacer(),
               Row(
                 children: [
                   ExpandedContainer(
@@ -114,7 +115,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   ExpandedContainer(
                     title: AppLocalization.questionsAndAnswers,
                     icon: Assets.icons.faqIconFull.path,
-                    onTap: () => openGuidePage(context), 
+                    onTap: () => openGuidePage(context),
                   ),
                   const SizedBox(width: 16),
                   ExpandedContainer(
@@ -125,30 +126,9 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                 ],
               ),
               const SizedBox(height: 15),
-              GestureDetector(
-                onTap:() => openTopUpBalanceScreen(context),
-                // onTap: () {
-                //   setState(() {
-                //     progressValue += 0.1;
-                //     if (progressValue > 1) progressValue = 0;
-                //   });
-                // },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    gradient: AppColors.containerGradientPrimary,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Text(
-                    AppLocalization.topUpBalance,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
+              BlueGradientButton(
+                onTap: () => openTopUpBalanceScreen(context),
+                title: AppLocalization.topUpBalance,
               ),
             ],
           ),
