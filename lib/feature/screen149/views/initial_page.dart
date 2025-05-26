@@ -3,7 +3,7 @@ import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/main_flow_screen/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/feature/main_flow_screen/widgets/expanded_container.dart';
-import 'package:flex_travel_sim/feature/screen149/widgets/custom_list_tile.dart';
+import 'package:flex_travel_sim/feature/welcome_screen/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/pulsing_circle.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
@@ -102,29 +102,27 @@ class _InitialPageState extends State<InitialPage>
                         ),
                       ),
                                   
-                      const SizedBox(height: 20),
-                                  
-                      // body (2)
-                      Column(
-                        children: [
-                          CustomListTile(
-                            iconPath: 'assets/icons/figma149/column1.svg',
-                            tileText: AppLocalization.countriesInOneEsim,
-                          ),
-                          CustomListTile(
-                            iconPath: 'assets/icons/figma149/column2.svg',
-                            tileText: AppLocalization.frameCheckTitle,
-                          ),
-                          CustomListTile(
-                            iconPath: 'assets/icons/figma149/column3.svg',
-                            tileText: AppLocalization.infinityTitle,
-                          ),
-                          CustomListTile(
-                            iconPath: 'assets/icons/figma149/column4.svg',
-                            tileText: AppLocalization.highSpeedLowCost,
-                          ),                                                
-                        ],
+                      const SizedBox(height: 30),
+                      
+                      BenefitTile(
+                        icon: 'assets/icons/figma149/column1.svg',
+                        title: AppLocalization.countriesInOneEsim,
                       ),
+                      SizedBox(height: 12),
+                      BenefitTile(
+                        icon: 'assets/icons/figma149/column2.svg',
+                        title: AppLocalization.frameCheckTitle,
+                      ),
+                      SizedBox(height: 12),
+                      BenefitTile(
+                        icon: 'assets/icons/figma149/column3.svg',
+                        title: AppLocalization.infinityTitle,
+                      ),
+                      SizedBox(height: 12),
+                      BenefitTile(
+                        icon: 'assets/icons/figma149/column4.svg',
+                        title: AppLocalization.highSpeedLowCost,
+                      ),                      
                                   
                       const SizedBox(height: 10),
                     ],
@@ -142,7 +140,7 @@ class _InitialPageState extends State<InitialPage>
                     color: Colors.white,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
+                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 25),
                     child: Column(
                       children: [
                         Row(

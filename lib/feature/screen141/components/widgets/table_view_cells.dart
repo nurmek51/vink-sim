@@ -1,6 +1,8 @@
+import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/main_flow_screen/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/feature/screen141/components/widgets/custom_list_tile.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -11,21 +13,24 @@ class TableViewCells extends StatelessWidget {
   Widget build(BuildContext context) {
     final tiles = [
       CustomListTile(
-        imagePath: 'assets/icons/figma141/table_view_icon1.svg',
+        imagePath: Assets.icons.GuideTableView1.path,
+        containerColor: AppColors.guideTable1,
         listText: AppLocalization.tariffsByCountries,
         onTap:() {
           openTariffsAndCountriesPage(context);
         },
       ),
       CustomListTile(
-        imagePath: 'assets/icons/figma141/table_view_icon2.svg',
+        imagePath: Assets.icons.GuideTableView2.path,
+        containerColor: AppColors.guideTable2,
         listText: AppLocalization.guideForEsimSettings,
         onTap: () {
           openSettingsEsimPage(context);
         },
       ),
       CustomListTile(
-        imagePath: 'assets/icons/figma141/table_view_icon3.svg',
+        imagePath: Assets.icons.GuideTableView3.path,
+        containerColor: AppColors.guideTable3,
         listText: AppLocalization.smthMore,
         onTap: () {
           // JUST FOR TESTING PAGE 112 !
@@ -33,7 +38,8 @@ class TableViewCells extends StatelessWidget {
         },        
       ),
       CustomListTile(
-        imagePath: 'assets/icons/figma141/table_view_icon4.svg',
+        imagePath: Assets.icons.GuideTableView4.path,
+        containerColor: AppColors.guideTable4,
         listText: AppLocalization.supportChat2,
         onTap: () {
           showModalBottomSheet(

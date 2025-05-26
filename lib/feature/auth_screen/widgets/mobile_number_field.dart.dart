@@ -12,6 +12,7 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
   final TextEditingController _controller = TextEditingController();
   String _lastFormatted = '';
 
+  
   @override
   void initState() {
     super.initState();
@@ -46,9 +47,10 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
 
     setState(() {});
   }
-
+  
   String _formatPhoneNumber(String digits) {
     if (digits.isEmpty) return '';
+    digits = digits.replaceFirst(RegExp(r'^8'), '7');
     if (!digits.startsWith('7')) digits = '7$digits';
 
     final buffer = StringBuffer();
@@ -58,25 +60,30 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
       buffer.write(' (');
       buffer.write(digits.substring(1, digits.length.clamp(1, 4)));
     }
+
     if (digits.length >= 4) {
       buffer.write(') ');
       buffer.write(digits.substring(4, digits.length.clamp(4, 7)));
     }
+
     if (digits.length >= 7) {
       buffer.write(' ');
       buffer.write(digits.substring(7, digits.length.clamp(7, 9)));
     }
+
     if (digits.length >= 9) {
       buffer.write(' ');
       buffer.write(digits.substring(9, digits.length.clamp(9, 11)));
     }
 
-    return buffer.toString();
+    return buffer.toString().replaceAll(RegExp(r'\s+$'), '');
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 65,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -89,7 +96,10 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
             child: TextField(
               controller: _controller,
               keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(11),
+              ],
               style: const TextStyle(color: Colors.white, fontSize: 18),
               decoration: const InputDecoration(
                 border: InputBorder.none,

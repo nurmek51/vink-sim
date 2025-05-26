@@ -46,6 +46,7 @@ class _AuthScreenState extends State<AuthScreen>
     final mediaHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -76,6 +77,7 @@ class FrameContent extends StatelessWidget {
   final Animation<double> _scaleAnimation;
 
   get balance => 1;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -139,17 +141,18 @@ class FrameContent extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
               MobileNumberField(),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               
               RegistrationContainer(
                 onTap: () => openMainFlowScreen(context),
                 buttonText: AppLocalization.authAndRegistration,
                 buttonTextColor: AppColors.backgroundColorLight,
                 color: AppColors.accentBlue,
+                arrowForward: true,
               ),             
 
               Spacer(),

@@ -62,5 +62,7 @@ class AppLocalization {
   static const continueWithApple = 'Продолжить с Apple';
   static const continueWithGoogle = 'Продолжить с Google';
   static const continueWithEmail = 'Продолжить с Email';
+  static const esimIsActivated = 'eSIM активирована!';
+  static const nowYouNeedToInstallEsim = 'Теперь вам нужно установить eSIM \nна устройство.';
   
 }

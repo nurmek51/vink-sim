@@ -1,3 +1,5 @@
+import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +56,10 @@ class _TopUpBalanceScreenState extends State<TopUpBalanceScreen> {
               const SizedBox(height: 16),
               _buildAutoTopUpCard(),
               const SizedBox(height: 16),
-              BlueGradientButton(title: 'Пополнить баланс', onTap: () {}),
+              BlueGradientButton(
+                title: AppLocalization.topUpBalance,
+                onTap: () => openActivatedEsimScreen(context),
+              ),
               const SizedBox(height: 30),
             ],
           ),
