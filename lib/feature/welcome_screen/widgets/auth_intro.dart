@@ -17,42 +17,45 @@ class AuthIntro extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       key: const ValueKey('authIntro'),
-      padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Header(color: AppColors.textColorLight),
-          const SizedBox(height: 30),
-          Text(
-            AppLocalization.frameTitle,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w500,
-              color: AppColors.backgroundColorLight,
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 8),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 45),
+            Header(color: AppColors.textColorLight),
+            const SizedBox(height: 30),
+            Text(
+              AppLocalization.frameTitle,
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w500,
+                color: AppColors.backgroundColorLight,
+              ),
             ),
-          ),
-          const SizedBox(height: 30),
-          BenefitTile(
-            icon: Assets.icons.globus.path,
-            title: AppLocalization.frameGlobusTitle,
-          ),
-          const SizedBox(height: 12),
-          BenefitTile(
-            icon: Assets.icons.check.path,
-            title: AppLocalization.frameCheckTitle,
-          ),
-          const SizedBox(height: 12),
-          BenefitTile(
-            icon: Assets.icons.infinity.path,
-            title: AppLocalization.infinityTitle,
-          ),
-          const SizedBox(height: 12),
-          BenefitTile(icon: Assets.icons.card.path, title: 'Пакеты от 1\$'),
-          const SizedBox(height: 30),
-          WhatIsEsimButton(onTap: () => openInitialPage(context)),
-          const Spacer(),
-          AuthButton(onTap: onAuthTap),
-        ],
+            const SizedBox(height: 30),
+            BenefitTile(
+              icon: Assets.icons.globus.path,
+              title: AppLocalization.frameGlobusTitle,
+            ),
+            const SizedBox(height: 12),
+            BenefitTile(
+              icon: Assets.icons.check.path,
+              title: AppLocalization.frameCheckTitle,
+            ),
+            const SizedBox(height: 12),
+            BenefitTile(
+              icon: Assets.icons.infinity.path,
+              title: AppLocalization.infinityTitle,
+            ),
+            const SizedBox(height: 12),
+            BenefitTile(icon: Assets.icons.card.path, title: 'Пакеты от 1\$'),
+            const SizedBox(height: 30),
+            WhatIsEsimButton(onTap: () => openInitialPage(context)),
+            const Spacer(),
+            AuthButton(onTap: onAuthTap),
+          ],
+        ),
       ),
     );
   }

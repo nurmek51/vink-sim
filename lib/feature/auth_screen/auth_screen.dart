@@ -147,6 +147,7 @@ class FrameContent extends StatelessWidget {
               const SizedBox(height: 20),
               
               RegistrationContainer(
+                textArrow: true,
                 onTap: () => openMainFlowScreen(context),
                 buttonText: AppLocalization.authAndRegistration,
                 buttonTextColor: AppColors.backgroundColorLight,
@@ -156,18 +157,19 @@ class FrameContent extends StatelessWidget {
               Spacer(),
 
               RegistrationContainer(
+                textArrow: false,
                 onTap: () => openInitialPage(context),
                 buttonText: AppLocalization.continueWithApple,
                 buttonTextColor: AppColors.textColorLight,
                 color: AppColors.textColorDark,
                 borderLine: BorderSide(color: AppColors.textColorLight,),
                 iconPath: Assets.icons.appleLogo.path,
-                iconColor: AppColors.backgroundColorLight,
               ),
 
               const SizedBox(height: 12),
 
               RegistrationContainer(
+                textArrow: false,
                 onTap: () => openInitialPage(context),
                 buttonText: AppLocalization.continueWithGoogle,
                 buttonTextColor: AppColors.textColorDark,
@@ -179,6 +181,7 @@ class FrameContent extends StatelessWidget {
               const SizedBox(height: 12),
 
               RegistrationContainer(
+                textArrow: false,
                 onTap: () => openInitialPage(context),
                 buttonText: AppLocalization.continueWithEmail,
                 buttonTextColor: AppColors.textColorLight,
