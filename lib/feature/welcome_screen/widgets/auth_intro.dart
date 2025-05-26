@@ -23,7 +23,11 @@ class AuthIntro extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 45),
-            Header(color: AppColors.textColorLight),
+            Header(
+              color: AppColors.textColorLight,
+              faqOnTap: () => openGuidePage(context),
+              avatarOnTap: () => openMyAccountScreen(context),
+            ),
             const SizedBox(height: 30),
             Text(
               AppLocalization.frameTitle,

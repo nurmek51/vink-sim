@@ -53,6 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     final mediaHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       body: SafeArea(
         child: FrameContent(

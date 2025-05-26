@@ -20,7 +20,11 @@ class ActivatedEsimScreen extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 45, 16, 40),
           child: Column(
             children: [
-              const Header(color: AppColors.textColorDark),
+              Header(
+                color: AppColors.textColorDark,
+                faqOnTap: () => openGuidePage(context),
+                avatarOnTap: () => openMyAccountScreen(context),
+              ),
               const SizedBox(height: 20),
               const EsimSuccessContainer(),
               const SizedBox(height: 20),
