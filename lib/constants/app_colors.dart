@@ -15,7 +15,11 @@ class AppColors {
   static const splashColor = Color((0xFF2875FF));
   static const whatsAppColor = Color((0xFF25D366));
   static const accentBlue = Color((0xFF1F6FFF));
-  static const babyBlue = Color((0XFF1EA1F3));
+  static const babyBlue = Color((0xFF1EA1F3)); 
+  static const guideTable1 = Color((0xFF007AFF));
+  static const guideTable2 = Color((0xFFFBB935));
+  static const guideTable3 = Color((0xFF34C759));
+  static const guideTable4 = Color((0xFF2FADEB));
   static const containerGradientPrimary = LinearGradient(
     colors: [Color(0xFF2875FF), Color(0xFF0059F9)],
     begin: Alignment.topLeft,

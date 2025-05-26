@@ -106,6 +106,22 @@ class $AssetsIconsGen {
   SvgGenImage get emailLogo =>
       const SvgGenImage('assets/icons/email_logo.svg');       
 
+  /// File path: assets/icons/guide_table_view1.svg
+  SvgGenImage get GuideTableView1 =>
+      const SvgGenImage('assets/icons/guide_table_view1.svg');
+
+  /// File path: assets/icons/guide_table_view1.svg
+  SvgGenImage get GuideTableView2 =>
+      const SvgGenImage('assets/icons/guide_table_view2.svg');
+
+  /// File path: assets/icons/guide_table_view1.svg
+  SvgGenImage get GuideTableView3 =>
+      const SvgGenImage('assets/icons/guide_table_view3.svg'); 
+
+  /// File path: assets/icons/guide_table_view1.svg
+  SvgGenImage get GuideTableView4 =>
+      const SvgGenImage('assets/icons/guide_table_view4.svg');             
+
   /// List of all assets
   List<SvgGenImage> get values => [
         telegramLogo,

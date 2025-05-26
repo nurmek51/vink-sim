@@ -6,12 +6,14 @@ class CustomListTile extends StatelessWidget {
   final String imagePath;
   final String listText;
   final VoidCallback? onTap;
+  final Color containerColor;
 
   const CustomListTile({
     super.key,
     required this.imagePath,
     required this.listText,
     this.onTap,
+    required this.containerColor,
     
   });
 
@@ -23,10 +25,21 @@ class CustomListTile extends StatelessWidget {
       splashColor: Colors.transparent,
       hoverColor: Colors.transparent,
       focusColor: Colors.transparent,          
-      leading: SvgPicture.asset(
-        imagePath,
-        width: 30,
+      leading: Container(
         height: 30,
+        width: 30,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          color: containerColor,
+        ),
+        child: Center(
+          child: SvgPicture.asset(
+            imagePath,
+            width: 20,
+            height: 20,
+            fit: BoxFit.contain,
+          ),
+        ),
       ),
       trailing: Padding(
         padding: const EdgeInsets.only(right: 10.0),

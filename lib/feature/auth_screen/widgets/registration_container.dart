@@ -10,7 +10,7 @@ class RegistrationContainer extends StatelessWidget {
   final BorderSide? borderLine;
   final Color? buttonTextColor;
   final VoidCallback? onTap;
-  final bool textArrow;
+  final bool arrowForward;
 
   const RegistrationContainer({
     super.key,
@@ -21,12 +21,12 @@ class RegistrationContainer extends StatelessWidget {
     this.buttonTextColor,
     this.onTap,
     this.iconColor,
-    this.textArrow = false,
+    this.arrowForward = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    print('RegistrationContainer build: buttonText=$buttonText, textArrow=$textArrow');
+    print('$buttonText - $arrowForward');
     return GestureDetector(
       onTap: onTap,
       child: Center(
@@ -75,7 +75,7 @@ class RegistrationContainer extends StatelessWidget {
                     ),
 
 
-                    if (textArrow) ...[
+                    if (arrowForward) ...[
                       const SizedBox(width: 5),
                       Icon(
                         Icons.arrow_forward,

@@ -55,14 +55,15 @@ class WhatsappTile extends StatelessWidget {
               color: AppColors.backgroundColorLight,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           MobileNumberField(),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           RegistrationContainer(
             onTap: () => openMainFlowScreen(context),
             buttonText: AppLocalization.authAndRegistration,
             buttonTextColor: AppColors.backgroundColorLight,
             color: AppColors.accentBlue,
+            arrowForward: true,
           ),
           Spacer(),
           RegistrationContainer(
