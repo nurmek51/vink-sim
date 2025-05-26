@@ -135,7 +135,7 @@ class FrameContent extends StatelessWidget {
                 SizedBox(height: 12),
                 BenefitTile(icon: Assets.icons.card.path, title: 'Пакеты от 1\$'),
                 const SizedBox(height: 30),
-                WhatIsEsimButton(ontap: () => openInitialPage(context)),
+                WhatIsEsimButton(onTap: () => openInitialPage(context)),
                 Spacer(),
             
                 const SizedBox(height: 20),
