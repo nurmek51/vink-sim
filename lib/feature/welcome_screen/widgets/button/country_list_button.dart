@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class WhatIsEsimButton extends StatelessWidget {
-  final Function()? ontap;
-  const WhatIsEsimButton({super.key, required this.ontap});
+  final Function()? onTap;
+  const WhatIsEsimButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ontap,
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         width: 227,

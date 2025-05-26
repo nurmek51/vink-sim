@@ -1,4 +1,3 @@
-import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flutter/material.dart';
 
 class AuthButton extends StatelessWidget {
@@ -12,25 +11,22 @@ class AuthButton extends StatelessWidget {
       child: Container(
         height: 52,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF3761DF), Color(0xFF25ABFF)],
-          ),
+          color: Colors.black,
           borderRadius: BorderRadius.circular(100),
+          border: Border.all(color: Colors.white, width: 1.5),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              AppLocalization.activationButtonTitle,
+              'Начать',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 15,
+                fontSize: 16,
                 color: Colors.white,
               ),
             ),
-            const SizedBox(width: 10),
+            Icon(Icons.arrow_forward, color: Colors.white),
           ],
         ),
       ),
