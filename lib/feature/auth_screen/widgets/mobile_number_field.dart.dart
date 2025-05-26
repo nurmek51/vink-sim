@@ -32,11 +32,9 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
     final digits = rawText.replaceAll(RegExp(r'\D'), '');
     final formatted = _formatPhoneNumber(digits);
 
-    
     if (formatted == _lastFormatted) return;
     _lastFormatted = formatted;
 
-   
     int newOffset = selectionIndex + (formatted.length - rawText.length);
 
     newOffset = newOffset.clamp(0, formatted.length);
@@ -46,7 +44,7 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
       selection: TextSelection.collapsed(offset: newOffset),
     );
 
-    setState(() {}); 
+    setState(() {});
   }
 
   String _formatPhoneNumber(String digits) {
@@ -83,8 +81,8 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0x4DFFFFFF), 
-        border: Border.all(color: Color(0x66FFFFFF)), 
+        color: const Color(0x4DFFFFFF),
+        border: Border.all(color: Color(0x66FFFFFF)),
       ),
       child: Row(
         children: [
@@ -97,10 +95,7 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: '+7 (700) 000 000',
-                hintStyle: TextStyle(
-                  color: Color(0x4DFFFFFF),
-                  fontSize: 18,
-                ),
+                hintStyle: TextStyle(color: Color(0x4DFFFFFF), fontSize: 18),
               ),
               cursorColor: Colors.white,
             ),
@@ -116,11 +111,7 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
                   color: Color(0x33FFFFFF),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 18,
-                ),
+                child: const Icon(Icons.close, color: Colors.white, size: 18),
               ),
             ),
         ],

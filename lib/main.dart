@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/feature/welcome_screen/widgets/welcome_screen.dart';
+import 'package:flex_travel_sim/feature/welcome_screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
