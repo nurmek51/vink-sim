@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PinCodeField extends StatefulWidget {
-  const PinCodeField({super.key});
+  final void Function(String)? onChanged;
+  const PinCodeField({
+    super.key,
+    this.onChanged,
+  });
 
   @override
   State<PinCodeField> createState() => _PinCodeFieldState();
@@ -10,6 +14,14 @@ class PinCodeField extends StatefulWidget {
 
 class _PinCodeFieldState extends State<PinCodeField> {
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      widget.onChanged?.call(_controller.text);
+    });
+  }  
 
   @override
   Widget build(BuildContext context) {

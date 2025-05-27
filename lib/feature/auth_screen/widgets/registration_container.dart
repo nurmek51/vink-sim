@@ -26,7 +26,6 @@ class RegistrationContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('$buttonText - $arrowForward');
     return GestureDetector(
       onTap: onTap,
       child: Center(

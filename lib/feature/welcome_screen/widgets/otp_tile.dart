@@ -5,10 +5,17 @@ import 'package:flex_travel_sim/feature/welcome_screen/widgets/resend_code_timer
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
-class OtpTile extends StatelessWidget {
+class OtpTile extends StatefulWidget {
   final VoidCallback? onTap;
   final VoidCallback? appBarPop;
   const OtpTile({super.key, required this.onTap, required this.appBarPop});
+
+  @override
+  State<OtpTile> createState() => _OtpTileState();
+}
+
+class _OtpTileState extends State<OtpTile> {
+  String _pinCode = '';
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,7 @@ class OtpTile extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.backgroundColorLight),
-          onPressed: appBarPop,
+          onPressed: widget.appBarPop,
         ),
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -64,13 +71,19 @@ class OtpTile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            PinCodeField(),
+            PinCodeField(
+              onChanged: (pinCode) {
+                setState(() {
+                  _pinCode = pinCode;
+                });
+              },
+            ),
             const SizedBox(height: 20),
             RegistrationContainer(
-              onTap: () => openMainFlowScreen(context),
+              onTap: _pinCode.length == 6 ? () => openMainFlowScreen(context) : null, 
               buttonText: 'Подтвердить код',
-              buttonTextColor: AppColors.textColorDark,
-              color: const Color(0xFFB3F242),
+              buttonTextColor: _pinCode.length == 6 ? AppColors.textColorDark : Color(0x4DFFFFFF),
+              color:  _pinCode.length == 6 ? const Color(0xFFB3F242) : Color(0x4D808080),
             ),
             const SizedBox(height: 20),
             ResendCodeTimer(),
@@ -86,7 +99,7 @@ class OtpTile extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 alignment: Alignment.center,
                 child: GestureDetector(
-                  onTap: onTap,
+                  onTap: widget.onTap,
                   child: Text(
                     'Войти другим способом',
                     style: TextStyle(

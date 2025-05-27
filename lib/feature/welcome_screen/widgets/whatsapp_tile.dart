@@ -7,7 +7,7 @@ import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class WhatsappTile extends StatelessWidget {
+class WhatsappTile extends StatefulWidget {
   final VoidCallback onNext;
   final VoidCallback appBarPop;
   const WhatsappTile({
@@ -17,13 +17,20 @@ class WhatsappTile extends StatelessWidget {
   });
 
   @override
+  State<WhatsappTile> createState() => _WhatsappTileState();
+}
+
+class _WhatsappTileState extends State<WhatsappTile> {
+  String _phoneDigits = '';
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColorDark,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.backgroundColorLight),
-          onPressed: appBarPop,
+          onPressed: widget.appBarPop,
         ),
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -31,7 +38,7 @@ class WhatsappTile extends StatelessWidget {
       ),
 
       body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 8),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -74,14 +81,20 @@ class WhatsappTile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            MobileNumberField(),
+            MobileNumberField(
+              onChanged: (digits) {
+                setState(() {
+                  _phoneDigits = digits;
+                });
+              },
+            ),
             const SizedBox(height: 20),
             RegistrationContainer(
-              onTap: onNext,
+              onTap: _phoneDigits.length >= 7 ? widget.onNext : null,
               buttonText: AppLocalization.authAndRegistration,
-              buttonTextColor: AppColors.backgroundColorLight,
-              color: AppColors.accentBlue,
-              arrowForward: true,
+              buttonTextColor: _phoneDigits.length >= 7 ? AppColors.backgroundColorLight : Color(0x4DFFFFFF),
+              color: _phoneDigits.length >= 7 ? AppColors.accentBlue : Color(0x4D808080),
+              arrowForward: _phoneDigits.length >= 7 ? true : false,
             ),
             Spacer(),
             RegistrationContainer(

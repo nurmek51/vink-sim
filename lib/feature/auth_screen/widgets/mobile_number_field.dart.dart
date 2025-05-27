@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:math';
 
 class MobileNumberField extends StatefulWidget {
-  const MobileNumberField({super.key});
+  final void Function(String)? onChanged;
+  const MobileNumberField({
+    super.key,
+    this.onChanged,
+  });
 
   @override
   State<MobileNumberField> createState() => _MobileNumberFieldState();
@@ -45,6 +50,8 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
       selection: TextSelection.collapsed(offset: newOffset),
     );
 
+    widget.onChanged?.call(digits); 
+
     setState(() {});
   }
   
@@ -58,26 +65,27 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
 
     if (digits.length > 1) {
       buffer.write(' (');
-      buffer.write(digits.substring(1, digits.length.clamp(1, 4)));
+      buffer.write(digits.substring(1, min(digits.length, 4)));
     }
 
     if (digits.length >= 4) {
       buffer.write(') ');
-      buffer.write(digits.substring(4, digits.length.clamp(4, 7)));
+      buffer.write(digits.substring(4, min(digits.length, 7)));
     }
 
     if (digits.length >= 7) {
       buffer.write(' ');
-      buffer.write(digits.substring(7, digits.length.clamp(7, 9)));
+      buffer.write(digits.substring(7, min(digits.length, 9)));
     }
 
     if (digits.length >= 9) {
       buffer.write(' ');
-      buffer.write(digits.substring(9, digits.length.clamp(9, 11)));
+      buffer.write(digits.substring(9, min(digits.length, 11)));
     }
 
     return buffer.toString().replaceAll(RegExp(r'\s+$'), '');
   }
+
 
 
   @override
