@@ -77,7 +77,7 @@ class WhatsappTile extends StatelessWidget {
             MobileNumberField(),
             const SizedBox(height: 20),
             RegistrationContainer(
-              onTap: onNext, // Переход к OTP
+              onTap: onNext,
               buttonText: AppLocalization.authAndRegistration,
               buttonTextColor: AppColors.backgroundColorLight,
               color: AppColors.accentBlue,

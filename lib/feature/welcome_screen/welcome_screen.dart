@@ -34,14 +34,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     super.dispose();
   }
 
-  // Можно оставить колбэки пустыми или использовать для аналитики/состояния в будущем
-  void _onContinue() {
-    // debugPrint('Перешли к экрану OTP');
-  }
+  void _onContinue() {}
 
-  void _onBack() {
-    // debugPrint('Вернулись на экран WhatsApp');
-  }
+  void _onBack() {}
 
   @override
   Widget build(BuildContext context) {

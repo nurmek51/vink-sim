@@ -18,7 +18,7 @@ class CustomListTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       visualDensity: VisualDensity(vertical: -4),
       leading: SizedBox(
-        width: 20, // фиксированная ширина под иконку
+        width: 20,
         child: Align(
           alignment: Alignment.centerLeft,
           child: SvgPicture.asset(
