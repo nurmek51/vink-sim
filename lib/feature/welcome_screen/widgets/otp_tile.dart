@@ -20,6 +20,7 @@ class _OtpTileState extends State<OtpTile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorDark,
       appBar: AppBar(
         leading: IconButton(

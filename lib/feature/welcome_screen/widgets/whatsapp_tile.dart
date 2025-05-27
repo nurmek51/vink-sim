@@ -26,6 +26,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorDark,
       appBar: AppBar(
         leading: IconButton(
