@@ -4,50 +4,95 @@ import 'package:flex_travel_sim/feature/welcome_screen/widgets/pulsing_circle.da
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/whatsapp_tile.dart';
 import 'package:flutter/material.dart';
 
-class FrameContent extends StatelessWidget {
+class FrameContent extends StatefulWidget {
   const FrameContent({
     super.key,
-    required double circleSize,
+    required this.circleSize,
     required this.mediaHeight,
-    required Animation<double> scaleAnimation,
-    required this.showAuthOptions,
-    required this.onAuthTap,
-  }) : _circleSize = circleSize,
-       _scaleAnimation = scaleAnimation;
+    required this.scaleAnimation,
+    required this.onContinueTap,
+    required this.onBackTap,
+  });
 
-  final double _circleSize;
+  final double circleSize;
   final double mediaHeight;
-  final Animation<double> _scaleAnimation;
-  final bool showAuthOptions;
-  final VoidCallback onAuthTap;
+  final Animation<double> scaleAnimation;
+  final VoidCallback onContinueTap;
+  final VoidCallback onBackTap;
+
+  @override
+  State<FrameContent> createState() => _FrameContentState();
+}
+
+class _FrameContentState extends State<FrameContent> {
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: 0);
+  }
+
+  void _goToWhatsappPage() {
+    _pageController.animateToPage(
+      1,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+    widget.onContinueTap();
+  }
+
+  void _goToOtpPage() {
+    _pageController.animateToPage(
+      2,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _goBackToIntro() {
+    _pageController.animateToPage(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+    widget.onBackTap();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Positioned(
-          right: -_circleSize / 2,
-          top: mediaHeight / 2 - _circleSize / 2,
-          child: PulsingCircle(animation: _scaleAnimation, size: _circleSize),
+          right: -widget.circleSize / 2,
+          top: widget.mediaHeight / 2 - widget.circleSize / 2,
+          child: PulsingCircle(
+            animation: widget.scaleAnimation,
+            size: widget.circleSize,
+          ),
         ),
         Positioned(
-          left: -_circleSize / 2,
-          bottom: -_circleSize / 2,
-          child: PulsingCircle(animation: _scaleAnimation, size: _circleSize),
+          left: -widget.circleSize / 2,
+          bottom: -widget.circleSize / 2,
+          child: PulsingCircle(
+            animation: widget.scaleAnimation,
+            size: widget.circleSize,
+          ),
         ),
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-          child:
-              showAuthOptions
-                  // ? OtpTile(key: const ValueKey('otpTile'), onTap: onAuthTap)
-                  ? WhatsappTile(key: const ValueKey('whatsappTile'))
-                  : AuthIntro(
-                    onAuthTap: onAuthTap,
-                    key: const ValueKey('authIntro'),
-                  ),
+        PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            AuthIntro(onAuthTap: _goToWhatsappPage),
+            WhatsappTile(onNext: _goToOtpPage, appBarPop: _goBackToIntro),
+            OtpTile(onTap: _goToWhatsappPage, appBarPop: _goToWhatsappPage),
+          ],
         ),
       ],
     );

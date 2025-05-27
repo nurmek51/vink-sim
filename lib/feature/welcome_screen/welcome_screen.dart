@@ -13,8 +13,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late final AnimationController _controller;
   late final Animation<double> _scaleAnimation;
 
-  bool showAuthOptions = false;
-
   static const Duration _animationDuration = Duration(seconds: 3);
   static const double _circleSize = 600;
 
@@ -30,22 +28,19 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
-  void toggleAuthOptions() {
-    setState(() {
-      showAuthOptions = true;
-    });
-  }
-
-  void showOtpTile() {
-    setState(() {
-      showAuthOptions = true;
-    });
-  }
-
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  // Можно оставить колбэки пустыми или использовать для аналитики/состояния в будущем
+  void _onContinue() {
+    // debugPrint('Перешли к экрану OTP');
+  }
+
+  void _onBack() {
+    // debugPrint('Вернулись на экран WhatsApp');
   }
 
   @override
@@ -60,8 +55,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           circleSize: _circleSize,
           mediaHeight: mediaHeight,
           scaleAnimation: _scaleAnimation,
-          showAuthOptions: showAuthOptions,
-          onAuthTap: toggleAuthOptions, // ← передаём функцию
+          onContinueTap: _onContinue,
+          onBackTap: _onBack,
         ),
       ),
     );
