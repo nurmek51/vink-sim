@@ -57,6 +57,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
             children: [
               Header(
                 color: AppColors.grayBlue,
+                faqOnTap: () => openGuidePage(context),
                 avatarOnTap: () {
                   Navigator.push(
                     context,

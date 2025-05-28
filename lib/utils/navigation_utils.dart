@@ -11,20 +11,6 @@ import 'package:flex_travel_sim/feature/screen149/views/initial_page.dart';
 import 'package:flex_travel_sim/feature/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flutter/material.dart';
 
-void openTariffsAndCountriesPage(BuildContext context) {
-  Navigator.push(
-    context,
-    PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const TariffsAndCountriesScreen(),
-      transitionDuration: Duration.zero,       
-      reverseTransitionDuration: Duration.zero,   
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return child;  
-      },
-    ),
-  );
-}
-
 void openSettingsEsimPage(BuildContext context) {
   Navigator.push(
     context,
@@ -44,20 +30,6 @@ void openEsimSetupPage(BuildContext context) {
     context,
     PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => const EsimSetupPage(),
-      transitionDuration: Duration.zero,       
-      reverseTransitionDuration: Duration.zero,   
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return child;  
-      },
-    ),
-  );
-}
-
-void openGuidePage(BuildContext context) {
-  Navigator.push(
-    context,
-    PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const GuidePage(),
       transitionDuration: Duration.zero,       
       reverseTransitionDuration: Duration.zero,   
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -138,20 +110,6 @@ void openActivatedEsimScreen(BuildContext context) {
   );
 }
 
-void openMyAccountScreen(BuildContext context) {
-  Navigator.push(
-    context,
-    PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const MyAccountScreen(),
-      transitionDuration: Duration.zero,       
-      reverseTransitionDuration: Duration.zero,   
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return child;  
-      },
-    ),
-  );
-}
-
 void openPurchaseScreen(BuildContext context) {
   Navigator.push(
     context,
@@ -161,6 +119,78 @@ void openPurchaseScreen(BuildContext context) {
       reverseTransitionDuration: Duration.zero,   
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return child;  
+      },
+    ),
+  );
+}
+
+void openMyAccountScreen(BuildContext context) {
+  Navigator.push(
+    context,
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 350),
+      reverseTransitionDuration: const Duration(milliseconds: 350),
+      pageBuilder: (context, animation, secondaryAnimation) => const MyAccountScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    ),
+  );
+}
+
+void openGuidePage(BuildContext context) {
+  Navigator.push(
+    context,
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 350),
+      reverseTransitionDuration: const Duration(milliseconds: 350),
+      pageBuilder: (context, animation, secondaryAnimation) => const GuidePage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    ),
+  );
+}
+
+void openTariffsAndCountriesPage(BuildContext context) {
+  Navigator.push(
+    context,
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 350),
+      reverseTransitionDuration: const Duration(milliseconds: 350),
+      pageBuilder: (context, animation, secondaryAnimation) => const TariffsAndCountriesScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
       },
     ),
   );
