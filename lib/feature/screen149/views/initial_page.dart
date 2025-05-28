@@ -76,7 +76,7 @@ class _InitialPageState extends State<InitialPage>
                           ),
                           Spacer(),
                           GestureDetector(
-                            onTap:() => openPurchaseScreen(context),
+                            onTap:() => openTariffsAndCountriesPage(context),
                             child: SvgPicture.asset(
                               'assets/icons/figma149/money_icon.svg',
                               width: 28,
