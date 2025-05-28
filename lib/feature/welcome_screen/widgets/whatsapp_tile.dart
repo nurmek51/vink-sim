@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class WhatsappTile extends StatefulWidget {
-  final VoidCallback onNext;
+  final ValueChanged<String> onNext;
   final VoidCallback appBarPop;
   const WhatsappTile({
     super.key,
@@ -22,6 +22,7 @@ class WhatsappTile extends StatefulWidget {
 
 class _WhatsappTileState extends State<WhatsappTile> {
   String _phoneDigits = '';
+  String _formatted = '';
 
   @override
   Widget build(BuildContext context) {
@@ -83,15 +84,16 @@ class _WhatsappTileState extends State<WhatsappTile> {
             ),
             const SizedBox(height: 20),
             MobileNumberField(
-              onChanged: (digits) {
+              onChanged: (digits, formatted) {
                 setState(() {
                   _phoneDigits = digits;
+                  _formatted = formatted;
                 });
               },
             ),
             const SizedBox(height: 20),
             RegistrationContainer(
-              onTap: _phoneDigits.length >= 7 ? widget.onNext : null,
+              onTap: _phoneDigits.length >= 7 ? () => widget.onNext(_formatted) : null,
               buttonText: AppLocalization.authAndRegistration,
               buttonTextColor: _phoneDigits.length >= 7 ? AppColors.backgroundColorLight : Color(0x4DFFFFFF),
               color: _phoneDigits.length >= 7 ? AppColors.accentBlue : Color(0x4D808080),

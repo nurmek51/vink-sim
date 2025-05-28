@@ -75,16 +75,22 @@ class _InitialPageState extends State<InitialPage>
                             height: 25.06,
                           ),
                           Spacer(),
-                          SvgPicture.asset(
-                            'assets/icons/figma149/money_icon.svg',
-                            width: 28,
-                            height: 30,
+                          GestureDetector(
+                            onTap:() => openTariffsAndCountriesPage(context),
+                            child: SvgPicture.asset(
+                              'assets/icons/figma149/money_icon.svg',
+                              width: 28,
+                              height: 30,
+                            ),
                           ),
                           SizedBox(width: 12),
-                          SvgPicture.asset(
-                            'assets/icons/figma149/profile_icon.svg',
-                            width: 28,
-                            height: 30,
+                          GestureDetector(
+                            onTap: () => openMyAccountScreen(context),
+                            child: SvgPicture.asset(
+                              'assets/icons/figma149/profile_icon.svg',
+                              width: 28,
+                              height: 30,
+                            ),
                           ),                                
                                   
                         ],
@@ -124,7 +130,7 @@ class _InitialPageState extends State<InitialPage>
                         title: AppLocalization.highSpeedLowCost,
                       ),                      
                                   
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                     ],
                   ),
                 ),

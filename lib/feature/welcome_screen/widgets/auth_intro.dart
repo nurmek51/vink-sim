@@ -25,8 +25,8 @@ class AuthIntro extends StatelessWidget {
             const SizedBox(height: 45),
             Header(
               color: AppColors.textColorLight,
+              profileIconVisibility: false,
               faqOnTap: () => openGuidePage(context),
-              avatarOnTap: () => openMyAccountScreen(context),
             ),
             const SizedBox(height: 30),
             Text(

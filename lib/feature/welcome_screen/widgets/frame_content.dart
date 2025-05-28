@@ -26,6 +26,7 @@ class FrameContent extends StatefulWidget {
 
 class _FrameContentState extends State<FrameContent> {
   late final PageController _pageController;
+  String _phoneForOtp = ''; 
 
   @override
   void initState() {
@@ -42,7 +43,8 @@ class _FrameContentState extends State<FrameContent> {
     widget.onContinueTap();
   }
 
-  void _goToOtpPage() {
+  void _goToOtpPage(String formattedPhone) {
+    setState(() => _phoneForOtp = formattedPhone);
     _pageController.animateToPage(
       2,
       duration: const Duration(milliseconds: 500),
@@ -91,7 +93,7 @@ class _FrameContentState extends State<FrameContent> {
           children: [
             AuthIntro(onAuthTap: _goToWhatsappPage),
             WhatsappTile(onNext: _goToOtpPage, appBarPop: _goBackToIntro),
-            OtpTile(onTap: _goToWhatsappPage, appBarPop: _goToWhatsappPage),
+            OtpTile(phoneNumber: _phoneForOtp, onTap: _goToWhatsappPage, appBarPop: _goToWhatsappPage),
           ],
         ),
       ],
