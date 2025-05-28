@@ -6,9 +6,10 @@ import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class OtpTile extends StatefulWidget {
+  final String phoneNumber;
   final VoidCallback? onTap;
   final VoidCallback? appBarPop;
-  const OtpTile({super.key, required this.onTap, required this.appBarPop});
+  const OtpTile({super.key, required this.onTap, required this.appBarPop, required this.phoneNumber});
 
   @override
   State<OtpTile> createState() => _OtpTileState();
@@ -53,8 +54,8 @@ class _OtpTileState extends State<OtpTile> {
                 color: AppColors.backgroundColorLight,
               ),
             ),
-            const Text(
-              '+7 (700) 000 000',
+            Text(
+              widget.phoneNumber,
               style: TextStyle(
                 fontSize: 14,
                 color: AppColors.backgroundColorLight,

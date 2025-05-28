@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 
 class MobileNumberField extends StatefulWidget {
-  final void Function(String)? onChanged;
+  final void Function(String digits, String formatted)? onChanged;
   const MobileNumberField({
     super.key,
     this.onChanged,
@@ -50,7 +50,7 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
       selection: TextSelection.collapsed(offset: newOffset),
     );
 
-    widget.onChanged?.call(digits); 
+    widget.onChanged?.call(digits, formatted); 
 
     setState(() {});
   }
