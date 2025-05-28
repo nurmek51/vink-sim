@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class Header extends StatelessWidget {
   final VoidCallback? avatarOnTap;
+  final bool profileIconVisibility;
   final VoidCallback? faqOnTap;
   final Color color;
 
@@ -11,7 +12,9 @@ class Header extends StatelessWidget {
     super.key,
     required this.color,
     this.avatarOnTap,
-    this.faqOnTap
+    this.faqOnTap,
+    this.profileIconVisibility = true,
+    
   });
 
   @override
@@ -27,12 +30,15 @@ class Header extends StatelessWidget {
             color: color,
           ),
         ),
-        SizedBox(width: 18),
-        GestureDetector(
-          onTap: avatarOnTap,
-          child: SvgPicture.asset(
-            Assets.icons.avatarIcon.path, 
-            color: color,
+        profileIconVisibility ? SizedBox(width: 18) : SizedBox.shrink(),
+        Visibility(
+          visible: profileIconVisibility,
+          child: GestureDetector(
+            onTap: avatarOnTap,
+            child: SvgPicture.asset(
+              Assets.icons.avatarIcon.path, 
+              color: color,
+            ),
           ),
         ),
       ],

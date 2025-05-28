@@ -1,5 +1,5 @@
 class AppLocalization {
-  static const frameTitle = 'Одна eSim для всех поездок';
+  static const frameTitle = 'Одна eSim для всех\nпоездок';
   static const storageHeaderTitle = 'Flex Travel Sim';
   static const frameGlobusTitle = 'Одна поездка для всех направлении';
   static const frameCheckTitle = 'Оплата только за потраченное';
