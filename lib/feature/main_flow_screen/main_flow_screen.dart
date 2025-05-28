@@ -58,14 +58,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
               Header(
                 color: AppColors.grayBlue,
                 faqOnTap: () => openGuidePage(context),
-                avatarOnTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyAccountScreen(),
-                    ),
-                  );
-                },
+                avatarOnTap: () => openMyAccountScreen(context),
               ),
               const SizedBox(height: 60),
               PercentageWidget(
