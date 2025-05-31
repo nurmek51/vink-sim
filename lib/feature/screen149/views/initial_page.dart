@@ -16,7 +16,7 @@ class InitialPage extends StatefulWidget {
   State<InitialPage> createState() => _InitialPageState();
 }
 
-class _InitialPageState extends State<InitialPage> 
+class _InitialPageState extends State<InitialPage>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _scaleAnimation;
@@ -40,8 +40,8 @@ class _InitialPageState extends State<InitialPage>
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }      
-      
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +50,8 @@ class _InitialPageState extends State<InitialPage>
         children: [
           Positioned(
             right: -_circleSize / 2,
-            top: MediaQuery.of(context).size.height * 0.25 / 2 - _circleSize / 2,
+            top:
+                MediaQuery.of(context).size.height * 0.25 / 2 - _circleSize / 2,
             child: PulsingCircle(animation: _scaleAnimation, size: _circleSize),
           ),
           Positioned(
@@ -76,7 +77,7 @@ class _InitialPageState extends State<InitialPage>
                           ),
                           Spacer(),
                           GestureDetector(
-                            onTap:() => openTariffsAndCountriesPage(context),
+                            onTap: () => openTariffsAndCountriesPage(context),
                             child: SvgPicture.asset(
                               'assets/icons/figma149/money_icon.svg',
                               width: 28,
@@ -91,13 +92,12 @@ class _InitialPageState extends State<InitialPage>
                               width: 28,
                               height: 30,
                             ),
-                          ),                                
-                                  
+                          ),
                         ],
                       ),
-                                  
+
                       const SizedBox(height: 20),
-                                  
+
                       Align(
                         alignment: Alignment.topLeft,
                         child: HelveticaneueFont(
@@ -107,9 +107,9 @@ class _InitialPageState extends State<InitialPage>
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                                  
+
                       const SizedBox(height: 30),
-                      
+
                       BenefitTile(
                         icon: 'assets/icons/figma149/column1.svg',
                         title: AppLocalization.countriesInOneEsim,
@@ -128,14 +128,14 @@ class _InitialPageState extends State<InitialPage>
                       BenefitTile(
                         icon: 'assets/icons/figma149/column4.svg',
                         title: AppLocalization.highSpeedLowCost,
-                      ),                      
-                                  
+                      ),
+
                       const SizedBox(height: 15),
                     ],
                   ),
                 ),
               ),
-          
+
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -182,10 +182,9 @@ class _InitialPageState extends State<InitialPage>
                                           child: BottomSheetContent(),
                                         ),
                                       ),
-                                );        
+                                );
                               },
                             ),
-                                             
                           ],
                         ),
                         SizedBox(height: 20),
@@ -193,7 +192,7 @@ class _InitialPageState extends State<InitialPage>
                           children: [
                             ExpandedContainer(
                               title: AppLocalization.howDoesItWork,
-                              icon:'assets/icons/figma149/blue_icon33.svg',
+                              icon: 'assets/icons/figma149/blue_icon33.svg',
                               onTap: () => openGuidePage(context),
                             ),
                             const SizedBox(width: 16),
@@ -202,7 +201,6 @@ class _InitialPageState extends State<InitialPage>
                               icon: 'assets/icons/figma149/blue_icon44.svg',
                               onTap: () => openTariffsAndCountriesPage(context),
                             ),
-                          
                           ],
                         ),
 
@@ -226,15 +224,12 @@ class _InitialPageState extends State<InitialPage>
                               ),
                             ),
                           ),
-                        ), 
-                            
-                        
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-              
             ],
           ),
         ],

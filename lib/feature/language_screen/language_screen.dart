@@ -8,7 +8,6 @@ class LanguageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const titleStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
-    const horizontalPadding = EdgeInsets.symmetric(horizontal: 20);
 
     return Scaffold(
       backgroundColor: Colors.white,
