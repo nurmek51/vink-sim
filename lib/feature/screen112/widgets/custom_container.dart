@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 class CustomContainer extends StatelessWidget {
   final String text;
-  final double height;
-  final double widgth;
+  final double? height;
+  final double? widgth;
   final bool isSelected;
   final VoidCallback onTap;
 
   const CustomContainer({
     super.key,
     required this.text,
-    required this.height,
-    required this.widgth, 
+    this.height,
+    this.widgth, 
     required this.isSelected,
     required this.onTap,
   });
@@ -28,12 +28,18 @@ class CustomContainer extends StatelessWidget {
           color: isSelected ? Color(0xFF363C45) : Color(0xFFE7EFF7),
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Center(
-          child: HelveticaneueFont(
-            text: text,
-            fontSize: 15,
-            color: isSelected ? Colors.white : Color(0xFF363C45),
-            height: 1.3,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 8,
+          ),
+          child: Center(
+            child: HelveticaneueFont(
+              text: text,
+              fontSize: 15,
+              color: isSelected ? Colors.white : Color(0xFF363C45),
+              height: 1.3,
+            ),
           ),
         ),
       ),

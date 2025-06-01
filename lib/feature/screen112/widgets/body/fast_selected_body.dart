@@ -3,8 +3,8 @@ import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/body_container.dart';
 import 'package:flutter/material.dart';
 
-class SetupBody extends StatelessWidget {
-  const SetupBody({super.key});
+class FastSelectedBody extends StatelessWidget {
+  const FastSelectedBody({super.key});
 
   @override
   Widget build(BuildContext context) {
