@@ -4,6 +4,7 @@ import 'package:flex_travel_sim/feature/my_account_screen/widgets/account_widget
 import 'package:flex_travel_sim/feature/purchase_history_screen.dart/purchase_history_screen.dart';
 import 'package:flex_travel_sim/feature/traffic_usage_screen/traffic_usage_screen.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountScreen extends StatelessWidget {
@@ -28,7 +29,7 @@ class MyAccountScreen extends StatelessWidget {
               AccountWidget(
                 title: AppLocalization.accountSettings,
                 icon: Assets.icons.accountSettings.path,
-                onTap: () {},
+                onTap: () => openSettingsScreen(context),
               ),
               const SizedBox(height: 12),
               AccountWidget(
