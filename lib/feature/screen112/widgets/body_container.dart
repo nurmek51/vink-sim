@@ -2,7 +2,8 @@ import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flutter/material.dart';
 
 class BodyContainer extends StatelessWidget {
-  final String stepNum;
+  final String? stepNum;
+  final String? stepTitle;
   final String description;
   final double? height;
   final double? widgth;
@@ -10,7 +11,8 @@ class BodyContainer extends StatelessWidget {
 
   const BodyContainer({
     super.key,
-    required this.stepNum,
+    this.stepNum,
+    this.stepTitle,
     this.widgth,
     this.height,
     required this.description,
@@ -19,6 +21,7 @@ class BodyContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String headerText = stepTitle ?? 'Шаг $stepNum';
     return Container(
       width: widgth,
       height: height,
@@ -35,12 +38,12 @@ class BodyContainer extends StatelessWidget {
               height: 26,
               width: 61,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(8),
                 color: Color(0xFF363C45),
               ),
               child: Center(
                 child: HelveticaneueFont(
-                  text: 'Шаг $stepNum',
+                  text: headerText,
                   fontSize: 14,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -49,7 +52,8 @@ class BodyContainer extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            Center(
+            Align(
+              alignment: Alignment.topLeft,
               child: HelveticaneueFont(
                 text: description,
                 fontSize: 16,

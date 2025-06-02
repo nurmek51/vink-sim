@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: Center(
         child: Text(
-          'Coming soon',
+          AppLocalization.comingSoon,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,

@@ -1,6 +1,7 @@
 import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/feature/screen112/widgets/body/another_device_selected_body.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/bottom_setup_container.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/lazy_row.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/body/fast_selected_body.dart';
@@ -83,7 +84,14 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                       if (selectedIndex == 0) ...[
                         SizedBox(height: 25),
                         FastSelectedBody(),
-                      ] else ...[
+                      ]
+                      
+                      else if (selectedIndex == 3) ...[
+                        SizedBox(height: 25),
+                        AnotherDeviceSelectedBody(),
+                      ]                      
+
+                       else ...[
                         Container(
                           height: 300,
                           alignment: Alignment.center,
