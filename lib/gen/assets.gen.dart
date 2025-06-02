@@ -120,7 +120,11 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/guide_table_view1.svg
   SvgGenImage get GuideTableView4 =>
-      const SvgGenImage('assets/icons/guide_table_view4.svg');             
+      const SvgGenImage('assets/icons/guide_table_view4.svg'); 
+
+  /// File path: assets/icons/attention_circle.svg
+  SvgGenImage get attentionCircle =>
+      const SvgGenImage('assets/icons/attention_circle.svg');                     
 
   /// List of all assets
   List<SvgGenImage> get values => [

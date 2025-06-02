@@ -8,6 +8,7 @@ import 'package:flex_travel_sim/feature/screen142/views/tariffs_and_countries_pa
 import 'package:flex_travel_sim/feature/screen143/views/setting_esim_page.dart';
 import 'package:flex_travel_sim/feature/screen145/views/activated_esim_screen.dart';
 import 'package:flex_travel_sim/feature/screen149/views/initial_page.dart';
+import 'package:flex_travel_sim/feature/settings_screen/views/settings_screen.dart';
 import 'package:flex_travel_sim/feature/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -179,6 +180,30 @@ void openTariffsAndCountriesPage(BuildContext context) {
       transitionDuration: const Duration(milliseconds: 350),
       reverseTransitionDuration: const Duration(milliseconds: 350),
       pageBuilder: (context, animation, secondaryAnimation) => const TariffsAndCountriesScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    ),
+  );
+}
+
+void openSettingsScreen(BuildContext context) {
+  Navigator.push(
+    context,
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 350),
+      reverseTransitionDuration: const Duration(milliseconds: 350),
+      pageBuilder: (context, animation, secondaryAnimation) => const SettingsScreen(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(1.0, 0.0);
         const end = Offset.zero;
