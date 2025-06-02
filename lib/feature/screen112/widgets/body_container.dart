@@ -35,20 +35,19 @@ class BodyContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 26,
-              width: 61,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 4,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Color(0xFF363C45),
               ),
-              child: Center(
-                child: HelveticaneueFont(
-                  text: headerText,
-                  fontSize: 14,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                
+              child: HelveticaneueFont(
+                text: headerText,
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 10),

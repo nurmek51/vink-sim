@@ -41,7 +41,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 HelveticaneueFont(
-                  text: AppLocalization.anotherDeviceDescrtionWarning,
+                  text: AppLocalization.anotherDeviceDescriptionWarning,
                   fontSize: 16,
                   color: AppColors.textColorDark,
                   textAlign: TextAlign.center,
@@ -56,7 +56,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
 
         BodyContainer(
           stepNum: '1', 
-          description: AppLocalization.anotherDeviceDescrtion1,
+          description: AppLocalization.anotherDeviceDescription1,
             child: Center(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -118,7 +118,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
     
         BodyContainer(
           stepNum: '2', 
-          description: AppLocalization.anotherDeviceDescrtion2,
+          description: AppLocalization.anotherDeviceDescription2,
             child: Center(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -147,7 +147,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
     
         BodyContainer(
           stepNum: '3', 
-          description: AppLocalization.anotherDeviceDescrtion3,
+          description: AppLocalization.anotherDeviceDescription3,
             child: Center(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -227,7 +227,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
     
         BodyContainer(
           stepNum: '5', 
-          description: AppLocalization.anotherDeviceDescrtion5,
+          description: AppLocalization.anotherDeviceDescription5,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -276,7 +276,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
 
         BodyContainer(
           stepTitle: AppLocalization.important, 
-          description: AppLocalization.anotherDeviceDescrtionImportant,
+          description: AppLocalization.anotherDeviceDescriptionImportant,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
