@@ -179,7 +179,7 @@ class ManualSelectedBody extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Image.asset(
-                          'assets/icons/figma112/another_step3_1.jpg',
+                          'assets/icons/figma112/another_step3_2.jpg',
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,

@@ -45,6 +45,8 @@ class AppLocalization {
   static const howDoesItWork = 'Как это работает?';
   static const esimDescription1 = '''eSIM — это встроенная SIM-карта, которую не нужно вставлять вручную. Просто выберите тариф в приложении, следуйте инструкции и активируйте eSIM через настройки телефона.''';
   static const esimDescription2 = '''После активации вы сразу получите доступ к мобильной сети. Чтобы пользоваться интернетом за границей — достаточно пополнить баланс, и связь будет работать в большинстве стран без дополнительных настроек.''';
+  static const qrCodeDescription = 'Отправьте QR-код на другое устройство';
+  static const sendQR = 'Отправить';
   static const anotherDeviceDescriptionWarning = 'Описанные ниже действия нужно\nпроизводить на том устройстве, на\nкотором вы хотите активировать план\nFlex eSIM';
   static const anotherDeviceDescription1 = 'На другом устройстве откройте Настройки > Сотовая связь > Добавить eSIM > По QR-коду';
   static const anotherDeviceDescription2 = 'Отсканируйте QR-код другим устройством';
@@ -75,5 +77,7 @@ class AppLocalization {
   static const important = 'ВАЖНО';
   static const attention = 'Внимание!';
   static const nowYouNeedToInstallEsim = 'Теперь вам нужно установить eSIM \nна устройство.';
+  static const youCanActivateEsimOnlyOnce = 'Вы можете активировать\neSIM только один раз на\nодном устройстве.';
+  static const showQR = 'Показать QR';
   
 }
