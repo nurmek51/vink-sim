@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/feature/auth_screen/widgets/auth_intro_bottomsheet_content.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/button/auth_button.dart';
 import 'package:flex_travel_sim/feature/welcome_screen/widgets/button/country_list_button.dart';
@@ -55,7 +56,34 @@ class AuthIntro extends StatelessWidget {
             const SizedBox(height: 12),
             BenefitTile(icon: Assets.icons.card.path, title: 'Пакеты от 1\$'),
             const SizedBox(height: 30),
-            WhatIsEsimButton(onTap: () => openInitialPage(context)),
+            WhatIsEsimButton(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) {
+                    return DraggableScrollableSheet(
+                      initialChildSize: 0.5,
+                      minChildSize: 0.3,
+                      maxChildSize: 0.5,
+                      expand: false,
+                      builder: (context, scrollController) {
+                        return Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(16),
+                            ),
+                          ),
+                          child: const AuthIntroBottomsheetContent(),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
             const Spacer(),
             AuthButton(onTap: onAuthTap),
           ],

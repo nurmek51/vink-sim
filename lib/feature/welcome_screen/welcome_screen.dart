@@ -45,14 +45,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
-      body: SafeArea(
-        child: FrameContent(
-          circleSize: _circleSize,
-          mediaHeight: mediaHeight,
-          scaleAnimation: _scaleAnimation,
-          onContinueTap: _onContinue,
-          onBackTap: _onBack,
-        ),
+      body: FrameContent(
+        circleSize: _circleSize,
+        mediaHeight: mediaHeight,
+        scaleAnimation: _scaleAnimation,
+        onContinueTap: _onContinue,
+        onBackTap: _onBack,
       ),
     );
   }
