@@ -124,7 +124,11 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/attention_circle.svg
   SvgGenImage get attentionCircle =>
-      const SvgGenImage('assets/icons/attention_circle.svg');                     
+      const SvgGenImage('assets/icons/attention_circle.svg');  
+
+  /// File path: assets/icons/info_qr_circle.svg
+  SvgGenImage get infoQrCircle =>
+      const SvgGenImage('assets/icons/info_qr_circle.svg');                           
 
   /// List of all assets
   List<SvgGenImage> get values => [
@@ -153,6 +157,12 @@ class $AssetsIconsGen {
         appleLogo,
         googleLogo,
         emailLogo,
+        GuideTableView1,
+        GuideTableView2,
+        GuideTableView3,
+        GuideTableView4,
+        attentionCircle,
+        infoQrCircle
       ];
 }
 

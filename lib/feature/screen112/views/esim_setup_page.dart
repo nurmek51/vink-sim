@@ -3,6 +3,7 @@ import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/body/another_device_selected_body.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/body/manual_selected_body.dart';
+import 'package:flex_travel_sim/feature/screen112/widgets/body/qr_code_selected_body.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/bottom_setup_container.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/lazy_row.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/body/fast_selected_body.dart';
@@ -87,6 +88,11 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                         FastSelectedBody(),
                       ]
 
+                      else if (selectedIndex == 1) ...[
+                        SizedBox(height: 25),
+                        QrCodeSelectedBody(),
+                      ]                       
+
                       else if (selectedIndex == 2) ...[
                         SizedBox(height: 25),
                         ManualSelectedBody(),
@@ -97,19 +103,6 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                         AnotherDeviceSelectedBody(),
                       ]                      
 
-                       else ...[
-                        Container(
-                          height: 300,
-                          alignment: Alignment.center,
-                          child: Text(
-                            AppLocalization.comingSoon,
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                 ),

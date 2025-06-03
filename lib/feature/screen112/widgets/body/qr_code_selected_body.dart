@@ -1,61 +1,144 @@
+import 'dart:ui';
+
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/feature/screen112/widgets/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class AnotherDeviceSelectedBody extends StatelessWidget {
-  const AnotherDeviceSelectedBody({super.key});
+class QrCodeSelectedBody extends StatefulWidget {
+  const QrCodeSelectedBody({super.key});
+
+  @override
+  State<QrCodeSelectedBody> createState() => _QrCodeSelectedBodyState();
+}
+
+class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
+  bool _isQrVisible = false;
+  
+  void _toggleQrVisibility() {
+    if (!_isQrVisible) {
+      setState(() {
+        _isQrVisible = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        Container(
-          height: 251,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Color(0xFFE7EFF7),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 32.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 52,
-                  width: 45,
-                  child: SvgPicture.asset(
-                    Assets.icons.attentionCircle.path,
-                  ),
-                ),
-                SizedBox(height: 10),
-                HelveticaneueFont(
-                  text: AppLocalization.attention,
-                  fontSize: 18,
-                  color: AppColors.textColorDark,
-                  fontWeight: FontWeight.bold,
-                ),
-                SizedBox(height: 10),
-                HelveticaneueFont(
-                  text: AppLocalization.anotherDeviceDescriptionWarning,
-                  fontSize: 16,
-                  color: AppColors.textColorDark,
-                  textAlign: TextAlign.center,
-                ),                
+      children: [  
+        BodyContainer(
+          stepNum: '1',
+          description: AppLocalization.qrCodeDescription,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Column(
+                children: [
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Stack(
+                        children: [
+                          Image.asset(
+                            'assets/icons/figma112/another_step_2.jpg',
+                            width: 228,
+                            height: 228,
+                            fit: BoxFit.cover,
+                            filterQuality: FilterQuality.high,
+                          ),
+                          Positioned.fill(
+                            child: AnimatedOpacity(
+                              opacity: _isQrVisible ? 0.0 : 1.0,
+                              duration: const Duration(milliseconds: 500),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                                child: Container(
+                                  color: Color.fromRGBO(255, 255, 255, 0.8),
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
 
-              ],
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 7,
+                                          ),
+                                          child: SizedBox(
+                                            height: 43,
+                                            width: 43,
+                                            child: SvgPicture.asset(
+                                              Assets.icons.infoQrCircle.path,
+                                            ),
+                                          ),
+                                        ),
+                                
+                                        HelveticaneueFont(
+                                          text: AppLocalization.attention,
+                                          fontSize: 16,
+                                          color: AppColors.textColorDark,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                
+                                        const SizedBox(height: 7),
+                                
+                                        HelveticaneueFont(
+                                          text: AppLocalization.youCanActivateEsimOnlyOnce,
+                                          fontSize: 16,
+                                          color: AppColors.textColorDark,
+                                          textAlign: TextAlign.center,
+                                          
+                                        ),
+                                
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  GestureDetector(
+                    onTap: _toggleQrVisibility,
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        gradient:
+                            _isQrVisible
+                                ? AppColors.containerGradientPrimary
+                                : null,
+                        color: !_isQrVisible ? AppColors.grayBlue : null,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        _isQrVisible ? AppLocalization.sendQR : AppLocalization.showQR,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
 
+    
         SizedBox(height: 15),
-
+    
         BodyContainer(
-          stepNum: '1', 
+          stepNum: '2', 
           description: AppLocalization.anotherDeviceDescription1,
             child: Center(
               child: SingleChildScrollView(
@@ -107,35 +190,6 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                           filterQuality: FilterQuality.high,
                         ),
                       ),                                                              
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        ),
-    
-        SizedBox(height: 15),
-    
-        BodyContainer(
-          stepNum: '2', 
-          description: AppLocalization.anotherDeviceDescription2,
-            child: Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/icons/figma112/another_step_2.jpg',
-                          width: 228,
-                          height: 228,
-                          fit: BoxFit.cover,
-                          filterQuality: FilterQuality.high,
-                        ),
-                      ),                    
                     ],
                   ),
                 ),
@@ -297,7 +351,5 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
       ],
     );
   }
-
-
-
 }
+
