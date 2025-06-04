@@ -24,14 +24,46 @@ class FrameContent extends StatefulWidget {
   State<FrameContent> createState() => _FrameContentState();
 }
 
-class _FrameContentState extends State<FrameContent> {
+class _FrameContentState extends State<FrameContent>
+    with TickerProviderStateMixin {
   late final PageController _pageController;
-  String _phoneForOtp = ''; 
+  late final AnimationController _moveController;
+  late final Animation<Offset> _verticalAnimation;
+  late final Animation<Offset> _horizontalAnimation;
+
+  String _phoneForOtp = '';
 
   @override
   void initState() {
     super.initState();
+
     _pageController = PageController(initialPage: 0);
+
+    _moveController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(reverse: true);
+
+    _verticalAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(0, -20),
+    ).animate(
+      CurvedAnimation(parent: _moveController, curve: Curves.easeInOut),
+    );
+
+    _horizontalAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(20, 0),
+    ).animate(
+      CurvedAnimation(parent: _moveController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _moveController.dispose();
+    super.dispose();
   }
 
   void _goToWhatsappPage() {
@@ -62,38 +94,51 @@ class _FrameContentState extends State<FrameContent> {
   }
 
   @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned(
-          right: -widget.circleSize / 2,
-          top: widget.mediaHeight / 2 - widget.circleSize / 2,
-          child: PulsingCircle(
-            animation: widget.scaleAnimation,
-            size: widget.circleSize,
-          ),
+        AnimatedBuilder(
+          animation: _verticalAnimation,
+          builder: (_, __) {
+            return Positioned(
+              right: -widget.circleSize / 2,
+              top:
+                  widget.mediaHeight / 2 -
+                  widget.circleSize / 2 +
+                  _verticalAnimation.value.dy,
+              child: PulsingCircle(
+                animation: widget.scaleAnimation,
+                size: widget.circleSize,
+              ),
+            );
+          },
         ),
-        Positioned(
-          left: -widget.circleSize / 2,
-          bottom: -widget.circleSize / 2,
-          child: PulsingCircle(
-            animation: widget.scaleAnimation,
-            size: widget.circleSize,
-          ),
+
+        AnimatedBuilder(
+          animation: _horizontalAnimation,
+          builder: (_, __) {
+            return Positioned(
+              left: -widget.circleSize / 2 + _horizontalAnimation.value.dx,
+              bottom: -widget.circleSize / 2,
+              child: PulsingCircle(
+                animation: widget.scaleAnimation,
+                size: widget.circleSize,
+              ),
+            );
+          },
         ),
+
         PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
             AuthIntro(onAuthTap: _goToWhatsappPage),
             WhatsappTile(onNext: _goToOtpPage, appBarPop: _goBackToIntro),
-            OtpTile(phoneNumber: _phoneForOtp, onTap: _goToWhatsappPage, appBarPop: _goToWhatsappPage),
+            OtpTile(
+              phoneNumber: _phoneForOtp,
+              onTap: _goToWhatsappPage,
+              appBarPop: _goToWhatsappPage,
+            ),
           ],
         ),
       ],
