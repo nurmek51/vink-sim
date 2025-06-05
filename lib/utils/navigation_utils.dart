@@ -1,15 +1,15 @@
-import 'package:flex_travel_sim/feature/auth_screen/auth_screen.dart';
-import 'package:flex_travel_sim/feature/main_flow_screen/main_flow_screen.dart';
-import 'package:flex_travel_sim/feature/my_account_screen/my_account_screen.dart';
-import 'package:flex_travel_sim/feature/purchase_history_screen.dart/purchase_history_screen.dart';
-import 'package:flex_travel_sim/feature/screen112/views/esim_setup_page.dart';
-import 'package:flex_travel_sim/feature/screen141/views/guide_page.dart';
-import 'package:flex_travel_sim/feature/screen142/views/tariffs_and_countries_page.dart';
-import 'package:flex_travel_sim/feature/screen143/views/setting_esim_page.dart';
-import 'package:flex_travel_sim/feature/screen145/views/activated_esim_screen.dart';
-import 'package:flex_travel_sim/feature/screen149/views/initial_page.dart';
-import 'package:flex_travel_sim/feature/settings_screen/views/settings_screen.dart';
-import 'package:flex_travel_sim/feature/top_up_balance_screen/top_up_balance_screen.dart';
+import 'package:flex_travel_sim/features/auth_screen/auth_screen.dart';
+import 'package:flex_travel_sim/features/main_flow_screen/main_flow_screen.dart';
+import 'package:flex_travel_sim/features/my_account_screen/my_account_screen.dart';
+import 'package:flex_travel_sim/features/purchase_history_screen.dart/purchase_history_screen.dart';
+import 'package:flex_travel_sim/features/screen112/views/esim_setup_page.dart';
+import 'package:flex_travel_sim/features/screen141/views/guide_page.dart';
+import 'package:flex_travel_sim/features/screen142/views/tariffs_and_countries_page.dart';
+import 'package:flex_travel_sim/features/screen143/views/setting_esim_page.dart';
+import 'package:flex_travel_sim/features/screen145/views/activated_esim_screen.dart';
+import 'package:flex_travel_sim/features/screen149/views/initial_page.dart';
+import 'package:flex_travel_sim/features/settings_screen/views/settings_screen.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flutter/material.dart';
 
 void openSettingsEsimPage(BuildContext context) {
