@@ -2,6 +2,7 @@ import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/features/screen142/widgets/country_list.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class TariffsAndCountriesScreen extends StatelessWidget {
@@ -21,7 +22,7 @@ class TariffsAndCountriesScreen extends StatelessWidget {
               child: Row(
                 children: [
                   GoBackArrow(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => NavigationService.pop(context),
                     width: 10,
                     height: 14,
                   ),

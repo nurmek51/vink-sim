@@ -129,14 +129,7 @@ class _TopUpBalanceScreenState extends State<TopUpBalanceScreen> {
         const TariffScrollView(),
         const SizedBox(height: 20),
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const TariffsAndCountriesScreen(),
-              ),
-            );
-          },
+          onTap: () => openTariffsAndCountriesPage(context),
           child: const Text(
             'Все страны и тарифы',
             style: TextStyle(

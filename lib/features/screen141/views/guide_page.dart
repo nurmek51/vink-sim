@@ -23,7 +23,7 @@ class GuidePage extends StatelessWidget {
               GoBackArrow(
                 width: 15,
                 height: 19,
-                onTap: () => Navigator.pop(context),
+                onTap: () => NavigationService.pop(context),
               ),
         
               SizedBox(height: 20),

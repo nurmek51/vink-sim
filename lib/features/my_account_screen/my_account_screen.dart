@@ -1,8 +1,5 @@
 import 'package:flex_travel_sim/constants/lozalization.dart';
-import 'package:flex_travel_sim/features/language_screen/language_screen.dart';
 import 'package:flex_travel_sim/features/my_account_screen/widgets/account_widget.dart';
-import 'package:flex_travel_sim/features/purchase_history_screen.dart/purchase_history_screen.dart';
-import 'package:flex_travel_sim/features/traffic_usage_screen/traffic_usage_screen.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
@@ -35,40 +32,19 @@ class MyAccountScreen extends StatelessWidget {
               AccountWidget(
                 title: AppLocalization.purchaseHistory,
                 icon: Assets.icons.purchaseHistory.path,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PurchaseScreen(),
-                    ),
-                  );
-                },
+                onTap: () => NavigationService.openPurchaseScreen(context),
               ),
               const SizedBox(height: 12),
               AccountWidget(
                 title: AppLocalization.trafficUsage,
                 icon: Assets.icons.trafficUsage.path,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const TrafficUsageScreen(),
-                    ),
-                  );
-                },
+                onTap: () => NavigationService.openTrafficUsageScreen(context),
               ),
               const SizedBox(height: 12),
               AccountWidget(
                 title: AppLocalization.appLanguage,
                 icon: Assets.icons.appLanguage.path,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LanguageScreen(),
-                    ),
-                  );
-                },
+                onTap: () => NavigationService.openLanguageScreen(context),
               ),
             ],
           ),

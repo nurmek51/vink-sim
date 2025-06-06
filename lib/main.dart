@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/features/welcome_screen/welcome_screen.dart';
+import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -8,9 +8,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      home: WelcomeScreen(),
+      routerConfig: AppRouter.router,
     );
   }
 }

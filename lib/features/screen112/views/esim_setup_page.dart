@@ -7,6 +7,7 @@ import 'package:flex_travel_sim/features/screen112/widgets/body/qr_code_selected
 import 'package:flex_travel_sim/features/screen112/widgets/bottom_setup_container.dart';
 import 'package:flex_travel_sim/features/screen112/widgets/lazy_row.dart';
 import 'package:flex_travel_sim/features/screen112/widgets/body/fast_selected_body.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class EsimSetupPage extends StatefulWidget {
@@ -53,7 +54,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                       GoBackArrow(
                         width: 15,
                         height: 19,
-                        onTap: () => Navigator.pop(context),
+                        onTap: () => NavigationService.pop(context),
                       ),
 
                       SizedBox(height: 20),
