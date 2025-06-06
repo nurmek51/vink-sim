@@ -2,9 +2,7 @@ import 'package:flex_travel_sim/constants/lozalization.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/features/screen142/views/tariffs_and_countries_page.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/counter_widget.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/fix_sum_button.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/payment_type_selector.dart';

@@ -1,4 +1,3 @@
-import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 

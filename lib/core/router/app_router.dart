@@ -1,6 +1,6 @@
-import 'package:flex_travel_sim/features/auth_screen/auth_screen.dart';
+import 'package:flex_travel_sim/features/authentication/screens/auth_screen.dart';
 import 'package:flex_travel_sim/features/language_screen/language_screen.dart';
-import 'package:flex_travel_sim/features/main_flow_screen/main_flow_screen.dart';
+import 'package:flex_travel_sim/features/dashboard/screens/main_flow_screen.dart';
 import 'package:flex_travel_sim/features/my_account_screen/my_account_screen.dart';
 import 'package:flex_travel_sim/features/purchase_history_screen.dart/purchase_history_screen.dart';
 import 'package:flex_travel_sim/features/screen112/views/esim_setup_page.dart';
@@ -12,7 +12,7 @@ import 'package:flex_travel_sim/features/screen149/views/initial_page.dart';
 import 'package:flex_travel_sim/features/settings_screen/views/settings_screen.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flex_travel_sim/features/traffic_usage_screen/traffic_usage_screen.dart';
-import 'package:flex_travel_sim/features/welcome_screen/welcome_screen.dart';
+import 'package:flex_travel_sim/features/onboarding/screens/welcome_screen.dart';
 import 'package:flex_travel_sim/core/router/route_guard.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
