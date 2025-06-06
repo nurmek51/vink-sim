@@ -1,12 +1,12 @@
 import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/features/esim_management/widgets/setup/lazy_row.dart';
+import 'package:flex_travel_sim/features/esim_management/widgets/setup/fast_selected_body.dart';
 import 'package:flex_travel_sim/features/screen112/widgets/body/another_device_selected_body.dart';
 import 'package:flex_travel_sim/features/screen112/widgets/body/manual_selected_body.dart';
 import 'package:flex_travel_sim/features/screen112/widgets/body/qr_code_selected_body.dart';
 import 'package:flex_travel_sim/features/screen112/widgets/bottom_setup_container.dart';
-import 'package:flex_travel_sim/features/screen112/widgets/lazy_row.dart';
-import 'package:flex_travel_sim/features/screen112/widgets/body/fast_selected_body.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -29,20 +29,19 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
 
   @override
   Widget build(BuildContext context) {
-    // FIGMA NUMBER - 112
     return Scaffold(
-      backgroundColor: Color(0xFFE7EFF7),
+      backgroundColor: const Color(0xFFE7EFF7),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             children: [
               // body
               Container(
-                decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
+                  ),
 
                   color: Colors.white,
                 ),
@@ -57,7 +56,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                         onTap: () => NavigationService.pop(context),
                       ),
 
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
                       HelveticaneueFont(
                         text: AppLocalization.installESim,
@@ -65,10 +64,10 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                         letterSpacing: -1,
                         height: 1.1,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF363C45),
+                        color: const Color(0xFF363C45),
                       ),
 
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
                       // Scrollable element
                       Center(
@@ -85,33 +84,26 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
 
                       // BODY
                       if (selectedIndex == 0) ...[
-                        SizedBox(height: 25),
-                        FastSelectedBody(),
-                      ]
-
-                      else if (selectedIndex == 1) ...[
-                        SizedBox(height: 25),
-                        QrCodeSelectedBody(),
-                      ]                       
-
-                      else if (selectedIndex == 2) ...[
-                        SizedBox(height: 25),
-                        ManualSelectedBody(),
-                      ]                      
-                      
-                      else if (selectedIndex == 3) ...[
-                        SizedBox(height: 25),
-                        AnotherDeviceSelectedBody(),
-                      ]                      
-
+                        const SizedBox(height: 25),
+                        const FastSelectedBody(),
+                      ] else if (selectedIndex == 1) ...[
+                        const SizedBox(height: 25),
+                        const QrCodeSelectedBody(),
+                      ] else if (selectedIndex == 2) ...[
+                        const SizedBox(height: 25),
+                        const ManualSelectedBody(),
+                      ] else if (selectedIndex == 3) ...[
+                        const SizedBox(height: 25),
+                        const AnotherDeviceSelectedBody(),
+                      ],
                     ],
                   ),
                 ),
               ),
 
               // end line
-              SizedBox(height: 20),
-              BottomSetupContainer(),
+              const SizedBox(height: 20),
+              const BottomSetupContainer(),
             ],
           ),
         ),

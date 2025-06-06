@@ -1,6 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/screen112/widgets/body_container.dart';
 import 'package:flutter/material.dart';
 

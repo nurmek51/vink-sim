@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/auth_screen/widgets/auth_intro_bottomsheet_content.dart';
 import 'package:flex_travel_sim/features/welcome_screen/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/features/welcome_screen/widgets/button/auth_button.dart';

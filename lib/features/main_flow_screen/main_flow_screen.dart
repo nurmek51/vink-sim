@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/main_flow_screen/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/main_flow_screen/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/features/main_flow_screen/widgets/percentage_widget.dart';

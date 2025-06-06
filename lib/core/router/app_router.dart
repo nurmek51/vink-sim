@@ -3,7 +3,7 @@ import 'package:flex_travel_sim/features/language_screen/language_screen.dart';
 import 'package:flex_travel_sim/features/dashboard/screens/main_flow_screen.dart';
 import 'package:flex_travel_sim/features/my_account_screen/my_account_screen.dart';
 import 'package:flex_travel_sim/features/purchase_history_screen.dart/purchase_history_screen.dart';
-import 'package:flex_travel_sim/features/screen112/views/esim_setup_page.dart';
+import 'package:flex_travel_sim/features/esim_management/screens/esim_setup_page.dart';
 import 'package:flex_travel_sim/features/screen141/views/guide_page.dart';
 import 'package:flex_travel_sim/features/screen142/views/tariffs_and_countries_page.dart';
 import 'package:flex_travel_sim/features/screen143/views/setting_esim_page.dart';

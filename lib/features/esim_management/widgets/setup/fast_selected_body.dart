@@ -1,6 +1,6 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
-import 'package:flex_travel_sim/features/screen112/widgets/body_container.dart';
+import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flutter/material.dart';
 
 class FastSelectedBody extends StatelessWidget {
@@ -34,7 +34,7 @@ class FastSelectedBody extends StatelessWidget {
           ),
         ),
     
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
     
         BodyContainer(
           stepNum: '2', 
@@ -56,7 +56,7 @@ class FastSelectedBody extends StatelessWidget {
                           filterQuality: FilterQuality.high,
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Image.asset(
@@ -74,7 +74,7 @@ class FastSelectedBody extends StatelessWidget {
             ),
         ),
     
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
     
         BodyContainer(
           stepNum: '3', 
@@ -101,7 +101,7 @@ class FastSelectedBody extends StatelessWidget {
           ),
         ),
     
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
     
         BodyContainer(
           stepNum: '4', 
@@ -123,7 +123,7 @@ class FastSelectedBody extends StatelessWidget {
           ),
         ),
     
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
                  
       ],
     );

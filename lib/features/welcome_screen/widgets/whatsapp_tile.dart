@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/auth_screen/widgets/mobile_number_field.dart.dart';
 import 'package:flex_travel_sim/features/auth_screen/widgets/registration_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';

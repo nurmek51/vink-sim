@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,7 @@ import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/fix_sum_b
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/payment_type_selector.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/tariff_scroll_view.dart';
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
+
 
 class TopUpBalanceScreen extends StatefulWidget {
   const TopUpBalanceScreen({super.key});
