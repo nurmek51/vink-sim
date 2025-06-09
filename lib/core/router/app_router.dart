@@ -4,10 +4,10 @@ import 'package:flex_travel_sim/features/dashboard/screens/main_flow_screen.dart
 import 'package:flex_travel_sim/features/my_account_screen/my_account_screen.dart';
 import 'package:flex_travel_sim/features/settings/screens/purchase_history_screen.dart';
 import 'package:flex_travel_sim/features/esim_management/screens/esim_setup_page.dart';
-import 'package:flex_travel_sim/features/screen141/views/guide_page.dart';
-import 'package:flex_travel_sim/features/screen142/views/tariffs_and_countries_page.dart';
-import 'package:flex_travel_sim/features/screen143/views/setting_esim_page.dart';
-import 'package:flex_travel_sim/features/screen145/views/activated_esim_screen.dart';
+import 'package:flex_travel_sim/features/guide_page/views/guide_page.dart';
+import 'package:flex_travel_sim/features/tariffs_and_countries_page/views/tariffs_and_countries_page.dart';
+import 'package:flex_travel_sim/features/setting_esim_page/views/setting_esim_page.dart';
+import 'package:flex_travel_sim/features/activated_esim_screen/views/activated_esim_screen.dart';
 import 'package:flex_travel_sim/features/screen149/views/initial_page.dart';
 import 'package:flex_travel_sim/features/settings_screen/views/settings_screen.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/top_up_balance_screen.dart';

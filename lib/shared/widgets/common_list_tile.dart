@@ -2,7 +2,6 @@ import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-/// Универсальный компонент списка для переиспользования по всему приложению
 class CommonListTile extends StatelessWidget {
   final String? imagePath;
   final String title;

@@ -2,7 +2,6 @@ import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-/// Общий виджет для отображения шагов инструкций
 class StepContainer extends StatelessWidget {
   final String iconPath;
   final String stepNum;

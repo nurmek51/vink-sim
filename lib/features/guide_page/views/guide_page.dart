@@ -2,7 +2,7 @@ import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
-import 'package:flex_travel_sim/features/screen141/components/widgets/table_view_cells.dart';
+import 'package:flex_travel_sim/features/guide_page/components/widgets/table_view_cells.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 

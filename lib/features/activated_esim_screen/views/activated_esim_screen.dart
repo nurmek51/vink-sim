@@ -2,7 +2,7 @@ import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/main_flow_screen/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/main_flow_screen/widgets/expanded_container.dart';
-import 'package:flex_travel_sim/features/screen145/widgets/esim_success_container.dart';
+import 'package:flex_travel_sim/features/activated_esim_screen/widgets/esim_success_container.dart';
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 import 'package:flex_travel_sim/shared/widgets/header.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';

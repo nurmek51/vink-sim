@@ -75,7 +75,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           GestureDetector(
-            onTap: () => openTopUpBalanceScreen(context),
+            onTap: () => Navigator.pop(context),
             child: Container(
               alignment: Alignment.center,
               height: 52,

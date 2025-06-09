@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/features/screen142/widgets/custom_list_tile.dart';
+import 'package:flex_travel_sim/features/tariffs_and_countries_page/widgets/custom_list_tile.dart';
 import 'package:flutter/material.dart';
 
 class CountryList extends StatelessWidget {

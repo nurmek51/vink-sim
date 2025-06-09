@@ -1,7 +1,7 @@
 import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
-import 'package:flex_travel_sim/features/screen142/widgets/country_list.dart';
+import 'package:flex_travel_sim/features/tariffs_and_countries_page/widgets/country_list.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
