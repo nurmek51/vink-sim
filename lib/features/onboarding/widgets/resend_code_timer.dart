@@ -1,54 +1,43 @@
-import 'dart:async';
-
+import 'package:flex_travel_sim/features/onboarding/cubit/resend_code_timer_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ResendCodeTimer extends StatefulWidget {
+class ResendCodeTimer extends StatelessWidget {
   const ResendCodeTimer({super.key});
 
   @override
-  State<ResendCodeTimer> createState() => _ResendCodeTimerState();
-}
-
-class _ResendCodeTimerState extends State<ResendCodeTimer> {
-  static const int _startSeconds = 60;
-  late int _secondsRemaining;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _secondsRemaining = _startSeconds;
-    _startTimer();
-  }
-
-  void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (_secondsRemaining == 0) {
-        timer.cancel();
-      } else {
-        setState(() {
-          _secondsRemaining--;
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Отправить код повторно ($_secondsRemaining)',
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.white.withOpacity(0.5),
-          fontWeight: FontWeight.w600,
-        ),
+    return BlocProvider(
+      create: (_) => ResendCodeTimerCubit(),
+      child: BlocBuilder<ResendCodeTimerCubit, ResendCodeTimerState>(
+        builder: (context, state) {
+          if (state.canResend) {
+            return Center(
+              child: GestureDetector(
+                onTap: () => context.read<ResendCodeTimerCubit>().resendCode(),
+                child: Text(
+                  'Отправить код повторно',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return Center(
+              child: Text(
+                'Отправить код повторно (${state.secondsRemaining})',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white.withOpacity(0.5),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }

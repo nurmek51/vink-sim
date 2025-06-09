@@ -1,36 +1,37 @@
+import 'package:flex_travel_sim/features/top_up_balance_screen/cubit/top_up_balance_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-class PaymentTypeSelector extends StatefulWidget {
+class PaymentTypeSelector extends StatelessWidget {
   const PaymentTypeSelector({super.key});
 
-  @override
-  State<PaymentTypeSelector> createState() => _PaymentTypeSelectorState();
-}
-
-class _PaymentTypeSelectorState extends State<PaymentTypeSelector> {
-  int selectedIndex = 0;
-
-  final List<String> logos = [
-    'assets/icons/apple_pay_logo.svg',
-    'assets/icons/crypto.svg',
-    'assets/icons/cred_card.svg',
+  static const List<Map<String, String>> paymentMethods = [
+    {'logo': 'assets/icons/apple_pay_logo.svg', 'method': 'apple_pay'},
+    {'logo': 'assets/icons/crypto.svg', 'method': 'crypto'},
+    {'logo': 'assets/icons/cred_card.svg', 'method': 'credit_card'},
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(logos.length, (index) {
-        return PaymentTypeWidget(
-          logo: logos[index],
-          isSelected: selectedIndex == index,
-          onTap: () {
-            setState(() {
-              selectedIndex = index;
-            });
-          },
+    return BlocBuilder<TopUpBalanceCubit, TopUpBalanceState>(
+      builder: (context, state) {
+        return Row(
+          children: List.generate(paymentMethods.length, (index) {
+            final payment = paymentMethods[index];
+            final isSelected = state.selectedPaymentMethod == payment['method'] ||
+                (state.selectedPaymentMethod.isEmpty && index == 0);
+            
+            return PaymentTypeWidget(
+              logo: payment['logo']!,
+              isSelected: isSelected,
+              onTap: () {
+                context.read<TopUpBalanceCubit>().selectPaymentMethod(payment['method']!);
+              },
+            );
+          }),
         );
-      }),
+      },
     );
   }
 }
