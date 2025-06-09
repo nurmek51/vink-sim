@@ -3,6 +3,7 @@ import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/main_flow_screen/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/main_flow_screen/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/features/activated_esim_screen/widgets/esim_success_container.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 import 'package:flex_travel_sim/shared/widgets/header.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
@@ -33,13 +34,13 @@ class ActivatedEsimScreen extends StatelessWidget {
                 children: [
                   ExpandedContainer(
                     title: AppLocalization.howToInstallEsim2,
-                    icon: 'assets/icons/figma149/blue_icon11.svg',
+                    icon: Assets.icons.figma149.blueIcon11.path,
                     onTap: () => openEsimSetupPage(context),
                   ),
                   const SizedBox(width: 16),
                   ExpandedContainer(
                     title: AppLocalization.supportChat,
-                    icon: 'assets/icons/figma149/blue_icon22.svg',
+                    icon: Assets.icons.figma149.blueIcon22.path,
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
@@ -70,13 +71,13 @@ class ActivatedEsimScreen extends StatelessWidget {
                 children: [
                   ExpandedContainer(
                     title: AppLocalization.howDoesItWork,
-                    icon: 'assets/icons/figma149/blue_icon33.svg',
+                    icon: Assets.icons.figma149.blueIcon33.path,
                     onTap: () => openGuidePage(context),
                   ),
                   const SizedBox(width: 16),
                   ExpandedContainer(
                     title: AppLocalization.countriesAndRates,
-                    icon: 'assets/icons/figma149/blue_icon44.svg',
+                    icon: Assets.icons.figma149.blueIcon44.path,
                     onTap: () => openTariffsAndCountriesPage(context),
                   ),
                 ],

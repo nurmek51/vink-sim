@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/features/tariffs_and_countries_page/widgets/custom_list_tile.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class CountryList extends StatelessWidget {
@@ -8,7 +9,7 @@ class CountryList extends StatelessWidget {
   Widget build(BuildContext context) {
     final tiles = [
       CustomListTile(
-        imagePath: 'assets/icons/figma142/japan.svg',
+        imagePath: Assets.icons.figma142.japan.path,
         countryTitle: 'Japan',
         countrySubtitle: 'Vodafone LTE, Optus 5G',
         price: '\$3 / 1GB'

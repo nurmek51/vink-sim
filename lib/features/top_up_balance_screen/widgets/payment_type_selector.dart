@@ -1,15 +1,15 @@
 import 'package:flex_travel_sim/features/top_up_balance_screen/cubit/top_up_balance_cubit.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 
 class PaymentTypeSelector extends StatelessWidget {
   const PaymentTypeSelector({super.key});
 
   static const List<Map<String, String>> paymentMethods = [
-    {'logo': 'assets/icons/apple_pay_logo.svg', 'method': 'apple_pay'},
-    {'logo': 'assets/icons/crypto.svg', 'method': 'crypto'},
-    {'logo': 'assets/icons/cred_card.svg', 'method': 'credit_card'},
+    {'logo': 'apple_pay_logo', 'method': 'apple_pay'},
+    {'logo': 'crypto', 'method': 'crypto'},
+    {'logo': 'credCard', 'method': 'credit_card'},
   ];
 
   @override
@@ -65,20 +65,42 @@ class PaymentTypeWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Color(0xFFD4D4D4), width: 1),
               ),
-              child: SvgPicture.asset(
-                logo,
-                color: isSelected ? Colors.white : Colors.black45,
-              ),
+              child: _getSvgAsset(logo, isSelected),
             ),
             if (isSelected)
               Positioned(
                 top: -6,
                 right: -6,
-                child: SvgPicture.asset('assets/icons/selected_card_icon.svg'),
+                child: Assets.icons.selectedCardIcon.svg(),
               ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _getSvgAsset(String assetName, bool isSelected) {
+    switch (assetName) {
+      case 'apple_pay_logo':
+        return Assets.icons.applePayLogo.svg(
+          colorFilter: isSelected 
+            ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
+            : ColorFilter.mode(Colors.black45, BlendMode.srcIn),
+        );
+      case 'crypto':
+        return Assets.icons.crypto.svg(
+          colorFilter: isSelected 
+            ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
+            : ColorFilter.mode(Colors.black45, BlendMode.srcIn),
+        );
+      case 'credCard':
+        return Assets.icons.credCard.svg(
+          colorFilter: isSelected 
+            ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
+            : ColorFilter.mode(Colors.black45, BlendMode.srcIn),
+        );
+      default:
+        return Container();
+    }
   }
 }

@@ -5,9 +5,9 @@ import 'package:flex_travel_sim/features/main_flow_screen/bottom_sheet_content.d
 import 'package:flex_travel_sim/features/main_flow_screen/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/features/welcome_screen/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/features/welcome_screen/widgets/pulsing_circle.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
@@ -70,16 +70,14 @@ class _InitialPageState extends State<InitialPage>
                       const SizedBox(height: 45),
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icons/figma149/white_logo.svg',
+                          Assets.icons.figma149.whiteLogo.svg(
                             width: 39.5,
                             height: 25.06,
                           ),
                           Spacer(),
                           GestureDetector(
                             onTap: () => openTariffsAndCountriesPage(context),
-                            child: SvgPicture.asset(
-                              'assets/icons/figma149/money_icon.svg',
+                            child: Assets.icons.figma149.moneyIcon.svg(
                               width: 28,
                               height: 30,
                             ),
@@ -87,8 +85,7 @@ class _InitialPageState extends State<InitialPage>
                           SizedBox(width: 12),
                           GestureDetector(
                             onTap: () => openMyAccountScreen(context),
-                            child: SvgPicture.asset(
-                              'assets/icons/figma149/profile_icon.svg',
+                            child: Assets.icons.figma149.profileIcon.svg(
                               width: 28,
                               height: 30,
                             ),
@@ -111,22 +108,22 @@ class _InitialPageState extends State<InitialPage>
                       const SizedBox(height: 30),
 
                       BenefitTile(
-                        icon: 'assets/icons/figma149/column1.svg',
+                        icon: Assets.icons.figma149.column1.path,
                         title: AppLocalization.countriesInOneEsim,
                       ),
                       SizedBox(height: 12),
                       BenefitTile(
-                        icon: 'assets/icons/figma149/column2.svg',
+                        icon: Assets.icons.figma149.column2.path,
                         title: AppLocalization.frameCheckTitle,
                       ),
                       SizedBox(height: 12),
                       BenefitTile(
-                        icon: 'assets/icons/figma149/column3.svg',
+                        icon: Assets.icons.figma149.column3.path,
                         title: AppLocalization.infinityTitle,
                       ),
                       SizedBox(height: 12),
                       BenefitTile(
-                        icon: 'assets/icons/figma149/column4.svg',
+                        icon: Assets.icons.figma149.column4.path,
                         title: AppLocalization.highSpeedLowCost,
                       ),
 
@@ -153,13 +150,13 @@ class _InitialPageState extends State<InitialPage>
                           children: [
                             ExpandedContainer(
                               title: AppLocalization.howToInstallEsim2,
-                              icon: 'assets/icons/figma149/blue_icon11.svg',
+                              icon: Assets.icons.figma149.blueIcon11.path,
                               onTap: () => openEsimSetupPage(context),
                             ),
                             const SizedBox(width: 16),
                             ExpandedContainer(
                               title: AppLocalization.supportChat,
-                              icon: 'assets/icons/figma149/blue_icon22.svg',
+                              icon: Assets.icons.figma149.blueIcon22.path,
                               onTap: () {
                                 showModalBottomSheet(
                                   context: context,
@@ -192,13 +189,13 @@ class _InitialPageState extends State<InitialPage>
                           children: [
                             ExpandedContainer(
                               title: AppLocalization.howDoesItWork,
-                              icon: 'assets/icons/figma149/blue_icon33.svg',
+                              icon: Assets.icons.figma149.blueIcon33.path,
                               onTap: () => openGuidePage(context),
                             ),
                             const SizedBox(width: 16),
                             ExpandedContainer(
                               title: AppLocalization.countriesAndRates,
-                              icon: 'assets/icons/figma149/blue_icon44.svg',
+                              icon: Assets.icons.figma149.blueIcon44.path,
                               onTap: () => openTariffsAndCountriesPage(context),
                             ),
                           ],

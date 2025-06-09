@@ -6,7 +6,6 @@ import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class QrCodeSelectedBody extends StatefulWidget {
   const QrCodeSelectedBody({super.key});
@@ -43,8 +42,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                       borderRadius: BorderRadius.circular(16),
                       child: Stack(
                         children: [
-                          Image.asset(
-                            'assets/icons/figma112/another_step_2.jpg',
+                          Assets.icons.figma112.anotherStep2.image(
                             width: 228,
                             height: 228,
                             fit: BoxFit.cover,
@@ -69,8 +67,9 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                                           child: SizedBox(
                                             height: 43,
                                             width: 43,
-                                            child: SvgPicture.asset(
-                                              Assets.icons.infoQrCircle.path,
+                                            child: Assets.icons.infoQrCircle.svg(
+                                              height: 43,
+                                              width: 43,
                                             ),
                                           ),
                                         ),

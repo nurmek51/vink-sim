@@ -8,7 +8,7 @@ import 'package:flex_travel_sim/features/guide_page/views/guide_page.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries_page/views/tariffs_and_countries_page.dart';
 import 'package:flex_travel_sim/features/setting_esim_page/views/setting_esim_page.dart';
 import 'package:flex_travel_sim/features/activated_esim_screen/views/activated_esim_screen.dart';
-import 'package:flex_travel_sim/features/screen149/views/initial_page.dart';
+import 'package:flex_travel_sim/features/initial_page/views/initial_page.dart';
 import 'package:flex_travel_sim/features/settings_screen/views/settings_screen.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flex_travel_sim/features/traffic_usage_screen/traffic_usage_screen.dart';

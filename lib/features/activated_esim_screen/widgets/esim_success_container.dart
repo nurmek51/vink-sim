@@ -2,9 +2,9 @@ import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/activated_esim_screen/widgets/download_button.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class EsimSuccessContainer extends StatelessWidget {
   const EsimSuccessContainer({super.key});
@@ -23,8 +23,7 @@ class EsimSuccessContainer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset(
-              'assets/icons/figma112/success_icon.svg',
+            Assets.icons.figma112.successIcon.svg(
               height: 35,
               width: 35,
             ),

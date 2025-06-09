@@ -4,7 +4,6 @@ import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class AnotherDeviceSelectedBody extends StatelessWidget {
   const AnotherDeviceSelectedBody({super.key});
@@ -28,9 +27,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                 SizedBox(
                   height: 52,
                   width: 45,
-                  child: SvgPicture.asset(
-                    Assets.icons.attentionCircle.path,
-                  ),
+                  child: Assets.icons.attentionCircle.svg(),
                 ),
                 SizedBox(height: 10),
                 HelveticaneueFont(
@@ -66,8 +63,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/icons/figma112/another_step1_1.jpg',
+                        child: Assets.icons.figma112.anotherStep11.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -77,8 +73,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                       SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/icons/figma112/another_step1_2.jpg',
+                        child: Assets.icons.figma112.anotherStep12.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -88,8 +83,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                       SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/icons/figma112/another_step1_3.jpg',
+                        child: Assets.icons.figma112.anotherStep13.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -99,8 +93,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                       SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/icons/figma112/another_step1_4.jpg',
+                        child: Assets.icons.figma112.anotherStep14.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,

@@ -13,7 +13,7 @@ class TableViewCells extends StatelessWidget {
   Widget build(BuildContext context) {
     final tiles = [
       CustomListTile(
-        imagePath: Assets.icons.GuideTableView1.path,
+        imagePath: 'guide_table_view1',
         containerColor: AppColors.guideTable1,
         listText: AppLocalization.tariffsByCountries,
         onTap:() {
@@ -21,7 +21,7 @@ class TableViewCells extends StatelessWidget {
         },
       ),
       CustomListTile(
-        imagePath: Assets.icons.GuideTableView2.path,
+        imagePath: 'guide_table_view2',
         containerColor: AppColors.guideTable2,
         listText: AppLocalization.guideForEsimSettings,
         onTap: () {
@@ -29,7 +29,7 @@ class TableViewCells extends StatelessWidget {
         },
       ),
       CustomListTile(
-        imagePath: Assets.icons.GuideTableView3.path,
+        imagePath: 'guide_table_view3',
         containerColor: AppColors.guideTable3,
         listText: AppLocalization.smthMore,
         onTap: () {
@@ -38,7 +38,7 @@ class TableViewCells extends StatelessWidget {
         },        
       ),
       CustomListTile(
-        imagePath: Assets.icons.GuideTableView4.path,
+        imagePath: 'guide_table_view4',
         containerColor: AppColors.guideTable4,
         listText: AppLocalization.supportChat2,
         onTap: () {

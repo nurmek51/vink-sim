@@ -1,6 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class CustomListTile extends StatelessWidget {
   final String imagePath;
@@ -33,18 +33,12 @@ class CustomListTile extends StatelessWidget {
           color: containerColor,
         ),
         child: Center(
-          child: SvgPicture.asset(
-            imagePath,
-            width: 20,
-            height: 20,
-            fit: BoxFit.contain,
-          ),
+          child: _getIconByPath(imagePath),
         ),
       ),
       trailing: Padding(
         padding: const EdgeInsets.only(right: 10.0),
-        child: SvgPicture.asset(
-          'assets/icons/figma141/table_view_arrow.svg',
+        child: Assets.icons.figma141.tableViewArrow.svg(
           width: 7.16,
           height: 12.3,
         ),
@@ -55,5 +49,40 @@ class CustomListTile extends StatelessWidget {
         color: Color(0xFF363C45),
       ),
     );
+  }
+
+  Widget _getIconByPath(String path) {
+    switch (path) {
+      case 'guide_table_view1':
+        return Assets.icons.guideTableView1.svg(
+          width: 20,
+          height: 20,
+          fit: BoxFit.contain,
+        );
+      case 'guide_table_view2':
+        return Assets.icons.guideTableView2.svg(
+          width: 20,
+          height: 20,
+          fit: BoxFit.contain,
+        );
+      case 'guide_table_view3':
+        return Assets.icons.guideTableView3.svg(
+          width: 20,
+          height: 20,
+          fit: BoxFit.contain,
+        );
+      case 'guide_table_view4':
+        return Assets.icons.guideTableView4.svg(
+          width: 20,
+          height: 20,
+          fit: BoxFit.contain,
+        );
+      default:
+        return Assets.icons.guideTableView1.svg(
+          width: 20,
+          height: 20,
+          fit: BoxFit.contain,
+        );
+    }
   }
 }

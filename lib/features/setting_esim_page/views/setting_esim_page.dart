@@ -3,6 +3,7 @@ import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/setting_esim_page/widgets/steps_container.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -55,7 +56,7 @@ class SettingEsimPage extends StatelessWidget {
                 child: Column(
                   children: [
                     StepsContainer(
-                      iconPath: 'assets/icons/figma143/step1_icon.svg',
+                      iconPath: Assets.icons.figma143.step1Icon.path,
                       stepNum: '1',
                       description: AppLocalization.balanceAndEsimActivation,
                     ),
@@ -63,7 +64,7 @@ class SettingEsimPage extends StatelessWidget {
                     SizedBox(height: 7),
                         
                     StepsContainer(
-                      iconPath: 'assets/icons/figma143/step2_icon.svg',
+                      iconPath: Assets.icons.figma143.step2Icon.path,
                       stepNum: '2',
                       description: AppLocalization.profileSetupGuide,
                     ),
@@ -71,7 +72,7 @@ class SettingEsimPage extends StatelessWidget {
                     SizedBox(height: 7),
                         
                     StepsContainer(
-                      iconPath: 'assets/icons/figma143/step3_icon.svg',
+                      iconPath: Assets.icons.figma143.step3Icon.path,
                       stepNum: '3',
                       description: AppLocalization.readyToTravelMessage,
                     ),                                

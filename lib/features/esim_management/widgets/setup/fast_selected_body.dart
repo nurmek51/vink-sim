@@ -1,6 +1,7 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class FastSelectedBody extends StatelessWidget {
@@ -48,8 +49,7 @@ class FastSelectedBody extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/icons/figma112/step2_112_1.jpg',
+                        child: Assets.icons.figma112.step21121.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -59,8 +59,7 @@ class FastSelectedBody extends StatelessWidget {
                       const SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/icons/figma112/step2_112_2.jpg',
+                        child: Assets.icons.figma112.step21122.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -87,8 +86,7 @@ class FastSelectedBody extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      'assets/icons/figma112/step3_jpg_112.jpg',
+                    child: Assets.icons.figma112.step3Jpg112.image(
                       width: 313,
                       height: 292,
                       fit: BoxFit.cover,
@@ -111,8 +109,7 @@ class FastSelectedBody extends StatelessWidget {
             child: Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  'assets/icons/figma112/step4_jpg_112.jpg',
+                child: Assets.icons.figma112.step4Jpg112.image(
                   width: 274.8,
                   height: 291,
                   fit: BoxFit.cover,

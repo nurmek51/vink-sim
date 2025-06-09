@@ -1,6 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class GuideListTile extends StatelessWidget {
   final String imagePath;
@@ -33,8 +33,7 @@ class GuideListTile extends StatelessWidget {
           color: containerColor,
         ),
         child: Center(
-          child: SvgPicture.asset(
-            imagePath,
+          child: Assets.icons.guideTableView1.svg(
             width: 20,
             height: 20,
             fit: BoxFit.contain,
@@ -43,8 +42,7 @@ class GuideListTile extends StatelessWidget {
       ),
       trailing: Padding(
         padding: const EdgeInsets.only(right: 10.0),
-        child: SvgPicture.asset(
-          'assets/icons/figma141/table_view_arrow.svg',
+        child: Assets.icons.figma141.tableViewArrow.svg(
           width: 7.16,
           height: 12.3,
         ),

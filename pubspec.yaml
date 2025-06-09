@@ -22,8 +22,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.7
+  flutter_gen_runner: ^5.3.2
 
 flutter:
   uses-material-design: true
@@ -34,7 +35,17 @@ flutter:
     - assets/icons/figma141/
     - assets/icons/figma142/
     - assets/icons/figma143/
-    - assets/icons/figma149/     
+    - assets/icons/figma149/
+
+  fonts:
+    - family: HelveticaNeue
+      fonts:
+        - asset: assets/fonts/HelveticaNeue_Roman.otf
+          weight: 400
+        - asset: assets/fonts/HelveticaNeue_Medium.otf
+          weight: 500          
+        - asset: assets/fonts/HelveticaNeue_Bold.otf
+          weight: 700     
 
 flutter_gen:
   output: lib/gen
@@ -51,11 +62,4 @@ flutter_gen:
     flutter_svg: true
 
   fonts:
-    - family: HelveticaNeue
-      fonts:
-        - asset: assets/fonts/HelveticaNeue_Roman.otf
-          weight: 400
-        - asset: assets/fonts/HelveticaNeue_Medium.otf
-          weight: 500          
-        - asset: assets/fonts/HelveticaNeue_Bold.otf
-          weight: 700    
+    enabled: true    
