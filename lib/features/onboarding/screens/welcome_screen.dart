@@ -1,5 +1,5 @@
+import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/frame_content.dart';
-import 'package:flex_travel_sim/features/onboarding/cubit/welcome_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,18 +37,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   void _onContinue() {
-    context.read<WelcomeCubit>().stopAnimation();
+    context.read<WelcomeBloc>().add(const StopAnimation());
   }
 
   void _onBack() {
-    context.read<WelcomeCubit>().startAnimation();
+    context.read<WelcomeBloc>().add(const StartAnimation());
   }
 
   @override
   Widget build(BuildContext context) {
     final mediaHeight = MediaQuery.of(context).size.height;
 
-    return BlocBuilder<WelcomeCubit, WelcomeState>(
+    return BlocBuilder<WelcomeBloc, WelcomeState>(
       builder: (context, state) {
         if (state.isAnimating) {
           _controller.repeat(reverse: true);

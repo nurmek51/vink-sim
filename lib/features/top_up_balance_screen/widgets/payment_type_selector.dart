@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/features/top_up_balance_screen/cubit/top_up_balance_cubit.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +14,7 @@ class PaymentTypeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TopUpBalanceCubit, TopUpBalanceState>(
+    return BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
       builder: (context, state) {
         return Row(
           children: List.generate(paymentMethods.length, (index) {
@@ -26,7 +26,7 @@ class PaymentTypeSelector extends StatelessWidget {
               logo: payment['logo']!,
               isSelected: isSelected,
               onTap: () {
-                context.read<TopUpBalanceCubit>().selectPaymentMethod(payment['method']!);
+                context.read<TopUpBalanceBloc>().add(SelectPaymentMethod(payment['method']!));
               },
             );
           }),

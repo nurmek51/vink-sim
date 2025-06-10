@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/localization.dart';
-import 'package:flex_travel_sim/features/top_up_balance_screen/cubit/top_up_balance_cubit.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class TopUpBalanceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TopUpBalanceCubit(),
+      create: (_) => TopUpBalanceBloc(),
       child: const _TopUpBalanceView(),
     );
   }
@@ -41,12 +41,12 @@ class _TopUpBalanceView extends StatelessWidget {
               const SizedBox(height: 16),
               _buildSubtitle(),
               const SizedBox(height: 16),
-              BlocBuilder<TopUpBalanceCubit, TopUpBalanceState>(
+              BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
                 builder: (context, state) {
                   return CounterWidget(
                     value: state.amount,
-                    onIncrement: () => context.read<TopUpBalanceCubit>().increment(),
-                    onDecrement: () => context.read<TopUpBalanceCubit>().decrement(),
+                    onIncrement: () => context.read<TopUpBalanceBloc>().add(const IncrementAmount()),
+                    onDecrement: () => context.read<TopUpBalanceBloc>().add(const DecrementAmount()),
                   );
                 },
               ),
@@ -91,13 +91,13 @@ class _TopUpBalanceView extends StatelessWidget {
     ),
   );
 
-  Widget _buildFixSumButtons() => BlocBuilder<TopUpBalanceCubit, TopUpBalanceState>(
+  Widget _buildFixSumButtons() => BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
     builder: (context, state) {
       return Row(
         children: [1, 5, 15, 50, 100]
             .map((sum) => FixSumButton(
                   sum: sum,
-                  onTap: (value) => context.read<TopUpBalanceCubit>().setAmount(value),
+                  onTap: (value) => context.read<TopUpBalanceBloc>().add(SetAmount(value)),
                 ))
             .toList(),
       );
@@ -180,11 +180,11 @@ class _TopUpBalanceView extends StatelessWidget {
             ],
           ),
         ),
-        BlocBuilder<TopUpBalanceCubit, TopUpBalanceState>(
+        BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
           builder: (context, state) {
             return CupertinoSwitch(
               value: state.autoTopUpEnabled,
-              onChanged: (value) => context.read<TopUpBalanceCubit>().toggleAutoTopUp(value),
+              onChanged: (value) => context.read<TopUpBalanceBloc>().add(ToggleAutoTopUp(value)),
               activeColor: CupertinoColors.systemBlue,
             );
           },

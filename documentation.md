@@ -1,10 +1,10 @@
 # FlexTravelSIM - Complete Project Documentation
 
-## 📱 Project Overview
+## Project Overview
 
 **FlexTravelSIM** is a modern Flutter application for managing eSIM cards for travelers. The app provides seamless eSIM purchasing, activation, and management with an intuitive user interface and robust backend integration.
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ### Design Patterns
 - **Clean Architecture** - Domain-driven design with clear layer separation
@@ -49,7 +49,7 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 lib/
@@ -133,11 +133,11 @@ lib/
 - **Flutter Lints** - Code analysis
 - **Build Runner** - Code generation
 
-## 📦 Data Layer Architecture
+## Data Layer Architecture
 
 ### Core Components
 
-#### 🌐 API Client
+#### API Client
 ```dart
 class ApiClient {
   Future<Map<String, dynamic>> get(String endpoint) async {
@@ -150,7 +150,7 @@ class ApiClient {
 }
 ```
 
-#### 💾 Local Storage
+#### Local Storage
 ```dart
 abstract class LocalStorage {
   Future<void> setJson(String key, Map<String, dynamic> value);
@@ -160,7 +160,7 @@ abstract class LocalStorage {
 }
 ```
 
-#### ⚠️ Error Handling
+#### Error Handling
 ```dart
 // Exceptions (Data Layer)
 class ServerException implements Exception {
@@ -213,7 +213,7 @@ class EsimRepositoryImpl implements EsimRepository {
 }
 ```
 
-## 🎯 Feature Modules
+## Feature Modules
 
 ### 1. eSIM Management (`lib/features/esim_management/`)
 
@@ -334,7 +334,7 @@ BlocBuilder<EsimBloc, EsimState>(
 - `LanguageScreen` - Language selection
 - `MyAccountScreen` - Profile management
 
-## 🎨 UI/UX Components
+## UI/UX Components
 
 ### Shared Widgets (`lib/shared/widgets/`)
 
@@ -376,7 +376,7 @@ HelveticaNeueFont(
 )
 ```
 
-## 🧭 Navigation System
+## Navigation System
 
 ### Route Configuration
 
@@ -415,7 +415,7 @@ class RouteGuard {
 }
 ```
 
-## 🎨 Design System
+## Design System
 
 ### Colors (`lib/constants/app_colors.dart`)
 
@@ -762,7 +762,7 @@ flutter run --profile
 flutter run --enable-software-rendering
 ```
 
-## 🚀 Future Roadmap
+## Future Roadmap
 
 ### Phase 1: Core Stability
 - [x] ✅ **Complete Data Layer** - Clean Architecture implementation
@@ -788,7 +788,7 @@ flutter run --enable-software-rendering
 - [ ] **Compliance** - GDPR, CCPA support
 - [ ] **White-label Solution** - Customizable branding
 
-## 📚 Additional Resources
+## Additional Resources
 
 ### Architecture References
 - [Clean Architecture by Uncle Bob](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)

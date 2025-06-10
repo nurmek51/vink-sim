@@ -1,7 +1,7 @@
 import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
-import 'package:flex_travel_sim/features/esim_management/cubit/esim_setup_cubit.dart';
+import 'package:flex_travel_sim/features/esim_management/bloc/esim_setup_bloc.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/another_device_selected_body.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/bottom_setup_container.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/lazy_row.dart';
@@ -25,7 +25,7 @@ class EsimSetupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => EsimSetupCubit(),
+      create: (_) => EsimSetupBloc(),
       child: Scaffold(
         backgroundColor: const Color(0xFFE7EFF7),
         body: SingleChildScrollView(
@@ -61,23 +61,21 @@ class EsimSetupPage extends StatelessWidget {
                           color: const Color(0xFF363C45),
                         ),
                         const SizedBox(height: 20),
-                        BlocBuilder<EsimSetupCubit, EsimSetupState>(
+                        BlocBuilder<EsimSetupBloc, EsimSetupState>(
                           builder: (context, state) {
                             return Center(
                               child: LazyRow(
                                 selectedIndex: state.selectedIndex,
                                 options: rowOptions,
                                 onSelectedIndex: (index) {
-                                  context.read<EsimSetupCubit>().selectOption(
-                                    index,
-                                  );
+                                  context.read<EsimSetupBloc>().add(SelectOption(index));
                                 },
                               ),
                             );
                           },
                         ),
                         // BODY
-                        BlocBuilder<EsimSetupCubit, EsimSetupState>(
+                        BlocBuilder<EsimSetupBloc, EsimSetupState>(
                           builder: (context, state) {
                             return Column(
                               children: [

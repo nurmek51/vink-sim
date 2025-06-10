@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/features/onboarding/cubit/resend_code_timer_cubit.dart';
+import 'package:flex_travel_sim/features/onboarding/bloc/resend_code_timer_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,14 +9,14 @@ class ResendCodeTimer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ResendCodeTimerCubit(),
-      child: BlocBuilder<ResendCodeTimerCubit, ResendCodeTimerState>(
+      create: (_) => ResendCodeTimerBloc(),
+      child: BlocBuilder<ResendCodeTimerBloc, ResendCodeTimerState>(
         builder: (context, state) {
           return Center(
             child: state.canResend
               ? GestureDetector(
                   onTap: () {
-                    context.read<ResendCodeTimerCubit>().resendCode();
+                    context.read<ResendCodeTimerBloc>().add(const ResendCode());
                     onResend?.call();
                   },
                   child: Container(
