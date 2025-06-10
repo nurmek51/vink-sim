@@ -1,8 +1,7 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
-import 'package:flex_travel_sim/features/main_flow_screen/bottom_sheet_content.dart';
+import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/guide_page/components/widgets/custom_list_tile.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +15,7 @@ class TableViewCells extends StatelessWidget {
         imagePath: 'guide_table_view1',
         containerColor: AppColors.guideTable1,
         listText: AppLocalization.tariffsByCountries,
-        onTap:() {
+        onTap: () {
           openTariffsAndCountriesPage(context);
         },
       ),
@@ -33,9 +32,8 @@ class TableViewCells extends StatelessWidget {
         containerColor: AppColors.guideTable3,
         listText: AppLocalization.smthMore,
         onTap: () {
-          // JUST FOR TESTING PAGE 112 !
           openEsimSetupPage(context);
-        },        
+        },
       ),
       CustomListTile(
         imagePath: 'guide_table_view4',
@@ -59,20 +57,17 @@ class TableViewCells extends StatelessWidget {
                   ),
                 ),
           );
-        }
+        },
       ),
     ];
 
     final List<Widget> children = [];
-    
+
     for (int i = 0; i < tiles.length; i++) {
       children.add(tiles[i]);
       children.add(const Divider(indent: 45, height: 1, thickness: 1));
-    }   
-    
-    return Column(
-      children: children,
-    );
+    }
 
+    return Column(children: children);
   }
 }

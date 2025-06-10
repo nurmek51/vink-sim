@@ -22,7 +22,18 @@ class WhatsappTile extends StatefulWidget {
 
 class _WhatsappTileState extends State<WhatsappTile> {
   String _phoneDigits = '';
-  String _formatted = '';
+  String _formattedPhone = '';
+
+  bool get _isValidPhone {
+    return _phoneDigits.length >= 11 && _phoneDigits.startsWith('7');
+  }
+
+  void _onPhoneChanged(String digits, String formatted) {
+    setState(() {
+      _phoneDigits = digits;
+      _formattedPhone = formatted;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +42,10 @@ class _WhatsappTileState extends State<WhatsappTile> {
       backgroundColor: AppColors.backgroundColorDark,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.backgroundColorLight),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: AppColors.backgroundColorLight,
+          ),
           onPressed: widget.appBarPop,
         ),
         elevation: 0,
@@ -83,21 +97,21 @@ class _WhatsappTileState extends State<WhatsappTile> {
               ),
             ),
             const SizedBox(height: 20),
-            MobileNumberField(
-              onChanged: (digits, formatted) {
-                setState(() {
-                  _phoneDigits = digits;
-                  _formatted = formatted;
-                });
-              },
-            ),
+            MobileNumberField(onChanged: _onPhoneChanged),
             const SizedBox(height: 20),
             RegistrationContainer(
-              onTap: _phoneDigits.length >= 7 ? () => widget.onNext(_formatted) : null,
+              onTap:
+                  _isValidPhone ? () => widget.onNext(_formattedPhone) : null,
               buttonText: AppLocalization.authAndRegistration,
-              buttonTextColor: _phoneDigits.length >= 7 ? AppColors.backgroundColorLight : const Color(0x4DFFFFFF),
-              color: _phoneDigits.length >= 7 ? AppColors.accentBlue : const Color(0x4D808080),
-              arrowForward: _phoneDigits.length >= 7 ? true : false,
+              buttonTextColor:
+                  _isValidPhone
+                      ? AppColors.backgroundColorLight
+                      : const Color(0x4DFFFFFF),
+              color:
+                  _isValidPhone
+                      ? AppColors.accentBlue
+                      : const Color(0x4D808080),
+              arrowForward: _isValidPhone,
             ),
             const Spacer(),
             RegistrationContainer(

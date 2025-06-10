@@ -50,7 +50,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
     return BlocBuilder<WelcomeCubit, WelcomeState>(
       builder: (context, state) {
-        // Control animation based on state
         if (state.isAnimating) {
           _controller.repeat(reverse: true);
         } else {

@@ -1,6 +1,6 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
-import 'package:flex_travel_sim/features/main_flow_screen/bottom_sheet_content.dart';
+import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/icon_container.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';

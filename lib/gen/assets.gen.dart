@@ -247,10 +247,6 @@ class $AssetsIconsFigma112Gen {
   AssetGenImage get anotherStep5 =>
       const AssetGenImage('assets/icons/figma112/another_step_5.jpg');
 
-  /// File path: assets/icons/figma112/apple_logo.svg
-  SvgGenImage get appleLogo =>
-      const SvgGenImage('assets/icons/figma112/apple_logo.svg');
-
   /// File path: assets/icons/figma112/important_step.jpg
   AssetGenImage get importantStep =>
       const AssetGenImage('assets/icons/figma112/important_step.jpg');
@@ -293,7 +289,6 @@ class $AssetsIconsFigma112Gen {
     anotherStep32,
     anotherStep2,
     anotherStep5,
-    appleLogo,
     importantStep,
     manualStep14,
     manualStep15,

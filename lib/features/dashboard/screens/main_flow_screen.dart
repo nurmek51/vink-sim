@@ -34,19 +34,18 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(16),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        child: SizedBox(
-          width: double.infinity,
-          child: BottomSheetContent(),
-        ),
-      ),
+      builder:
+          (context) => Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              child: BottomSheetContent(),
+            ),
+          ),
     ).then((_) {
       context.read<MainFlowBloc>().add(HideBottomSheetEvent());
     });
@@ -69,14 +68,15 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                     avatarOnTap: () => openMyAccountScreen(context),
                   ),
                   const SizedBox(height: 15),
-                  // Карусель кругов eSIM
                   SizedBox(
                     height: 320,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: state.progressValues.length,
                       onPageChanged: (index) {
-                        context.read<MainFlowBloc>().add(PageChangedEvent(index));
+                        context.read<MainFlowBloc>().add(
+                          PageChangedEvent(index),
+                        );
                       },
                       itemBuilder: (context, index) {
                         final value = state.progressValues[index];
@@ -87,14 +87,16 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                           child: PercentageWidget(
                             progressValue: value,
                             color: ProgressColorUtils.getProgressColor(value),
-                            backgroundColor: ProgressColorUtils.getProgressBackgroundColor(value),
+                            backgroundColor:
+                                ProgressColorUtils.getProgressBackgroundColor(
+                                  value,
+                                ),
                           ),
                         );
                       },
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Индикаторы страниц
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
@@ -105,7 +107,10 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          color: state.currentPage == index ? Colors.blue : Colors.grey,
+                          color:
+                              state.currentPage == index
+                                  ? Colors.blue
+                                  : Colors.grey,
                           shape: BoxShape.circle,
                         ),
                       ),

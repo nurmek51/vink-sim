@@ -61,7 +61,6 @@ class EsimSetupPage extends StatelessWidget {
                           color: const Color(0xFF363C45),
                         ),
                         const SizedBox(height: 20),
-                        // Scrollable element
                         BlocBuilder<EsimSetupCubit, EsimSetupState>(
                           builder: (context, state) {
                             return Center(
@@ -99,7 +98,6 @@ class EsimSetupPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // end line
                 const SizedBox(height: 20),
                 const BottomSetupContainer(),
               ],

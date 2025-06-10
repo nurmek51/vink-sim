@@ -19,7 +19,7 @@ class AccountWidget extends StatelessWidget {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
-      focusColor: Colors.transparent,      
+      focusColor: Colors.transparent,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,7 +32,6 @@ class AccountWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(title, style: TextStyle(fontSize: 20)),
-                    // const Spacer(),
                     const Icon(Icons.arrow_forward_ios, color: Colors.black26),
                   ],
                 ),

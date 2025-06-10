@@ -11,7 +11,6 @@ class GuidePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FIGMA NUMBER - 141
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

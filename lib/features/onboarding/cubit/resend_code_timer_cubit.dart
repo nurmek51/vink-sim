@@ -21,32 +21,36 @@ class ResendCodeTimerCubit extends Cubit<ResendCodeTimerState> {
   static const int _startSeconds = 60;
   Timer? _timer;
 
-  ResendCodeTimerCubit() : super(const ResendCodeTimerState(
-    secondsRemaining: _startSeconds,
-    canResend: false,
-  )) {
+  ResendCodeTimerCubit()
+    : super(
+        const ResendCodeTimerState(
+          secondsRemaining: _startSeconds,
+          canResend: false,
+        ),
+      ) {
     _startTimer();
   }
 
   void _startTimer() {
     _timer?.cancel();
-    emit(const ResendCodeTimerState(
-      secondsRemaining: _startSeconds,
-      canResend: false,
-    ));
+    emit(
+      const ResendCodeTimerState(
+        secondsRemaining: _startSeconds,
+        canResend: false,
+      ),
+    );
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (state.secondsRemaining == 0) {
         timer.cancel();
-        emit(const ResendCodeTimerState(
-          secondsRemaining: 0,
-          canResend: true,
-        ));
+        emit(const ResendCodeTimerState(secondsRemaining: 0, canResend: true));
       } else {
-        emit(ResendCodeTimerState(
-          secondsRemaining: state.secondsRemaining - 1,
-          canResend: false,
-        ));
+        emit(
+          ResendCodeTimerState(
+            secondsRemaining: state.secondsRemaining - 1,
+            canResend: false,
+          ),
+        );
       }
     });
   }
@@ -54,7 +58,6 @@ class ResendCodeTimerCubit extends Cubit<ResendCodeTimerState> {
   void resendCode() {
     if (state.canResend) {
       _startTimer();
-      // Здесь можно добавить логику отправки кода
     }
   }
 

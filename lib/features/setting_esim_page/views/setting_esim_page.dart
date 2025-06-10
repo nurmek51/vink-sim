@@ -12,7 +12,6 @@ class SettingEsimPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FIGMA NUMBER - 143
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -28,7 +27,7 @@ class SettingEsimPage extends StatelessWidget {
                     width: 10,
                     height: 14,
                   ),
-                    
+
                   Expanded(
                     child: Center(
                       child: HelveticaneueFont(
@@ -39,17 +38,15 @@ class SettingEsimPage extends StatelessWidget {
                         color: Color(0xFF363C45),
                       ),
                     ),
-                  ),                
+                  ),
                 ],
               ),
             ),
-        
+
             const Divider(thickness: 0),
-        
-            // body
-        
-            SizedBox(height:10),
-        
+
+            SizedBox(height: 10),
+
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               child: Center(
@@ -60,29 +57,29 @@ class SettingEsimPage extends StatelessWidget {
                       stepNum: '1',
                       description: AppLocalization.balanceAndEsimActivation,
                     ),
-                        
+
                     SizedBox(height: 7),
-                        
+
                     StepsContainer(
                       iconPath: Assets.icons.figma143.step2Icon.path,
                       stepNum: '2',
                       description: AppLocalization.profileSetupGuide,
                     ),
-                        
+
                     SizedBox(height: 7),
-                        
+
                     StepsContainer(
                       iconPath: Assets.icons.figma143.step3Icon.path,
                       stepNum: '3',
                       description: AppLocalization.readyToTravelMessage,
-                    ),                                
+                    ),
                   ],
                 ),
               ),
             ),
-        
+
             Spacer(),
-        
+
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 40.0),
               child: Container(
@@ -101,9 +98,7 @@ class SettingEsimPage extends StatelessWidget {
                   ),
                 ),
               ),
-            ),  
-        
-        
+            ),
           ],
         ),
       ),
