@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flutter/material.dart';
 
 class TrafficUsageScreen extends StatelessWidget {

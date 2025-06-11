@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/authentication/widgets/mobile_number_field.dart';
 import 'package:flex_travel_sim/features/authentication/widgets/registration_container.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';

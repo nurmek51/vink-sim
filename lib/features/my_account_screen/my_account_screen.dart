@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/constants/lozalization.dart';
+import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/my_account_screen/widgets/account_widget.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';

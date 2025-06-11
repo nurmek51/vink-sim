@@ -1,8 +1,8 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-/// Универсальный контейнер с иконкой и текстом
 class IconContainer extends StatelessWidget {
   final String text;
   final String iconPath;
@@ -47,11 +47,16 @@ class IconContainer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SvgPicture.asset(
-                iconPath,
-                height: iconSize,
-                width: iconSize,
+              Container(
+                width: 37,
+                height: 37,
+                decoration: BoxDecoration(
+                  gradient: AppColors.containerGradientPrimary,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(child: SvgPicture.asset(iconPath)),
               ),
+
               const SizedBox(height: 7),
               HelveticaneueFont(
                 text: text,

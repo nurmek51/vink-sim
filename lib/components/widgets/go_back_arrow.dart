@@ -1,5 +1,5 @@
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class GoBackArrow extends StatelessWidget {
   final VoidCallback? onTap;
@@ -17,8 +17,7 @@ class GoBackArrow extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: SvgPicture.asset(
-        'assets/icons/arrow_comeback.svg',
+      child: Assets.icons.arrowComeback.svg(
         width: width,
         height: height,
       ),

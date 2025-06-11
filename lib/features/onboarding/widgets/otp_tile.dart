@@ -9,7 +9,13 @@ class OtpTile extends StatefulWidget {
   final String phoneNumber;
   final VoidCallback? onTap;
   final VoidCallback? appBarPop;
-  const OtpTile({super.key, required this.onTap, required this.appBarPop, required this.phoneNumber});
+
+  const OtpTile({
+    super.key,
+    required this.onTap,
+    required this.appBarPop,
+    required this.phoneNumber,
+  });
 
   @override
   State<OtpTile> createState() => _OtpTileState();
@@ -17,6 +23,39 @@ class OtpTile extends StatefulWidget {
 
 class _OtpTileState extends State<OtpTile> {
   String _pinCode = '';
+  bool _isLoading = false;
+
+  bool get _isValidCode => _pinCode.length == 6;
+
+  void _onCodeChanged(String code) {
+    setState(() {
+      _pinCode = code;
+    });
+  }
+
+  void _onCodeCompleted(String code) {
+    setState(() {
+      _pinCode = code;
+    });
+  }
+
+  Future<void> _confirmCode() async {
+    if (!_isValidCode || _isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (mounted) {
+      openMainFlowScreen(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +64,16 @@ class _OtpTileState extends State<OtpTile> {
       backgroundColor: AppColors.backgroundColorDark,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.backgroundColorLight),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: AppColors.backgroundColorLight,
+          ),
           onPressed: widget.appBarPop,
         ),
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
       ),
-
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 8),
         child: Column(
@@ -63,9 +104,8 @@ class _OtpTileState extends State<OtpTile> {
               ),
             ),
             const SizedBox(height: 10),
-
             const Text(
-              'ВВедите код в поле ниже',
+              'Введите код в поле ниже',
               style: TextStyle(
                 fontSize: 14,
                 color: AppColors.backgroundColorLight,
@@ -74,18 +114,21 @@ class _OtpTileState extends State<OtpTile> {
             ),
             const SizedBox(height: 10),
             PinCodeField(
-              onChanged: (pinCode) {
-                setState(() {
-                  _pinCode = pinCode;
-                });
-              },
+              onChanged: _onCodeChanged,
+              onCompleted: _onCodeCompleted,
             ),
             const SizedBox(height: 20),
             RegistrationContainer(
-              onTap: _pinCode.length == 6 ? () => openMainFlowScreen(context) : null, 
-              buttonText: 'Подтвердить код',
-              buttonTextColor: _pinCode.length == 6 ? AppColors.textColorDark : const Color(0x4DFFFFFF),
-              color:  _pinCode.length == 6 ? const Color(0xFFB3F242) : const Color(0x4D808080),
+              onTap: _isValidCode && !_isLoading ? _confirmCode : null,
+              buttonText: _isLoading ? 'Проверка...' : 'Подтвердить код',
+              buttonTextColor:
+                  _isValidCode && !_isLoading
+                      ? AppColors.textColorDark
+                      : const Color(0x4DFFFFFF),
+              color:
+                  _isValidCode && !_isLoading
+                      ? const Color(0xFFB3F242)
+                      : const Color(0x4D808080),
             ),
             const SizedBox(height: 20),
             const ResendCodeTimer(),

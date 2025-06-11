@@ -1,5 +1,7 @@
+import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/frame_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -34,24 +36,38 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     super.dispose();
   }
 
-  void _onContinue() {}
+  void _onContinue() {
+    context.read<WelcomeBloc>().add(const StopAnimation());
+  }
 
-  void _onBack() {}
+  void _onBack() {
+    context.read<WelcomeBloc>().add(const StartAnimation());
+  }
 
   @override
   Widget build(BuildContext context) {
     final mediaHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.black,
-      body: FrameContent(
-        circleSize: _circleSize,
-        mediaHeight: mediaHeight,
-        scaleAnimation: _scaleAnimation,
-        onContinueTap: _onContinue,
-        onBackTap: _onBack,
-      ),
+    return BlocBuilder<WelcomeBloc, WelcomeState>(
+      builder: (context, state) {
+        if (state.isAnimating) {
+          _controller.repeat(reverse: true);
+        } else {
+          _controller.stop();
+        }
+
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.black,
+          body: FrameContent(
+            circleSize: _circleSize,
+            mediaHeight: mediaHeight,
+            scaleAnimation: _scaleAnimation,
+            onContinueTap: _onContinue,
+            onBackTap: _onBack,
+          ),
+        );
+      },
     );
   }
 }

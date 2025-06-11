@@ -1,36 +1,37 @@
+import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PaymentTypeSelector extends StatefulWidget {
+class PaymentTypeSelector extends StatelessWidget {
   const PaymentTypeSelector({super.key});
 
-  @override
-  State<PaymentTypeSelector> createState() => _PaymentTypeSelectorState();
-}
-
-class _PaymentTypeSelectorState extends State<PaymentTypeSelector> {
-  int selectedIndex = 0;
-
-  final List<String> logos = [
-    'assets/icons/apple_pay_logo.svg',
-    'assets/icons/crypto.svg',
-    'assets/icons/cred_card.svg',
+  static const List<Map<String, String>> paymentMethods = [
+    {'logo': 'apple_pay_logo', 'method': 'apple_pay'},
+    {'logo': 'crypto', 'method': 'crypto'},
+    {'logo': 'credCard', 'method': 'credit_card'},
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(logos.length, (index) {
-        return PaymentTypeWidget(
-          logo: logos[index],
-          isSelected: selectedIndex == index,
-          onTap: () {
-            setState(() {
-              selectedIndex = index;
-            });
-          },
+    return BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
+      builder: (context, state) {
+        return Row(
+          children: List.generate(paymentMethods.length, (index) {
+            final payment = paymentMethods[index];
+            final isSelected = state.selectedPaymentMethod == payment['method'] ||
+                (state.selectedPaymentMethod.isEmpty && index == 0);
+            
+            return PaymentTypeWidget(
+              logo: payment['logo']!,
+              isSelected: isSelected,
+              onTap: () {
+                context.read<TopUpBalanceBloc>().add(SelectPaymentMethod(payment['method']!));
+              },
+            );
+          }),
         );
-      }),
+      },
     );
   }
 }
@@ -64,20 +65,42 @@ class PaymentTypeWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Color(0xFFD4D4D4), width: 1),
               ),
-              child: SvgPicture.asset(
-                logo,
-                color: isSelected ? Colors.white : Colors.black45,
-              ),
+              child: _getSvgAsset(logo, isSelected),
             ),
             if (isSelected)
               Positioned(
                 top: -6,
                 right: -6,
-                child: SvgPicture.asset('assets/icons/selected_card_icon.svg'),
+                child: Assets.icons.selectedCardIcon.svg(),
               ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _getSvgAsset(String assetName, bool isSelected) {
+    switch (assetName) {
+      case 'apple_pay_logo':
+        return Assets.icons.applePayLogo.svg(
+          colorFilter: isSelected 
+            ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
+            : ColorFilter.mode(Colors.black45, BlendMode.srcIn),
+        );
+      case 'crypto':
+        return Assets.icons.crypto.svg(
+          colorFilter: isSelected 
+            ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
+            : ColorFilter.mode(Colors.black45, BlendMode.srcIn),
+        );
+      case 'credCard':
+        return Assets.icons.credCard.svg(
+          colorFilter: isSelected 
+            ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
+            : ColorFilter.mode(Colors.black45, BlendMode.srcIn),
+        );
+      default:
+        return Container();
+    }
   }
 }
