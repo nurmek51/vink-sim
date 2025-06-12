@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 
 class PurchaseScreen extends StatelessWidget {
@@ -6,7 +7,6 @@ class PurchaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
     const horizontalPadding = EdgeInsets.symmetric(horizontal: 20);
 
     return Scaffold(
@@ -14,7 +14,12 @@ class PurchaseScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(AppLocalization.purchaseHistory, style: titleStyle),
+        title: Text(
+          AppLocalization.purchaseHistory, 
+          style: FlexTypography.headline.small.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
@@ -38,20 +43,16 @@ class PurchaseScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const Text(
+                    Text(
                       'Пополнение счета',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                      style: FlexTypography.label.medium.copyWith(
                         color: Colors.black,
                       ),
                     ),
                     const Spacer(),
-                    const Text(
+                    Text(
                       '12 апреля 2023',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                      style: FlexTypography.label.medium.copyWith(
                         color: Colors.black26,
                       ),
                     ),
