@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -66,10 +67,8 @@ class RegistrationContainer extends StatelessWidget {
                     Text(
                       buttonText,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: FlexTypography.label.medium.copyWith(
                         color: buttonTextColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
 

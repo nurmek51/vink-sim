@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 
 class FixSumButton extends StatelessWidget {
@@ -23,9 +24,8 @@ class FixSumButton extends StatelessWidget {
           ),
           child: Text(
             '$sum\$',
-            style: TextStyle(
+            style: FlexTypography.paragraph.medium.copyWith(
               color: AppColors.grayBlue,
-              fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
           ),

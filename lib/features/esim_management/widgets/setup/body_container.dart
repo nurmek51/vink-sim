@@ -30,14 +30,19 @@ class BodyContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(
+          top: 24,
+          bottom: 20,
+          left: 20,
+          right: 20,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10,
-                vertical: 4,
+                vertical: 3,
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),

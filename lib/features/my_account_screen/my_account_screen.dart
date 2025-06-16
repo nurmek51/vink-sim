@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/my_account_screen/widgets/account_widget.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
@@ -9,7 +10,6 @@ class MyAccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(fontSize: 28, fontWeight: FontWeight.bold);
     const horizontalPadding = EdgeInsets.symmetric(horizontal: 20);
 
     return Scaffold(
@@ -21,7 +21,12 @@ class MyAccountScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppLocalization.myAccount, style: titleStyle),
+              Text(
+                AppLocalization.myAccount, 
+                style: FlexTypography.headline.large.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 12),
               AccountWidget(
                 title: AppLocalization.accountSettings,

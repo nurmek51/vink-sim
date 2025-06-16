@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -15,7 +16,9 @@ class BenefitTile extends StatelessWidget {
         const SizedBox(width: 10),
         Text(
           title,
-          style: const TextStyle(fontSize: 15, color: AppColors.textColorLight),
+          style: FlexTypography.paragraph.medium.copyWith(
+            color: AppColors.textColorLight,
+          ),
         ),
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/authentication/widgets/mobile_number_field.dart';
 import 'package:flex_travel_sim/features/authentication/widgets/registration_container.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
@@ -106,22 +107,18 @@ class FrameContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 30),
-              const Text(
+              Text(
                 AppLocalization.authWithTheHelpOf,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500,
+                style: FlexTypography.headline.large.copyWith(
                   color: AppColors.backgroundColorLight,
                 ),
               ),
               const SizedBox(height: 3),
               Row(
                 children: [
-                  const Text(
+                  Text(
                     AppLocalization.whatsApp,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w500,
+                    style: FlexTypography.headline.large.copyWith(
                       color: AppColors.whatsAppColor,
                     ),
                   ),
@@ -133,10 +130,9 @@ class FrameContent extends StatelessWidget {
                 ],
               ),              
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 AppLocalization.mobileNumWhatsAppDescription,
-                style: TextStyle(
-                  fontSize: 14,
+                style: FlexTypography.paragraph.medium.copyWith(
                   color: AppColors.backgroundColorLight,
                 ),
               ),
