@@ -1,5 +1,9 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/components/widgets/blue_button.dart';
+import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class BottomSetupContainer extends StatelessWidget {
@@ -8,37 +12,91 @@ class BottomSetupContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+
       ),
-      child: Column(
-        children: [
-          Text(
-            AppLocalization.connectionWaitMessage,
-            style: const TextStyle(fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          Container(
-            alignment: Alignment.center,
-            height: 52,
-            decoration: BoxDecoration(
-              gradient: AppColors.containerGradientPrimary,
-              borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 32, bottom: 20),
+        child: Column(
+          children: [
+            Assets.icons.figma112.successIcon.svg(
+              width: 45,
+              height: 52,
             ),
-            child: const Text(
-              AppLocalization.supportChat2,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+            SizedBox(height: 15),
+            HelveticaneueFont(
+              text: AppLocalization.successMessage,
+              fontSize: 18,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            SizedBox(height: 20),
+            HelveticaneueFont(
+              text: AppLocalization.connectionWaitMessage,
+              fontSize: 16,
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
+            SizedBox(height: 20),
+            HelveticaneueFont(
+              text: AppLocalization.connectionRetryInstruction,
+              textAlign: TextAlign.center,
+              fontSize: 16,
+              color: Color(0xFF7D7D7D),
+              fontWeight: FontWeight.w500,
+            ),
+            SizedBox(height: 30),
+            GestureDetector(
+              onTap: () => NavigationService.pop(context),
+              child: BlueButton(buttonText: AppLocalization.close),
+            ),
+            SizedBox(height: 30),
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
+                  ),
+                  builder:
+                      (context) => Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: BottomSheetContent(),
+                        ),
+                      ),
+                );
+              },
+              child: Container(
+                width: 126,
+                height: 31,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color(0xFFE7EFF7),
+                ),
+                child: Center(
+                  child: HelveticaneueFont(
+                    text: AppLocalization.supportChat2,
+                    fontSize: 14,
+                    color: Color(0xFF1F6FFF),
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

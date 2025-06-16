@@ -120,10 +120,29 @@ class FastSelectedBody extends StatelessWidget {
             ),
           ),
         ),
-    
-        const SizedBox(height: 15),
-
+  
         // TO DO : Исправить боттом контейнер и добавить контейнер с ВАЖНО
+
+        SizedBox(height: 15),
+
+        BodyContainer(
+          stepTitle: AppLocalization.important, 
+          description: AppLocalization.anotherDeviceDescriptionImportant,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Assets.icons.figma112.importantStepTodo.image(
+                  width: 313,
+                  height: 292,
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
+                ),
+              ),
+            ),
+          ),
+        ),          
                  
       ],
     );

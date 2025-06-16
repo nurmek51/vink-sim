@@ -241,7 +241,39 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/important_step_todo.png
   AssetGenImage get importantStepTodo =>
-      const AssetGenImage('assets/icons/figma112/important_step_todo.png');                          
+      const AssetGenImage('assets/icons/figma112/important_step_todo.png');
+
+  /// File path: assets/icons/figma112/mobile_communication.png
+  AssetGenImage get mobileCommunication =>
+      const AssetGenImage('assets/icons/figma112/mobile_communication.png');
+
+  /// File path: assets/icons/figma112/qr_mobile_tariff.png
+  AssetGenImage get qrMobileTariff =>
+      const AssetGenImage('assets/icons/figma112/qr_mobile_tariff.png');   
+
+  /// File path: assets/icons/figma112/add_esim.png
+  AssetGenImage get addEsim =>
+      const AssetGenImage('assets/icons/figma112/add_esim.png'); 
+
+  /// File path: assets/icons/figma112/settings_by_qr.png
+  AssetGenImage get settingsByQr =>
+      const AssetGenImage('assets/icons/figma112/settings_by_qr.png');
+
+  /// File path: assets/icons/figma112/settings_by_qr.png
+  AssetGenImage get flexPlan =>
+      const AssetGenImage('assets/icons/figma112/flex_plan.png'); 
+
+  /// File path: assets/icons/figma112/settings_by_qr.png
+  AssetGenImage get forTravels =>
+      const AssetGenImage('assets/icons/figma112/for_travels.png');
+
+  /// File path: assets/icons/figma112/scan_qr.png
+  AssetGenImage get scanQr =>
+      const AssetGenImage('assets/icons/figma112/scan_qr.png');   
+
+  /// File path: assets/icons/figma112/activation_code.png
+  AssetGenImage get activationCode =>
+      const AssetGenImage('assets/icons/figma112/activation_code.png');                                                                          
 
   /// File path: assets/icons/figma112/another_step1_2.jpg
   AssetGenImage get anotherStep12 =>
@@ -321,6 +353,18 @@ class $AssetsIconsFigma112Gen {
     step3Jpg112,
     step4Jpg112,
     successIcon,
+    dataRouming,
+    chooseMobileData,
+    defaultNumber,
+    faceTimeAndImessage,
+    qrImageForManual,
+    importantStepTodo,
+    mobileCommunication,
+    qrMobileTariff,
+    settingsByQr,
+    addEsim,
+    flexPlan,
+    forTravels,
   ];
 }
 

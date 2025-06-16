@@ -63,7 +63,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.anotherStep11.image(
+                        child: Assets.icons.figma112.mobileCommunication.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -73,7 +73,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                       SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.anotherStep12.image(
+                        child: Assets.icons.figma112.addEsim.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -83,7 +83,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                       SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.anotherStep13.image(
+                        child: Assets.icons.figma112.settingsByQr.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -93,7 +93,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                       SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.anotherStep14.image(
+                        child: Assets.icons.figma112.qrMobileTariff.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -149,8 +149,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/icons/figma112/another_step3_1.jpg',
+                        child: Assets.icons.figma112.forTravels.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -160,8 +159,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                       SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/icons/figma112/another_step3_2.jpg',
+                        child: Assets.icons.figma112.flexPlan.image(
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
