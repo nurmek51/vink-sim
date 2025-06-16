@@ -27,7 +27,7 @@ class EsimSetupPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => EsimSetupBloc(),
       child: Scaffold(
-        backgroundColor: const Color(0xFFE7EFF7),
+        backgroundColor: const Color(0xFFD0DEEB),
         body: SingleChildScrollView(
           child: SafeArea(
             child: Column(
@@ -96,7 +96,7 @@ class EsimSetupPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
                 const BottomSetupContainer(),
               ],
             ),
