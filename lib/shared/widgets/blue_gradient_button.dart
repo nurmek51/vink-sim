@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 
 class BlueGradientButton extends StatelessWidget {
@@ -20,10 +21,8 @@ class BlueGradientButton extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: TextStyle(
+          style: FlexTypography.label.medium.copyWith(
             color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
           ),
         ),
       ),

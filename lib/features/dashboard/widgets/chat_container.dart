@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -42,10 +43,8 @@ class ChatContainer extends StatelessWidget {
           Center(
             child: Text(
               title,
-              style: TextStyle(
+              style: FlexTypography.label.medium.copyWith(
                 color: titleColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
               ),
             ),
           ),

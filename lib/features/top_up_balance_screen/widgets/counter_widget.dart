@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 
 class CounterWidget extends StatelessWidget {
@@ -37,7 +38,12 @@ class CounterWidget extends StatelessWidget {
               child: Icon(Icons.remove, color: Colors.white),
             ),
           ),
-          Text('$value\$', style: TextStyle(color: Colors.white, fontSize: 20)),
+          Text(
+            '$value\$', 
+            style: FlexTypography.headline.xMedium.copyWith(
+              color: Colors.white,
+            ),
+          ),
           GestureDetector(
             onTap: onIncrement,
             child: Container(

@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -6,7 +7,6 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
     const horizontalPadding = EdgeInsets.symmetric(horizontal: 20);
 
     return Scaffold(
@@ -14,7 +14,12 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(AppLocalization.accountSettings, style: titleStyle),
+        title: Text(
+          AppLocalization.accountSettings, 
+          style: FlexTypography.headline.small.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
@@ -36,18 +41,16 @@ class SettingsScreen extends StatelessWidget {
                   color: Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
                     Text(
                       'Настройки аккаунта',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                      style: FlexTypography.label.medium.copyWith(
                         color: Colors.black,
                       ),
                     ),
-                    Spacer(),
-                    Icon(Icons.arrow_forward_ios, size: 16),
+                    const Spacer(),
+                    const Icon(Icons.arrow_forward_ios, size: 16),
                   ],
                 ),
               ),

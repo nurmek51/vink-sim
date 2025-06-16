@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -75,19 +76,15 @@ class _TopUpBalanceView extends StatelessWidget {
 
   Widget _buildTitle() => Text(
     'Пополнить баланс',
-    style: TextStyle(
+    style: FlexTypography.headline.large.copyWith(
       color: AppColors.grayBlue,
-      fontSize: 28,
-      fontWeight: FontWeight.w500,
     ),
   );
 
   Widget _buildSubtitle() => Text(
     'Введите сумму, чтобы подключить \nFlex Travel eSIM',
-    style: TextStyle(
+    style: FlexTypography.label.medium.copyWith(
       color: AppColors.grayBlue,
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
     ),
   );
 
@@ -118,29 +115,36 @@ class _TopUpBalanceView extends StatelessWidget {
         Text.rich(
           TextSpan(
             text: 'Flex Travel eSIM работает ',
-            style: const TextStyle(color: Colors.black, fontSize: 15),
-            children: const [
+            style: FlexTypography.paragraph.medium.copyWith(color: Colors.black),
+            children: [
               TextSpan(
                 text: 'по всему миру.\n',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: FlexTypography.paragraph.medium.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              TextSpan(text: 'согласно тарифам страны присутствия.\n'),
+              TextSpan(
+                text: 'согласно тарифам страны присутствия.\n',
+                style: FlexTypography.paragraph.medium.copyWith(color: Colors.black),
+              ),
             ],
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           '15\$ на балансе, это:',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          style: FlexTypography.paragraph.medium.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const TariffScrollView(),
         const SizedBox(height: 20),
         GestureDetector(
           onTap: () => openTariffsAndCountriesPage(context),
-          child: const Text(
+          child: Text(
             'Все страны и тарифы',
-            style: TextStyle(
-              fontSize: 15,
+            style: FlexTypography.paragraph.medium.copyWith(
               color: Colors.blueAccent,
               fontWeight: FontWeight.bold,
             ),
@@ -150,9 +154,11 @@ class _TopUpBalanceView extends StatelessWidget {
     ),
   );
 
-  Widget _buildPaymentTitle() => const Text(
+  Widget _buildPaymentTitle() => Text(
     'Выберите способ оплаты',
-    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    style: FlexTypography.headline.medium.copyWith(
+      fontWeight: FontWeight.bold,
+    ),
   );
 
   Widget _buildAutoTopUpCard() => Container(
@@ -164,18 +170,20 @@ class _TopUpBalanceView extends StatelessWidget {
     ),
     child: Row(
       children: [
-        const Expanded(
+        Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Автопополение',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                style: FlexTypography.paragraph.medium.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 'Баланс будет пополняться автоматически \nна 15\$, чтобы вы не потеряли доступ во \nвремя путешествияы',
-                style: TextStyle(fontSize: 11),
+                style: FlexTypography.paragraph.small,
               ),
             ],
           ),

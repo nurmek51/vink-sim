@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,14 +8,17 @@ class LanguageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text('Language', style: titleStyle),
+        title: Text(
+          'Language', 
+          style: FlexTypography.headline.small.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1),
@@ -63,7 +67,10 @@ class LanguageButton extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(language, style: TextStyle(fontSize: 20)),
+                    Text(
+                      language, 
+                      style: FlexTypography.headline.xMedium,
+                    ),
                     const Spacer(),
                   ],
                 ),

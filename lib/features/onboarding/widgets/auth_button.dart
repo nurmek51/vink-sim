@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 
 class AuthButton extends StatelessWidget {
@@ -15,18 +16,16 @@ class AuthButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
           border: Border.all(color: Colors.white, width: 1.5),
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Начать',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
+              style: FlexTypography.label.medium.copyWith(
                 color: Colors.white,
               ),
             ),
-            Icon(Icons.arrow_forward, color: Colors.white),
+            const Icon(Icons.arrow_forward, color: Colors.white),
           ],
         ),
       ),
