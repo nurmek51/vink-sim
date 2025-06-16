@@ -219,6 +219,30 @@ class $AssetsIconsFigma112Gen {
   AssetGenImage get anotherStep11 =>
       const AssetGenImage('assets/icons/figma112/another_step1_1.jpg');
 
+  /// File path: assets/icons/figma112/data_rouming.png
+  AssetGenImage get dataRouming =>
+      const AssetGenImage('assets/icons/figma112/data_rouming.png');    
+
+  /// File path: assets/icons/figma112/choose_mobile_data.png
+  AssetGenImage get chooseMobileData =>
+      const AssetGenImage('assets/icons/figma112/choose_mobile_data.png');
+
+  /// File path: assets/icons/figma112/default_number.png
+  AssetGenImage get defaultNumber =>
+      const AssetGenImage('assets/icons/figma112/default_number.png');
+
+  /// File path: assets/icons/figma112/facetime_imessage.png
+  AssetGenImage get faceTimeAndImessage =>
+      const AssetGenImage('assets/icons/figma112/facetime_imessage.png');
+
+  /// File path: assets/icons/figma112/qr_manual.png
+  AssetGenImage get qrImageForManual =>
+      const AssetGenImage('assets/icons/figma112/qr_manual.png');   
+
+  /// File path: assets/icons/figma112/important_step_todo.png
+  AssetGenImage get importantStepTodo =>
+      const AssetGenImage('assets/icons/figma112/important_step_todo.png');                          
+
   /// File path: assets/icons/figma112/another_step1_2.jpg
   AssetGenImage get anotherStep12 =>
       const AssetGenImage('assets/icons/figma112/another_step1_2.jpg');

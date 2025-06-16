@@ -1,7 +1,6 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class FastSelectedBody extends StatelessWidget {
@@ -35,7 +34,7 @@ class FastSelectedBody extends StatelessWidget {
           ),
         ),
     
-        const SizedBox(height: 15),
+        SizedBox(height: 15),
     
         BodyContainer(
           stepNum: '2', 
@@ -49,17 +48,19 @@ class FastSelectedBody extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.defaultNumber.image(
+                        child: Image.asset(
+                          'assets/icons/figma112/step2_112_1.jpg',
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
                           filterQuality: FilterQuality.high,
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.faceTimeAndImessage.image(
+                        child: Image.asset(
+                          'assets/icons/figma112/step2_112_2.jpg',
                           width: 271.59,
                           height: 287.61,
                           fit: BoxFit.cover,
@@ -73,7 +74,7 @@ class FastSelectedBody extends StatelessWidget {
             ),
         ),
     
-        const SizedBox(height: 15),
+        SizedBox(height: 15),
     
         BodyContainer(
           stepNum: '3', 
@@ -86,7 +87,8 @@ class FastSelectedBody extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Assets.icons.figma112.chooseMobileData.image(
+                    child: Image.asset(
+                      'assets/icons/figma112/step3_jpg_112.jpg',
                       width: 313,
                       height: 292,
                       fit: BoxFit.cover,
@@ -99,7 +101,7 @@ class FastSelectedBody extends StatelessWidget {
           ),
         ),
     
-        const SizedBox(height: 15),
+        SizedBox(height: 15),
     
         BodyContainer(
           stepNum: '4', 
@@ -109,8 +111,8 @@ class FastSelectedBody extends StatelessWidget {
             child: Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                // child: Assets.icons.figma112.step4Jpg112.image(
-                child: Assets.icons.figma112.dataRouming.image(
+                child: Image.asset(
+                  'assets/icons/figma112/step4_jpg_112.jpg',
                   width: 274.8,
                   height: 291,
                   fit: BoxFit.cover,
@@ -121,9 +123,7 @@ class FastSelectedBody extends StatelessWidget {
           ),
         ),
     
-        const SizedBox(height: 15),
-
-        // TO DO : Исправить боттом контейнер и добавить контейнер с ВАЖНО
+        SizedBox(height: 15),
                  
       ],
     );

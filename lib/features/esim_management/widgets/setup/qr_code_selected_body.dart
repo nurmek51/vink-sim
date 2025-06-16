@@ -42,7 +42,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                       borderRadius: BorderRadius.circular(16),
                       child: Stack(
                         children: [
-                          Assets.icons.figma112.anotherStep2.image(
+                          Assets.icons.figma112.qrImageForManual.image(
                             width: 228,
                             height: 228,
                             fit: BoxFit.cover,
