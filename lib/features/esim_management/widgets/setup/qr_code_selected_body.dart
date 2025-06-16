@@ -45,7 +45,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                           Assets.icons.figma112.qrImageForManual.image(
                             width: 228,
                             height: 228,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                             filterQuality: FilterQuality.high,
                           ),
                           Positioned.fill(
@@ -157,7 +157,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                         child: Assets.icons.figma112.mobileCommunication.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),
@@ -167,7 +167,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                         child: Assets.icons.figma112.addEsim.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),
@@ -177,7 +177,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                         child: Assets.icons.figma112.settingsByQr.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),
@@ -187,7 +187,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                         child: Assets.icons.figma112.qrMobileTariff.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),                                                              
@@ -215,7 +215,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                         child: Assets.icons.figma112.forTravels.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),
@@ -225,7 +225,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                         child: Assets.icons.figma112.flexPlan.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),                      
@@ -253,7 +253,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                         child: Assets.icons.figma112.defaultNumber.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),
@@ -263,7 +263,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                         child: Assets.icons.figma112.faceTimeAndImessage.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),                      
@@ -282,19 +282,14 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Assets.icons.figma112.mobileCommunication.image(
-                      width: 313,
-                      height: 292,
-                      fit: BoxFit.cover,
-                      filterQuality: FilterQuality.high,
-                    ),
-                  ),
-                ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Assets.icons.figma112.mobileCommunication.image(
+                  width: 313,
+                  height: 292,
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high,
+                ),
               ),
             ),
           ),
@@ -313,7 +308,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                 child: Assets.icons.figma112.dataRouming.image(
                   width: 313,
                   height: 292,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   filterQuality: FilterQuality.high,
                 ),
               ),
@@ -333,8 +328,8 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                 borderRadius: BorderRadius.circular(16),
                 child: Assets.icons.figma112.importantStepTodo.image(
                   width: 313,
-                  height: 292,
-                  fit: BoxFit.cover,
+                  height: 240,
+                  fit: BoxFit.contain,
                   filterQuality: FilterQuality.high,
                 ),
               ),

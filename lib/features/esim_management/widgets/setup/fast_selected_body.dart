@@ -52,7 +52,7 @@ class FastSelectedBody extends StatelessWidget {
                         child: Assets.icons.figma112.defaultNumber.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),
@@ -62,7 +62,7 @@ class FastSelectedBody extends StatelessWidget {
                         child: Assets.icons.figma112.faceTimeAndImessage.image(
                           width: 271.59,
                           height: 287.61,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           filterQuality: FilterQuality.high,
                         ),
                       ),                      
@@ -81,19 +81,14 @@ class FastSelectedBody extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Assets.icons.figma112.chooseMobileData.image(
-                      width: 313,
-                      height: 292,
-                      fit: BoxFit.cover,
-                      filterQuality: FilterQuality.high,
-                    ),
-                  ),
-                ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Assets.icons.figma112.chooseMobileData.image(
+                  width: 313,
+                  height: 292,
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high,
+                ),
               ),
             ),
           ),
@@ -109,19 +104,16 @@ class FastSelectedBody extends StatelessWidget {
             child: Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                // child: Assets.icons.figma112.step4Jpg112.image(
                 child: Assets.icons.figma112.dataRouming.image(
                   width: 274.8,
                   height: 291,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   filterQuality: FilterQuality.high,
                 ),
               ),
             ),
           ),
         ),
-  
-        // TO DO : Исправить боттом контейнер и добавить контейнер с ВАЖНО
 
         SizedBox(height: 15),
 
@@ -135,8 +127,8 @@ class FastSelectedBody extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 child: Assets.icons.figma112.importantStepTodo.image(
                   width: 313,
-                  height: 292,
-                  fit: BoxFit.cover,
+                  height: 240,
+                  fit: BoxFit.contain,
                   filterQuality: FilterQuality.high,
                 ),
               ),
