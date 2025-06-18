@@ -1,3 +1,9 @@
+import 'package:flex_travel_sim/features/authentication/data/data_sources/auth_local_data_source.dart';
+import 'package:flex_travel_sim/features/authentication/data/data_sources/auth_remote_data_source.dart';
+import 'package:flex_travel_sim/features/authentication/domain/repo/auth_repository.dart';
+import 'package:flex_travel_sim/features/authentication/data/repo/auth_repository_impl.dart';
+import 'package:flex_travel_sim/features/authentication/domain/use_cases/login_use_case.dart';
+import 'package:flex_travel_sim/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/core/storage/local_storage.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_local_data_source.dart';
@@ -52,6 +58,7 @@ class ServiceLocator {
     // Feature dependencies
     await _initEsimManagement();
     await _initUserAccount();
+    await _initAuth();
     await _initTariffsAndCountries();
 
     _isInitialized = true;
@@ -64,7 +71,7 @@ class ServiceLocator {
     // API Client
     register<ApiClient>(
       ApiClient(
-        baseUrl: 'https://your-api-domain.com/api/v1', // 🔧 ЗАМЕНИТЕ НА ВАШ API URL
+        baseUrl: 'https://dev685.simple-dev-test.com', // 🔧 ЗАМЕНИТЕ НА ВАШ API URL
         client: get<http.Client>(),
       ),
     );
@@ -72,6 +79,34 @@ class ServiceLocator {
     // Local Storage
     register<LocalStorage>(SharedPreferencesStorage());
   }
+
+Future<void> _initAuth() async {
+  register<AuthRemoteDataSource>(
+    AuthRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+  );
+
+  register<AuthLocalDataSource>(
+    AuthLocalDataSourceImpl(
+      localStorage: get<LocalStorage>(),
+    ),
+  );  
+
+  register<AuthRepository>(
+    AuthRepositoryImpl(
+      remoteDataSource: get<AuthRemoteDataSource>(),
+      localDataSource: get<AuthLocalDataSource>(),
+    ),
+  );
+
+  register<LoginUseCase>(
+    LoginUseCase(repository: get<AuthRepository>()),
+  );
+
+  register<AuthBloc>(
+    AuthBloc(loginUseCase: get<LoginUseCase>()),
+  );
+}
+
 
   Future<void> _initEsimManagement() async {
     // Data Sources

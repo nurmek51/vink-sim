@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
+import 'package:flex_travel_sim/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
@@ -30,6 +31,8 @@ class MyApp extends StatelessWidget {
       providers: [
         // Onboarding Bloc
         BlocProvider(create: (_) => WelcomeBloc()),
+
+        BlocProvider(create: (_) => sl.get<AuthBloc>()),        
         
         // Dashboard Bloc
         BlocProvider(create: (_) => MainFlowBloc()),
