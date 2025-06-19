@@ -13,6 +13,12 @@ import 'package:flex_travel_sim/features/esim_management/domain/repositories/esi
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/activate_esim_use_case.dart';
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/get_esims_use_case.dart';
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/purchase_esim_use_case.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/data_sources/auth_by_email_local_data_source.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/data_sources/auth_by_email_remote_data_source.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/repo/auth_by_email_repository_impl.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/repo/auth_by_email_repository.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/use_cases/login_by_email_use_case.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/auth_by_email_bloc.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_local_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_remote_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/repositories/user_repository_impl.dart';
@@ -60,6 +66,7 @@ class ServiceLocator {
     await _initUserAccount();
     await _initAuth();
     await _initTariffsAndCountries();
+    await _initAuthByEmail();
 
     _isInitialized = true;
   }
@@ -80,32 +87,53 @@ class ServiceLocator {
     register<LocalStorage>(SharedPreferencesStorage());
   }
 
-Future<void> _initAuth() async {
-  register<AuthRemoteDataSource>(
-    AuthRemoteDataSourceImpl(apiClient: get<ApiClient>()),
-  );
 
-  register<AuthLocalDataSource>(
-    AuthLocalDataSourceImpl(
-      localStorage: get<LocalStorage>(),
-    ),
-  );  
+  Future<void> _initAuth() async {
+    register<AuthRemoteDataSource>(
+      AuthRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    );
 
-  register<AuthRepository>(
-    AuthRepositoryImpl(
-      remoteDataSource: get<AuthRemoteDataSource>(),
-      localDataSource: get<AuthLocalDataSource>(),
-    ),
-  );
+    register<AuthLocalDataSource>(
+      AuthLocalDataSourceImpl(localStorage: get<LocalStorage>()),
+    );
 
-  register<LoginUseCase>(
-    LoginUseCase(repository: get<AuthRepository>()),
-  );
+    register<AuthRepository>(
+      AuthRepositoryImpl(
+        remoteDataSource: get<AuthRemoteDataSource>(),
+        localDataSource: get<AuthLocalDataSource>(),
+      ),
+    );
 
-  register<AuthBloc>(
-    AuthBloc(loginUseCase: get<LoginUseCase>()),
-  );
-}
+    register<LoginUseCase>(LoginUseCase(repository: get<AuthRepository>()));
+
+    register<AuthBloc>(AuthBloc(loginUseCase: get<LoginUseCase>()));
+  }
+
+
+  Future<void> _initAuthByEmail() async {
+    register<AuthByEmailRemoteDataSource>(
+      AuthByEmailRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    );
+
+    register<AuthByEmailLocalDataSource>(
+      AuthByEmailLocalDataSourceImpl(localStorage: get<LocalStorage>()),
+    );
+
+    register<AuthByEmailRepository>(
+      AuthByEmailRepositoryImpl(
+        remoteDataSource: get<AuthByEmailRemoteDataSource>(),
+        localDataSource: get<AuthByEmailLocalDataSource>(),
+      ),
+    );
+
+    register<LoginByEmailUseCase>(
+      LoginByEmailUseCase(repository: get<AuthByEmailRepository>()),
+    );
+
+    register<AuthByEmailBloc>(
+      AuthByEmailBloc(loginByEmailUseCase: get<LoginByEmailUseCase>()),
+    );
+  }
 
 
   Future<void> _initEsimManagement() async {

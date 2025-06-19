@@ -11,11 +11,13 @@ import 'package:flutter_svg/svg.dart';
 class WhatsappTile extends StatefulWidget {
   final void Function(String) onNext; 
   final VoidCallback appBarPop;
+  final VoidCallback onEmailTap;
 
   const WhatsappTile({
     super.key,
     required this.onNext,
     required this.appBarPop,
+    required this.onEmailTap,
   });
 
   @override
@@ -146,7 +148,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
                 ),
                 const SizedBox(height: 12),
                 RegistrationContainer(
-                  onTap: () => widget.appBarPop(),
+                  onTap: widget.onEmailTap,
                   buttonText: AppLocalization.continueWithEmail,
                   buttonTextColor: AppColors.textColorLight,
                   color: AppColors.babyBlue,

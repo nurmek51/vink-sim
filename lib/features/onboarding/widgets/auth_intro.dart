@@ -19,7 +19,7 @@ class AuthIntro extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       key: const ValueKey('authIntro'),
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 8),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 50),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

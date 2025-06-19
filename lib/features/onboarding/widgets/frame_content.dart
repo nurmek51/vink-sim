@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/screens/auth_by_email.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/auth_intro.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/otp_tile.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
@@ -84,6 +85,12 @@ class _FrameContentState extends State<FrameContent>
     );
   }
 
+   void _goToEmailPage() {
+    _pageController.jumpToPage(3);
+  }
+
+
+
   void _goBackToIntro() {
     _pageController.animateToPage(
       0,
@@ -133,10 +140,18 @@ class _FrameContentState extends State<FrameContent>
           physics: const NeverScrollableScrollPhysics(),
           children: [
             AuthIntro(onAuthTap: _goToWhatsappPage),
-            WhatsappTile(onNext: _goToOtpPage, appBarPop: _goBackToIntro),
+            WhatsappTile(
+              onNext: _goToOtpPage,
+              appBarPop: _goBackToIntro,
+              onEmailTap: _goToEmailPage,
+            ),
             OtpTile(
               phoneNumber: _phoneForOtp,
               onTap: _goToWhatsappPage,
+              appBarPop: _goToWhatsappPage,
+            ),
+            AuthByEmail(
+              onNext: _goToOtpPage,
               appBarPop: _goToWhatsappPage,
             ),
           ],
