@@ -13,8 +13,9 @@ class ScrollContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10),
       height: 33,
       decoration: BoxDecoration(
-        color: AppColors.containerGray,
+        color: AppColors.backgroundColorLight,
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Color(0xFFD4D4D4), width: 1),
       ),
       child: RichText(
         text: TextSpan(

@@ -19,14 +19,17 @@ class PaymentTypeSelector extends StatelessWidget {
         return Row(
           children: List.generate(paymentMethods.length, (index) {
             final payment = paymentMethods[index];
-            final isSelected = state.selectedPaymentMethod == payment['method'] ||
+            final isSelected =
+                state.selectedPaymentMethod == payment['method'] ||
                 (state.selectedPaymentMethod.isEmpty && index == 0);
-            
+
             return PaymentTypeWidget(
               logo: payment['logo']!,
               isSelected: isSelected,
               onTap: () {
-                context.read<TopUpBalanceBloc>().add(SelectPaymentMethod(payment['method']!));
+                context.read<TopUpBalanceBloc>().add(
+                  SelectPaymentMethod(payment['method']!),
+                );
               },
             );
           }),
@@ -70,7 +73,7 @@ class PaymentTypeWidget extends StatelessWidget {
             if (isSelected)
               Positioned(
                 top: -6,
-                right: -6,
+                right: -1,
                 child: Assets.icons.selectedCardIcon.svg(),
               ),
           ],
@@ -83,21 +86,25 @@ class PaymentTypeWidget extends StatelessWidget {
     switch (assetName) {
       case 'apple_pay_logo':
         return Assets.icons.applePayLogo.svg(
-          colorFilter: isSelected 
-            ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
-            : ColorFilter.mode(Colors.black45, BlendMode.srcIn),
+          colorFilter:
+              isSelected
+                  ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+                  : const ColorFilter.mode(Colors.black54, BlendMode.srcIn),
         );
       case 'crypto':
         return Assets.icons.crypto.svg(
-          colorFilter: isSelected 
-            ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
-            : ColorFilter.mode(Colors.black45, BlendMode.srcIn),
+          colorFilter:
+              isSelected
+                  ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+                  : const ColorFilter.mode(Colors.black54, BlendMode.srcIn),
         );
       case 'credCard':
-        return Assets.icons.credCard.svg(
-          colorFilter: isSelected 
-            ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
-            : ColorFilter.mode(Colors.black45, BlendMode.srcIn),
+        return ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            isSelected ? Colors.white : Colors.black54,
+            BlendMode.srcIn,
+          ),
+          child: Assets.icons.credCard.svg(),
         );
       default:
         return Container();

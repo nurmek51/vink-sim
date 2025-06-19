@@ -122,7 +122,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
               borderLine: const BorderSide(color: AppColors.textColorLight),
               iconPath: Assets.icons.appleLogo.path,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             RegistrationContainer(
               onTap: () => openInitialPage(context),
               buttonText: AppLocalization.continueWithGoogle,
@@ -131,7 +131,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
               borderLine: const BorderSide(color: AppColors.textColorDark),
               iconPath: Assets.icons.googleLogo.path,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             RegistrationContainer(
               onTap: () => openInitialPage(context),
               buttonText: AppLocalization.continueWithEmail,
@@ -139,6 +139,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
               color: AppColors.babyBlue,
               iconPath: Assets.icons.emailLogo.path,
             ),
+            const SizedBox(height: 50),
           ],
         ),
       ),
