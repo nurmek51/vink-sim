@@ -15,10 +15,15 @@ import 'package:flex_travel_sim/features/esim_management/domain/use_cases/get_es
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/purchase_esim_use_case.dart';
 import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/data_sources/auth_by_email_local_data_source.dart';
 import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/data_sources/auth_by_email_remote_data_source.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/data_sources/confirm_email_remote_data_source.dart';
 import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/repo/auth_by_email_repository_impl.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/repo/confirm_email_repository_impl.dart';
 import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/repo/auth_by_email_repository.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/repo/confirm_email_repository.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/use_cases/confirm_email_use_case.dart';
 import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/use_cases/login_by_email_use_case.dart';
 import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/auth_by_email_bloc.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/confirm_email_bloc.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_local_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_remote_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/repositories/user_repository_impl.dart';
@@ -111,6 +116,9 @@ class ServiceLocator {
 
 
   Future<void> _initAuthByEmail() async {
+
+    // DataSources
+
     register<AuthByEmailRemoteDataSource>(
       AuthByEmailRemoteDataSourceImpl(apiClient: get<ApiClient>()),
     );
@@ -119,6 +127,12 @@ class ServiceLocator {
       AuthByEmailLocalDataSourceImpl(localStorage: get<LocalStorage>()),
     );
 
+    register<ConfirmEmailRemoteDataSource>(
+      ConfirmEmailRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    );    
+
+    // Repositories
+
     register<AuthByEmailRepository>(
       AuthByEmailRepositoryImpl(
         remoteDataSource: get<AuthByEmailRemoteDataSource>(),
@@ -126,13 +140,35 @@ class ServiceLocator {
       ),
     );
 
+    register<ConfirmEmailRepository>(
+      ConfirmEmailRepositoryImpl(
+        remoteDataSource: get<ConfirmEmailRemoteDataSource>(),
+      ),
+    );
+
+    // Use Cases    
+
     register<LoginByEmailUseCase>(
       LoginByEmailUseCase(repository: get<AuthByEmailRepository>()),
     );
 
+    register<ConfirmEmailUseCase>(
+      ConfirmEmailUseCase(repository: get<ConfirmEmailRepository>()),
+    );
+
+    // Blocks    
+
     register<AuthByEmailBloc>(
       AuthByEmailBloc(loginByEmailUseCase: get<LoginByEmailUseCase>()),
     );
+
+    register<ConfirmEmailBloc>(
+      ConfirmEmailBloc(
+        confirmEmailUseCase: get<ConfirmEmailUseCase>(),
+        localDataSource: get<AuthByEmailLocalDataSource>(),
+      ),
+    );    
+
   }
 
 

@@ -1,9 +1,11 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/features/authentication/widgets/registration_container.dart';
+import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/confirm_email_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pin_code_field.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/resend_code_timer.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OtpTile extends StatefulWidget {
   final String phoneNumber;
@@ -39,28 +41,32 @@ class _OtpTileState extends State<OtpTile> {
     });
   }
 
-  Future<void> _confirmCode() async {
-    if (!_isValidCode || _isLoading) return;
+  // Future<void> _confirmCode() async {
+  //   if (!_isValidCode || _isLoading) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
 
-    await Future.delayed(const Duration(seconds: 1));
+  //   await Future.delayed(const Duration(seconds: 1));
 
-    setState(() {
-      _isLoading = false;
-    });
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
 
-    if (mounted) {
-      openMainFlowScreen(context);
-    }
+  //   if (mounted) {
+  //     openMainFlowScreen(context);
+  //   }
+  // }
+
+  void _confirmCode() {
+    context.read<ConfirmEmailBloc>().add(ConfirmEmailSubmitted(_pinCode));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorDark,
       appBar: AppBar(
         leading: IconButton(
@@ -74,90 +80,109 @@ class _OtpTileState extends State<OtpTile> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Введите код',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w500,
-                color: AppColors.backgroundColorLight,
-              ),
+      body: BlocConsumer<ConfirmEmailBloc, ConfirmEmailState>(
+        listener: (context, state) {
+          if (state is ConfirmEmailSuccess) {
+            openMainFlowScreen(context);
+          } else if (state is ConfirmEmailFailure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
+          }
+        },
+        builder: (context, state) {
+          _isLoading = state is ConfirmEmailLoading;
+          return Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: 5,
+              bottom: 8,
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Мы отправили сообщение с кодом на номер',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.backgroundColorLight,
-              ),
-            ),
-            Text(
-              widget.phoneNumber,
-              style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.backgroundColorLight,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Введите код в поле ниже',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.backgroundColorLight,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            PinCodeField(
-              onChanged: _onCodeChanged,
-              onCompleted: _onCodeCompleted,
-            ),
-            const SizedBox(height: 20),
-            RegistrationContainer(
-              onTap: _isValidCode && !_isLoading ? _confirmCode : null,
-              buttonText: _isLoading ? 'Проверка...' : 'Подтвердить код',
-              buttonTextColor:
-                  _isValidCode && !_isLoading
-                      ? AppColors.textColorDark
-                      : const Color(0x4DFFFFFF),
-              color:
-                  _isValidCode && !_isLoading
-                      ? const Color(0xFFB3F242)
-                      : const Color(0x4D808080),
-            ),
-            const SizedBox(height: 20),
-            const ResendCodeTimer(),
-            const Spacer(),
-            Center(
-              child: Container(
-                height: 40,
-                width: 231,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Введите код',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.backgroundColorLight,
+                  ),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: widget.onTap,
-                  child: const Text(
-                    'Войти другим способом',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textColorLight,
-                      fontWeight: FontWeight.w600,
+                const SizedBox(height: 10),
+                const Text(
+                  'Мы отправили сообщение с кодом на номер',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.backgroundColorLight,
+                  ),
+                ),
+                Text(
+                  widget.phoneNumber,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: AppColors.backgroundColorLight,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Введите код в поле ниже',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.backgroundColorLight,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                PinCodeField(
+                  onChanged: _onCodeChanged,
+                  onCompleted: _onCodeCompleted,
+                ),
+                const SizedBox(height: 20),
+                RegistrationContainer(
+                  onTap: _isValidCode && !_isLoading ? _confirmCode : null,
+                  buttonText: _isLoading ? 'Проверка...' : 'Подтвердить код',
+                  buttonTextColor:
+                      _isValidCode && !_isLoading
+                          ? AppColors.textColorDark
+                          : const Color(0x4DFFFFFF),
+                  color:
+                      _isValidCode && !_isLoading
+                          ? const Color(0xFFB3F242)
+                          : const Color(0x4D808080),
+                ),
+                const SizedBox(height: 20),
+                const ResendCodeTimer(),
+                const Spacer(),
+                Center(
+                  child: Container(
+                    height: 40,
+                    width: 231,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text(
+                        'Войти другим способом',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.textColorLight,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
