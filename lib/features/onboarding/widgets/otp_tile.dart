@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/features/authentication/presentation/bloc/confirm_number_bloc.dart';
 import 'package:flex_travel_sim/features/authentication/widgets/registration_container.dart';
 import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/confirm_email_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pin_code_field.dart';
@@ -41,32 +42,23 @@ class _OtpTileState extends State<OtpTile> {
     });
   }
 
-  // Future<void> _confirmCode() async {
-  //   if (!_isValidCode || _isLoading) return;
+  // To use it for confirm email uncode this !!!
 
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-
-  //   await Future.delayed(const Duration(seconds: 1));
-
-  //   setState(() {
-  //     _isLoading = false;
-  //   });
-
-  //   if (mounted) {
-  //     openMainFlowScreen(context);
-  //   }
+  // void _confirmCode() {
+  //   context.read<ConfirmEmailBloc>().add(ConfirmEmailSubmitted(_pinCode));
   // }
 
+
+  // For confirm number use this !!!
+
   void _confirmCode() {
-    context.read<ConfirmEmailBloc>().add(ConfirmEmailSubmitted(_pinCode));
-  }
+    context.read<ConfirmNumberBloc>().add(ConfirmNumberSubmitted(_pinCode));
+  }  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorDark,
       appBar: AppBar(
         leading: IconButton(
@@ -80,18 +72,23 @@ class _OtpTileState extends State<OtpTile> {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: BlocConsumer<ConfirmEmailBloc, ConfirmEmailState>(
+      
+      // ConfirmEmailBloc for email !!
+
+      body: BlocConsumer<ConfirmNumberBloc, ConfirmNumberState>(
         listener: (context, state) {
-          if (state is ConfirmEmailSuccess) {
+          if (state is ConfirmNumberSuccess) {
             openMainFlowScreen(context);
-          } else if (state is ConfirmEmailFailure) {
+          } else if (state is ConfirmNumberFailure) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
-          _isLoading = state is ConfirmEmailLoading;
+          // _isLoading = state is ConfirmEmailLoading;
+          
+          _isLoading = state is ConfirmNumberLoading;
           return Padding(
             padding: const EdgeInsets.only(
               left: 20,

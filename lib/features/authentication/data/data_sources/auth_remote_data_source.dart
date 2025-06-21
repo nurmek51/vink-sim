@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flex_travel_sim/core/network/api_client.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class AuthRemoteDataSource {
   Future<String?> login(String phone);
@@ -21,6 +22,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         },
         body: {'phone': phone},
       );
+
+      final token = response['token'];  
+      if (kDebugMode) {
+        print('TOKEN FROM SERVER: $token');
+      }
 
       return response['token'];
     } catch (e) {

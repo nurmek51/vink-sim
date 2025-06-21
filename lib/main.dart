@@ -1,6 +1,7 @@
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flex_travel_sim/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:flex_travel_sim/features/authentication/presentation/bloc/confirm_number_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/auth_by_email_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/confirm_email_bloc.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,9 @@ class MyApp extends StatelessWidget {
         // Onboarding Bloc
         BlocProvider(create: (_) => WelcomeBloc()),
 
-        BlocProvider(create: (_) => sl.get<AuthBloc>()),     
+        BlocProvider(create: (_) => sl.get<AuthBloc>()),
+
+        BlocProvider(create: (_) => sl.get<ConfirmNumberBloc>()),
 
         BlocProvider(create: (_) => sl.get<AuthByEmailBloc>()),
 

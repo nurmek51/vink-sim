@@ -1,11 +1,16 @@
 import 'package:flex_travel_sim/features/authentication/data/data_sources/auth_local_data_source.dart';
 import 'package:flex_travel_sim/features/authentication/data/data_sources/auth_remote_data_source.dart';
+import 'package:flex_travel_sim/features/authentication/data/data_sources/confirm_number_remote_data_source.dart';
+import 'package:flex_travel_sim/features/authentication/data/repo/confirm_number_repository_impl.dart';
 import 'package:flex_travel_sim/features/authentication/domain/repo/auth_repository.dart';
 import 'package:flex_travel_sim/features/authentication/data/repo/auth_repository_impl.dart';
+import 'package:flex_travel_sim/features/authentication/domain/repo/confirm_number_repository.dart';
+import 'package:flex_travel_sim/features/authentication/domain/use_cases/confirm_number_use_case.dart';
 import 'package:flex_travel_sim/features/authentication/domain/use_cases/login_use_case.dart';
 import 'package:flex_travel_sim/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/core/storage/local_storage.dart';
+import 'package:flex_travel_sim/features/authentication/presentation/bloc/confirm_number_bloc.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_local_data_source.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_remote_data_source.dart';
 import 'package:flex_travel_sim/features/esim_management/data/repositories/esim_repository_impl.dart';
@@ -94,6 +99,9 @@ class ServiceLocator {
 
 
   Future<void> _initAuth() async {
+
+    // DataSources
+
     register<AuthRemoteDataSource>(
       AuthRemoteDataSourceImpl(apiClient: get<ApiClient>()),
     );
@@ -102,6 +110,12 @@ class ServiceLocator {
       AuthLocalDataSourceImpl(localStorage: get<LocalStorage>()),
     );
 
+    register<ConfirmNumberRemoteDataSource>(
+      ConfirmNumberRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    );        
+
+    // Repositories
+    
     register<AuthRepository>(
       AuthRepositoryImpl(
         remoteDataSource: get<AuthRemoteDataSource>(),
@@ -109,9 +123,29 @@ class ServiceLocator {
       ),
     );
 
+    register<ConfirmNumberRepository>(
+      ConfirmNumberRepositoryImpl(
+        remoteDataSource: get<ConfirmNumberRemoteDataSource>(),
+      ),
+    );
+
+    // Use Cases  
+
     register<LoginUseCase>(LoginUseCase(repository: get<AuthRepository>()));
 
+    register<ConfirmNumberUseCase>(ConfirmNumberUseCase(repository: get<ConfirmNumberRepository>()));    
+
+    // Blocs 
+
     register<AuthBloc>(AuthBloc(loginUseCase: get<LoginUseCase>()));
+
+    register<ConfirmNumberBloc>(
+      ConfirmNumberBloc(
+        confirmNumberUseCase: get<ConfirmNumberUseCase>(),
+        localDataSource: get<AuthLocalDataSource>(),
+      ),
+    );    
+    
   }
 
 
@@ -156,7 +190,7 @@ class ServiceLocator {
       ConfirmEmailUseCase(repository: get<ConfirmEmailRepository>()),
     );
 
-    // Blocks    
+    // Blocs    
 
     register<AuthByEmailBloc>(
       AuthByEmailBloc(loginByEmailUseCase: get<LoginByEmailUseCase>()),
