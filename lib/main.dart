@@ -21,7 +21,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load .env variables
-  await dotenv.load(fileName: "assets/.env");
+  await dotenv.load(
+    fileName: '.env',
+  );
 
   // Initialize dependency injection
   await sl.init();
