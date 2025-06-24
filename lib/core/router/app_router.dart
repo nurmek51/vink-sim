@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/features/authentication/presentation/screens/auth_screen.dart';
+import 'package:flex_travel_sim/features/auth/presentation/screens/auth_screen.dart';
 import 'package:flex_travel_sim/features/language_screen/language_screen.dart';
 import 'package:flex_travel_sim/features/dashboard/screens/main_flow_screen.dart';
 import 'package:flex_travel_sim/features/my_account_screen/my_account_screen.dart';

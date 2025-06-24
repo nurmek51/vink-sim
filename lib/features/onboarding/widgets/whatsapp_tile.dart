@@ -1,15 +1,17 @@
-import 'package:flex_travel_sim/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
+import 'package:flex_travel_sim/features/auth/domain/entities/credentials.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
-import 'package:flex_travel_sim/features/authentication/widgets/mobile_number_field.dart';
-import 'package:flex_travel_sim/features/authentication/widgets/registration_container.dart';
+import 'package:flex_travel_sim/features/auth/presentation/widgets/mobile_number_field.dart';
+import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter_svg/svg.dart';
 
 class WhatsappTile extends StatefulWidget {
-  final void Function(String) onNext; 
+  final void Function(String, ConfirmMethod) onNext;
   final VoidCallback appBarPop;
   final VoidCallback onEmailTap;
 
@@ -57,7 +59,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            widget.onNext(_formattedPhone); // вызываем onNext при успехе
+            widget.onNext(_formattedPhone, ConfirmMethod.byPhone);
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error)),
@@ -117,7 +119,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
                   onTap: !_isValidPhone || isLoading
                       ? null
                       : () {
-                          context.read<AuthBloc>().add(AuthRequested(_phoneDigits)); 
+                          context.read<AuthBloc>().add(AuthRequested(PhoneCredentials(_phoneDigits))); 
                         },
                   buttonText: AppLocalization.authAndRegistration,
                   buttonTextColor: _isValidPhone

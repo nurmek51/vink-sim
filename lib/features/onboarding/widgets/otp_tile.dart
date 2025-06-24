@@ -1,7 +1,7 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/features/authentication/presentation/bloc/confirm_number_bloc.dart';
-import 'package:flex_travel_sim/features/authentication/widgets/registration_container.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/confirm_email_bloc.dart';
+import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/confirm_bloc.dart';
+import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pin_code_field.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/resend_code_timer.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
@@ -12,12 +12,14 @@ class OtpTile extends StatefulWidget {
   final String phoneNumber;
   final VoidCallback? onTap;
   final VoidCallback? appBarPop;
+  final ConfirmMethod method;
 
   const OtpTile({
     super.key,
     required this.onTap,
     required this.appBarPop,
     required this.phoneNumber,
+    required this.method,
   });
 
   @override
@@ -42,17 +44,14 @@ class _OtpTileState extends State<OtpTile> {
     });
   }
 
-  // To use it for confirm email uncode this !!!
-
-  // void _confirmCode() {
-  //   context.read<ConfirmEmailBloc>().add(ConfirmEmailSubmitted(_pinCode));
-  // }
-
-
-  // For confirm number use this !!!
-
   void _confirmCode() {
-    context.read<ConfirmNumberBloc>().add(ConfirmNumberSubmitted(_pinCode));
+    context.read<ConfirmBloc>().add(
+      ConfirmSubmitted(
+        // method: ConfirmMethod.byEmail,
+        method: widget.method,
+        ticketCode: _pinCode,
+      ),
+    );
   }  
 
   @override
@@ -73,28 +72,24 @@ class _OtpTileState extends State<OtpTile> {
         backgroundColor: Colors.transparent,
       ),
       
-      // ConfirmEmailBloc for email !!
-
-      body: BlocConsumer<ConfirmNumberBloc, ConfirmNumberState>(
+      body: BlocConsumer<ConfirmBloc, ConfirmState>(
         listener: (context, state) {
-          if (state is ConfirmNumberSuccess) {
+          if (state is ConfirmSuccess) {
             openMainFlowScreen(context);
-          } else if (state is ConfirmNumberFailure) {
+          } else if (state is ConfirmFailure) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
-        builder: (context, state) {
-          // _isLoading = state is ConfirmEmailLoading;
-          
-          _isLoading = state is ConfirmNumberLoading;
+        builder: (context, state) {          
+          _isLoading = state is ConfirmLoading;
           return Padding(
             padding: const EdgeInsets.only(
               left: 20,
               right: 20,
               top: 5,
-              bottom: 8,
+              bottom: 50,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

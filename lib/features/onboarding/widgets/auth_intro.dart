@@ -1,7 +1,7 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/authentication/widgets/auth_intro_bottomsheet_content.dart';
+import 'package:flex_travel_sim/features/auth/presentation/widgets/auth_intro_bottomsheet_content.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/auth_button.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/country_list_button.dart';

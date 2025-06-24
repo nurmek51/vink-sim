@@ -1,16 +1,14 @@
-import 'package:flex_travel_sim/features/authentication/data/data_sources/auth_local_data_source.dart';
-import 'package:flex_travel_sim/features/authentication/data/data_sources/auth_remote_data_source.dart';
-import 'package:flex_travel_sim/features/authentication/data/data_sources/confirm_number_remote_data_source.dart';
-import 'package:flex_travel_sim/features/authentication/data/repo/confirm_number_repository_impl.dart';
-import 'package:flex_travel_sim/features/authentication/domain/repo/auth_repository.dart';
-import 'package:flex_travel_sim/features/authentication/data/repo/auth_repository_impl.dart';
-import 'package:flex_travel_sim/features/authentication/domain/repo/confirm_number_repository.dart';
-import 'package:flex_travel_sim/features/authentication/domain/use_cases/confirm_number_use_case.dart';
-import 'package:flex_travel_sim/features/authentication/domain/use_cases/login_use_case.dart';
-import 'package:flex_travel_sim/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/confirm_remote_data_source.dart';
+import 'package:flex_travel_sim/features/auth/data/repo/auth_repository_impl.dart';
+import 'package:flex_travel_sim/features/auth/domain/repo/auth_repository.dart';
+import 'package:flex_travel_sim/features/auth/domain/use_cases/confirm_use_case.dart';
+import 'package:flex_travel_sim/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/confirm_bloc.dart';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/core/storage/local_storage.dart';
-import 'package:flex_travel_sim/features/authentication/presentation/bloc/confirm_number_bloc.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_local_data_source.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_remote_data_source.dart';
 import 'package:flex_travel_sim/features/esim_management/data/repositories/esim_repository_impl.dart';
@@ -18,23 +16,13 @@ import 'package:flex_travel_sim/features/esim_management/domain/repositories/esi
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/activate_esim_use_case.dart';
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/get_esims_use_case.dart';
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/purchase_esim_use_case.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/data_sources/auth_by_email_local_data_source.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/data_sources/auth_by_email_remote_data_source.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/data_sources/confirm_email_remote_data_source.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/repo/auth_by_email_repository_impl.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/data/repo/confirm_email_repository_impl.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/repo/auth_by_email_repository.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/repo/confirm_email_repository.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/use_cases/confirm_email_use_case.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/domain/use_cases/login_by_email_use_case.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/auth_by_email_bloc.dart';
-import 'package:flex_travel_sim/features/onboarding/auth_by_email/presentation/bloc/confirm_email_bloc.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_local_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_remote_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/repositories/user_repository_impl.dart';
 import 'package:flex_travel_sim/features/user_account/domain/repositories/user_repository.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/get_current_user_use_case.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/update_user_profile_use_case.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceLocator {
@@ -76,7 +64,6 @@ class ServiceLocator {
     await _initUserAccount();
     await _initAuth();
     await _initTariffsAndCountries();
-    await _initAuthByEmail();
 
     _isInitialized = true;
   }
@@ -88,7 +75,7 @@ class ServiceLocator {
     // API Client
     register<ApiClient>(
       ApiClient(
-        baseUrl: 'https://dev685.simple-dev-test.com', // 🔧 ЗАМЕНИТЕ НА ВАШ API URL
+        baseUrl: dotenv.env['API_URL']!,
         client: get<http.Client>(),
       ),
     );
@@ -110,8 +97,8 @@ class ServiceLocator {
       AuthLocalDataSourceImpl(localStorage: get<LocalStorage>()),
     );
 
-    register<ConfirmNumberRemoteDataSource>(
-      ConfirmNumberRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    register<ConfirmRemoteDataSource>(
+      ConfirmRemoteDataSourceImpl(apiClient: get<ApiClient>()),
     );        
 
     // Repositories
@@ -120,12 +107,7 @@ class ServiceLocator {
       AuthRepositoryImpl(
         remoteDataSource: get<AuthRemoteDataSource>(),
         localDataSource: get<AuthLocalDataSource>(),
-      ),
-    );
-
-    register<ConfirmNumberRepository>(
-      ConfirmNumberRepositoryImpl(
-        remoteDataSource: get<ConfirmNumberRemoteDataSource>(),
+        confirmRemoteDataSource: get<ConfirmRemoteDataSource>(),
       ),
     );
 
@@ -133,76 +115,19 @@ class ServiceLocator {
 
     register<LoginUseCase>(LoginUseCase(repository: get<AuthRepository>()));
 
-    register<ConfirmNumberUseCase>(ConfirmNumberUseCase(repository: get<ConfirmNumberRepository>()));    
+    register<ConfirmUseCase>(ConfirmUseCase(repository: get<AuthRepository>()));    
 
     // Blocs 
 
     register<AuthBloc>(AuthBloc(loginUseCase: get<LoginUseCase>()));
 
-    register<ConfirmNumberBloc>(
-      ConfirmNumberBloc(
-        confirmNumberUseCase: get<ConfirmNumberUseCase>(),
+    register<ConfirmBloc>(
+      ConfirmBloc(
+        confirmUseCase: get<ConfirmUseCase>(),
         localDataSource: get<AuthLocalDataSource>(),
       ),
     );    
     
-  }
-
-
-  Future<void> _initAuthByEmail() async {
-
-    // DataSources
-
-    register<AuthByEmailRemoteDataSource>(
-      AuthByEmailRemoteDataSourceImpl(apiClient: get<ApiClient>()),
-    );
-
-    register<AuthByEmailLocalDataSource>(
-      AuthByEmailLocalDataSourceImpl(localStorage: get<LocalStorage>()),
-    );
-
-    register<ConfirmEmailRemoteDataSource>(
-      ConfirmEmailRemoteDataSourceImpl(apiClient: get<ApiClient>()),
-    );    
-
-    // Repositories
-
-    register<AuthByEmailRepository>(
-      AuthByEmailRepositoryImpl(
-        remoteDataSource: get<AuthByEmailRemoteDataSource>(),
-        localDataSource: get<AuthByEmailLocalDataSource>(),
-      ),
-    );
-
-    register<ConfirmEmailRepository>(
-      ConfirmEmailRepositoryImpl(
-        remoteDataSource: get<ConfirmEmailRemoteDataSource>(),
-      ),
-    );
-
-    // Use Cases    
-
-    register<LoginByEmailUseCase>(
-      LoginByEmailUseCase(repository: get<AuthByEmailRepository>()),
-    );
-
-    register<ConfirmEmailUseCase>(
-      ConfirmEmailUseCase(repository: get<ConfirmEmailRepository>()),
-    );
-
-    // Blocs    
-
-    register<AuthByEmailBloc>(
-      AuthByEmailBloc(loginByEmailUseCase: get<LoginByEmailUseCase>()),
-    );
-
-    register<ConfirmEmailBloc>(
-      ConfirmEmailBloc(
-        confirmEmailUseCase: get<ConfirmEmailUseCase>(),
-        localDataSource: get<AuthByEmailLocalDataSource>(),
-      ),
-    );    
-
   }
 
 
