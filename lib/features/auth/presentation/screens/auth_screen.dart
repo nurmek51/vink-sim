@@ -1,8 +1,8 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/authentication/widgets/mobile_number_field.dart';
-import 'package:flex_travel_sim/features/authentication/widgets/registration_container.dart';
+import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
+import 'package:flex_travel_sim/features/auth/presentation/widgets/mobile_number_field.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';

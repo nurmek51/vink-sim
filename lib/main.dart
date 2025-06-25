@@ -1,5 +1,7 @@
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/confirm_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
@@ -11,9 +13,15 @@ import 'package:flex_travel_sim/features/esim_management/domain/use_cases/purcha
 import 'package:flex_travel_sim/features/user_account/presentation/bloc/user_bloc.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/get_current_user_use_case.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/update_user_profile_use_case.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load .env variables
+  await dotenv.load(
+    fileName: '.env',
+  );
 
   // Initialize dependency injection
   await sl.init();
@@ -30,6 +38,12 @@ class MyApp extends StatelessWidget {
       providers: [
         // Onboarding Bloc
         BlocProvider(create: (_) => WelcomeBloc()),
+
+        // Auth Bloc
+        BlocProvider(create: (_) => sl.get<AuthBloc>()),
+
+        // Confirm Auth Bloc
+        BlocProvider(create: (_) => sl.get<ConfirmBloc>()),
         
         // Dashboard Bloc
         BlocProvider(create: (_) => MainFlowBloc()),
