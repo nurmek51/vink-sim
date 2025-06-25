@@ -23,8 +23,8 @@ class PulsingCircle extends StatelessWidget {
             radius: 0.5,
             colors: [
               Color.fromRGBO(255, 255, 255, 0.9),
-              Color.fromRGBO(153, 212, 255, 0.3),
-              Color.fromRGBO(0, 85, 255, 0.01),
+              Color.fromRGBO(22, 150, 255, 0.302),
+              Color.fromRGBO(8, 112, 248, 0.012),
             ],
             stops: [0.0, 0.6, 1.0],
           ),
