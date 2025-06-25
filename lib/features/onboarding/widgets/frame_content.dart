@@ -1,3 +1,5 @@
+import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
+import 'package:flex_travel_sim/features/auth/presentation/screens/auth_by_email.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/auth_intro.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/otp_tile.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
@@ -32,6 +34,7 @@ class _FrameContentState extends State<FrameContent>
   late final Animation<Offset> _horizontalAnimation;
 
   String _phoneForOtp = '';
+  ConfirmMethod _confirmMethod = ConfirmMethod.byPhone; // значение по умолчанию
 
   @override
   void initState() {
@@ -75,14 +78,24 @@ class _FrameContentState extends State<FrameContent>
     widget.onContinueTap();
   }
 
-  void _goToOtpPage(String formattedPhone) {
+  void _goToOtpPage(String formattedPhone, ConfirmMethod method) {
     setState(() => _phoneForOtp = formattedPhone);
+    setState(() {
+      _phoneForOtp = formattedPhone;
+      _confirmMethod = method;
+    });
     _pageController.animateToPage(
       2,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }
+
+   void _goToEmailPage() {
+    _pageController.jumpToPage(3);
+  }
+
+
 
   void _goBackToIntro() {
     _pageController.animateToPage(
@@ -133,10 +146,19 @@ class _FrameContentState extends State<FrameContent>
           physics: const NeverScrollableScrollPhysics(),
           children: [
             AuthIntro(onAuthTap: _goToWhatsappPage),
-            WhatsappTile(onNext: _goToOtpPage, appBarPop: _goBackToIntro),
+            WhatsappTile(
+              onNext: _goToOtpPage,
+              appBarPop: _goBackToIntro,
+              onEmailTap: _goToEmailPage,
+            ),
             OtpTile(
               phoneNumber: _phoneForOtp,
+              method: _confirmMethod,
               onTap: _goToWhatsappPage,
+              appBarPop: _goToWhatsappPage,
+            ),
+            AuthByEmail(
+              onNext: _goToOtpPage,
               appBarPop: _goToWhatsappPage,
             ),
           ],

@@ -68,7 +68,9 @@ class AppLocalization {
   static const activateEsim = 'Активировать eSIM';
   static const authWithTheHelpOf = 'Войти с помощью';
   static const whatsApp = 'WhatsApp';
+  static const email = 'email';
   static const mobileNumWhatsAppDescription = 'Введите номер телефона,\nассоциированный с WhatsApp';
+  static const emailDescription = 'Введите ваш email - мы отправим код для\nавторизации';
   static const authAndRegistration = 'Вход / Регистрация';
   static const continueWithApple = 'Продолжить с Apple';
   static const continueWithGoogle = 'Продолжить с Google';

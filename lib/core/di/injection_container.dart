@@ -1,3 +1,12 @@
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/confirm_remote_data_source.dart';
+import 'package:flex_travel_sim/features/auth/data/repo/auth_repository_impl.dart';
+import 'package:flex_travel_sim/features/auth/domain/repo/auth_repository.dart';
+import 'package:flex_travel_sim/features/auth/domain/use_cases/confirm_use_case.dart';
+import 'package:flex_travel_sim/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/confirm_bloc.dart';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/core/storage/local_storage.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_local_data_source.dart';
@@ -13,6 +22,7 @@ import 'package:flex_travel_sim/features/user_account/data/repositories/user_rep
 import 'package:flex_travel_sim/features/user_account/domain/repositories/user_repository.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/get_current_user_use_case.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/update_user_profile_use_case.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceLocator {
@@ -52,6 +62,7 @@ class ServiceLocator {
     // Feature dependencies
     await _initEsimManagement();
     await _initUserAccount();
+    await _initAuth();
     await _initTariffsAndCountries();
 
     _isInitialized = true;
@@ -64,7 +75,7 @@ class ServiceLocator {
     // API Client
     register<ApiClient>(
       ApiClient(
-        baseUrl: 'https://your-api-domain.com/api/v1', // 🔧 ЗАМЕНИТЕ НА ВАШ API URL
+        baseUrl: dotenv.env['API_URL']!,
         client: get<http.Client>(),
       ),
     );
@@ -72,6 +83,53 @@ class ServiceLocator {
     // Local Storage
     register<LocalStorage>(SharedPreferencesStorage());
   }
+
+
+  Future<void> _initAuth() async {
+
+    // DataSources
+
+    register<AuthRemoteDataSource>(
+      AuthRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    );
+
+    register<AuthLocalDataSource>(
+      AuthLocalDataSourceImpl(localStorage: get<LocalStorage>()),
+    );
+
+    register<ConfirmRemoteDataSource>(
+      ConfirmRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    );        
+
+    // Repositories
+    
+    register<AuthRepository>(
+      AuthRepositoryImpl(
+        remoteDataSource: get<AuthRemoteDataSource>(),
+        localDataSource: get<AuthLocalDataSource>(),
+        confirmRemoteDataSource: get<ConfirmRemoteDataSource>(),
+      ),
+    );
+
+    // Use Cases  
+
+    register<LoginUseCase>(LoginUseCase(repository: get<AuthRepository>()));
+
+    register<ConfirmUseCase>(ConfirmUseCase(repository: get<AuthRepository>()));    
+
+    // Blocs 
+
+    register<AuthBloc>(AuthBloc(loginUseCase: get<LoginUseCase>()));
+
+    register<ConfirmBloc>(
+      ConfirmBloc(
+        confirmUseCase: get<ConfirmUseCase>(),
+        localDataSource: get<AuthLocalDataSource>(),
+      ),
+    );    
+    
+  }
+
 
   Future<void> _initEsimManagement() async {
     // Data Sources
