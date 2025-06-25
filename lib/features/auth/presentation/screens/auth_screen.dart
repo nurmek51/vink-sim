@@ -78,7 +78,6 @@ class FrameContent extends StatelessWidget {
   final Animation<double> _scaleAnimation;
 
   get balance => 1;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -125,10 +124,13 @@ class FrameContent extends StatelessWidget {
                   const SizedBox(width: 10),
                   SvgPicture.asset(
                     Assets.icons.whatsappIcon.path,
-                    colorFilter: const ColorFilter.mode(AppColors.whatsAppColor, BlendMode.srcIn),
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.whatsAppColor,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ],
-              ),              
+              ),
               const SizedBox(height: 10),
               Text(
                 AppLocalization.mobileNumWhatsAppDescription,
@@ -142,14 +144,14 @@ class FrameContent extends StatelessWidget {
               const MobileNumberField(),
 
               const SizedBox(height: 20),
-              
+
               RegistrationContainer(
                 onTap: () => openMainFlowScreen(context),
                 buttonText: AppLocalization.authAndRegistration,
                 buttonTextColor: AppColors.backgroundColorLight,
                 color: AppColors.accentBlue,
                 arrowForward: true,
-              ),             
+              ),
 
               const Spacer(),
 
@@ -158,11 +160,11 @@ class FrameContent extends StatelessWidget {
                 buttonText: AppLocalization.continueWithApple,
                 buttonTextColor: AppColors.textColorLight,
                 color: AppColors.textColorDark,
-                borderLine: const BorderSide(color: AppColors.textColorLight,),
+                borderLine: const BorderSide(color: AppColors.textColorLight),
                 iconPath: Assets.icons.appleLogo.path,
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
 
               RegistrationContainer(
                 onTap: () => openInitialPage(context),
@@ -173,7 +175,7 @@ class FrameContent extends StatelessWidget {
                 iconPath: Assets.icons.googleLogo.path,
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
 
               RegistrationContainer(
                 onTap: () => openInitialPage(context),
@@ -181,8 +183,8 @@ class FrameContent extends StatelessWidget {
                 buttonTextColor: AppColors.textColorLight,
                 color: AppColors.babyBlue,
                 iconPath: Assets.icons.emailLogo.path,
-              ),                            
-
+              ),
+              const SizedBox(height: 50),
             ],
           ),
         ),

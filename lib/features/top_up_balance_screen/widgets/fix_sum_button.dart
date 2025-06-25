@@ -18,15 +18,14 @@ class FixSumButton extends StatelessWidget {
           height: 33,
           margin: EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color(0xFFE7EFF7),
             borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: Color(0xFFD4D4D4), width: 1),
           ),
           child: Text(
             '$sum\$',
             style: FlexTypography.paragraph.medium.copyWith(
               color: AppColors.grayBlue,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),

@@ -46,8 +46,14 @@ class _TopUpBalanceView extends StatelessWidget {
                 builder: (context, state) {
                   return CounterWidget(
                     value: state.amount,
-                    onIncrement: () => context.read<TopUpBalanceBloc>().add(const IncrementAmount()),
-                    onDecrement: () => context.read<TopUpBalanceBloc>().add(const DecrementAmount()),
+                    onIncrement:
+                        () => context.read<TopUpBalanceBloc>().add(
+                          const IncrementAmount(),
+                        ),
+                    onDecrement:
+                        () => context.read<TopUpBalanceBloc>().add(
+                          const DecrementAmount(),
+                        ),
                   );
                 },
               ),
@@ -66,7 +72,7 @@ class _TopUpBalanceView extends StatelessWidget {
                 title: AppLocalization.topUpBalance,
                 onTap: () => openActivatedEsimScreen(context),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 50),
             ],
           ),
         ),
@@ -75,31 +81,34 @@ class _TopUpBalanceView extends StatelessWidget {
   }
 
   Widget _buildTitle() => Text(
-    'Пополнить баланс',
-    style: FlexTypography.headline.large.copyWith(
-      color: AppColors.grayBlue,
-    ),
+    AppLocalization.topUpBalance,
+    style: FlexTypography.headline.large.copyWith(color: AppColors.grayBlue),
   );
 
   Widget _buildSubtitle() => Text(
     'Введите сумму, чтобы подключить \nFlex Travel eSIM',
-    style: FlexTypography.label.medium.copyWith(
-      color: AppColors.grayBlue,
-    ),
+    style: FlexTypography.label.medium.copyWith(color: AppColors.grayBlue),
   );
 
-  Widget _buildFixSumButtons() => BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
-    builder: (context, state) {
-      return Row(
-        children: [1, 5, 15, 50, 100]
-            .map((sum) => FixSumButton(
-                  sum: sum,
-                  onTap: (value) => context.read<TopUpBalanceBloc>().add(SetAmount(value)),
-                ))
-            .toList(),
+  Widget _buildFixSumButtons() =>
+      BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
+        builder: (context, state) {
+          return Row(
+            children:
+                [1, 5, 15, 50, 100]
+                    .map(
+                      (sum) => FixSumButton(
+                        sum: sum,
+                        onTap:
+                            (value) => context.read<TopUpBalanceBloc>().add(
+                              SetAmount(value),
+                            ),
+                      ),
+                    )
+                    .toList(),
+          );
+        },
       );
-    },
-  );
 
   Widget _buildTariffInfoCard(BuildContext context) => Container(
     padding: const EdgeInsets.all(16),
@@ -115,7 +124,9 @@ class _TopUpBalanceView extends StatelessWidget {
         Text.rich(
           TextSpan(
             text: 'Flex Travel eSIM работает ',
-            style: FlexTypography.paragraph.medium.copyWith(color: Colors.black),
+            style: FlexTypography.paragraph.medium.copyWith(
+              color: Colors.black,
+            ),
             children: [
               TextSpan(
                 text: 'по всему миру.\n',
@@ -126,7 +137,9 @@ class _TopUpBalanceView extends StatelessWidget {
               ),
               TextSpan(
                 text: 'согласно тарифам страны присутствия.\n',
-                style: FlexTypography.paragraph.medium.copyWith(color: Colors.black),
+                style: FlexTypography.paragraph.medium.copyWith(
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
@@ -156,9 +169,7 @@ class _TopUpBalanceView extends StatelessWidget {
 
   Widget _buildPaymentTitle() => Text(
     'Выберите способ оплаты',
-    style: FlexTypography.headline.medium.copyWith(
-      fontWeight: FontWeight.bold,
-    ),
+    style: FlexTypography.headline.medium.copyWith(fontWeight: FontWeight.bold),
   );
 
   Widget _buildAutoTopUpCard() => Container(
@@ -192,7 +203,10 @@ class _TopUpBalanceView extends StatelessWidget {
           builder: (context, state) {
             return CupertinoSwitch(
               value: state.autoTopUpEnabled,
-              onChanged: (value) => context.read<TopUpBalanceBloc>().add(ToggleAutoTopUp(value)),
+              onChanged:
+                  (value) => context.read<TopUpBalanceBloc>().add(
+                    ToggleAutoTopUp(value),
+                  ),
               activeColor: CupertinoColors.systemBlue,
             );
           },
