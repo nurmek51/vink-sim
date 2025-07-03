@@ -81,5 +81,7 @@ class AppLocalization {
   static const nowYouNeedToInstallEsim = 'Теперь вам нужно установить eSIM \nна устройство.';
   static const youCanActivateEsimOnlyOnce = 'Вы можете активировать\neSIM только один раз на\nодном устройстве.';
   static const showQR = 'Показать QR';
+  static const selectCountry = 'Выберите страну';
+  static const searchCountries = 'Поиск стран...';
   
 }
