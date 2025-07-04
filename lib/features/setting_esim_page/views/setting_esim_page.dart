@@ -6,6 +6,7 @@ import 'package:flex_travel_sim/features/setting_esim_page/widgets/steps_contain
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingEsimPage extends StatelessWidget {
   const SettingEsimPage({super.key});
@@ -80,21 +81,24 @@ class SettingEsimPage extends StatelessWidget {
 
             Spacer(),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 40.0),
-              child: Container(
-                alignment: Alignment.center,
-                height: 52,
-                decoration: BoxDecoration(
-                  gradient: AppColors.containerGradientPrimary,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Text(
-                  AppLocalization.startRegistration,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+            GestureDetector(
+              onTap: () => context.push('/?index=1'),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 40.0),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    gradient: AppColors.containerGradientPrimary,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Text(
+                    AppLocalization.startRegistration,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),

@@ -25,13 +25,18 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.welcome,
         name: AppRoutes.welcomeName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const WelcomeScreen(),
-            ),
+        pageBuilder: (context, state) {
+          final index =
+              int.tryParse(state.uri.queryParameters['index'] ?? '0') ?? 0;
+
+          return AppRouter._buildPageWithSlideTransition(
+            context,
+            state,
+            WelcomeScreen(initialIndex: index),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRoutes.auth,
         name: AppRoutes.authName,
@@ -63,7 +68,7 @@ class AppRouter {
         path: AppRoutes.esimSetup,
         name: AppRoutes.esimSetupName,
         pageBuilder:
-            (context, state) => _buildPageWithNoTransition(
+            (context, state) => _buildPageWithSlideTransition(
               context,
               state,
               const EsimSetupPage(),
@@ -73,7 +78,7 @@ class AppRouter {
         path: AppRoutes.settingEsim,
         name: AppRoutes.settingEsimName,
         pageBuilder:
-            (context, state) => _buildPageWithNoTransition(
+            (context, state) => _buildPageWithSlideTransition(
               context,
               state,
               const SettingEsimPage(),

@@ -15,8 +15,10 @@ class FrameContent extends StatefulWidget {
     required this.scaleAnimation,
     required this.onContinueTap,
     required this.onBackTap,
+    this.initialIndex = 0,
   });
 
+  final int initialIndex;
   final double circleSize;
   final double mediaHeight;
   final Animation<double> scaleAnimation;
@@ -40,6 +42,8 @@ class _FrameContentState extends State<FrameContent>
   @override
   void initState() {
     super.initState();
+
+    _currentPage = widget.initialIndex;
 
     _moveController = AnimationController(
       vsync: this,
@@ -66,13 +70,13 @@ class _FrameContentState extends State<FrameContent>
     _moveController.dispose();
     super.dispose();
   }
-  
-  void _goToWhatsappPage() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() => _currentPage = 1);
-    });
-    widget.onContinueTap();
-  }
+
+void _goToWhatsappPage() {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    setState(() => _currentPage = 1);
+  });
+  widget.onContinueTap();
+}
 
 
   void _goToOtpPage(String formattedPhone, ConfirmMethod method) {

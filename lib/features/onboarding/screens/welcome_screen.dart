@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({super.key});
+  final int initialIndex;
+  const WelcomeScreen({super.key, this.initialIndex = 0});
 
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
@@ -60,6 +61,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.black,
           body: FrameContent(
+            initialIndex: widget.initialIndex,
             circleSize: _circleSize,
             mediaHeight: mediaHeight,
             scaleAnimation: _scaleAnimation,
