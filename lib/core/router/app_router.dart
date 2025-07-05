@@ -74,16 +74,19 @@ class AppRouter {
               const EsimSetupPage(),
             ),
       ),
+      
       GoRoute(
         path: AppRoutes.settingEsim,
-        name: AppRoutes.settingEsimName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const SettingEsimPage(),
-            ),
+        pageBuilder: (context, state) {
+          final isAuthorized = state.uri.queryParameters['isAuthorized'] == 'true';
+          return _buildPageWithSlideTransition(
+            context,
+            state,
+            SettingEsimPage(isAuthorized: isAuthorized),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRoutes.activatedEsim,
         name: AppRoutes.activatedEsimName,
@@ -117,23 +120,27 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.guide,
         name: AppRoutes.guideName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const GuidePage(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.tariffsAndCountries,
-        name: AppRoutes.tariffsAndCountriesName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const TariffsAndCountriesScreen(),
-            ),
-      ),
+        pageBuilder: (context, state)  {
+        final isAuthorized = state.uri.queryParameters['isAuthorized'] == 'true';
+        return _buildPageWithSlideTransition(
+          context,
+          state,
+          GuidePage(isAuthorized: isAuthorized),
+        );
+      }     
+    ),
+    GoRoute(
+      path: AppRoutes.tariffsAndCountries,
+      pageBuilder: (context, state) {
+        final isAuthorized = state.uri.queryParameters['isAuthorized'] == 'true';
+        return _buildPageWithSlideTransition(
+          context,
+          state,
+          TariffsAndCountriesScreen(isAuthorized: isAuthorized),
+        );
+      },
+    ),
+
       GoRoute(
         path: AppRoutes.settings,
         name: AppRoutes.settingsName,
