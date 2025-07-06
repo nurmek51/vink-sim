@@ -2,6 +2,7 @@ import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.dart';
+import 'package:flex_travel_sim/features/dashboard/widgets/add_esim_circle.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/percentage_widget.dart';
@@ -26,6 +27,52 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  // not forever in app, just for a test (dialog)
+  void _showAddDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Выберите уровень'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  title: const Text('Low — 0 GB'),
+                  onTap: () {
+                    context.read<MainFlowBloc>().add(
+                      const AddCircleEvent(BalanceLevel.low),
+                    );
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Medium — 0.6 GB'),
+                  onTap: () {
+                    context.read<MainFlowBloc>().add(
+                      const AddCircleEvent(BalanceLevel.medium),
+                    );
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('High — 15 GB'),
+                  onTap: () {
+                    context.read<MainFlowBloc>().add(
+                      const AddCircleEvent(BalanceLevel.high),
+                    );
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+    );
   }
 
   void _showBottomSheet(BuildContext context) {
@@ -55,6 +102,11 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<MainFlowBloc, MainFlowState>(
       builder: (context, state) {
+        final actualCount = state.progressValues.length;
+        final canAdd =
+            state.progressValues.length < MainFlowBloc.maxCircles - 1;
+        final itemCount = actualCount + 1; // всегда показываем "добавить"
+
         return Scaffold(
           backgroundColor: AppColors.backgroundColorLight,
           body: SafeArea(
@@ -72,27 +124,34 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                     height: 320,
                     child: PageView.builder(
                       controller: _pageController,
-                      itemCount: state.progressValues.length,
+                      itemCount: itemCount,
                       onPageChanged: (index) {
                         context.read<MainFlowBloc>().add(
                           PageChangedEvent(index),
                         );
                       },
                       itemBuilder: (context, index) {
-                        final value = state.progressValues[index];
-                        return AnimatedScale(
-                          scale: state.currentPage == index ? 1.0 : 0.9,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut,
-                          child: PercentageWidget(
-                            progressValue: value,
-                            color: ProgressColorUtils.getProgressColor(value),
-                            backgroundColor:
-                                ProgressColorUtils.getProgressBackgroundColor(
-                                  value,
-                                ),
-                          ),
-                        );
+                        if (index < actualCount) {
+                          final value = state.progressValues[index];
+                          return AnimatedScale(
+                            scale: state.currentPage == index ? 1.0 : 0.9,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeOut,
+                            child: PercentageWidget(
+                              progressValue: value,
+                              color: ProgressColorUtils.getProgressColor(value),
+                              backgroundColor:
+                                  ProgressColorUtils.getProgressBackgroundColor(
+                                    value,
+                                  ),
+                            ),
+                          );
+                        } else {
+                          return AddEsimCircle(
+                            canAdd: canAdd,
+                            onAddButtonPressed: () => _showAddDialog(context),
+                          );
+                        }
                       },
                     ),
                   ),
@@ -100,7 +159,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
-                      state.progressValues.length,
+                      itemCount,
                       (index) => AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
                         margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -116,6 +175,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                       ),
                     ),
                   ),
+
                   const Spacer(),
                   Row(
                     children: [
