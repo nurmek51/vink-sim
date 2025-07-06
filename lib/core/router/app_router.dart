@@ -78,7 +78,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.settingEsim,
         pageBuilder: (context, state) {
-          final isAuthorized = state.uri.queryParameters['isAuthorized'] == 'true';
+          final isAuthorized = AppRouter.extractIsAuthorized(state);
           return _buildPageWithSlideTransition(
             context,
             state,
@@ -121,7 +121,7 @@ class AppRouter {
         path: AppRoutes.guide,
         name: AppRoutes.guideName,
         pageBuilder: (context, state)  {
-        final isAuthorized = state.uri.queryParameters['isAuthorized'] == 'true';
+        final isAuthorized = AppRouter.extractIsAuthorized(state);
         return _buildPageWithSlideTransition(
           context,
           state,
@@ -132,7 +132,7 @@ class AppRouter {
     GoRoute(
       path: AppRoutes.tariffsAndCountries,
       pageBuilder: (context, state) {
-        final isAuthorized = state.uri.queryParameters['isAuthorized'] == 'true';
+        final isAuthorized = AppRouter.extractIsAuthorized(state);
         return _buildPageWithSlideTransition(
           context,
           state,
@@ -183,6 +183,11 @@ class AppRouter {
       ),
     ],
   );
+  
+  // Extracting isAuthorized query parameter
+  static bool extractIsAuthorized(GoRouterState state) {
+    return state.uri.queryParameters['isAuthorized'] == 'true';
+  }
 
   // No transition page builder
   static Page _buildPageWithNoTransition(
