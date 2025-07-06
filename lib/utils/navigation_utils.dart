@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 
 class NavigationService {
   // Push navigation (adds to stack)
-  static void openSettingsEsimPage(BuildContext context) {
-    context.push(AppRoutes.settingEsim);
+  static void openTariffsAndCountriesPage(BuildContext context, {bool isAuthorized = false}) {
+    final qp = isAuthorized ? '?isAuthorized=true' : '';
+    context.push('${AppRoutes.tariffsAndCountries}$qp');
+  }
+  
+  static void openSettingsEsimPage(BuildContext context, {bool isAuthorized = false}) {
+    final qp = isAuthorized ? '?isAuthorized=true' : '';
+    context.push('${AppRoutes.settingEsim}$qp');
   }
 
   static void openEsimSetupPage(BuildContext context) {
@@ -27,13 +33,10 @@ class NavigationService {
   static void openMyAccountScreen(BuildContext context) {
     context.push(AppRoutes.myAccount);
   }
-
-  static void openGuidePage(BuildContext context) {
-    context.push(AppRoutes.guide);
-  }
-
-  static void openTariffsAndCountriesPage(BuildContext context) {
-    context.push(AppRoutes.tariffsAndCountries);
+  
+  static void openGuidePage(BuildContext context, {bool isAuthorized = false}) {
+    final qp = isAuthorized ? '?isAuthorized=true' : '';
+    context.push('${AppRoutes.guide}$qp');
   }
 
   static void openSettingsScreen(BuildContext context) {

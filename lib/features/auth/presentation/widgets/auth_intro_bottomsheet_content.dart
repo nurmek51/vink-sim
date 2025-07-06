@@ -12,7 +12,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 45),
       child: Column(
         children: [
           Row(
@@ -61,7 +61,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
                 child: IconContainer(
                   text: AppLocalization.howDoesItWork,
                   iconPath: Assets.icons.figma149.blueIcon33.path,
-                  onTap: () => openGuidePage(context),
+                  onTap: () => NavigationService.openGuidePage(context, isAuthorized: true),
                 ),
               ),
               const SizedBox(width: 16),
@@ -69,7 +69,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
                 child: IconContainer(
                   text: AppLocalization.countriesAndRates,
                   iconPath: Assets.icons.figma149.blueIcon44.path,
-                  onTap: () => openTariffsAndCountriesPage(context),
+                  onTap: () => NavigationService.openTariffsAndCountriesPage(context, isAuthorized: true),
                 ),
               ),
             ],

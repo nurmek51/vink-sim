@@ -1,14 +1,19 @@
 import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/setting_esim_page/widgets/steps_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/start_registration_button.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class SettingEsimPage extends StatelessWidget {
-  const SettingEsimPage({super.key});
+  final bool isAuthorized;
+
+  const SettingEsimPage({
+    super.key,
+    this.isAuthorized = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -81,24 +86,13 @@ class SettingEsimPage extends StatelessWidget {
             Spacer(),
 
             Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 40.0),
-              child: Container(
-                alignment: Alignment.center,
-                height: 52,
-                decoration: BoxDecoration(
-                  gradient: AppColors.containerGradientPrimary,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Text(
-                  AppLocalization.startRegistration,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 50.0),
+              child: Visibility(
+                visible: isAuthorized,
+                child: StartRegistrationButton(),
               ),
             ),
+
           ],
         ),
       ),

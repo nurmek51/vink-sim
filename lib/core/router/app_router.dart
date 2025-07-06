@@ -25,13 +25,18 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.welcome,
         name: AppRoutes.welcomeName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const WelcomeScreen(),
-            ),
+        pageBuilder: (context, state) {
+          final index =
+              int.tryParse(state.uri.queryParameters['index'] ?? '0') ?? 0;
+
+          return AppRouter._buildPageWithSlideTransition(
+            context,
+            state,
+            WelcomeScreen(initialIndex: index),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRoutes.auth,
         name: AppRoutes.authName,
@@ -63,22 +68,25 @@ class AppRouter {
         path: AppRoutes.esimSetup,
         name: AppRoutes.esimSetupName,
         pageBuilder:
-            (context, state) => _buildPageWithNoTransition(
+            (context, state) => _buildPageWithSlideTransition(
               context,
               state,
               const EsimSetupPage(),
             ),
       ),
+      
       GoRoute(
         path: AppRoutes.settingEsim,
-        name: AppRoutes.settingEsimName,
-        pageBuilder:
-            (context, state) => _buildPageWithNoTransition(
-              context,
-              state,
-              const SettingEsimPage(),
-            ),
+        pageBuilder: (context, state) {
+          final isAuthorized = AppRouter.extractIsAuthorized(state);
+          return _buildPageWithSlideTransition(
+            context,
+            state,
+            SettingEsimPage(isAuthorized: isAuthorized),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRoutes.activatedEsim,
         name: AppRoutes.activatedEsimName,
@@ -112,23 +120,27 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.guide,
         name: AppRoutes.guideName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const GuidePage(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.tariffsAndCountries,
-        name: AppRoutes.tariffsAndCountriesName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const TariffsAndCountriesScreen(),
-            ),
-      ),
+        pageBuilder: (context, state)  {
+        final isAuthorized = AppRouter.extractIsAuthorized(state);
+        return _buildPageWithSlideTransition(
+          context,
+          state,
+          GuidePage(isAuthorized: isAuthorized),
+        );
+      }     
+    ),
+    GoRoute(
+      path: AppRoutes.tariffsAndCountries,
+      pageBuilder: (context, state) {
+        final isAuthorized = AppRouter.extractIsAuthorized(state);
+        return _buildPageWithSlideTransition(
+          context,
+          state,
+          TariffsAndCountriesScreen(isAuthorized: isAuthorized),
+        );
+      },
+    ),
+
       GoRoute(
         path: AppRoutes.settings,
         name: AppRoutes.settingsName,
@@ -171,6 +183,11 @@ class AppRouter {
       ),
     ],
   );
+  
+  // Extracting isAuthorized query parameter
+  static bool extractIsAuthorized(GoRouterState state) {
+    return state.uri.queryParameters['isAuthorized'] == 'true';
+  }
 
   // No transition page builder
   static Page _buildPageWithNoTransition(

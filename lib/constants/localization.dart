@@ -58,7 +58,7 @@ class AppLocalization {
   static const activationCode = 'Код активации';
   static const tariffsByCountries = 'Тарифы по странам';
   static const guideForEsimSettings= 'Гид по настройке eSIM';
-  static const smthMore = 'Что-нибудь еще';
+  static const smthMore = 'Как установить eSIM';
   static const tariffsAndCountries = 'Тарифы и страны';
   static const balanceAndEsimActivation= 'Пополните баланс в приложении и активируйте eSIM карту';
   static const profileSetupGuide = 'Настройте профиль в настройках своего телефона';
