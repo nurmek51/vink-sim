@@ -59,6 +59,9 @@ class $FlexTypographyLabel implements $FlexTypographyBase {
     fontWeight: FontWeight.w500,
   );
 
+  TextStyle get xLarge =>
+      _baseStyle.copyWith(fontSize: 32, height: 37 / 32, letterSpacing: -0.55);
+
   TextStyle get large => _baseStyle.copyWith(fontSize: 18, height: 24 / 18);
 
   TextStyle get medium => _baseStyle.copyWith(fontSize: 16, height: 22 / 16);

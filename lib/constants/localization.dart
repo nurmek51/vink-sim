@@ -86,4 +86,5 @@ class AppLocalization {
   static const addEsim = 'Добавить eSIM';
   static const manageMoreEsims= 'Вы можете управлять\nнесколькими eSIM на\nсвоем устройстве';  
   static const toAdd = 'Добавить';
+  static const topUp = 'Пополнить';
 }

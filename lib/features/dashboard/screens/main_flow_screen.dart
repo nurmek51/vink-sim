@@ -133,6 +133,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                       itemBuilder: (context, index) {
                         if (index < actualCount) {
                           final value = state.progressValues[index];
+                          final isYellow = value > 0 && value <= 1.0;
                           return AnimatedScale(
                             scale: state.currentPage == index ? 1.0 : 0.9,
                             duration: const Duration(milliseconds: 300),
@@ -140,6 +141,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             child: PercentageWidget(
                               progressValue: value,
                               color: ProgressColorUtils.getProgressColor(value),
+                              isYellow: isYellow,
                               backgroundColor:
                                   ProgressColorUtils.getProgressBackgroundColor(
                                     value,

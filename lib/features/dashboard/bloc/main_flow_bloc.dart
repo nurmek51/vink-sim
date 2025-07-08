@@ -67,7 +67,7 @@ class MainFlowState extends Equatable {
 // Bloc
 class MainFlowBloc extends Bloc<MainFlowEvent, MainFlowState> {
   static const double maxGB = 25.0; // потолок для расчёта прогресса
-  static const int maxCircles = 5;
+  static const int maxCircles = 10;
 
   MainFlowBloc() : super(const MainFlowState()) {
     on<PageChangedEvent>(_onPageChanged);
