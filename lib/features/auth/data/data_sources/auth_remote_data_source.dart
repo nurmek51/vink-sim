@@ -21,20 +21,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       fakeToken =
           'mock_token_phone_${credentials.phone.replaceAll(RegExp(r'[^\d]'), '')}';
       if (kDebugMode) {
-        print('🟢 Mock login for phone: ${credentials.phone}');
+        print('Mock login for phone: ${credentials.phone}');
       }
     } else if (credentials is EmailCredentials) {
       fakeToken =
           'mock_token_email_${credentials.email.replaceAll('@', '_at_').replaceAll('.', '_dot_')}';
       if (kDebugMode) {
-        print('🟢 Mock login for email: ${credentials.email}');
+        print('Mock login for email: ${credentials.email}');
       }
     } else {
       throw Exception('Unsupported credentials type');
     }
 
     if (kDebugMode) {
-      print('🔑 Generated mock token: $fakeToken');
+      print('Generated mock token: $fakeToken');
     }
 
     return fakeToken;
