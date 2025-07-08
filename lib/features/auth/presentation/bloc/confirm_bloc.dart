@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/confirm_use_case.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:flutter/foundation.dart';
 
 // STATE 
 abstract class ConfirmState {}
@@ -41,9 +42,25 @@ class ConfirmBloc extends Bloc<ConfirmEvent, ConfirmState> {
   }) : super(ConfirmInitial()) {
     on<ConfirmSubmitted>((event, emit) async {
       emit(ConfirmLoading());
+      
+      if (kDebugMode) {
+        print('ConfirmBloc: Confirmation requested');
+        print('Method: ${event.method}');
+        print('Ticket code: ${event.ticketCode}');
+      }
+      
       try {
         final token = await localDataSource.getToken();
-        if (token == null) throw Exception('Token not found in local storage');
+        if (token == null) {
+          if (kDebugMode) {
+            print('ConfirmBloc: No token found in local storage');
+          }
+          throw Exception('Token not found in local storage');
+        }
+
+        if (kDebugMode) {
+          print('ConfirmBloc: Found token: $token');
+        }
 
         await confirmUseCase(
           method: event.method,
@@ -51,8 +68,14 @@ class ConfirmBloc extends Bloc<ConfirmEvent, ConfirmState> {
           ticketCode: event.ticketCode,
         );
 
+        if (kDebugMode) {
+          print('ConfirmBloc: Confirmation successful');
+        }
         emit(ConfirmSuccess());
       } catch (e) {
+        if (kDebugMode) {
+          print('ConfirmBloc: Confirmation error: $e');
+        }
         emit(ConfirmFailure('Confirmation failed: $e'));
       }
     });

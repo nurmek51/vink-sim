@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/credentials.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class AuthRemoteDataSource {
   Future<String?> login(Credentials credentials);
@@ -11,10 +9,37 @@ abstract class AuthRemoteDataSource {
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final ApiClient apiClient;
 
-  AuthRemoteDataSourceImpl({ required this.apiClient });
+  AuthRemoteDataSourceImpl({required this.apiClient});
 
   @override
   Future<String?> login(Credentials credentials) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    String fakeToken;
+
+    if (credentials is PhoneCredentials) {
+      fakeToken =
+          'mock_token_phone_${credentials.phone.replaceAll(RegExp(r'[^\d]'), '')}';
+      if (kDebugMode) {
+        print('🟢 Mock login for phone: ${credentials.phone}');
+      }
+    } else if (credentials is EmailCredentials) {
+      fakeToken =
+          'mock_token_email_${credentials.email.replaceAll('@', '_at_').replaceAll('.', '_dot_')}';
+      if (kDebugMode) {
+        print('🟢 Mock login for email: ${credentials.email}');
+      }
+    } else {
+      throw Exception('Unsupported credentials type');
+    }
+
+    if (kDebugMode) {
+      print('🔑 Generated mock token: $fakeToken');
+    }
+
+    return fakeToken;
+
+    /* 
     final basicCreds = dotenv.env['LOGIN_PASSWORD'];
     if (basicCreds == null) {
       throw Exception('LOGIN_PASSWORD not found');
@@ -49,5 +74,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (e) {
       throw Exception('Remote Login error: $e');
     }
+    */
   }
 }
