@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'package:flex_travel_sim/core/network/api_client.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class ConfirmRemoteDataSource {
   Future<void> confirm({
@@ -13,8 +12,7 @@ abstract class ConfirmRemoteDataSource {
 class ConfirmRemoteDataSourceImpl implements ConfirmRemoteDataSource {
   final ApiClient apiClient;
 
-  ConfirmRemoteDataSourceImpl({ required this.apiClient });
-
+  ConfirmRemoteDataSourceImpl({required this.apiClient});
 
   @override
   Future<void> confirm({
@@ -22,6 +20,17 @@ class ConfirmRemoteDataSourceImpl implements ConfirmRemoteDataSource {
     required String token,
     required String ticketCode,
   }) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    if (kDebugMode) {
+      print('Mock confirmation for endpoint: $endpoint');
+      print('Token: $token');
+      print('Ticket code: $ticketCode');
+      print('Confirmation successful (mock mode)');
+    }
+
+    /* 
+    
     final basicCreds =
         dotenv.env['LOGIN_PASSWORD'] ??
         (throw Exception('LOGIN_PASSWORD not set in .env'));
@@ -36,6 +45,6 @@ class ConfirmRemoteDataSourceImpl implements ConfirmRemoteDataSource {
     } catch (e) {
       throw Exception('Confirm Error: $e');
     }
+    */
   }
-
 }
