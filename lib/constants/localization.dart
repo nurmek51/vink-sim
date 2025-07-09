@@ -83,5 +83,8 @@ class AppLocalization {
   static const showQR = 'Показать QR';
   static const selectCountry = 'Выберите страну';
   static const searchCountries = 'Поиск стран...';
-  
+  static const addEsim = 'Добавить eSIM';
+  static const manageMoreEsims= 'Вы можете управлять\nнесколькими eSIM на\nсвоем устройстве';  
+  static const toAdd = 'Добавить';
+  static const topUp = 'Пополнить';
 }
