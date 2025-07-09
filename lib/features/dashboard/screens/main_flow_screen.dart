@@ -29,7 +29,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     super.dispose();
   }
 
-  // not forever in app, just for a test (dialog)
   void _showAddDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -105,7 +104,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
         final actualCount = state.progressValues.length;
         final canAdd =
             state.progressValues.length < MainFlowBloc.maxCircles - 1;
-        final itemCount = actualCount + 1; // всегда показываем "добавить"
+        final itemCount = actualCount + 1;
 
         return Scaffold(
           backgroundColor: AppColors.backgroundColorLight,

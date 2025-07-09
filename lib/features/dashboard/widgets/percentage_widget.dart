@@ -35,7 +35,7 @@ class PercentageWidget extends StatelessWidget {
     return TweenAnimationBuilder<double>(
       tween: Tween(
         begin: 0.0,
-        end: progressValue, // ✅ напрямую до GB
+        end: progressValue,
       ),
       duration: const Duration(milliseconds: 1000),
       curve: Curves.easeOutCubic,
