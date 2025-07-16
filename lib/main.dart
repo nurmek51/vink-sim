@@ -2,9 +2,10 @@ import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/confirm_bloc.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/firebase_auth_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/esim_management/presentation/bloc/esim_bloc.dart';
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/get_esims_use_case.dart';
@@ -13,17 +14,30 @@ import 'package:flex_travel_sim/features/esim_management/domain/use_cases/purcha
 import 'package:flex_travel_sim/features/user_account/presentation/bloc/user_bloc.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/get_current_user_use_case.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/update_user_profile_use_case.dart';
+import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flex_travel_sim/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load .env variables
-  await dotenv.load(
-    fileName: '.env',
-  );
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
 
-  // Initialize dependency injection
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    if (kDebugMode) {
+      print('Firebase successfully initialized');
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('Firebase initialization error: $e');
+    }
+  }
+
   await sl.init();
 
   runApp(const MyApp());
@@ -36,39 +50,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Onboarding Bloc
-        BlocProvider(create: (_) => WelcomeBloc()),
-
-        // Auth Bloc
         BlocProvider(create: (_) => sl.get<AuthBloc>()),
-
-        // Confirm Auth Bloc
         BlocProvider(create: (_) => sl.get<ConfirmBloc>()),
-        
-        // Dashboard Bloc
+        BlocProvider(create: (_) => sl.get<FirebaseAuthBloc>()),
         BlocProvider(create: (_) => MainFlowBloc()),
-        
-        // eSIM Management Bloc
         BlocProvider(
-          create: (_) => EsimBloc(
-            getEsimsUseCase: sl.get<GetEsimsUseCase>(),
-            activateEsimUseCase: sl.get<ActivateEsimUseCase>(),
-            purchaseEsimUseCase: sl.get<PurchaseEsimUseCase>(),
-          ),
+          create:
+              (_) => EsimBloc(
+                getEsimsUseCase: sl.get<GetEsimsUseCase>(),
+                activateEsimUseCase: sl.get<ActivateEsimUseCase>(),
+                purchaseEsimUseCase: sl.get<PurchaseEsimUseCase>(),
+              ),
         ),
-        
-        // User Account Bloc
         BlocProvider(
-          create: (_) => UserBloc(
-            getCurrentUserUseCase: sl.get<GetCurrentUserUseCase>(),
-            updateUserProfileUseCase: sl.get<UpdateUserProfileUseCase>(),
-          ),
+          create:
+              (_) => UserBloc(
+                getCurrentUserUseCase: sl.get<GetCurrentUserUseCase>(),
+                updateUserProfileUseCase: sl.get<UpdateUserProfileUseCase>(),
+              ),
         ),
-        
-        // Примечание: Локальные Bloc'ы создаются в своих экранах:
-        // - TopUpBalanceBloc создается в TopUpBalanceScreen
-        // - EsimSetupBloc создается в EsimSetupPage
-        // - ResendCodeTimerBloc создается в виджетах с таймером
+        BlocProvider(create: (_) => sl.get<WelcomeBloc>()),
       ],
       child: MaterialApp.router(
         title: 'FlexTravelSIM',

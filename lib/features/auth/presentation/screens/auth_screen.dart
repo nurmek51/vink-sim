@@ -1,7 +1,9 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/mobile_number_field.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
@@ -178,12 +180,13 @@ class FrameContent extends StatelessWidget {
               const SizedBox(height: 16),
 
               RegistrationContainer(
-                onTap: () => openInitialPage(context),
+                onTap: () => context.push(AppRoutes.auth),
                 buttonText: AppLocalization.continueWithEmail,
                 buttonTextColor: AppColors.textColorLight,
                 color: AppColors.babyBlue,
                 iconPath: Assets.icons.emailLogo.path,
               ),
+
               const SizedBox(height: 50),
             ],
           ),

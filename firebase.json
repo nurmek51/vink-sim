@@ -1,0 +1,49 @@
+{
+  "hosting": {
+    "public": "web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/auth/verify**",
+        "destination": "/auth-handler.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "travel-sim-test-aa",
+          "appId": "1:187355017492:android:7567755ad8d2a559881201",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "travel-sim-test-aa",
+          "appId": "1:187355017492:ios:98f52273d244095e881201",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "travel-sim-test-aa",
+          "configurations": {
+            "android": "1:187355017492:android:7567755ad8d2a559881201",
+            "ios": "1:187355017492:ios:98f52273d244095e881201",
+            "web": "1:187355017492:web:7a10d21c634105ca881201"
+          }
+        }
+      }
+    }
+  }
+}

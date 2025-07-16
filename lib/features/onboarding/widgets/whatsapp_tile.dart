@@ -147,10 +147,11 @@ class _WhatsappTileState extends State<WhatsappTile> {
                                   _phoneDigits,
                                   _selectedCountry,
                                 );
+                            final credentials = PhoneCredentials(
+                              phoneNumber: internationalNumber,
+                            );
                             context.read<AuthBloc>().add(
-                              AuthRequested(
-                                PhoneCredentials(internationalNumber),
-                              ),
+                              AuthRequested(credentials),
                             );
                           },
                   buttonText: AppLocalization.authAndRegistration,

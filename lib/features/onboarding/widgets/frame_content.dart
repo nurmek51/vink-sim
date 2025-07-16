@@ -91,11 +91,22 @@ class _FrameContentState extends State<FrameContent>
     );
   }
 
-   void _goToEmailPage() {
-    _pageController.jumpToPage(3);
+  void _goToEmailPage() {
+    // Переходим к странице ввода email в PageView
+    _pageController.animateToPage(
+      3,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
-
+  void _goToEmailAuth(
+    String email,
+    ConfirmMethod method,
+    BuildContext context,
+  ) {
+    // Email уже обрабатывается в AuthByEmail, ничего не делаем
+  }
 
   void _goBackToIntro() {
     _pageController.animateToPage(
@@ -158,7 +169,7 @@ class _FrameContentState extends State<FrameContent>
               appBarPop: _goToWhatsappPage,
             ),
             AuthByEmail(
-              onNext: _goToOtpPage,
+              onNext: (email, method) => _goToEmailAuth(email, method, context),
               appBarPop: _goToWhatsappPage,
             ),
           ],
