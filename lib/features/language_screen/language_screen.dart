@@ -1,10 +1,19 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class LanguageScreen extends StatelessWidget {
+class LanguageScreen extends StatefulWidget {
   const LanguageScreen({super.key});
+
+  @override
+  State<LanguageScreen> createState() => _LanguageScreenState();
+}
+
+class _LanguageScreenState extends State<LanguageScreen> {
+  String get currentLanguage => context.locale.languageCode;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +23,7 @@ class LanguageScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          'Language', 
+          AppLocalizations.language.tr(), 
           style: FlexTypography.headline.small.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -33,12 +42,16 @@ class LanguageScreen extends StatelessWidget {
               const SizedBox(height: 20),
               LanguageButton(
                 icon: Assets.icons.russianFlag.path,
-                language: 'Русский',
+                language: AppLocalizations.russian.tr(),
+                isSelected: currentLanguage == 'ru',
+                onTap: () => _changeLanguage('ru'),
               ),
               const SizedBox(height: 12),
               LanguageButton(
                 icon: Assets.icons.chinaFlag.path,
-                language: 'Китайский',
+                language: AppLocalizations.appLanguageEn.tr(),
+                isSelected: currentLanguage == 'en',
+                onTap: () => _changeLanguage('en'),
               ),
             ],
           ),
@@ -46,17 +59,30 @@ class LanguageScreen extends StatelessWidget {
       ),
     );
   }
+
+  void _changeLanguage(String languageCode) async {
+    await context.setLocale(Locale(languageCode));
+    setState(() {});
+  }
 }
 
 class LanguageButton extends StatelessWidget {
   final String icon;
   final String language;
-  const LanguageButton({super.key, required this.icon, required this.language});
+  final bool isSelected;
+  final VoidCallback onTap;
+  const LanguageButton({
+    super.key,
+    required this.icon,
+    required this.language,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -69,9 +95,17 @@ class LanguageButton extends StatelessWidget {
                   children: [
                     Text(
                       language, 
-                      style: FlexTypography.headline.xMedium,
+                      style: FlexTypography.headline.xMedium.copyWith(
+                        color: isSelected ? Colors.blue : Colors.black,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
                     ),
                     const Spacer(),
+                    if (isSelected)
+                      const Icon(
+                        Icons.check,
+                        color: Colors.blue,
+                      ),
                   ],
                 ),
                 const SizedBox(height: 10),

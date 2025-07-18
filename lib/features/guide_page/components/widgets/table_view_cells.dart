@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/guide_page/components/widgets/custom_list_tile.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
@@ -8,11 +8,7 @@ import 'package:flutter/material.dart';
 class TableViewCells extends StatelessWidget {
   final bool isAuthorized;
 
-  const TableViewCells({
-    super.key,
-    this.isAuthorized = false,
-
-  });
+  const TableViewCells({super.key, this.isAuthorized = false});
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +16,29 @@ class TableViewCells extends StatelessWidget {
       CustomListTile(
         imagePath: 'guide_table_view1',
         containerColor: AppColors.guideTable1,
-        listText: AppLocalization.tariffsByCountries,
+        listText: AppLocalizations.tariffsByCountries,
         onTap: () {
-          NavigationService.openTariffsAndCountriesPage(context, isAuthorized: isAuthorized);
+          NavigationService.openTariffsAndCountriesPage(
+            context,
+            isAuthorized: isAuthorized,
+          );
         },
       ),
       CustomListTile(
         imagePath: 'guide_table_view2',
         containerColor: AppColors.guideTable2,
-        listText: AppLocalization.guideForEsimSettings,
+        listText: AppLocalizations.guideForEsimSettings,
         onTap: () {
-          NavigationService.openSettingsEsimPage(context, isAuthorized: isAuthorized);
+          NavigationService.openSettingsEsimPage(
+            context,
+            isAuthorized: isAuthorized,
+          );
         },
       ),
       CustomListTile(
         imagePath: 'guide_table_view3',
         containerColor: AppColors.guideTable3,
-        listText: AppLocalization.smthMore,
+        listText: AppLocalizations.smthMore,
         onTap: () {
           openEsimSetupPage(context);
         },
@@ -44,7 +46,7 @@ class TableViewCells extends StatelessWidget {
       CustomListTile(
         imagePath: 'guide_table_view4',
         containerColor: AppColors.guideTable4,
-        listText: AppLocalization.supportChat2,
+        listText: AppLocalizations.supportChat2,
         onTap: () {
           showModalBottomSheet(
             context: context,

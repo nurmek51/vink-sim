@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -36,12 +37,13 @@ class RegistrationContainer extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(56),
             color: color,
-            border: borderLine != null
-                ? Border.all(
-                    color: borderLine!.color,
-                    width: borderLine!.width,
-                  )
-                : null,
+            border:
+                borderLine != null
+                    ? Border.all(
+                      color: borderLine!.color,
+                      width: borderLine!.width,
+                    )
+                    : null,
           ),
           child: Stack(
             alignment: Alignment.center,
@@ -49,7 +51,7 @@ class RegistrationContainer extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  LocalizedText(
                     buttonText,
                     textAlign: TextAlign.center,
                     style: FlexTypography.label.medium.copyWith(
@@ -77,9 +79,13 @@ class RegistrationContainer extends StatelessWidget {
                         width: 25,
                         child: SvgPicture.asset(
                           iconPath!,
-                          colorFilter: iconColor != null
-                              ? ColorFilter.mode(iconColor!, BlendMode.srcIn)
-                              : null,
+                          colorFilter:
+                              iconColor != null
+                                  ? ColorFilter.mode(
+                                    iconColor!,
+                                    BlendMode.srcIn,
+                                  )
+                                  : null,
                         ),
                       ),
                       const SizedBox(width: 12),

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -23,23 +25,19 @@ class StepsContainer extends StatelessWidget {
       ),
       child: Center(
         child: ListTile(
-          leading: SvgPicture.asset(
-            iconPath,
-            width: 50,
-            height: 50,
-        ),
+          leading: SvgPicture.asset(iconPath, width: 50, height: 50),
           title: HelveticaneueFont(
-            text: 'Шаг $stepNum', 
+            text: '${AppLocalizations.step.tr()} $stepNum',
             fontSize: 15,
             height: 1.3,
             color: Color(0xFF363C45),
             fontWeight: FontWeight.bold,
           ),
           subtitle: HelveticaneueFont(
-            text: description, 
+            text: description,
             fontSize: 15,
             height: 1.3,
-            color: Color(0xFF363C45)
+            color: Color(0xFF363C45),
           ),
         ),
       ),

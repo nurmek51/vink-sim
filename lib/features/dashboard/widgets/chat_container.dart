@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -41,11 +42,9 @@ class ChatContainer extends StatelessWidget {
             ),
           ),
           Center(
-            child: Text(
+            child: LocalizedText(
               title,
-              style: FlexTypography.label.medium.copyWith(
-                color: titleColor,
-              ),
+              style: FlexTypography.label.medium.copyWith(color: titleColor),
             ),
           ),
         ],

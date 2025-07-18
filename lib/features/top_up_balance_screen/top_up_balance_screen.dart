@@ -1,6 +1,8 @@
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +71,7 @@ class _TopUpBalanceView extends StatelessWidget {
               _buildAutoTopUpCard(),
               const SizedBox(height: 16),
               BlueGradientButton(
-                title: AppLocalization.topUpBalance,
+                title: AppLocalizations.topUpBalance.tr(),
                 onTap: () => openActivatedEsimScreen(context),
               ),
               const SizedBox(height: 50),
@@ -80,13 +82,13 @@ class _TopUpBalanceView extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle() => Text(
-    AppLocalization.topUpBalance,
+  Widget _buildTitle() => LocalizedText(
+    AppLocalizations.topUpBalance,
     style: FlexTypography.headline.large.copyWith(color: AppColors.grayBlue),
   );
 
-  Widget _buildSubtitle() => Text(
-    'Введите сумму, чтобы подключить \nFlex Travel eSIM',
+  Widget _buildSubtitle() => LocalizedText(
+    AppLocalizations.enterAmountTopUpDescription,
     style: FlexTypography.label.medium.copyWith(color: AppColors.grayBlue),
   );
 
@@ -121,32 +123,13 @@ class _TopUpBalanceView extends StatelessWidget {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text.rich(
-          TextSpan(
-            text: 'Flex Travel eSIM работает ',
-            style: FlexTypography.paragraph.medium.copyWith(
-              color: Colors.black,
-            ),
-            children: [
-              TextSpan(
-                text: 'по всему миру.\n',
-                style: FlexTypography.paragraph.medium.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextSpan(
-                text: 'согласно тарифам страны присутствия.\n',
-                style: FlexTypography.paragraph.medium.copyWith(
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
+        LocalizedText(
+          AppLocalizations.flexTravelEsimWorksWorldwide,
+          style: FlexTypography.paragraph.medium.copyWith(color: Colors.black),
         ),
         const SizedBox(height: 8),
-        Text(
-          '15\$ на балансе, это:',
+        LocalizedText(
+          AppLocalizations.balance15Description,
           style: FlexTypography.paragraph.medium.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -155,8 +138,8 @@ class _TopUpBalanceView extends StatelessWidget {
         const SizedBox(height: 20),
         GestureDetector(
           onTap: () => openTariffsAndCountriesPage(context),
-          child: Text(
-            'Все страны и тарифы',
+          child: LocalizedText(
+            AppLocalizations.allCountriesAndTariffs,
             style: FlexTypography.paragraph.medium.copyWith(
               color: Colors.blueAccent,
               fontWeight: FontWeight.bold,
@@ -167,8 +150,8 @@ class _TopUpBalanceView extends StatelessWidget {
     ),
   );
 
-  Widget _buildPaymentTitle() => Text(
-    'Выберите способ оплаты',
+  Widget _buildPaymentTitle() => LocalizedText(
+    AppLocalizations.choosePaymentMethod,
     style: FlexTypography.headline.medium.copyWith(fontWeight: FontWeight.bold),
   );
 
@@ -186,14 +169,14 @@ class _TopUpBalanceView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Автопополение',
+              LocalizedText(
+                AppLocalizations.autoTopUp,
                 style: FlexTypography.paragraph.medium.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                'Баланс будет пополняться автоматически \nна 15\$, чтобы вы не потеряли доступ во \nвремя путешествияы',
+              LocalizedText(
+                AppLocalizations.autoTopUpDescription,
                 style: FlexTypography.paragraph.small,
               ),
             ],
@@ -207,7 +190,7 @@ class _TopUpBalanceView extends StatelessWidget {
                   (value) => context.read<TopUpBalanceBloc>().add(
                     ToggleAutoTopUp(value),
                   ),
-              activeColor: CupertinoColors.systemBlue,
+              activeTrackColor: CupertinoColors.systemBlue,
             );
           },
         ),

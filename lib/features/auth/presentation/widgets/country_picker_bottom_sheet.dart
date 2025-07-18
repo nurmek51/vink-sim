@@ -1,6 +1,7 @@
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/country.dart';
 import 'package:flex_travel_sim/features/auth/data/country_data.dart';
 
@@ -66,8 +67,8 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  AppLocalization.selectCountry,
+                const LocalizedText(
+                  AppLocalizations.selectCountry,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -100,7 +101,7 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                   fontSize: 16,
                 ),
                 decoration: const InputDecoration(
-                  hintText: AppLocalization.searchCountries,
+                  hintText: AppLocalizations.searchCountries,
                   hintStyle: TextStyle(color: Color(0x4DFFFFFF), fontSize: 16),
                   prefixIcon: Icon(Icons.search, color: Color(0x4DFFFFFF)),
                   border: InputBorder.none,
@@ -122,11 +123,11 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                 final isSelected = country == widget.selectedCountry;
 
                 return ListTile(
-                  leading: Text(
+                  leading: LocalizedText(
                     country.flag,
                     style: const TextStyle(fontSize: 24),
                   ),
-                  title: Text(
+                  title: LocalizedText(
                     country.name,
                     style: TextStyle(
                       color: AppColors.backgroundColorLight,

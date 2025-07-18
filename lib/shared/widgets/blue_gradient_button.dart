@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class BlueGradientButton extends StatelessWidget {
@@ -19,7 +20,7 @@ class BlueGradientButton extends StatelessWidget {
           gradient: AppColors.containerGradientPrimary,
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Text(
+        child: LocalizedText(
           title,
           style: FlexTypography.label.medium.copyWith(
             color: Colors.white,

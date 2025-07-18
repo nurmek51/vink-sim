@@ -1,6 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/blue_button.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
@@ -19,33 +19,29 @@ class BottomSetupContainer extends StatelessWidget {
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
-
       ),
       child: Padding(
         padding: const EdgeInsets.only(top: 32, bottom: 20),
         child: Column(
           children: [
-            Assets.icons.figma112.successIcon.svg(
-              width: 45,
-              height: 52,
-            ),
+            Assets.icons.figma112.successIcon.svg(width: 45, height: 52),
             SizedBox(height: 15),
             HelveticaneueFont(
-              text: AppLocalization.successMessage,
+              text: AppLocalizations.successMessage,
               fontSize: 18,
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
             SizedBox(height: 20),
             HelveticaneueFont(
-              text: AppLocalization.connectionWaitMessage,
+              text: AppLocalizations.connectionWaitMessage,
               fontSize: 16,
               color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
             SizedBox(height: 20),
             HelveticaneueFont(
-              text: AppLocalization.connectionRetryInstruction,
+              text: AppLocalizations.connectionRetryInstruction,
               textAlign: TextAlign.center,
               fontSize: 16,
               color: Color(0xFF7D7D7D),
@@ -54,7 +50,7 @@ class BottomSetupContainer extends StatelessWidget {
             SizedBox(height: 30),
             GestureDetector(
               onTap: () => NavigationService.pop(context),
-              child: BlueButton(buttonText: AppLocalization.close),
+              child: BlueButton(buttonText: AppLocalizations.close),
             ),
             SizedBox(height: 30),
             GestureDetector(
@@ -88,7 +84,7 @@ class BottomSetupContainer extends StatelessWidget {
                 ),
                 child: Center(
                   child: HelveticaneueFont(
-                    text: AppLocalization.supportChat2,
+                    text: AppLocalizations.supportChat2,
                     fontSize: 14,
                     color: Color(0xFF1F6FFF),
                   ),
