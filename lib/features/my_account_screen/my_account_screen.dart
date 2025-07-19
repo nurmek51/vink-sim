@@ -1,7 +1,8 @@
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/my_account_screen/widgets/account_widget.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -21,33 +22,33 @@ class MyAccountScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                AppLocalization.myAccount, 
+              LocalizedText(
+                AppLocalizations.myAccount,
                 style: FlexTypography.headline.large.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 12),
               AccountWidget(
-                title: AppLocalization.accountSettings,
+                title: AppLocalizations.accountSettings,
                 icon: Assets.icons.accountSettings.path,
                 onTap: () => openSettingsScreen(context),
               ),
               const SizedBox(height: 12),
               AccountWidget(
-                title: AppLocalization.purchaseHistory,
+                title: AppLocalizations.purchaseHistory,
                 icon: Assets.icons.purchaseHistory.path,
                 onTap: () => NavigationService.openPurchaseScreen(context),
               ),
               const SizedBox(height: 12),
               AccountWidget(
-                title: AppLocalization.trafficUsage,
+                title: AppLocalizations.trafficUsage,
                 icon: Assets.icons.trafficUsage.path,
                 onTap: () => NavigationService.openTrafficUsageScreen(context),
               ),
               const SizedBox(height: 12),
               AccountWidget(
-                title: AppLocalization.appLanguage,
+                title: AppLocalizations.appLanguage,
                 icon: Assets.icons.appLanguage.path,
                 onTap: () => NavigationService.openLanguageScreen(context),
               ),

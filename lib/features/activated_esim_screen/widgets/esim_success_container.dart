@@ -1,6 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/activated_esim_screen/widgets/download_button.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
@@ -30,7 +30,7 @@ class EsimSuccessContainer extends StatelessWidget {
             const SizedBox(height: 10),
 
             HelveticaneueFont(
-              text: AppLocalization.esimIsActivated,
+              text: AppLocalizations.esimIsActivated,
               fontSize: 20,
               color: AppColors.grayBlue,
               fontWeight: FontWeight.bold,
@@ -39,7 +39,7 @@ class EsimSuccessContainer extends StatelessWidget {
             const SizedBox(height: 10),
 
             HelveticaneueFont(
-              text: AppLocalization.nowYouNeedToInstallEsim,
+              text: AppLocalizations.nowYouNeedToInstallEsim,
               fontSize: 17,
               color: AppColors.grayBlue,
             ),
@@ -47,7 +47,7 @@ class EsimSuccessContainer extends StatelessWidget {
             const SizedBox(height: 20),
 
             DownloadButton(
-              text: AppLocalization.download,
+              text: AppLocalizations.download,
               onTap: () => openEsimSetupPage(context),
             ),
 

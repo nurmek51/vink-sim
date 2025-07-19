@@ -1,8 +1,9 @@
 import 'dart:math';
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class PercentageWidget extends StatelessWidget {
   final Color color;
   final Color backgroundColor;
   final bool isYellow;
-  
+
   String _formatGB(double value) {
     String formatted =
         value % 1 == 0 ? value.toInt().toString() : value.toStringAsFixed(1);
@@ -28,15 +29,14 @@ class PercentageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color circleColor = ProgressColorUtils.getProgressColor(progressValue);
+    final Color circleColor = ProgressColorUtils.getProgressColor(
+      progressValue,
+    );
     final bool isRedCircle = circleColor == AppColors.redCircleColor;
     final bool isBlueCircle = circleColor == AppColors.blueCircleProgressColor;
 
     return TweenAnimationBuilder<double>(
-      tween: Tween(
-        begin: 0.0,
-        end: progressValue,
-      ),
+      tween: Tween(begin: 0.0, end: progressValue),
       duration: const Duration(milliseconds: 1000),
       curve: Curves.easeOutCubic,
       builder: (context, value, _) {
@@ -49,7 +49,8 @@ class PercentageWidget extends StatelessWidget {
                 width: 292,
                 height: 292,
                 child: CircularProgressIndicator(
-                  value: 1.0 - (value / (isYellow ? 1.0 : 25.0)).clamp(0.0, 1.0),
+                  value:
+                      1.0 - (value / (isYellow ? 1.0 : 25.0)).clamp(0.0, 1.0),
                   strokeWidth: 18,
                   backgroundColor: backgroundColor,
                   valueColor: AlwaysStoppedAnimation(color),
@@ -62,16 +63,22 @@ class PercentageWidget extends StatelessWidget {
                 Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: isRedCircle ? AppColors.redCircleColor : AppColors.limeGreen,
+                    color:
+                        isRedCircle
+                            ? AppColors.redCircleColor
+                            : AppColors.limeGreen,
                     borderRadius: BorderRadius.circular(9),
                   ),
                   width: 73,
                   height: 26,
-                  child: Text(
-                    'Монако',
+                  child: LocalizedText(
+                    AppLocalizations.monaco,
                     style: FlexTypography.paragraph.medium.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: isRedCircle ? AppColors.backgroundColorLight : AppColors.grayBlue,
+                      color:
+                          isRedCircle
+                              ? AppColors.backgroundColorLight
+                              : AppColors.grayBlue,
                     ),
                   ),
                 ),
@@ -84,8 +91,8 @@ class PercentageWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  '0\$ на счету',
+                LocalizedText(
+                  AppLocalizations.dollarsOnAccount,
                   style: FlexTypography.label.medium.copyWith(
                     color: AppColors.grayBlue.withOpacity(0.6),
                   ),
@@ -94,9 +101,11 @@ class PercentageWidget extends StatelessWidget {
 
                 !isBlueCircle
                     ? GestureDetector(
-                      onTap:() => NavigationService.openTopUpBalanceScreen(context),
-                      child: Text(
-                        AppLocalization.topUp,
+                      onTap:
+                          () =>
+                              NavigationService.openTopUpBalanceScreen(context),
+                      child: LocalizedText(
+                        AppLocalizations.topUp,
                         textAlign: TextAlign.center,
                         style: FlexTypography.label.medium.copyWith(
                           color: AppColors.accentBlue,
@@ -107,7 +116,6 @@ class PercentageWidget extends StatelessWidget {
                       ),
                     )
                     : SizedBox.shrink(),
-
               ],
             ),
           ],

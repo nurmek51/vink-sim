@@ -14,9 +14,13 @@ import 'package:flex_travel_sim/features/user_account/presentation/bloc/user_blo
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/get_current_user_use_case.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/update_user_profile_use_case.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize EasyLocalization
+  await EasyLocalization.ensureInitialized();
 
   // Load .env variables
   await dotenv.load(
@@ -26,7 +30,17 @@ void main() async {
   // Initialize dependency injection
   await sl.init();
 
-  runApp(const MyApp());
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ru'),
+      ],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -74,6 +88,9 @@ class MyApp extends StatelessWidget {
         title: 'FlexTravelSIM',
         debugShowCheckedModeBanner: false,
         routerConfig: AppRouter.router,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
       ),
     );
   }

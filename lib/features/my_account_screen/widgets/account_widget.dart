@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -32,8 +33,8 @@ class AccountWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      title, 
+                    LocalizedText(
+                      title,
                       style: FlexTypography.headline.xMedium,
                     ),
                     const Icon(Icons.arrow_forward_ios, color: Colors.black26),
