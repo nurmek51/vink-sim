@@ -6,7 +6,13 @@ import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class TableViewCells extends StatelessWidget {
-  const TableViewCells({super.key});
+  final bool isAuthorized;
+
+  const TableViewCells({
+    super.key,
+    this.isAuthorized = false,
+
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +22,7 @@ class TableViewCells extends StatelessWidget {
         containerColor: AppColors.guideTable1,
         listText: AppLocalization.tariffsByCountries,
         onTap: () {
-          openTariffsAndCountriesPage(context);
+          NavigationService.openTariffsAndCountriesPage(context, isAuthorized: isAuthorized);
         },
       ),
       CustomListTile(
@@ -24,7 +30,7 @@ class TableViewCells extends StatelessWidget {
         containerColor: AppColors.guideTable2,
         listText: AppLocalization.guideForEsimSettings,
         onTap: () {
-          openSettingsEsimPage(context);
+          NavigationService.openSettingsEsimPage(context, isAuthorized: isAuthorized);
         },
       ),
       CustomListTile(

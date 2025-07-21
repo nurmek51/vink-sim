@@ -28,7 +28,7 @@ class AuthIntro extends StatelessWidget {
             Header(
               color: AppColors.textColorLight,
               profileIconVisibility: false,
-              faqOnTap: () => openGuidePage(context),
+              faqOnTap: () => NavigationService.openGuidePage(context, isAuthorized: true),
             ),
             const SizedBox(height: 30),
             Text(

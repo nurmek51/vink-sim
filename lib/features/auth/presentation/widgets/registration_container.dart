@@ -36,55 +36,56 @@ class RegistrationContainer extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(56),
             color: color,
-            border:
-                borderLine != null
-                    ? Border.all(
-                      color: borderLine!.color,
-                      width: borderLine!.width,
-                    )
-                    : null,
+            border: borderLine != null
+                ? Border.all(
+                    color: borderLine!.color,
+                    width: borderLine!.width,
+                  )
+                : null,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              if (iconPath != null) ...[
-                SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: SvgPicture.asset(
-                    iconPath!,
-                    colorFilter: iconColor != null ? ColorFilter.mode(iconColor!, BlendMode.srcIn) : null,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    buttonText,
+                    textAlign: TextAlign.center,
+                    style: FlexTypography.label.medium.copyWith(
+                      color: buttonTextColor,
+                    ),
+                  ),
+                  if (arrowForward) ...[
+                    const SizedBox(width: 5),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: 20,
+                      color: AppColors.backgroundColorLight,
+                    ),
+                  ],
+                ],
+              ),
+
+              if (iconPath != null)
+                Positioned(
+                  left: 0,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: SvgPicture.asset(
+                          iconPath!,
+                          colorFilter: iconColor != null
+                              ? ColorFilter.mode(iconColor!, BlendMode.srcIn)
+                              : null,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 12),
-              ],
-      
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      buttonText,
-                      textAlign: TextAlign.center,
-                      style: FlexTypography.label.medium.copyWith(
-                        color: buttonTextColor,
-                      ),
-                    ),
-
-
-                    if (arrowForward) ...[
-                      const SizedBox(width: 5),
-                      Icon(
-                        Icons.arrow_forward,
-                        size: 20,
-                        color: AppColors.backgroundColorLight,
-                      ),
-                    ],
-
-                  ],
-                ),
-              ),
             ],
           ),
         ),

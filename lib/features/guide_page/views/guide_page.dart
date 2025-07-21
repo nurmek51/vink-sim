@@ -8,7 +8,11 @@ import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class GuidePage extends StatelessWidget {
-  const GuidePage({super.key});
+  final bool isAuthorized;
+  const GuidePage({
+    super.key,
+    this.isAuthorized = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,7 @@ class GuidePage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 10, 16, 40),
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 50),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -59,7 +63,7 @@ class GuidePage extends StatelessWidget {
         
               SizedBox(height: 12), 
         
-              Expanded(child: TableViewCells()), 
+              Expanded(child: TableViewCells(isAuthorized: isAuthorized)), 
         
               GestureDetector(
                 onTap: () => openTopUpBalanceScreen(context),
@@ -77,8 +81,7 @@ class GuidePage extends StatelessWidget {
                       ),
                     ),
                   ),
-              ),       
-        
+              ),        
             ],
           ),
         ),

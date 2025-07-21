@@ -58,7 +58,7 @@ class AppLocalization {
   static const activationCode = 'Код активации';
   static const tariffsByCountries = 'Тарифы по странам';
   static const guideForEsimSettings= 'Гид по настройке eSIM';
-  static const smthMore = 'Что-нибудь еще';
+  static const smthMore = 'Как установить eSIM';
   static const tariffsAndCountries = 'Тарифы и страны';
   static const balanceAndEsimActivation= 'Пополните баланс в приложении и активируйте eSIM карту';
   static const profileSetupGuide = 'Настройте профиль в настройках своего телефона';
@@ -83,5 +83,8 @@ class AppLocalization {
   static const showQR = 'Показать QR';
   static const selectCountry = 'Выберите страну';
   static const searchCountries = 'Поиск стран...';
-  
+  static const addEsim = 'Добавить eSIM';
+  static const manageMoreEsims= 'Вы можете управлять\nнесколькими eSIM на\nсвоем устройстве';  
+  static const toAdd = 'Добавить';
+  static const topUp = 'Пополнить';
 }
