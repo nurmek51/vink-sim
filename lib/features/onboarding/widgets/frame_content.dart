@@ -71,13 +71,12 @@ class _FrameContentState extends State<FrameContent>
     super.dispose();
   }
 
-void _goToWhatsappPage() {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    setState(() => _currentPage = 1);
-  });
-  widget.onContinueTap();
-}
-
+  void _goToWhatsappPage() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() => _currentPage = 1);
+    });
+    widget.onContinueTap();
+  }
 
   void _goToOtpPage(String formattedPhone, ConfirmMethod method) {
     setState(() {
@@ -90,6 +89,12 @@ void _goToWhatsappPage() {
   void _goToEmailPage() {
     setState(() => _currentPage = 3);
   }
+
+  void _goToEmailAuth(
+    String email,
+    ConfirmMethod method,
+    BuildContext context,
+  ) {}
 
   void _goBackToIntro() {
     setState(() => _currentPage = 0);
@@ -105,7 +110,8 @@ void _goToWhatsappPage() {
           builder: (_, __) {
             return Positioned(
               right: -widget.circleSize / 2,
-              top: widget.mediaHeight / 2 -
+              top:
+                  widget.mediaHeight / 2 -
                   widget.circleSize / 2 +
                   _verticalAnimation.value.dy,
               child: PulsingCircle(
@@ -128,7 +134,7 @@ void _goToWhatsappPage() {
             );
           },
         ),
-        
+
         AnimatedPageStack(
           index: _currentPage,
           pageBuilders: [
@@ -144,11 +150,12 @@ void _goToWhatsappPage() {
               onTap: _goToWhatsappPage,
               appBarPop: _goToWhatsappPage,
             ),
-            (context) =>
-                AuthByEmail(onNext: _goToOtpPage, appBarPop: _goToWhatsappPage),
+            (context) => AuthByEmail(
+              onNext: (email, method) => _goToEmailAuth(email, method, context),
+              appBarPop: _goToWhatsappPage,
+            ),
           ],
         ),
-
       ],
     );
   }

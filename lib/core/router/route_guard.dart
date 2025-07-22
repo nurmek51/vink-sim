@@ -18,17 +18,17 @@ class RouteGuard {
 
   /// Redirect logic for protected routes
   static String? redirectLogic(GoRouterState state) {
-    final isOnWelcomeScreen = state.uri.path == AppRoutes.welcome;
+    final isOnWelcomeScreen = state.uri.path == AppRoutes.initial;
     final isOnAuthScreen = state.uri.path == AppRoutes.auth;
     
     // If user is not authenticated and not on auth/welcome screens
     if (!isAuthenticated && !isOnAuthScreen && !isOnWelcomeScreen) {
-      return AppRoutes.welcome;
+      return AppRoutes.initial;
     }
 
     // If user is authenticated but hasn't completed onboarding
     if (isAuthenticated && !hasCompletedOnboarding && !isOnWelcomeScreen) {
-      return AppRoutes.welcome;
+      return AppRoutes.initial;
     }
 
     // No redirect needed

@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/credentials.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class AuthRemoteDataSource {
   Future<String?> login(Credentials credentials);
@@ -13,48 +15,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<String?> login(Credentials credentials) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    String fakeToken;
-
-    if (credentials is PhoneCredentials) {
-      fakeToken =
-          'mock_token_phone_${credentials.phone.replaceAll(RegExp(r'[^\d]'), '')}';
-      if (kDebugMode) {
-        print('Mock login for phone: ${credentials.phone}');
-      }
-    } else if (credentials is EmailCredentials) {
-      fakeToken =
-          'mock_token_email_${credentials.email.replaceAll('@', '_at_').replaceAll('.', '_dot_')}';
-      if (kDebugMode) {
-        print('Mock login for email: ${credentials.email}');
-      }
-    } else {
-      throw Exception('Unsupported credentials type');
-    }
-
-    if (kDebugMode) {
-      print('Generated mock token: $fakeToken');
-    }
-
-    return fakeToken;
-
-    /* 
     final basicCreds = dotenv.env['LOGIN_PASSWORD'];
     if (basicCreds == null) {
-      throw Exception('LOGIN_PASSWORD not found');
+      throw Exception('LOGIN_PASSWORD not found in .env file');
     }
     final authHeader = 'Basic ${base64Encode(utf8.encode(basicCreds))}';
 
     String endpointPath;
     Map<String, String> body;
 
-    if (credentials is PhoneCredentials) {
-      endpointPath = '/api/login/by-phone';
-      body = {'phone': credentials.phone};
-    } else if (credentials is EmailCredentials) {
+    if (credentials is EmailCredentials) {
       endpointPath = '/api/login/by-email';
       body = {'email': credentials.email};
+    } else if (credentials is PhoneCredentials) {
+      // 🚧 MOCK: Возвращаем мок-токен для телефонной авторизации
+      if (kDebugMode) {
+        print('MOCK: Phone login for ${credentials.phoneNumber}');
+      }
+      await Future.delayed(const Duration(milliseconds: 300));
+      return 'mock_phone_token_${DateTime.now().millisecondsSinceEpoch}';
     } else {
       throw Exception('Unsupported credentials type');
     }
@@ -72,8 +51,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       return token;
     } catch (e) {
+      if (kDebugMode) {
+        print('Remote Login error: $e');
+      }
       throw Exception('Remote Login error: $e');
     }
-    */
   }
 }
