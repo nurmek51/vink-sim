@@ -8,7 +8,6 @@ class PhoneFrame extends StatelessWidget {
 
   static const double phoneWidth = 390;
   static const double phoneHeight = 685;
-  static const double borderRadius = 24;
 
   const PhoneFrame({
     super.key,
@@ -18,9 +17,7 @@ class PhoneFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!isDesktop(context)) {
-      return child;
-    }
+    if (!isDesktop(context)) return child;
 
     return Container(
       color: config.backgroundColor,
@@ -29,43 +26,44 @@ class PhoneFrame extends StatelessWidget {
       child: Stack(
         children: [
           if (config.leftSide != null)
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: FractionalTranslation(
-                  translation: const Offset(-0.3, 0),
-                  child: SizedBox(
-                    width: 400,
-                    height: 530,
-                    child: config.leftSide,
+            config.leftSide is Positioned
+                ? config.leftSide!
+                : Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: FractionalTranslation(
+                        translation: const Offset(-0.3, 0),
+                        child: SizedBox(
+                          width: 400,
+                          height: 530,
+                          child: config.leftSide,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
 
           if (config.rightSide != null)
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: FractionalTranslation(
-                  translation: const Offset(0.25, 0), 
-                  child: SizedBox(
-                    width: 400,
-                    height: 530,
-                    child: config.rightSide,
+            config.rightSide is Positioned
+                ? config.rightSide!
+                : Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FractionalTranslation(
+                        translation: const Offset(0.25, 0),
+                        child: SizedBox(
+                          width: 400,
+                          height: 530,
+                          child: config.rightSide,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
 
           Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(borderRadius),
-              child: SizedBox(
-                width: phoneWidth,
-                height: phoneHeight,
-                child: child,
-              ),
+            child: SizedBox(
+              width: phoneWidth,
+              height: phoneHeight,
+              child: child,
             ),
           ),
         ],
