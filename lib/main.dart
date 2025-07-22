@@ -18,9 +18,13 @@ import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_travel_sim/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize EasyLocalization
+  await EasyLocalization.ensureInitialized();
 
   // Load environment variables
   await dotenv.load(fileName: ".env");
@@ -40,7 +44,17 @@ void main() async {
 
   await sl.init();
 
-  runApp(const MyApp());
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ru'),
+      ],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -75,6 +89,9 @@ class MyApp extends StatelessWidget {
         title: 'FlexTravelSIM',
         debugShowCheckedModeBanner: false,
         routerConfig: AppRouter.router,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
       ),
     );
   }

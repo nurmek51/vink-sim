@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/mobile_number_field.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -108,8 +109,8 @@ class FrameContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 30),
-              Text(
-                AppLocalization.authWithTheHelpOf,
+              LocalizedText(
+                AppLocalizations.authWithTheHelpOf,
                 style: FlexTypography.headline.large.copyWith(
                   color: AppColors.backgroundColorLight,
                 ),
@@ -118,7 +119,7 @@ class FrameContent extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    AppLocalization.whatsApp,
+                    AppLocalizations.whatsApp,
                     style: FlexTypography.headline.large.copyWith(
                       color: AppColors.whatsAppColor,
                     ),
@@ -134,8 +135,8 @@ class FrameContent extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              Text(
-                AppLocalization.mobileNumWhatsAppDescription,
+              LocalizedText(
+                AppLocalizations.mobileNumWhatsAppDescription,
                 style: FlexTypography.paragraph.medium.copyWith(
                   color: AppColors.backgroundColorLight,
                 ),
@@ -149,7 +150,7 @@ class FrameContent extends StatelessWidget {
 
               RegistrationContainer(
                 onTap: () => openMainFlowScreen(context),
-                buttonText: AppLocalization.authAndRegistration,
+                buttonText: AppLocalizations.authAndRegistration,
                 buttonTextColor: AppColors.backgroundColorLight,
                 color: AppColors.accentBlue,
                 arrowForward: true,
@@ -159,7 +160,7 @@ class FrameContent extends StatelessWidget {
 
               RegistrationContainer(
                 onTap: () => openInitialPage(context),
-                buttonText: AppLocalization.continueWithApple,
+                buttonText: AppLocalizations.continueWithApple,
                 buttonTextColor: AppColors.textColorLight,
                 color: AppColors.textColorDark,
                 borderLine: const BorderSide(color: AppColors.textColorLight),
@@ -170,7 +171,7 @@ class FrameContent extends StatelessWidget {
 
               RegistrationContainer(
                 onTap: () => openInitialPage(context),
-                buttonText: AppLocalization.continueWithGoogle,
+                buttonText: AppLocalizations.continueWithGoogle,
                 buttonTextColor: AppColors.textColorDark,
                 color: AppColors.textColorLight,
                 borderLine: const BorderSide(color: AppColors.textColorDark),
@@ -181,7 +182,7 @@ class FrameContent extends StatelessWidget {
 
               RegistrationContainer(
                 onTap: () => context.push(AppRoutes.auth),
-                buttonText: AppLocalization.continueWithEmail,
+                buttonText: AppLocalizations.continueWithEmail,
                 buttonTextColor: AppColors.textColorLight,
                 color: AppColors.babyBlue,
                 iconPath: Assets.icons.emailLogo.path,

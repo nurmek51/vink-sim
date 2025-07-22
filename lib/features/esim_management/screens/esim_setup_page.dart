@@ -1,6 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/esim_management/bloc/esim_setup_bloc.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/another_device_selected_body.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/bottom_setup_container.dart';
@@ -16,10 +16,10 @@ class EsimSetupPage extends StatelessWidget {
   const EsimSetupPage({super.key});
 
   static const List<String> rowOptions = [
-    AppLocalization.fastSelectedRow,
-    AppLocalization.qrCodeSelectedRow,
-    AppLocalization.manualSelectedRow,
-    AppLocalization.toAnotherDeviceSelectedRow,
+    AppLocalizations.fastSelectedRow,
+    AppLocalizations.qrCodeSelectedRow,
+    AppLocalizations.manualSelectedRow,
+    AppLocalizations.toAnotherDeviceSelectedRow,
   ];
 
   @override
@@ -53,7 +53,7 @@ class EsimSetupPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         HelveticaneueFont(
-                          text: AppLocalization.installESim,
+                          text: AppLocalizations.installEsim,
                           fontSize: 28,
                           letterSpacing: -1,
                           height: 1.1,
@@ -68,7 +68,9 @@ class EsimSetupPage extends StatelessWidget {
                                 selectedIndex: state.selectedIndex,
                                 options: rowOptions,
                                 onSelectedIndex: (index) {
-                                  context.read<EsimSetupBloc>().add(SelectOption(index));
+                                  context.read<EsimSetupBloc>().add(
+                                    SelectOption(index),
+                                  );
                                 },
                               ),
                             );

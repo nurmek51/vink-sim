@@ -1,6 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/setting_esim_page/widgets/steps_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/start_registration_button.dart';
@@ -36,7 +36,7 @@ class SettingEsimPage extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: HelveticaneueFont(
-                        text: AppLocalization.guideForEsimSettings,
+                        text: AppLocalizations.guideForEsimSettings,
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
                         height: 1.3,
@@ -60,7 +60,7 @@ class SettingEsimPage extends StatelessWidget {
                     StepsContainer(
                       iconPath: Assets.icons.figma143.step1Icon.path,
                       stepNum: '1',
-                      description: AppLocalization.balanceAndEsimActivation,
+                      description: AppLocalizations.balanceAndEsimActivation,
                     ),
 
                     SizedBox(height: 7),
@@ -68,7 +68,7 @@ class SettingEsimPage extends StatelessWidget {
                     StepsContainer(
                       iconPath: Assets.icons.figma143.step2Icon.path,
                       stepNum: '2',
-                      description: AppLocalization.profileSetupGuide,
+                      description: AppLocalizations.profileSetupGuide,
                     ),
 
                     SizedBox(height: 7),
@@ -76,7 +76,7 @@ class SettingEsimPage extends StatelessWidget {
                     StepsContainer(
                       iconPath: Assets.icons.figma143.step3Icon.path,
                       stepNum: '3',
-                      description: AppLocalization.readyToTravelMessage,
+                      description: AppLocalizations.readyToTravelMessage,
                     ),
                   ],
                 ),

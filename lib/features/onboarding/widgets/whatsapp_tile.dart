@@ -1,10 +1,11 @@
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/credentials.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/mobile_number_field.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/country.dart';
@@ -93,8 +94,8 @@ class _WhatsappTileState extends State<WhatsappTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 30),
-                const Text(
-                  AppLocalization.authWithTheHelpOf,
+                const LocalizedText(
+                  AppLocalizations.authWithTheHelpOf,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,
@@ -104,8 +105,8 @@ class _WhatsappTileState extends State<WhatsappTile> {
                 const SizedBox(height: 3),
                 Row(
                   children: [
-                    const Text(
-                      AppLocalization.whatsApp,
+                    const LocalizedText(
+                      AppLocalizations.whatsApp,
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w500,
@@ -123,8 +124,8 @@ class _WhatsappTileState extends State<WhatsappTile> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  AppLocalization.mobileNumWhatsAppDescription,
+                const LocalizedText(
+                  AppLocalizations.mobileNumWhatsAppDescription,
                   style: TextStyle(
                     fontSize: 14,
                     color: AppColors.backgroundColorLight,
@@ -154,7 +155,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
                               AuthRequested(credentials),
                             );
                           },
-                  buttonText: AppLocalization.authAndRegistration,
+                  buttonText: AppLocalizations.authAndRegistration,
                   buttonTextColor:
                       _isValidPhone
                           ? AppColors.backgroundColorLight
@@ -168,7 +169,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
                 const Spacer(),
                 RegistrationContainer(
                   onTap: widget.onEmailTap,
-                  buttonText: AppLocalization.continueWithEmail,
+                  buttonText: AppLocalizations.continueWithEmail,
                   buttonTextColor: AppColors.textColorLight,
                   color: AppColors.babyBlue,
                   iconPath: Assets.icons.emailLogo.path,

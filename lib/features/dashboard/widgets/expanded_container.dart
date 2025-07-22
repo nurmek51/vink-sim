@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -83,7 +84,7 @@ class _ExpandedContainerState extends State<ExpandedContainer> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
+                LocalizedText(
                   widget.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

@@ -1,7 +1,8 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -25,8 +26,8 @@ class WhatIsEsimButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              AppLocalization.whatIsEsom,
+            LocalizedText(
+              AppLocalizations.whatIsEsom,
               style: FlexTypography.paragraph.medium.copyWith(
                 fontWeight: FontWeight.w500,
                 color: AppColors.textColorLight,

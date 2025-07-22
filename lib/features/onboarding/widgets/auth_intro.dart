@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/auth_intro_bottomsheet_content.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/benefit_tile.dart';
@@ -7,6 +7,7 @@ import 'package:flex_travel_sim/features/onboarding/widgets/auth_button.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/country_list_button.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/header.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -28,29 +29,34 @@ class AuthIntro extends StatelessWidget {
             Header(
               color: AppColors.textColorLight,
               profileIconVisibility: false,
-              faqOnTap: () => NavigationService.openGuidePage(context, isAuthorized: true),
+              faqOnTap:
+                  () => NavigationService.openGuidePage(
+                    context,
+                    isAuthorized: true,
+                  ),
             ),
             const SizedBox(height: 30),
-            Text(
-              AppLocalization.frameTitle,
+            LocalizedText(
+              AppLocalizations.frameTitle,
               style: FlexTypography.headline.large.copyWith(
                 color: AppColors.backgroundColorLight,
               ),
             ),
+
             const SizedBox(height: 30),
             BenefitTile(
               icon: Assets.icons.globus.path,
-              title: AppLocalization.frameGlobusTitle,
+              title: AppLocalizations.frameGlobusTitle,
             ),
             const SizedBox(height: 12),
             BenefitTile(
               icon: Assets.icons.check.path,
-              title: AppLocalization.frameCheckTitle,
+              title: AppLocalizations.frameCheckTitle,
             ),
             const SizedBox(height: 12),
             BenefitTile(
               icon: Assets.icons.infinity.path,
-              title: AppLocalization.infinityTitle,
+              title: AppLocalizations.infinityTitle,
             ),
             const SizedBox(height: 12),
             BenefitTile(icon: Assets.icons.card.path, title: 'Пакеты от 1\$'),

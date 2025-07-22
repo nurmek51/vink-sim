@@ -1,11 +1,12 @@
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/firebase_auth_bloc.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/email_container.dart';
 import 'package:flex_travel_sim/features/auth/domain/services/firebase_email_link_service.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
 import 'dart:async';
 
@@ -160,7 +161,7 @@ class _AuthByEmailState extends State<AuthByEmail> {
               children: [
                 const SizedBox(height: 30),
                 const Text(
-                  AppLocalization.authWithTheHelpOf,
+                  AppLocalizations.authWithTheHelpOf,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,
@@ -168,8 +169,8 @@ class _AuthByEmailState extends State<AuthByEmail> {
                   ),
                 ),
                 const SizedBox(height: 2),
-                const Text(
-                  AppLocalization.email,
+                const LocalizedText(
+                  AppLocalizations.email,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,

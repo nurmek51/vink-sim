@@ -2,9 +2,10 @@ import 'dart:ui';
 
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class QrCodeSelectedBody extends StatefulWidget {
@@ -31,7 +32,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
       children: [
         BodyContainer(
           stepNum: '1',
-          description: AppLocalization.qrCodeDescription,
+          description: AppLocalizations.qrCodeDescription,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 8.0),
@@ -79,7 +80,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                                         ),
 
                                         HelveticaneueFont(
-                                          text: AppLocalization.attention,
+                                          text: AppLocalizations.attention,
                                           fontSize: 16,
                                           color: AppColors.textColorDark,
                                           fontWeight: FontWeight.bold,
@@ -89,7 +90,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
 
                                         HelveticaneueFont(
                                           text:
-                                              AppLocalization
+                                              AppLocalizations
                                                   .youCanActivateEsimOnlyOnce,
                                           fontSize: 16,
                                           color: AppColors.textColorDark,
@@ -120,10 +121,10 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                         color: !_isQrVisible ? AppColors.grayBlue : null,
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Text(
+                      child: LocalizedText(
                         _isQrVisible
-                            ? AppLocalization.sendQR
-                            : AppLocalization.showQR,
+                            ? AppLocalizations.sendQr
+                            : AppLocalizations.showQr,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -139,146 +140,145 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
         ),
 
         //сюда
+        SizedBox(height: 15),
+
+        BodyContainer(
+          stepNum: '2',
+          description: AppLocalizations.anotherDeviceDescription1,
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Assets.icons.figma112.mobileCommunication.image(
+                        width: 271.59,
+                        height: 287.61,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.high,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Assets.icons.figma112.addEsim.image(
+                        width: 271.59,
+                        height: 287.61,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.high,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Assets.icons.figma112.settingsByQr.image(
+                        width: 271.59,
+                        height: 287.61,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.high,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Assets.icons.figma112.qrMobileTariff.image(
+                        width: 271.59,
+                        height: 287.61,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.high,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
 
         SizedBox(height: 15),
-    
+
         BodyContainer(
-          stepNum: '2', 
-          description: AppLocalization.anotherDeviceDescription1,
-            child: Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.mobileCommunication.image(
-                          width: 271.59,
-                          height: 287.61,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.high,
-                        ),
+          stepNum: '3',
+          description: AppLocalizations.anotherDeviceDescription3,
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Assets.icons.figma112.forTravels.image(
+                        width: 271.59,
+                        height: 287.61,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.high,
                       ),
-                      SizedBox(width: 10),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.addEsim.image(
-                          width: 271.59,
-                          height: 287.61,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.high,
-                        ),
+                    ),
+                    SizedBox(width: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Assets.icons.figma112.flexPlan.image(
+                        width: 271.59,
+                        height: 287.61,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.high,
                       ),
-                      SizedBox(width: 10),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.settingsByQr.image(
-                          width: 271.59,
-                          height: 287.61,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.high,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.qrMobileTariff.image(
-                          width: 271.59,
-                          height: 287.61,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.high,
-                        ),
-                      ),                                                              
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
+          ),
         ),
-    
+
         SizedBox(height: 15),
-    
+
         BodyContainer(
-          stepNum: '3', 
-          description: AppLocalization.anotherDeviceDescription3,
-            child: Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.forTravels.image(
-                          width: 271.59,
-                          height: 287.61,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.high,
-                        ),
+          stepNum: '4',
+          description: AppLocalizations.fastDescriptionStep2,
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Assets.icons.figma112.defaultNumber.image(
+                        width: 271.59,
+                        height: 287.61,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.high,
                       ),
-                      SizedBox(width: 10),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.flexPlan.image(
-                          width: 271.59,
-                          height: 287.61,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.high,
-                        ),
-                      ),                      
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Assets.icons.figma112.faceTimeAndImessage.image(
+                        width: 271.59,
+                        height: 287.61,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.high,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
+          ),
         ),
-    
+
         SizedBox(height: 15),
-    
+
         BodyContainer(
-          stepNum: '4', 
-          description: AppLocalization.fastDescriptionStep2,
-            child: Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.defaultNumber.image(
-                          width: 271.59,
-                          height: 287.61,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.high,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Assets.icons.figma112.faceTimeAndImessage.image(
-                          width: 271.59,
-                          height: 287.61,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.high,
-                        ),
-                      ),                      
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        ),
-    
-        SizedBox(height: 15),
-    
-        BodyContainer(
-          stepNum: '5', 
-          description: AppLocalization.anotherDeviceDescription5,
+          stepNum: '5',
+          description: AppLocalizations.anotherDeviceDescription5,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -296,10 +296,10 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
         ),
 
         SizedBox(height: 15),
-    
+
         BodyContainer(
-          stepNum: '6', 
-          description: AppLocalization.fastDescriptionStep4,
+          stepNum: '6',
+          description: AppLocalizations.fastDescriptionStep4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -314,13 +314,13 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
               ),
             ),
           ),
-        ), 
+        ),
 
         SizedBox(height: 15),
 
         BodyContainer(
-          stepTitle: AppLocalization.important, 
-          description: AppLocalization.anotherDeviceDescriptionImportant,
+          stepTitle: AppLocalizations.important,
+          description: AppLocalizations.anotherDeviceDescriptionImportant,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -335,11 +335,8 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
               ),
             ),
           ),
-        ),        
-
+        ),
       ],
     );
   }
 }
-
-

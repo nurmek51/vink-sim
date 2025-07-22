@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/features/activated_esim_screen/widgets/esim_success_container.dart';
@@ -33,13 +33,13 @@ class ActivatedEsimScreen extends StatelessWidget {
               Row(
                 children: [
                   ExpandedContainer(
-                    title: AppLocalization.howToInstallEsim2,
+                    title: AppLocalizations.howToInstallEsim2,
                     icon: Assets.icons.figma149.blueIcon11.path,
                     onTap: () => openEsimSetupPage(context),
                   ),
                   const SizedBox(width: 16),
                   ExpandedContainer(
-                    title: AppLocalization.supportChat,
+                    title: AppLocalizations.supportChat,
                     icon: Assets.icons.figma149.blueIcon22.path,
                     onTap: () {
                       showModalBottomSheet(
@@ -70,13 +70,13 @@ class ActivatedEsimScreen extends StatelessWidget {
               Row(
                 children: [
                   ExpandedContainer(
-                    title: AppLocalization.howDoesItWork,
+                    title: AppLocalizations.howDoesItWork,
                     icon: Assets.icons.figma149.blueIcon33.path,
                     onTap: () => openGuidePage(context),
                   ),
                   const SizedBox(width: 16),
                   ExpandedContainer(
-                    title: AppLocalization.countriesAndRates,
+                    title: AppLocalizations.countriesAndRates,
                     icon: Assets.icons.figma149.blueIcon44.path,
                     onTap: () => openTariffsAndCountriesPage(context),
                   ),
@@ -86,7 +86,7 @@ class ActivatedEsimScreen extends StatelessWidget {
               Spacer(),
               BlueGradientButton(
                 onTap: () => openTopUpBalanceScreen(context),
-                title: AppLocalization.topUpBalance,
+                title: AppLocalizations.topUpBalance,
               ),
             ],
           ),

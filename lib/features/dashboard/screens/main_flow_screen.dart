@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/add_esim_circle.dart';
@@ -181,13 +181,13 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   Row(
                     children: [
                       ExpandedContainer(
-                        title: AppLocalization.howToInstallEsim,
+                        title: AppLocalizations.howToInstallEsim,
                         icon: Assets.icons.simIcon.path,
                         onTap: () => openEsimSetupPage(context),
                       ),
                       const SizedBox(width: 16),
                       ExpandedContainer(
-                        title: AppLocalization.supportChat,
+                        title: AppLocalizations.supportChat,
                         icon: Assets.icons.telegramIcon.path,
                         onTap: () => _showBottomSheet(context),
                       ),
@@ -197,13 +197,13 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   Row(
                     children: [
                       ExpandedContainer(
-                        title: AppLocalization.questionsAndAnswers,
+                        title: AppLocalizations.questionsAndAnswers,
                         icon: Assets.icons.faqIconFull.path,
                         onTap: () => openGuidePage(context),
                       ),
                       const SizedBox(width: 16),
                       ExpandedContainer(
-                        title: AppLocalization.countriesAndRates,
+                        title: AppLocalizations.countriesAndRates,
                         icon: Assets.icons.globus.path,
                         onTap: () => openTariffsAndCountriesPage(context),
                       ),
@@ -212,7 +212,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   const SizedBox(height: 15),
                   BlueGradientButton(
                     onTap: () => openTopUpBalanceScreen(context),
-                    title: AppLocalization.topUpBalance,
+                    title: AppLocalizations.topUpBalance,
                   ),
                 ],
               ),

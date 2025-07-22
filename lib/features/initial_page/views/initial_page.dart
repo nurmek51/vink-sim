@@ -1,11 +1,12 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -98,7 +99,7 @@ class _InitialPageState extends State<InitialPage>
                       Align(
                         alignment: Alignment.topLeft,
                         child: HelveticaneueFont(
-                          text: AppLocalization.frameTitle,
+                          text: AppLocalizations.frameTitle,
                           fontSize: 28,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -109,22 +110,22 @@ class _InitialPageState extends State<InitialPage>
 
                       BenefitTile(
                         icon: Assets.icons.figma149.column1.path,
-                        title: AppLocalization.countriesInOneEsim,
+                        title: AppLocalizations.countriesInOneEsim,
                       ),
                       SizedBox(height: 12),
                       BenefitTile(
                         icon: Assets.icons.figma149.column2.path,
-                        title: AppLocalization.frameCheckTitle,
+                        title: AppLocalizations.frameCheckTitle,
                       ),
                       SizedBox(height: 12),
                       BenefitTile(
                         icon: Assets.icons.figma149.column3.path,
-                        title: AppLocalization.infinityTitle,
+                        title: AppLocalizations.infinityTitle,
                       ),
                       SizedBox(height: 12),
                       BenefitTile(
                         icon: Assets.icons.figma149.column4.path,
-                        title: AppLocalization.highSpeedLowCost,
+                        title: AppLocalizations.highSpeedLowCost,
                       ),
 
                       const SizedBox(height: 15),
@@ -149,13 +150,13 @@ class _InitialPageState extends State<InitialPage>
                         Row(
                           children: [
                             ExpandedContainer(
-                              title: AppLocalization.howToInstallEsim2,
+                              title: AppLocalizations.howToInstallEsim2,
                               icon: Assets.icons.figma149.blueIcon11.path,
                               onTap: () => openEsimSetupPage(context),
                             ),
                             const SizedBox(width: 16),
                             ExpandedContainer(
-                              title: AppLocalization.supportChat,
+                              title: AppLocalizations.supportChat,
                               icon: Assets.icons.figma149.blueIcon22.path,
                               onTap: () {
                                 showModalBottomSheet(
@@ -188,13 +189,13 @@ class _InitialPageState extends State<InitialPage>
                         Row(
                           children: [
                             ExpandedContainer(
-                              title: AppLocalization.howDoesItWork,
+                              title: AppLocalizations.howDoesItWork,
                               icon: Assets.icons.figma149.blueIcon33.path,
                               onTap: () => openGuidePage(context),
                             ),
                             const SizedBox(width: 16),
                             ExpandedContainer(
-                              title: AppLocalization.countriesAndRates,
+                              title: AppLocalizations.countriesAndRates,
                               icon: Assets.icons.figma149.blueIcon44.path,
                               onTap: () => openTariffsAndCountriesPage(context),
                             ),
@@ -212,8 +213,8 @@ class _InitialPageState extends State<InitialPage>
                               gradient: AppColors.containerGradientPrimary,
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: const Text(
-                              AppLocalization.activateEsim,
+                            child: const LocalizedText(
+                              AppLocalizations.activateEsim,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,

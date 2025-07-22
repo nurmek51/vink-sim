@@ -1,8 +1,9 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/icon_container.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
             children: [
               Expanded(
                 child: IconContainer(
-                  text: AppLocalization.howToInstallEsim2,
+                  text: AppLocalizations.howToInstallEsim2,
                   iconPath: Assets.icons.figma149.blueIcon11.path,
                   onTap: () => openEsimSetupPage(context),
                 ),
@@ -27,7 +28,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
               const SizedBox(width: 16),
               Expanded(
                 child: IconContainer(
-                  text: AppLocalization.supportChat,
+                  text: AppLocalizations.supportChat,
                   iconPath: Assets.icons.figma149.blueIcon22.path,
                   onTap: () {
                     showModalBottomSheet(
@@ -59,17 +60,25 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
             children: [
               Expanded(
                 child: IconContainer(
-                  text: AppLocalization.howDoesItWork,
+                  text: AppLocalizations.howDoesItWork,
                   iconPath: Assets.icons.figma149.blueIcon33.path,
-                  onTap: () => NavigationService.openGuidePage(context, isAuthorized: true),
+                  onTap:
+                      () => NavigationService.openGuidePage(
+                        context,
+                        isAuthorized: true,
+                      ),
                 ),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: IconContainer(
-                  text: AppLocalization.countriesAndRates,
+                  text: AppLocalizations.countriesAndRates,
                   iconPath: Assets.icons.figma149.blueIcon44.path,
-                  onTap: () => NavigationService.openTariffsAndCountriesPage(context, isAuthorized: true),
+                  onTap:
+                      () => NavigationService.openTariffsAndCountriesPage(
+                        context,
+                        isAuthorized: true,
+                      ),
                 ),
               ),
             ],
@@ -84,8 +93,8 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
                 gradient: AppColors.containerGradientPrimary,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Text(
-                AppLocalization.activateEsim,
+              child: const LocalizedText(
+                AppLocalizations.activateEsim,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,

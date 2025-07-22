@@ -1,5 +1,6 @@
-import 'package:flex_travel_sim/constants/localization.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -14,8 +15,8 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
-          AppLocalization.accountSettings, 
+        title: LocalizedText(
+          AppLocalizations.accountSettings, 
           style: FlexTypography.headline.small.copyWith(
             fontWeight: FontWeight.bold,
           ),
