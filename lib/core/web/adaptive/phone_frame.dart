@@ -1,0 +1,75 @@
+import 'package:flex_travel_sim/core/web/adaptive/desktop_condition.dart';
+import 'package:flutter/material.dart';
+import 'web_scaffold_config.dart';
+
+class PhoneFrame extends StatelessWidget {
+  final Widget child;
+  final WebScaffoldConfig config;
+
+  static const double phoneWidth = 390;
+  static const double phoneHeight = 685;
+  static const double borderRadius = 24;
+
+  const PhoneFrame({
+    super.key,
+    required this.child,
+    this.config = const WebScaffoldConfig(),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isDesktop(context)) {
+      return child;
+    }
+
+    return Container(
+      color: config.backgroundColor,
+      width: double.infinity,
+      height: double.infinity,
+      child: Stack(
+        children: [
+          if (config.leftSide != null)
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: FractionalTranslation(
+                  translation: const Offset(-0.3, 0),
+                  child: SizedBox(
+                    width: 400,
+                    height: 530,
+                    child: config.leftSide,
+                  ),
+                ),
+              ),
+            ),
+
+          if (config.rightSide != null)
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: FractionalTranslation(
+                  translation: const Offset(0.25, 0), 
+                  child: SizedBox(
+                    width: 400,
+                    height: 530,
+                    child: config.rightSide,
+                  ),
+                ),
+              ),
+            ),
+
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(borderRadius),
+              child: SizedBox(
+                width: phoneWidth,
+                height: phoneHeight,
+                child: child,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
