@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/web/adaptive/desktop_condition.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -61,15 +62,15 @@ class _ExpandedContainerState extends State<ExpandedContainer> {
           borderRadius: BorderRadius.circular(16),
           splashColor: AppColors.splashColor,
           child: Container(
-            padding: const EdgeInsets.only(top: 12, left: 12),
+            padding: EdgeInsets.only(top: isDesktop(context) ? 8 : 12, left: 12),
             alignment: Alignment.centerLeft,
-            height: 110,
+            height: isDesktop(context) ? 85 : 110,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 37,
-                  height: 37,
+                  width: isDesktop(context) ? 28 : 37,
+                  height:  isDesktop(context) ? 28 : 37,
                   decoration: BoxDecoration(
                     gradient: gradientColors,
                     shape: BoxShape.circle,
@@ -77,13 +78,13 @@ class _ExpandedContainerState extends State<ExpandedContainer> {
                   child: Center(
                     child: SvgPicture.asset(
                       widget.icon,
-                      width: 18,
-                      height: 18,
+                      width:  isDesktop(context) ? 16 : 18,
+                      height: isDesktop(context) ? 16 : 18,
                       color: iconColor,
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: isDesktop(context) ? 4 : 8),
                 LocalizedText(
                   widget.title,
                   maxLines: 2,

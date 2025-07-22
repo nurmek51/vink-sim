@@ -71,6 +71,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/faq_icon.svg
   SvgGenImage get faqIcon => const SvgGenImage('assets/icons/faq_icon.svg');
 
+  /// File path: assets/icons/left_vector.svg
+  SvgGenImage get leftVector => const SvgGenImage('assets/icons/left_vector.svg');
+
+  /// File path: assets/icons/right_vector.svg
+  SvgGenImage get rightVector => const SvgGenImage('assets/icons/right_vector.svg');    
+
   /// File path: assets/icons/faq_icon_full.svg
   SvgGenImage get faqIconFull =>
       const SvgGenImage('assets/icons/faq_icon_full.svg');
@@ -209,6 +215,8 @@ class $AssetsIconsGen {
     telegramIcon,
     trafficUsage,
     whatsappIcon,
+    leftVector,
+    rightVector,
   ];
 }
 
