@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/core/web/adaptive/desktop_condition.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
 import 'package:flex_travel_sim/features/auth/presentation/screens/auth_by_email.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/animated_page_stack.dart';
@@ -105,35 +106,37 @@ class _FrameContentState extends State<FrameContent>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        AnimatedBuilder(
-          animation: _verticalAnimation,
-          builder: (_, __) {
-            return Positioned(
-              right: -widget.circleSize / 2,
-              top:
-                  widget.mediaHeight / 2 -
-                  widget.circleSize / 2 +
-                  _verticalAnimation.value.dy,
-              child: PulsingCircle(
-                animation: widget.scaleAnimation,
-                size: widget.circleSize,
-              ),
-            );
-          },
-        ),
-        AnimatedBuilder(
-          animation: _horizontalAnimation,
-          builder: (_, __) {
-            return Positioned(
-              left: -widget.circleSize / 2 + _horizontalAnimation.value.dx,
-              bottom: -widget.circleSize / 2,
-              child: PulsingCircle(
-                animation: widget.scaleAnimation,
-                size: widget.circleSize,
-              ),
-            );
-          },
-        ),
+        if (!isDesktop(context)) ...[
+          AnimatedBuilder(
+            animation: _verticalAnimation,
+            builder: (_, __) {
+              return Positioned(
+                right: -widget.circleSize / 2,
+                top:
+                    widget.mediaHeight / 2 -
+                    widget.circleSize / 2 +
+                    _verticalAnimation.value.dy,
+                child: PulsingCircle(
+                  animation: widget.scaleAnimation,
+                  size: widget.circleSize,
+                ),
+              );
+            },
+          ),
+          AnimatedBuilder(
+            animation: _horizontalAnimation,
+            builder: (_, __) {
+              return Positioned(
+                left: -widget.circleSize / 2 + _horizontalAnimation.value.dx,
+                bottom: -widget.circleSize / 2,
+                child: PulsingCircle(
+                  animation: widget.scaleAnimation,
+                  size: widget.circleSize,
+                ),
+              );
+            },
+          ),
+        ],
 
         AnimatedPageStack(
           index: _currentPage,

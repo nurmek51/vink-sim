@@ -1,6 +1,7 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/web/adaptive/phone_frame.dart';
 import 'package:flex_travel_sim/core/web/adaptive/web_scaffold_config.dart';
+import 'package:flex_travel_sim/core/web/adaptive/welcome_desktop_circles.dart';
 import 'package:flex_travel_sim/features/auth/presentation/screens/auth_screen.dart';
 import 'package:flex_travel_sim/features/language_screen/language_screen.dart';
 import 'package:flex_travel_sim/features/dashboard/screens/main_flow_screen.dart';
@@ -29,24 +30,33 @@ class AppRouter {
     routes: [
       ShellRoute(
         builder: (context, state, child) {
-          final config = WebScaffoldConfig(
-            backgroundColor: AppColors.containerGray,
-            leftSide: SvgPicture.asset(
-              Assets.icons.leftVector.path,
-              width: 650,
-              height: 550,
-              fit: BoxFit.contain,
-            ),
-            rightSide: SvgPicture.asset(
-              Assets.icons.rightVector.path,
-              width: 650,
-              height: 550,
-              fit: BoxFit.contain,
-            ),
-          );
+          final isWelcome = state.uri.path == AppRoutes.welcome;
+
+          final config =
+              isWelcome
+                  ? WebScaffoldConfig(
+                    backgroundColor: AppColors.backgroundColorDark,
+                    leftSide: const Positioned.fill(child: WelcomeCircles()),
+                  )
+                  : WebScaffoldConfig(
+                    backgroundColor: AppColors.backgroundColorLight,
+                    leftSide: SvgPicture.asset(
+                      Assets.icons.leftVector.path,
+                      width: 650,
+                      height: 550,
+                      fit: BoxFit.contain,
+                    ),
+                    rightSide: SvgPicture.asset(
+                      Assets.icons.rightVector.path,
+                      width: 650,
+                      height: 550,
+                      fit: BoxFit.contain,
+                    ),
+                  );
 
           return PhoneFrame(config: config, child: child);
         },
+
         routes: [
           GoRoute(
             path: AppRoutes.welcome,
@@ -283,7 +293,6 @@ class AppRoutes {
   static const String purchaseHistory = '/purchase-history';
   static const String trafficUsage = '/traffic-usage';
   static const String language = '/language';
-  static const String userProfile = '/user-profile';
 
   // Route names
   static const String welcomeName = 'welcome';
@@ -301,6 +310,4 @@ class AppRoutes {
   static const String purchaseHistoryName = 'purchaseHistory';
   static const String trafficUsageName = 'trafficUsage';
   static const String languageName = 'language';
-  static const String userProfileName = 'userProfile';
 }
-
