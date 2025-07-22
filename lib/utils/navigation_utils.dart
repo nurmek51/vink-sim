@@ -26,6 +26,7 @@ class NavigationService {
     context.push(AppRoutes.auth);
   }
 
+
   static void openPurchaseScreen(BuildContext context) {
     context.push(AppRoutes.purchaseHistory);
   }
@@ -49,6 +50,10 @@ class NavigationService {
 
   static void openLanguageScreen(BuildContext context) {
     context.push(AppRoutes.language);
+  }
+
+  static void openUserProfileScreen(BuildContext context) {
+    context.push(AppRoutes.userProfile);
   }
 
   // Push replacement navigation (replaces current route)

@@ -283,6 +283,7 @@ class AppRoutes {
   static const String purchaseHistory = '/purchase-history';
   static const String trafficUsage = '/traffic-usage';
   static const String language = '/language';
+  static const String userProfile = '/user-profile';
 
   // Route names
   static const String welcomeName = 'welcome';
@@ -300,4 +301,6 @@ class AppRoutes {
   static const String purchaseHistoryName = 'purchaseHistory';
   static const String trafficUsageName = 'trafficUsage';
   static const String languageName = 'language';
+  static const String userProfileName = 'userProfile';
 }
+

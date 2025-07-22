@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class ConfirmRemoteDataSource {
   Future<void> confirm({
@@ -20,20 +22,28 @@ class ConfirmRemoteDataSourceImpl implements ConfirmRemoteDataSource {
     required String token,
     required String ticketCode,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-
+    // 🚧 MOCK: Принимаем любой OTP код для демонстрации
     if (kDebugMode) {
-      print('Mock confirmation for endpoint: $endpoint');
-      print('Token: $token');
-      print('Ticket code: $ticketCode');
-      print('Confirmation successful (mock mode)');
+      print('MOCK: OTP confirmation for endpoint: $endpoint');
+      print('MOCK: Token: $token');
+      print('MOCK: Ticket code: $ticketCode');
+      print('MOCK: Confirmation always successful');
     }
-
-    /* 
     
-    final basicCreds =
-        dotenv.env['LOGIN_PASSWORD'] ??
-        (throw Exception('LOGIN_PASSWORD not set in .env'));
+    // Имитация задержки API
+    await Future.delayed(const Duration(milliseconds: 500));
+    
+    // Всегда успешно
+    if (kDebugMode) {
+      print('MOCK: Confirmation successful for endpoint: $endpoint');
+    }
+    
+    // Оригинальный код закомментирован для мока
+    /*
+    final basicCreds = dotenv.env['LOGIN_PASSWORD'];
+    if (basicCreds == null) {
+      throw Exception('LOGIN_PASSWORD not found in .env file');
+    }
     final authHeader = 'Basic ${base64Encode(utf8.encode(basicCreds))}';
 
     try {
@@ -42,7 +52,14 @@ class ConfirmRemoteDataSourceImpl implements ConfirmRemoteDataSource {
         headers: {'Authorization': authHeader},
         body: {'token': token, 'ticketCode': ticketCode},
       );
+      
+      if (kDebugMode) {
+        print('Confirmation successful for endpoint: $endpoint');
+      }
     } catch (e) {
+      if (kDebugMode) {
+        print('Confirm Error: $e');
+      }
       throw Exception('Confirm Error: $e');
     }
     */

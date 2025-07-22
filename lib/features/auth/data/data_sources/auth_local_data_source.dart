@@ -4,6 +4,10 @@ abstract class AuthLocalDataSource {
   Future<void> saveToken(String token);
   Future<String?> getToken();
   Future<void> removeToken();
+  
+  // Firebase-specific methods
+  Future<void> saveAuthToken(String token);
+  Future<void> clearAuthToken();
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
@@ -22,5 +26,13 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<void> removeToken() =>
+    localStorage.remove(_tokenKey);
+    
+  @override
+  Future<void> saveAuthToken(String token) =>
+    localStorage.setString(_tokenKey, token);
+    
+  @override
+  Future<void> clearAuthToken() =>
     localStorage.remove(_tokenKey);
 }

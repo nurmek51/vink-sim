@@ -5,12 +5,16 @@ import 'package:flutter/foundation.dart';
 
 // State
 abstract class AuthState {}
+
 class AuthInitial extends AuthState {}
+
 class AuthLoading extends AuthState {}
+
 class AuthSuccess extends AuthState {
   final String token;
   AuthSuccess(this.token);
 }
+
 class AuthFailure extends AuthState {
   final String error;
   AuthFailure(this.error);
@@ -18,6 +22,7 @@ class AuthFailure extends AuthState {
 
 // Event
 abstract class AuthEvent {}
+
 class AuthRequested extends AuthEvent {
   final Credentials credentials;
   AuthRequested(this.credentials);
@@ -27,18 +32,18 @@ class AuthRequested extends AuthEvent {
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase loginUseCase;
 
-  AuthBloc({ required this.loginUseCase }) : super(AuthInitial()) {
+  AuthBloc({required this.loginUseCase}) : super(AuthInitial()) {
     on<AuthRequested>((event, emit) async {
       emit(AuthLoading());
-      
+
       if (kDebugMode) {
-        if (event.credentials is PhoneCredentials) {
-          print('AuthBloc: Login requested for phone: ${(event.credentials as PhoneCredentials).phone}');
-        } else if (event.credentials is EmailCredentials) {
-          print('AuthBloc: Login requested for email: ${(event.credentials as EmailCredentials).email}');
+        if (event.credentials is EmailCredentials) {
+          print(
+            'AuthBloc: Login requested for email: ${(event.credentials as EmailCredentials).email}',
+          );
         }
       }
-      
+
       try {
         final authToken = await loginUseCase(event.credentials);
         if (authToken != null) {
