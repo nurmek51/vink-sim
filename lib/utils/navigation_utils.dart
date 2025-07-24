@@ -53,7 +53,7 @@ class NavigationService {
   }
 
   static void openUserProfileScreen(BuildContext context) {
-    context.push(AppRoutes.userProfile);
+    context.push(AppRoutes.myAccount);
   }
 
   // Push replacement navigation (replaces current route)

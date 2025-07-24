@@ -49,10 +49,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.example.flexTravelSim.firebase</string>
+			<string>com.flexunion.FlexSim.firebase</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.example.flexTravelSim</string>
+				<string>com.flexunion.FlexSim</string>
 			</array>
 		</dict>
 	</array>
