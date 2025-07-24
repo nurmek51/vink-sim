@@ -20,6 +20,13 @@ class AppColors {
   static const guideTable2 = Color((0xFFFBB935));
   static const guideTable3 = Color((0xFF34C759));
   static const guideTable4 = Color((0xFF2FADEB));
+  static const circleBorder = Color((0XFFD8D8D8));
+  static const yellowCircleProgressColor = Color(0xFFFFD766);
+  static const yellowCircleBackgroundColor = Color(0xFFFFB742);
+  static const blueCircleProgressColor = Color(0xFF73BAE7);
+  static const blueCircleBackgroundColor = Color(0xFF1F6FFF);
+  static const redCircleColor = Color(0XFFE94D4D);
+  static const limeGreen = Color(0xFFB3F242);
   static const containerGradientPrimary = LinearGradient(
     colors: [Color(0xFF2875FF), Color(0xFF0059F9)],
     begin: Alignment.topLeft,

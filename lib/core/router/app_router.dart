@@ -1,3 +1,7 @@
+import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/web/adaptive/phone_frame.dart';
+import 'package:flex_travel_sim/core/web/adaptive/web_scaffold_config.dart';
+import 'package:flex_travel_sim/core/web/adaptive/welcome_desktop_circles.dart';
 import 'package:flex_travel_sim/features/auth/presentation/screens/auth_screen.dart';
 import 'package:flex_travel_sim/features/language_screen/language_screen.dart';
 import 'package:flex_travel_sim/features/dashboard/screens/main_flow_screen.dart';
@@ -14,6 +18,8 @@ import 'package:flex_travel_sim/features/traffic_usage_screen/traffic_usage_scre
 import 'package:flex_travel_sim/features/tariffs_and_countries/screens/tariffs_and_countries_screen.dart';
 import 'package:flex_travel_sim/features/onboarding/screens/welcome_screen.dart';
 import 'package:flex_travel_sim/core/router/route_guard.dart';
+import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
@@ -22,155 +28,207 @@ class AppRouter {
     initialLocation: AppRoutes.welcome,
     redirect: (context, state) => RouteGuard.redirectLogic(state),
     routes: [
-      GoRoute(
-        path: AppRoutes.welcome,
-        name: AppRoutes.welcomeName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const WelcomeScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.auth,
-        name: AppRoutes.authName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const AuthScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.initial,
-        name: AppRoutes.initialName,
-        pageBuilder:
-            (context, state) =>
-                _buildPageWithNoTransition(context, state, const InitialPage()),
-      ),
-      GoRoute(
-        path: AppRoutes.mainFlow,
-        name: AppRoutes.mainFlowName,
-        pageBuilder:
-            (context, state) => _buildPageWithNoTransition(
-              context,
-              state,
-              const MainFlowScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.esimSetup,
-        name: AppRoutes.esimSetupName,
-        pageBuilder:
-            (context, state) => _buildPageWithNoTransition(
-              context,
-              state,
-              const EsimSetupPage(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.settingEsim,
-        name: AppRoutes.settingEsimName,
-        pageBuilder:
-            (context, state) => _buildPageWithNoTransition(
-              context,
-              state,
-              const SettingEsimPage(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.activatedEsim,
-        name: AppRoutes.activatedEsimName,
-        pageBuilder:
-            (context, state) => _buildPageWithNoTransition(
-              context,
-              state,
-              const ActivatedEsimScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.topUpBalance,
-        name: AppRoutes.topUpBalanceName,
-        pageBuilder:
-            (context, state) => _buildPageWithNoTransition(
-              context,
-              state,
-              const TopUpBalanceScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.myAccount,
-        name: AppRoutes.myAccountName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const MyAccountScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.guide,
-        name: AppRoutes.guideName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const GuidePage(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.tariffsAndCountries,
-        name: AppRoutes.tariffsAndCountriesName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const TariffsAndCountriesScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.settings,
-        name: AppRoutes.settingsName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const SettingsScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.purchaseHistory,
-        name: AppRoutes.purchaseHistoryName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const PurchaseScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.trafficUsage,
-        name: AppRoutes.trafficUsageName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const TrafficUsageScreen(),
-            ),
-      ),
-      GoRoute(
-        path: AppRoutes.language,
-        name: AppRoutes.languageName,
-        pageBuilder:
-            (context, state) => _buildPageWithSlideTransition(
-              context,
-              state,
-              const LanguageScreen(),
-            ),
+      ShellRoute(
+        builder: (context, state, child) {
+          final isWelcome = state.uri.path == AppRoutes.welcome;
+
+          final config =
+              isWelcome
+                  ? WebScaffoldConfig(
+                    backgroundColor: AppColors.backgroundColorDark,
+                    leftSide: const Positioned.fill(child: WelcomeCircles()),
+                  )
+                  : WebScaffoldConfig(
+                    backgroundColor: AppColors.backgroundColorLight,
+                    leftSide: SvgPicture.asset(
+                      Assets.icons.leftVector.path,
+                      width: 650,
+                      height: 550,
+                      fit: BoxFit.contain,
+                    ),
+                    rightSide: SvgPicture.asset(
+                      Assets.icons.rightVector.path,
+                      width: 650,
+                      height: 550,
+                      fit: BoxFit.contain,
+                    ),
+                  );
+
+          return PhoneFrame(config: config, child: child);
+        },
+
+        routes: [
+          GoRoute(
+            path: AppRoutes.welcome,
+            name: AppRoutes.welcomeName,
+            pageBuilder: (context, state) {
+              final index =
+                  int.tryParse(state.uri.queryParameters['index'] ?? '0') ?? 0;
+
+              return AppRouter._buildPageWithSlideTransition(
+                context,
+                state,
+                WelcomeScreen(initialIndex: index),
+              );
+            },
+          ),
+
+          GoRoute(
+            path: AppRoutes.auth,
+            name: AppRoutes.authName,
+            pageBuilder:
+                (context, state) => _buildPageWithSlideTransition(
+                  context,
+                  state,
+                  const AuthScreen(),
+                ),
+          ),
+          GoRoute(
+            path: AppRoutes.initial,
+            name: AppRoutes.initialName,
+            pageBuilder:
+                (context, state) => _buildPageWithNoTransition(
+                  context,
+                  state,
+                  const InitialPage(),
+                ),
+          ),
+          GoRoute(
+            path: AppRoutes.mainFlow,
+            name: AppRoutes.mainFlowName,
+            pageBuilder:
+                (context, state) => _buildPageWithNoTransition(
+                  context,
+                  state,
+                  const MainFlowScreen(),
+                ),
+          ),
+          GoRoute(
+            path: AppRoutes.esimSetup,
+            name: AppRoutes.esimSetupName,
+            pageBuilder:
+                (context, state) => _buildPageWithSlideTransition(
+                  context,
+                  state,
+                  const EsimSetupPage(),
+                ),
+          ),
+
+          GoRoute(
+            path: AppRoutes.settingEsim,
+            pageBuilder: (context, state) {
+              final isAuthorized = AppRouter.extractIsAuthorized(state);
+              return _buildPageWithSlideTransition(
+                context,
+                state,
+                SettingEsimPage(isAuthorized: isAuthorized),
+              );
+            },
+          ),
+
+          GoRoute(
+            path: AppRoutes.activatedEsim,
+            name: AppRoutes.activatedEsimName,
+            pageBuilder:
+                (context, state) => _buildPageWithNoTransition(
+                  context,
+                  state,
+                  const ActivatedEsimScreen(),
+                ),
+          ),
+          GoRoute(
+            path: AppRoutes.topUpBalance,
+            name: AppRoutes.topUpBalanceName,
+            pageBuilder:
+                (context, state) => _buildPageWithNoTransition(
+                  context,
+                  state,
+                  const TopUpBalanceScreen(),
+                ),
+          ),
+          GoRoute(
+            path: AppRoutes.myAccount,
+            name: AppRoutes.myAccountName,
+            pageBuilder:
+                (context, state) => _buildPageWithSlideTransition(
+                  context,
+                  state,
+                  const MyAccountScreen(),
+                ),
+          ),
+          GoRoute(
+            path: AppRoutes.guide,
+            name: AppRoutes.guideName,
+            pageBuilder: (context, state) {
+              final isAuthorized = AppRouter.extractIsAuthorized(state);
+              return _buildPageWithSlideTransition(
+                context,
+                state,
+                GuidePage(isAuthorized: isAuthorized),
+              );
+            },
+          ),
+          GoRoute(
+            path: AppRoutes.tariffsAndCountries,
+            pageBuilder: (context, state) {
+              final isAuthorized = AppRouter.extractIsAuthorized(state);
+              return _buildPageWithSlideTransition(
+                context,
+                state,
+                TariffsAndCountriesScreen(isAuthorized: isAuthorized),
+              );
+            },
+          ),
+
+          GoRoute(
+            path: AppRoutes.settings,
+            name: AppRoutes.settingsName,
+            pageBuilder:
+                (context, state) => _buildPageWithSlideTransition(
+                  context,
+                  state,
+                  const SettingsScreen(),
+                ),
+          ),
+          GoRoute(
+            path: AppRoutes.purchaseHistory,
+            name: AppRoutes.purchaseHistoryName,
+            pageBuilder:
+                (context, state) => _buildPageWithSlideTransition(
+                  context,
+                  state,
+                  const PurchaseScreen(),
+                ),
+          ),
+          GoRoute(
+            path: AppRoutes.trafficUsage,
+            name: AppRoutes.trafficUsageName,
+            pageBuilder:
+                (context, state) => _buildPageWithSlideTransition(
+                  context,
+                  state,
+                  const TrafficUsageScreen(),
+                ),
+          ),
+          GoRoute(
+            path: AppRoutes.language,
+            name: AppRoutes.languageName,
+            pageBuilder:
+                (context, state) => _buildPageWithSlideTransition(
+                  context,
+                  state,
+                  const LanguageScreen(),
+                ),
+          ),
+        ],
       ),
     ],
   );
+
+  // Extracting isAuthorized query parameter
+  static bool extractIsAuthorized(GoRouterState state) {
+    return state.uri.queryParameters['isAuthorized'] == 'true';
+  }
 
   // No transition page builder
   static Page _buildPageWithNoTransition(

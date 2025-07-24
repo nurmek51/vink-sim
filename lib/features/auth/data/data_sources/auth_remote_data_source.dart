@@ -11,25 +11,29 @@ abstract class AuthRemoteDataSource {
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final ApiClient apiClient;
 
-  AuthRemoteDataSourceImpl({ required this.apiClient });
+  AuthRemoteDataSourceImpl({required this.apiClient});
 
   @override
   Future<String?> login(Credentials credentials) async {
     final basicCreds = dotenv.env['LOGIN_PASSWORD'];
     if (basicCreds == null) {
-      throw Exception('LOGIN_PASSWORD not found');
+      throw Exception('LOGIN_PASSWORD not found in .env file');
     }
     final authHeader = 'Basic ${base64Encode(utf8.encode(basicCreds))}';
 
     String endpointPath;
     Map<String, String> body;
 
-    if (credentials is PhoneCredentials) {
-      endpointPath = '/api/login/by-phone';
-      body = {'phone': credentials.phone};
-    } else if (credentials is EmailCredentials) {
+    if (credentials is EmailCredentials) {
       endpointPath = '/api/login/by-email';
       body = {'email': credentials.email};
+    } else if (credentials is PhoneCredentials) {
+      // 🚧 MOCK: Возвращаем мок-токен для телефонной авторизации
+      if (kDebugMode) {
+        print('MOCK: Phone login for ${credentials.phoneNumber}');
+      }
+      await Future.delayed(const Duration(milliseconds: 300));
+      return 'mock_phone_token_${DateTime.now().millisecondsSinceEpoch}';
     } else {
       throw Exception('Unsupported credentials type');
     }
@@ -47,6 +51,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       return token;
     } catch (e) {
+      if (kDebugMode) {
+        print('Remote Login error: $e');
+      }
       throw Exception('Remote Login error: $e');
     }
   }

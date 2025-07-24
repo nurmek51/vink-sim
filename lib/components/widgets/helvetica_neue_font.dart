@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class HelveticaneueFont extends StatelessWidget {
@@ -22,7 +23,7 @@ class HelveticaneueFont extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return LocalizedText(
       text,
       textAlign: textAlign,
       style: TextStyle(
@@ -32,7 +33,7 @@ class HelveticaneueFont extends StatelessWidget {
         fontWeight: fontWeight,
         letterSpacing: letterSpacing,
         height: height,
-      )
+      ),
     );
   }
 }

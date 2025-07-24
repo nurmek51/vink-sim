@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:math';
+import 'package:flex_travel_sim/features/auth/domain/entities/country.dart';
+import 'package:flex_travel_sim/features/auth/data/country_data.dart';
+import 'package:flex_travel_sim/features/auth/presentation/widgets/country_picker_bottom_sheet.dart';
 
 class MobileNumberField extends StatefulWidget {
   final void Function(String digits, String formatted)? onChanged;
-  const MobileNumberField({super.key, this.onChanged});
+  final void Function(Country country)? onCountryChanged;
+  final Country? initialCountry;
+
+  const MobileNumberField({
+    super.key,
+    this.onChanged,
+    this.onCountryChanged,
+    this.initialCountry,
+  });
 
   @override
   State<MobileNumberField> createState() => _MobileNumberFieldState();
@@ -14,10 +24,12 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
   final TextEditingController _controller = TextEditingController();
   String _lastFormatted = '';
   bool _isInternalUpdate = false;
+  late Country _selectedCountry;
 
   @override
   void initState() {
     super.initState();
+    _selectedCountry = widget.initialCountry ?? CountryData.defaultCountry;
     _controller.addListener(_onTextChanged);
   }
 
@@ -59,7 +71,8 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
     );
     _isInternalUpdate = false;
 
-    widget.onChanged?.call(digits, formatted);
+    final fullNumber = _selectedCountry.dialCode + digits;
+    widget.onChanged?.call(fullNumber, formatted);
   }
 
   int _calculateCursorPosition(
@@ -78,49 +91,80 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
   String _formatPhoneNumber(String digits) {
     if (digits.isEmpty) return '';
 
-    String normalizedDigits = digits;
-    if (normalizedDigits.startsWith('8') && normalizedDigits.length > 1) {
-      normalizedDigits = '7${normalizedDigits.substring(1)}';
+    if (_selectedCountry.dialCode == '+7') {
+      return _formatRussianNumber(digits);
+    } else if (_selectedCountry.dialCode == '+1') {
+      return _formatUSNumber(digits);
+    } else {
+      return _formatGenericNumber(digits);
     }
-    if (!normalizedDigits.startsWith('7') && normalizedDigits.length <= 10) {
-      normalizedDigits = '7$normalizedDigits';
-    }
+  }
 
-    if (normalizedDigits.length > 11) {
-      normalizedDigits = normalizedDigits.substring(0, 11);
-    }
-
+  String _formatRussianNumber(String digits) {
     final buffer = StringBuffer();
 
-    if (normalizedDigits.isNotEmpty) {
-      buffer.write('+${normalizedDigits[0]}');
-    }
-
-    if (normalizedDigits.length > 1) {
-      buffer.write(' (');
-      final operatorCodeEnd = min(normalizedDigits.length, 4);
-      buffer.write(normalizedDigits.substring(1, operatorCodeEnd));
-
-      if (normalizedDigits.length >= 4) {
+    if (digits.length >= 1) {
+      buffer.write('(');
+      final operatorCodeEnd = digits.length >= 3 ? 3 : digits.length;
+      buffer.write(digits.substring(0, operatorCodeEnd));
+      if (digits.length >= 3) {
         buffer.write(')');
       }
     }
 
-    if (normalizedDigits.length > 4) {
+    if (digits.length > 3) {
       buffer.write(' ');
-      final firstGroupEnd = min(normalizedDigits.length, 7);
-      buffer.write(normalizedDigits.substring(4, firstGroupEnd));
+      final firstGroupEnd = digits.length >= 6 ? 6 : digits.length;
+      buffer.write(digits.substring(3, firstGroupEnd));
     }
 
-    if (normalizedDigits.length > 7) {
+    if (digits.length > 6) {
       buffer.write(' ');
-      final secondGroupEnd = min(normalizedDigits.length, 9);
-      buffer.write(normalizedDigits.substring(7, secondGroupEnd));
+      final secondGroupEnd = digits.length >= 8 ? 8 : digits.length;
+      buffer.write(digits.substring(6, secondGroupEnd));
     }
 
-    if (normalizedDigits.length > 9) {
+    if (digits.length > 8) {
       buffer.write(' ');
-      buffer.write(normalizedDigits.substring(9));
+      buffer.write(digits.substring(8));
+    }
+
+    return buffer.toString();
+  }
+
+  String _formatUSNumber(String digits) {
+    final buffer = StringBuffer();
+
+    if (digits.length >= 1) {
+      buffer.write('(');
+      final areaCodeEnd = digits.length >= 3 ? 3 : digits.length;
+      buffer.write(digits.substring(0, areaCodeEnd));
+      if (digits.length >= 3) {
+        buffer.write(')');
+      }
+    }
+
+    if (digits.length > 3) {
+      buffer.write(' ');
+      final firstGroupEnd = digits.length >= 6 ? 6 : digits.length;
+      buffer.write(digits.substring(3, firstGroupEnd));
+    }
+
+    if (digits.length > 6) {
+      buffer.write('-');
+      buffer.write(digits.substring(6));
+    }
+
+    return buffer.toString();
+  }
+
+  String _formatGenericNumber(String digits) {
+    final buffer = StringBuffer();
+
+    for (int i = 0; i < digits.length; i += 3) {
+      if (i > 0) buffer.write(' ');
+      final end = (i + 3 < digits.length) ? i + 3 : digits.length;
+      buffer.write(digits.substring(i, end));
     }
 
     return buffer.toString();
@@ -128,14 +172,50 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
 
   bool get _isValidPhoneNumber {
     final digits = _controller.text.replaceAll(RegExp(r'\D'), '');
-    return digits.length >= 11;
+
+    if (_selectedCountry.dialCode == '+7') {
+      return digits.isNotEmpty && digits.length == 10;
+    } else if (_selectedCountry.dialCode == '+1') {
+      return digits.isNotEmpty && digits.length == 10;
+    } else {
+      return digits.isNotEmpty && digits.length >= 7 && digits.length <= 15;
+    }
+  }
+
+  String get _placeholderText {
+    if (_selectedCountry.dialCode == '+7') {
+      return '(700) 000 00 00';
+    } else if (_selectedCountry.dialCode == '+1') {
+      return '(555) 000-0000';
+    } else {
+      return 'Phone number';
+    }
+  }
+
+  void _showCountryPicker() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.black.withOpacity(0.8),
+      builder:
+          (context) => CountryPickerBottomSheet(
+            selectedCountry: _selectedCountry,
+            onCountrySelected: (country) {
+              setState(() {
+                _selectedCountry = country;
+              });
+              _controller.clear();
+              widget.onChanged?.call('', '');
+              widget.onCountryChanged?.call(country);
+            },
+          ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 65,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: const Color(0x1AFFFFFF),
@@ -149,41 +229,86 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
       ),
       child: Row(
         children: [
+          GestureDetector(
+            onTap: _showCountryPicker,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: const BoxDecoration(
+                border: Border(
+                  right: BorderSide(color: Color(0x33FFFFFF), width: 1),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _selectedCountry.flag,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    _selectedCountry.dialCode,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(
+                    Icons.arrow_drop_down,
+                    color: Color(0x66FFFFFF),
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
           Expanded(
-            child: TextField(
-              controller: _controller,
-              keyboardType: TextInputType.phone,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[\d+\s\(\)\-]')),
-                LengthLimitingTextInputFormatter(18),
-              ],
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: TextField(
+                controller: _controller,
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(15),
+                ],
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: _placeholderText,
+                  hintStyle: const TextStyle(
+                    color: Color(0x4DFFFFFF),
+                    fontSize: 18,
+                  ),
+                ),
+                cursorColor: Colors.white,
+                textInputAction: TextInputAction.done,
               ),
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: '+7 (700) 000 00 00',
-                hintStyle: TextStyle(color: Color(0x4DFFFFFF), fontSize: 18),
-              ),
-              cursorColor: Colors.white,
-              textInputAction: TextInputAction.done,
             ),
           ),
           if (_controller.text.isNotEmpty)
-            GestureDetector(
-              onTap: () {
-                _controller.clear();
-                widget.onChanged?.call('', '');
-              },
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: const BoxDecoration(
-                  color: Color(0x33FFFFFF),
-                  shape: BoxShape.circle,
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: GestureDetector(
+                onTap: () {
+                  _controller.clear();
+                  widget.onChanged?.call('', '');
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: const BoxDecoration(
+                    color: Color(0x33FFFFFF),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.close, color: Colors.white, size: 16),
                 ),
-                child: const Icon(Icons.close, color: Colors.white, size: 16),
               ),
             ),
         ],

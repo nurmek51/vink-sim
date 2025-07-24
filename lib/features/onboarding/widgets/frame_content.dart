@@ -1,5 +1,7 @@
+import 'package:flex_travel_sim/core/web/adaptive/desktop_condition.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
 import 'package:flex_travel_sim/features/auth/presentation/screens/auth_by_email.dart';
+import 'package:flex_travel_sim/features/onboarding/widgets/animated_page_stack.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/auth_intro.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/otp_tile.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
@@ -14,8 +16,10 @@ class FrameContent extends StatefulWidget {
     required this.scaleAnimation,
     required this.onContinueTap,
     required this.onBackTap,
+    this.initialIndex = 0,
   });
 
+  final int initialIndex;
   final double circleSize;
   final double mediaHeight;
   final Animation<double> scaleAnimation;
@@ -28,19 +32,19 @@ class FrameContent extends StatefulWidget {
 
 class _FrameContentState extends State<FrameContent>
     with TickerProviderStateMixin {
-  late final PageController _pageController;
   late final AnimationController _moveController;
   late final Animation<Offset> _verticalAnimation;
   late final Animation<Offset> _horizontalAnimation;
 
+  int _currentPage = 0;
   String _phoneForOtp = '';
-  ConfirmMethod _confirmMethod = ConfirmMethod.byPhone; // значение по умолчанию
+  ConfirmMethod _confirmMethod = ConfirmMethod.byPhone;
 
   @override
   void initState() {
     super.initState();
 
-    _pageController = PageController(initialPage: 0);
+    _currentPage = widget.initialIndex;
 
     _moveController = AnimationController(
       vsync: this,
@@ -64,45 +68,37 @@ class _FrameContentState extends State<FrameContent>
 
   @override
   void dispose() {
-    _pageController.dispose();
     _moveController.dispose();
     super.dispose();
   }
 
   void _goToWhatsappPage() {
-    _pageController.animateToPage(
-      1,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() => _currentPage = 1);
+    });
     widget.onContinueTap();
   }
 
   void _goToOtpPage(String formattedPhone, ConfirmMethod method) {
-    setState(() => _phoneForOtp = formattedPhone);
     setState(() {
       _phoneForOtp = formattedPhone;
       _confirmMethod = method;
+      _currentPage = 2;
     });
-    _pageController.animateToPage(
-      2,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
   }
 
-   void _goToEmailPage() {
-    _pageController.jumpToPage(3);
+  void _goToEmailPage() {
+    setState(() => _currentPage = 3);
   }
 
-
+  void _goToEmailAuth(
+    String email,
+    ConfirmMethod method,
+    BuildContext context,
+  ) {}
 
   void _goBackToIntro() {
-    _pageController.animateToPage(
-      0,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
+    setState(() => _currentPage = 0);
     widget.onBackTap();
   }
 
@@ -110,55 +106,55 @@ class _FrameContentState extends State<FrameContent>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        AnimatedBuilder(
-          animation: _verticalAnimation,
-          builder: (_, __) {
-            return Positioned(
-              right: -widget.circleSize / 2,
-              top:
-                  widget.mediaHeight / 2 -
-                  widget.circleSize / 2 +
-                  _verticalAnimation.value.dy,
-              child: PulsingCircle(
-                animation: widget.scaleAnimation,
-                size: widget.circleSize,
-              ),
-            );
-          },
-        ),
+        if (!isDesktop(context)) ...[
+          AnimatedBuilder(
+            animation: _verticalAnimation,
+            builder: (_, __) {
+              return Positioned(
+                right: -widget.circleSize / 2,
+                top:
+                    widget.mediaHeight / 2 -
+                    widget.circleSize / 2 +
+                    _verticalAnimation.value.dy,
+                child: PulsingCircle(
+                  animation: widget.scaleAnimation,
+                  size: widget.circleSize,
+                ),
+              );
+            },
+          ),
+          AnimatedBuilder(
+            animation: _horizontalAnimation,
+            builder: (_, __) {
+              return Positioned(
+                left: -widget.circleSize / 2 + _horizontalAnimation.value.dx,
+                bottom: -widget.circleSize / 2,
+                child: PulsingCircle(
+                  animation: widget.scaleAnimation,
+                  size: widget.circleSize,
+                ),
+              );
+            },
+          ),
+        ],
 
-        AnimatedBuilder(
-          animation: _horizontalAnimation,
-          builder: (_, __) {
-            return Positioned(
-              left: -widget.circleSize / 2 + _horizontalAnimation.value.dx,
-              bottom: -widget.circleSize / 2,
-              child: PulsingCircle(
-                animation: widget.scaleAnimation,
-                size: widget.circleSize,
-              ),
-            );
-          },
-        ),
-
-        PageView(
-          controller: _pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            AuthIntro(onAuthTap: _goToWhatsappPage),
-            WhatsappTile(
+        AnimatedPageStack(
+          index: _currentPage,
+          pageBuilders: [
+            (context) => AuthIntro(onAuthTap: _goToWhatsappPage),
+            (context) => WhatsappTile(
               onNext: _goToOtpPage,
               appBarPop: _goBackToIntro,
               onEmailTap: _goToEmailPage,
             ),
-            OtpTile(
+            (context) => OtpTile(
               phoneNumber: _phoneForOtp,
               method: _confirmMethod,
               onTap: _goToWhatsappPage,
               appBarPop: _goToWhatsappPage,
             ),
-            AuthByEmail(
-              onNext: _goToOtpPage,
+            (context) => AuthByEmail(
+              onNext: (email, method) => _goToEmailAuth(email, method, context),
               appBarPop: _goToWhatsappPage,
             ),
           ],

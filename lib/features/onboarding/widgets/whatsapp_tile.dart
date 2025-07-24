@@ -1,12 +1,16 @@
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/credentials.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/constants/localization.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/mobile_number_field.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
+import 'package:flex_travel_sim/features/auth/domain/entities/country.dart';
+import 'package:flex_travel_sim/features/auth/data/country_data.dart';
+import 'package:flex_travel_sim/features/auth/utils/phone_utils.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -29,13 +33,23 @@ class WhatsappTile extends StatefulWidget {
 class _WhatsappTileState extends State<WhatsappTile> {
   String _phoneDigits = '';
   String _formattedPhone = '';
+  Country _selectedCountry = CountryData.defaultCountry;
 
-  bool get _isValidPhone => _phoneDigits.length >= 11 && _phoneDigits.startsWith('7');
+  bool get _isValidPhone {
+    if (_phoneDigits.isEmpty) return false;
+    return PhoneUtils.isValidPhoneNumber(_phoneDigits, _selectedCountry);
+  }
 
   void _onPhoneChanged(String digits, String formatted) {
     setState(() {
       _phoneDigits = digits;
       _formattedPhone = formatted;
+    });
+  }
+
+  void _onCountryChanged(Country country) {
+    setState(() {
+      _selectedCountry = country;
     });
   }
 
@@ -50,7 +64,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
             Icons.arrow_back,
             color: AppColors.backgroundColorLight,
           ),
-          onPressed: widget.appBarPop, 
+          onPressed: widget.appBarPop,
         ),
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -61,22 +75,27 @@ class _WhatsappTileState extends State<WhatsappTile> {
           if (state is AuthSuccess) {
             widget.onNext(_formattedPhone, ConfirmMethod.byPhone);
           } else if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.error)));
           }
         },
         builder: (context, state) {
           final isLoading = state is AuthLoading;
 
           return Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 50),
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: 5,
+              bottom: 50,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 30),
-                const Text(
-                  AppLocalization.authWithTheHelpOf,
+                const LocalizedText(
+                  AppLocalizations.authWithTheHelpOf,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,
@@ -86,8 +105,8 @@ class _WhatsappTileState extends State<WhatsappTile> {
                 const SizedBox(height: 3),
                 Row(
                   children: [
-                    const Text(
-                      AppLocalization.whatsApp,
+                    const LocalizedText(
+                      AppLocalizations.whatsApp,
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w500,
@@ -105,53 +124,52 @@ class _WhatsappTileState extends State<WhatsappTile> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  AppLocalization.mobileNumWhatsAppDescription,
+                const LocalizedText(
+                  AppLocalizations.mobileNumWhatsAppDescription,
                   style: TextStyle(
                     fontSize: 14,
                     color: AppColors.backgroundColorLight,
                   ),
                 ),
                 const SizedBox(height: 20),
-                MobileNumberField(onChanged: _onPhoneChanged), 
+                MobileNumberField(
+                  onChanged: _onPhoneChanged,
+                  onCountryChanged: _onCountryChanged,
+                  initialCountry: _selectedCountry,
+                ),
                 const SizedBox(height: 20),
                 RegistrationContainer(
-                  onTap: !_isValidPhone || isLoading
-                      ? null
-                      : () {
-                          context.read<AuthBloc>().add(AuthRequested(PhoneCredentials(_phoneDigits))); 
-                        },
-                  buttonText: AppLocalization.authAndRegistration,
-                  buttonTextColor: _isValidPhone
-                      ? AppColors.backgroundColorLight
-                      : const Color(0x4DFFFFFF),
-                  color: _isValidPhone
-                      ? AppColors.accentBlue
-                      : const Color(0x4D808080),
+                  onTap:
+                      !_isValidPhone || isLoading
+                          ? null
+                          : () {
+                            final internationalNumber =
+                                PhoneUtils.getInternationalNumber(
+                                  _phoneDigits,
+                                  _selectedCountry,
+                                );
+                            final credentials = PhoneCredentials(
+                              phoneNumber: internationalNumber,
+                            );
+                            context.read<AuthBloc>().add(
+                              AuthRequested(credentials),
+                            );
+                          },
+                  buttonText: AppLocalizations.authAndRegistration,
+                  buttonTextColor:
+                      _isValidPhone
+                          ? AppColors.backgroundColorLight
+                          : const Color(0x4DFFFFFF),
+                  color:
+                      _isValidPhone
+                          ? AppColors.accentBlue
+                          : const Color(0x4D808080),
                   arrowForward: _isValidPhone,
                 ),
                 const Spacer(),
                 RegistrationContainer(
-                  onTap: () => widget.appBarPop(),
-                  buttonText: AppLocalization.continueWithApple,
-                  buttonTextColor: AppColors.textColorLight,
-                  color: AppColors.textColorDark,
-                  borderLine: const BorderSide(color: AppColors.textColorLight),
-                  iconPath: Assets.icons.appleLogo.path,
-                ),
-                const SizedBox(height: 12),
-                RegistrationContainer(
-                  onTap: () => widget.appBarPop(),
-                  buttonText: AppLocalization.continueWithGoogle,
-                  buttonTextColor: AppColors.textColorDark,
-                  color: AppColors.textColorLight,
-                  borderLine: const BorderSide(color: AppColors.textColorDark),
-                  iconPath: Assets.icons.googleLogo.path,
-                ),
-                const SizedBox(height: 12),
-                RegistrationContainer(
                   onTap: widget.onEmailTap,
-                  buttonText: AppLocalization.continueWithEmail,
+                  buttonText: AppLocalizations.continueWithEmail,
                   buttonTextColor: AppColors.textColorLight,
                   color: AppColors.babyBlue,
                   iconPath: Assets.icons.emailLogo.path,

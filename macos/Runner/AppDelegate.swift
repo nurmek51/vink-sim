@@ -1,8 +1,15 @@
 import Cocoa
 import FlutterMacOS
+import Firebase
 
 @main
 class AppDelegate: FlutterAppDelegate {
+  override func applicationDidFinishLaunching(_ notification: Notification) {
+    // Инициализируем Firebase для macOS
+    FirebaseApp.configure()
+    super.applicationDidFinishLaunching(notification)
+  }
+  
   override func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
     return true
   }

@@ -1,12 +1,17 @@
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/confirm_remote_data_source.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/firebase_auth_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/repo/auth_repository_impl.dart';
+import 'package:flex_travel_sim/features/auth/data/repo/firebase_auth_repository_impl.dart';
 import 'package:flex_travel_sim/features/auth/domain/repo/auth_repository.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/confirm_use_case.dart';
+import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:flex_travel_sim/features/auth/domain/use_cases/send_password_reset_use_case.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/confirm_bloc.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/firebase_auth_bloc.dart';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/core/storage/local_storage.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_local_data_source.dart';
@@ -22,6 +27,7 @@ import 'package:flex_travel_sim/features/user_account/data/repositories/user_rep
 import 'package:flex_travel_sim/features/user_account/domain/repositories/user_repository.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/get_current_user_use_case.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/update_user_profile_use_case.dart';
+import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -64,6 +70,7 @@ class ServiceLocator {
     await _initUserAccount();
     await _initAuth();
     await _initTariffsAndCountries();
+    await _initOnboarding();
 
     _isInitialized = true;
   }
@@ -99,7 +106,11 @@ class ServiceLocator {
 
     register<ConfirmRemoteDataSource>(
       ConfirmRemoteDataSourceImpl(apiClient: get<ApiClient>()),
-    );        
+    );
+
+    register<FirebaseAuthDataSource>(
+      FirebaseAuthDataSourceImpl(),
+    );
 
     // Repositories
     
@@ -111,11 +122,26 @@ class ServiceLocator {
       ),
     );
 
+    register<FirebaseAuthRepositoryImpl>(
+      FirebaseAuthRepositoryImpl(
+        firebaseDataSource: get<FirebaseAuthDataSource>(),
+        localDataSource: get<AuthLocalDataSource>(),
+      ),
+    );
+
     // Use Cases  
 
     register<LoginUseCase>(LoginUseCase(repository: get<AuthRepository>()));
 
-    register<ConfirmUseCase>(ConfirmUseCase(repository: get<AuthRepository>()));    
+    register<ConfirmUseCase>(ConfirmUseCase(repository: get<AuthRepository>()));
+
+    register<FirebaseLoginUseCase>(
+      FirebaseLoginUseCase(repository: get<FirebaseAuthRepositoryImpl>()),
+    );
+
+    register<SendPasswordResetUseCase>(
+      SendPasswordResetUseCase(get<FirebaseAuthRepositoryImpl>()),
+    );
 
     // Blocs 
 
@@ -125,6 +151,13 @@ class ServiceLocator {
       ConfirmBloc(
         confirmUseCase: get<ConfirmUseCase>(),
         localDataSource: get<AuthLocalDataSource>(),
+      ),
+    );
+
+    register<FirebaseAuthBloc>(
+      FirebaseAuthBloc(
+        firebaseLoginUseCase: get<FirebaseLoginUseCase>(),
+        sendPasswordResetUseCase: get<SendPasswordResetUseCase>(),
       ),
     );    
     
@@ -201,6 +234,11 @@ class ServiceLocator {
 
   Future<void> _initTariffsAndCountries() async {
     // TODO: Implement tariffs and countries dependencies
+  }
+
+  Future<void> _initOnboarding() async {
+    // Onboarding Bloc
+    register<WelcomeBloc>(WelcomeBloc());
   }
 
   void reset() {
