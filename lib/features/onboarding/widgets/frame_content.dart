@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/core/web/adaptive/desktop_condition.dart';
+import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
 import 'package:flex_travel_sim/features/auth/presentation/screens/auth_by_email.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/animated_page_stack.dart';
