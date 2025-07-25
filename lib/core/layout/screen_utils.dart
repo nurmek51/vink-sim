@@ -7,5 +7,5 @@ bool isDesktop(BuildContext context) {
 
 bool isSmallScreen(BuildContext context) {
   final width = MediaQuery.of(context).size.width;
-  return width < 360;
+  return width < 380;
 }

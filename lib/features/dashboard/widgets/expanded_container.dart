@@ -52,6 +52,7 @@ class _ExpandedContainerState extends State<ExpandedContainer> {
         isSelected ? AppColors.textColorLight : AppColors.textColorDark;
     final iconColor =
         isSelected ? AppColors.splashColor : AppColors.textColorLight;
+    final isResponsive = isDesktop(context) || isSmallScreen(context);    
 
     return Expanded(
       child: Material(
@@ -62,15 +63,15 @@ class _ExpandedContainerState extends State<ExpandedContainer> {
           borderRadius: BorderRadius.circular(16),
           splashColor: AppColors.splashColor,
           child: Container(
-            padding: EdgeInsets.only(top: isDesktop(context) ? 8 : 12, left: 12),
+            padding: EdgeInsets.only(top: isResponsive ? 8 : 12, left: 12),
             alignment: Alignment.centerLeft,
-            height: isDesktop(context) ? 85 : 110,
+            height: isResponsive ? 85 : 110,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: isDesktop(context) ? 28 : 37,
-                  height:  isDesktop(context) ? 28 : 37,
+                  width: isResponsive ? 28 : 37,
+                  height:  isResponsive ? 28 : 37,
                   decoration: BoxDecoration(
                     gradient: gradientColors,
                     shape: BoxShape.circle,
@@ -78,13 +79,13 @@ class _ExpandedContainerState extends State<ExpandedContainer> {
                   child: Center(
                     child: SvgPicture.asset(
                       widget.icon,
-                      width:  isDesktop(context) ? 16 : 18,
-                      height: isDesktop(context) ? 16 : 18,
+                      width:  isResponsive ? 16 : 18,
+                      height: isResponsive ? 16 : 18,
                       color: iconColor,
                     ),
                   ),
                 ),
-                SizedBox(height: isDesktop(context) ? 4 : 8),
+                SizedBox(height: isResponsive ? 4 : 8),
                 LocalizedText(
                   widget.title,
                   maxLines: 2,
