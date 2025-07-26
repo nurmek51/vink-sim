@@ -164,7 +164,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                       },
                     ),
                   ),
-                  SizedBox(height: isSmallOrDesktop ? 0 : 16),
+                  SizedBox(height: isSmallOrDesktop ? 2 : 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
@@ -185,7 +185,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                     ),
                   ),
 
-                  SizedBox(height: isSmallOrDesktop ? 5 : 16),
+                  SizedBox(height: isSmallOrDesktop ? 3 : 16),
 
                   Row(
                     children: [
