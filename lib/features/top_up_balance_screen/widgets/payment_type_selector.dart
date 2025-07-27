@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -64,9 +65,9 @@ class PaymentTypeWidget extends StatelessWidget {
               height: 66,
               margin: EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
-                color: isSelected ? Colors.black : Colors.grey.shade300,
+                color: isSelected ? Colors.black : AppColors.containerGray,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Color(0xFFD4D4D4), width: 1),
+                // border: Border.all(color: Color(0xFFD4D4D4), width: 1),
               ),
               child: _getSvgAsset(logo, isSelected),
             ),
@@ -89,19 +90,19 @@ class PaymentTypeWidget extends StatelessWidget {
           colorFilter:
               isSelected
                   ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-                  : const ColorFilter.mode(Colors.black54, BlendMode.srcIn),
+                  : const ColorFilter.mode(AppColors.lightSteelBlue, BlendMode.srcIn),
         );
       case 'crypto':
         return Assets.icons.crypto.svg(
           colorFilter:
               isSelected
                   ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-                  : const ColorFilter.mode(Colors.black54, BlendMode.srcIn),
+                  : const ColorFilter.mode(AppColors.lightSteelBlue, BlendMode.srcIn),
         );
       case 'credCard':
         return ColorFiltered(
           colorFilter: ColorFilter.mode(
-            isSelected ? Colors.white : Colors.black54,
+            isSelected ? Colors.white : AppColors.lightSteelBlue,
             BlendMode.srcIn,
           ),
           child: Assets.icons.credCard.svg(),

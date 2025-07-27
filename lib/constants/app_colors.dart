@@ -26,6 +26,7 @@ class AppColors {
   static const blueCircleProgressColor = Color(0xFF73BAE7);
   static const blueCircleBackgroundColor = Color(0xFF1F6FFF);
   static const redCircleColor = Color(0XFFE94D4D);
+  static const lightSteelBlue = Color(0xFFB4C6D9);
   static const limeGreen = Color(0xFFB3F242);
   static const containerGradientPrimary = LinearGradient(
     colors: [Color(0xFF2875FF), Color(0xFF0059F9)],

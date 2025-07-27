@@ -38,7 +38,7 @@ class _TopUpBalanceView extends StatelessWidget {
       backgroundColor: AppColors.backgroundColorLight,
       appBar: AppBar(backgroundColor: Colors.transparent),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: isScrollable ? SingleChildScrollView(child: content) : content,
       ),
     );
@@ -79,12 +79,9 @@ class _TopUpBalanceView extends StatelessWidget {
         _buildAutoTopUpCard(),
         const SizedBox(height: 15),
         if (!isScrollable) const Spacer(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: BlueGradientButton(
-            title: AppLocalizations.topUpBalance.tr(),
-            onTap: () => openActivatedEsimScreen(context),
-          ),
+        BlueGradientButton(
+          title: AppLocalizations.topUpBalance.tr(),
+          onTap: () => openActivatedEsimScreen(context),
         ),
         const SizedBox(height: 50),
       ],
@@ -122,8 +119,8 @@ class _TopUpBalanceView extends StatelessWidget {
       );
 
   Widget _buildTariffInfoCard(BuildContext context) => Container(
-    padding: const EdgeInsets.all(16),
-    height: 211,
+    padding: const EdgeInsets.all(20),
+    height: 171,
     decoration: BoxDecoration(
       color: AppColors.backgroundColorLight,
       borderRadius: BorderRadius.circular(20),
@@ -168,7 +165,7 @@ class _TopUpBalanceView extends StatelessWidget {
     padding: const EdgeInsets.symmetric(horizontal: 16),
     height: 100,
     decoration: BoxDecoration(
-      color: const Color(0xFFD4D4D4),
+      color: AppColors.containerGray,
       borderRadius: BorderRadius.circular(20),
     ),
     child: Row(
@@ -184,6 +181,7 @@ class _TopUpBalanceView extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(height: 5),
               LocalizedText(
                 AppLocalizations.autoTopUpDescription,
                 style: FlexTypography.paragraph.small,
