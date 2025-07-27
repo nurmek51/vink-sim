@@ -36,7 +36,11 @@ class _TopUpBalanceView extends StatelessWidget {
     final content = _buildContent(context, isScrollable);
     return Scaffold(
       backgroundColor: AppColors.backgroundColorLight,
-      appBar: AppBar(backgroundColor: Colors.transparent),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: isScrollable ? SingleChildScrollView(child: content) : content,
