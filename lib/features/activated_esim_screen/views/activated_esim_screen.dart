@@ -88,8 +88,6 @@ class ActivatedEsimScreen extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 15),
-
               Spacer(),
               
               BlueGradientButton(

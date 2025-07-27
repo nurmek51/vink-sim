@@ -218,7 +218,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 15),
 
                   const Spacer(),
 
