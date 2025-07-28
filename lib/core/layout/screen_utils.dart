@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 double screenWidth(BuildContext context) => MediaQuery.of(context).size.width;
 double screenHeight(BuildContext context) => MediaQuery.of(context).size.height;
+double safePaddingArea(BuildContext context) => MediaQuery.of(context).padding.top;
 
 bool isDesktop(BuildContext context) {
   return kIsWeb && screenWidth(context) > 900;
@@ -13,5 +14,5 @@ bool isSmallScreen(BuildContext context) {
 }
 
 bool isTopUpScreenScrollable(BuildContext context) {
-  return screenHeight(context) < 840;
+  return screenHeight(context) < 810;
 }

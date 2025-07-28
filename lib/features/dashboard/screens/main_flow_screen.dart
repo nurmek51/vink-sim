@@ -116,8 +116,8 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
               padding: const EdgeInsets.only(
                 top: 20,
                 bottom: 50,
-                left: 30,
-                right: 30,
+                left: 20,
+                right: 20,
               ),
               child: Column(
                 children: [

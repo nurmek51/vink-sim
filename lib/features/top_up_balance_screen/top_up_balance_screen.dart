@@ -42,7 +42,7 @@ class _TopUpBalanceView extends StatelessWidget {
         scrolledUnderElevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: isScrollable ? SingleChildScrollView(child: content) : content,
       ),
     );
