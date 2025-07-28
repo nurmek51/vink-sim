@@ -145,10 +145,10 @@ class PhoneUtils {
     final dialCodeDigits = normalizePhoneNumber(country.dialCode);
 
     if (normalizedPhone.startsWith(dialCodeDigits)) {
-      return normalizedPhone;
+      return country.dialCode + normalizedPhone.substring(dialCodeDigits.length);
     }
 
-    return dialCodeDigits + normalizedPhone;
+    return country.dialCode + normalizedPhone;
   }
 
   static Country? detectCountryFromPhone(String phone) {

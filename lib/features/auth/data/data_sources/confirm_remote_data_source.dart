@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class ConfirmRemoteDataSource {
   Future<void> confirm({
@@ -22,23 +20,19 @@ class ConfirmRemoteDataSourceImpl implements ConfirmRemoteDataSource {
     required String token,
     required String ticketCode,
   }) async {
-    // 🚧 MOCK: Принимаем любой OTP код для демонстрации
     if (kDebugMode) {
       print('MOCK: OTP confirmation for endpoint: $endpoint');
       print('MOCK: Token: $token');
       print('MOCK: Ticket code: $ticketCode');
       print('MOCK: Confirmation always successful');
     }
-    
-    // Имитация задержки API
+
     await Future.delayed(const Duration(milliseconds: 500));
-    
-    // Всегда успешно
+
     if (kDebugMode) {
       print('MOCK: Confirmation successful for endpoint: $endpoint');
     }
-    
-    // Оригинальный код закомментирован для мока
+
     /*
     final basicCreds = dotenv.env['LOGIN_PASSWORD'];
     if (basicCreds == null) {

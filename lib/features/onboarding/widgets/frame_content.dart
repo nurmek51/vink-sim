@@ -1,6 +1,5 @@
 import 'package:flex_travel_sim/core/web/adaptive/desktop_condition.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
-import 'package:flex_travel_sim/features/auth/presentation/screens/auth_by_email.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/animated_page_stack.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/auth_intro.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/otp_tile.dart';
@@ -38,7 +37,6 @@ class _FrameContentState extends State<FrameContent>
 
   int _currentPage = 0;
   String _phoneForOtp = '';
-  ConfirmMethod _confirmMethod = ConfirmMethod.byPhone;
 
   @override
   void initState() {
@@ -82,7 +80,6 @@ class _FrameContentState extends State<FrameContent>
   void _goToOtpPage(String formattedPhone, ConfirmMethod method) {
     setState(() {
       _phoneForOtp = formattedPhone;
-      _confirmMethod = method;
       _currentPage = 2;
     });
   }
@@ -91,11 +88,6 @@ class _FrameContentState extends State<FrameContent>
     setState(() => _currentPage = 3);
   }
 
-  void _goToEmailAuth(
-    String email,
-    ConfirmMethod method,
-    BuildContext context,
-  ) {}
 
   void _goBackToIntro() {
     setState(() => _currentPage = 0);
@@ -149,14 +141,10 @@ class _FrameContentState extends State<FrameContent>
             ),
             (context) => OtpTile(
               phoneNumber: _phoneForOtp,
-              method: _confirmMethod,
               onTap: _goToWhatsappPage,
               appBarPop: _goToWhatsappPage,
             ),
-            (context) => AuthByEmail(
-              onNext: (email, method) => _goToEmailAuth(email, method, context),
-              appBarPop: _goToWhatsappPage,
-            ),
+            (context) => Container(), // Placeholder for removed email auth
           ],
         ),
       ],

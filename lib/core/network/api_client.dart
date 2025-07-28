@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flex_travel_sim/core/error/exceptions.dart';
+import 'package:flutter/foundation.dart';
 
 class ApiClient {
   final http.Client _client;
@@ -38,17 +39,31 @@ class ApiClient {
   Future<Map<String, dynamic>> post(
     String endpoint, {
     Map<String, String>? headers,
-    Map<String, dynamic>? body,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? body,
   }) async {
     final uri = _buildUri(endpoint, queryParameters);
+    final requestHeaders = _buildHeaders(headers);
+    final requestBody = body != null ? jsonEncode(body) : null;
+    
+    if (kDebugMode) {
+      print('API Request: POST $uri');
+      print('Headers: $requestHeaders');
+      print('Body: $requestBody');
+    }
     
     try {
       final response = await _client.post(
         uri,
-        headers: _buildHeaders(headers),
-        body: body != null ? jsonEncode(body) : null,
+        headers: requestHeaders,
+        body: requestBody,
       );
+      
+      if (kDebugMode) {
+        print('API Response: ${response.statusCode}');
+        print('Response headers: ${response.headers}');
+        print('Response body: ${response.body}');
+      }
       
       return _handleResponse(response);
     } on SocketException {
@@ -56,6 +71,9 @@ class ApiClient {
     } on http.ClientException catch (e) {
       throw NetworkException('Network error: ${e.message}');
     } catch (e) {
+      if (kDebugMode) {
+        print('API Error: $e');
+      }
       throw NetworkException('Unexpected error: $e');
     }
   }
