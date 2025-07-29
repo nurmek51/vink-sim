@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
@@ -31,54 +32,63 @@ class _TopUpBalanceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isScrollable = isTopUpScreenScrollable(context);
+    final content = _buildContent(context, isScrollable);
     return Scaffold(
       backgroundColor: AppColors.backgroundColorLight,
-      appBar: AppBar(backgroundColor: Colors.transparent),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTitle(),
-              const SizedBox(height: 16),
-              _buildSubtitle(),
-              const SizedBox(height: 16),
-              BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
-                builder: (context, state) {
-                  return CounterWidget(
-                    value: state.amount,
-                    onIncrement:
-                        () => context.read<TopUpBalanceBloc>().add(
-                          const IncrementAmount(),
-                        ),
-                    onDecrement:
-                        () => context.read<TopUpBalanceBloc>().add(
-                          const DecrementAmount(),
-                        ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              _buildFixSumButtons(),
-              const SizedBox(height: 16),
-              _buildTariffInfoCard(context),
-              const SizedBox(height: 30),
-              _buildPaymentTitle(),
-              const SizedBox(height: 16),
-              const PaymentTypeSelector(),
-              const SizedBox(height: 16),
-              _buildAutoTopUpCard(),
-              const SizedBox(height: 16),
-              BlueGradientButton(
-                title: AppLocalizations.topUpBalance.tr(),
-                onTap: () => openActivatedEsimScreen(context),
-              ),
-              const SizedBox(height: 50),
-            ],
-          ),
-        ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: isScrollable ? SingleChildScrollView(child: content) : content,
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, bool isScrollable) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTitle(),
+        const SizedBox(height: 16),
+        _buildSubtitle(),
+        const SizedBox(height: 16),
+        BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
+          builder: (context, state) {
+            return CounterWidget(
+              value: state.amount,
+              onIncrement:
+                  () => context.read<TopUpBalanceBloc>().add(
+                    const IncrementAmount(),
+                  ),
+              onDecrement:
+                  () => context.read<TopUpBalanceBloc>().add(
+                    const DecrementAmount(),
+                  ),
+            );
+          },
+        ),
+        const SizedBox(height: 16),
+        _buildFixSumButtons(),
+        const SizedBox(height: 16),
+        _buildTariffInfoCard(context),
+        const SizedBox(height: 30),
+        _buildPaymentTitle(),
+        const SizedBox(height: 16),
+        const PaymentTypeSelector(),
+        const SizedBox(height: 16),
+        _buildAutoTopUpCard(),
+        const SizedBox(height: 15),
+        if (!isScrollable) const Spacer(),
+        BlueGradientButton(
+          title: AppLocalizations.topUpBalance.tr(),
+          onTap: () => openActivatedEsimScreen(context),
+        ),
+        const SizedBox(height: 50),
+      ],
     );
   }
 
@@ -113,8 +123,8 @@ class _TopUpBalanceView extends StatelessWidget {
       );
 
   Widget _buildTariffInfoCard(BuildContext context) => Container(
-    padding: const EdgeInsets.all(16),
-    height: 211,
+    padding: const EdgeInsets.all(20),
+    height: 171,
     decoration: BoxDecoration(
       color: AppColors.backgroundColorLight,
       borderRadius: BorderRadius.circular(20),
@@ -159,7 +169,7 @@ class _TopUpBalanceView extends StatelessWidget {
     padding: const EdgeInsets.symmetric(horizontal: 16),
     height: 100,
     decoration: BoxDecoration(
-      color: const Color(0xFFD4D4D4),
+      color: AppColors.containerGray,
       borderRadius: BorderRadius.circular(20),
     ),
     child: Row(
@@ -175,6 +185,7 @@ class _TopUpBalanceView extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(height: 5),
               LocalizedText(
                 AppLocalizations.autoTopUpDescription,
                 style: FlexTypography.paragraph.small,

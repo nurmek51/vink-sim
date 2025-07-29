@@ -35,7 +35,7 @@ class AccountWidget extends StatelessWidget {
                   children: [
                     LocalizedText(
                       title,
-                      style: FlexTypography.headline.xMedium,
+                      style: FlexTypography.paragraph.xMedium,
                     ),
                     const Icon(Icons.arrow_forward_ios, color: Colors.black26),
                   ],

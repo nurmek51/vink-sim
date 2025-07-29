@@ -173,8 +173,7 @@ class _PinCodeFieldState extends State<PinCodeField> {
               ],
             ),
           ),
-          if (currentLength > 0) ...[
-            const SizedBox(width: 12),
+
             GestureDetector(
               onTap: _clearCode,
               child: Container(
@@ -191,7 +190,6 @@ class _PinCodeFieldState extends State<PinCodeField> {
               ),
             ),
           ],
-        ],
       ),
     );
   }

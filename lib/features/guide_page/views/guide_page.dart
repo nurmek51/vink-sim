@@ -1,4 +1,3 @@
-import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
@@ -14,73 +13,73 @@ class GuidePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 10, 16, 50),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GoBackArrow(
-                width: 15,
-                height: 19,
-                onTap: () => NavigationService.pop(context),
-              ),
-
-              SizedBox(height: 20),
-
-              HelveticaneueFont(
-                text: AppLocalizations.howDoesItWork,
-                fontSize: 28,
-                letterSpacing: -1,
-                height: 1.1,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF363C45),
-              ),
-
-              SizedBox(height: 15),
-
-              HelveticaneueFont(
-                text: AppLocalizations.esimDescription1,
-                fontSize: 17,
-                letterSpacing: -0.5,
-                height: 1.3,
-                color: Color(0xFF363C45),
-              ),
-
-              SizedBox(height: 12),
-
-              HelveticaneueFont(
-                text: AppLocalizations.esimDescription2,
-                fontSize: 17,
-                letterSpacing: -0.5,
-                height: 1.3,
-                color: Color(0xFF363C45),
-              ),
-
-              SizedBox(height: 12),
-
-              Expanded(child: TableViewCells(isAuthorized: isAuthorized)),
-
-              GestureDetector(
-                onTap: () => openTopUpBalanceScreen(context),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    gradient: AppColors.containerGradientPrimary,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Text(
-                    AppLocalizations.topUpBalance,
-                    style: FlexTypography.label.medium.copyWith(
-                      color: Colors.white,
-                    ),
+      backgroundColor: AppColors.backgroundColorLight,
+      appBar: AppBar(
+        backgroundColor: AppColors.backgroundColorLight,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(
+          top: 10,
+          bottom: 50,
+          left: 20,
+          right: 20,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            HelveticaneueFont(
+              text: AppLocalizations.howDoesItWork,
+              fontSize: 28,
+              letterSpacing: -1,
+              height: 1.1,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF363C45),
+            ),
+      
+            SizedBox(height: 15),
+      
+            HelveticaneueFont(
+              text: AppLocalizations.esimDescription1,
+              fontSize: 17,
+              letterSpacing: -0.5,
+              height: 1.3,
+              color: Color(0xFF363C45),
+            ),
+      
+            SizedBox(height: 12),
+      
+            HelveticaneueFont(
+              text: AppLocalizations.esimDescription2,
+              fontSize: 17,
+              letterSpacing: -0.5,
+              height: 1.3,
+              color: Color(0xFF363C45),
+            ),
+      
+            SizedBox(height: 12),
+      
+            Expanded(child: TableViewCells(isAuthorized: isAuthorized)),
+      
+            GestureDetector(
+              onTap: () => openTopUpBalanceScreen(context),
+              child: Container(
+                alignment: Alignment.center,
+                height: 52,
+                decoration: BoxDecoration(
+                  gradient: AppColors.containerGradientPrimary,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  AppLocalizations.topUpBalance,
+                  style: FlexTypography.label.medium.copyWith(
+                    color: Colors.white,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

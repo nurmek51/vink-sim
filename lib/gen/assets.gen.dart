@@ -23,6 +23,10 @@ class $AssetsIconsGen {
   SvgGenImage get accountSettings =>
       const SvgGenImage('assets/icons/account_settings.svg');
 
+  /// File path: assets/icons/england_flag.svg
+  SvgGenImage get englandFlag =>
+      const SvgGenImage('assets/icons/england_flag.svg');      
+
   /// File path: assets/icons/app_language.svg
   SvgGenImage get appLanguage =>
       const SvgGenImage('assets/icons/app_language.svg');

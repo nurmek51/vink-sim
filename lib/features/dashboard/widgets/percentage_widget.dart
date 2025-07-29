@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.dart';
@@ -34,6 +35,7 @@ class PercentageWidget extends StatelessWidget {
     );
     final bool isRedCircle = circleColor == AppColors.redCircleColor;
     final bool isBlueCircle = circleColor == AppColors.blueCircleProgressColor;
+    final isSmallSize = isSmallScreen(context);
 
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.0, end: progressValue),
@@ -46,8 +48,8 @@ class PercentageWidget extends StatelessWidget {
             Transform.rotate(
               angle: pi / 180,
               child: SizedBox(
-                width: 292,
-                height: 292,
+                width: isSmallSize ? 281 : 292,
+                height: isSmallSize ? 281 : 292,
                 child: CircularProgressIndicator(
                   value:
                       1.0 - (value / (isYellow ? 1.0 : 25.0)).clamp(0.0, 1.0),
