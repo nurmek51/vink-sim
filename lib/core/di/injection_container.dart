@@ -2,17 +2,16 @@ import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/confirm_remote_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/firebase_auth_data_source.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/repo/auth_repository_impl.dart';
 import 'package:flex_travel_sim/features/auth/data/repo/firebase_auth_repository_impl.dart';
 import 'package:flex_travel_sim/features/auth/domain/repo/auth_repository.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/confirm_use_case.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
-import 'package:flex_travel_sim/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/send_password_reset_use_case.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/confirm_bloc.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/firebase_auth_bloc.dart';
+import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
 import 'package:flex_travel_sim/core/network/api_client.dart';
+import 'package:flex_travel_sim/core/network/travel_sim_api_service.dart';
 import 'package:flex_travel_sim/core/storage/local_storage.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_local_data_source.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_remote_data_source.dart';
@@ -28,8 +27,10 @@ import 'package:flex_travel_sim/features/user_account/domain/repositories/user_r
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/get_current_user_use_case.dart';
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/update_user_profile_use_case.dart';
 import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
+import 'package:flex_travel_sim/features/subscriber/data/data_sources/subscriber_remote_data_source.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 
 class ServiceLocator {
   static final ServiceLocator _instance = ServiceLocator._internal();
@@ -71,6 +72,7 @@ class ServiceLocator {
     await _initAuth();
     await _initTariffsAndCountries();
     await _initOnboarding();
+    await _initSubscriber();
 
     _isInitialized = true;
   }
@@ -79,21 +81,32 @@ class ServiceLocator {
     // HTTP Client
     register<http.Client>(http.Client());
 
-    // API Client
-    register<ApiClient>(
-      ApiClient(
-        baseUrl: dotenv.env['API_URL']!,
-        client: get<http.Client>(),
-      ),
+    // Travel SIM API Client (primary API)
+    final travelSimApiClient = ApiClient(
+      baseUrl: dotenv.env['API_URL']!,
+      client: get<http.Client>(),
+    );
+    if (kDebugMode) {
+      print('Travel SIM API URL: ${dotenv.env['API_URL']}');
+    }
+
+    final legacyApiClient = ApiClient(
+      baseUrl: dotenv.env['API_URL']!,
+      client: get<http.Client>(),
+    );
+
+    register<ApiClient>(legacyApiClient);
+
+    // Travel SIM API Service
+    register<TravelSimApiService>(
+      TravelSimApiService(apiClient: travelSimApiClient),
     );
 
     // Local Storage
     register<LocalStorage>(SharedPreferencesStorage());
   }
 
-
   Future<void> _initAuth() async {
-
     // DataSources
 
     register<AuthRemoteDataSource>(
@@ -108,12 +121,14 @@ class ServiceLocator {
       ConfirmRemoteDataSourceImpl(apiClient: get<ApiClient>()),
     );
 
-    register<FirebaseAuthDataSource>(
-      FirebaseAuthDataSourceImpl(),
+    register<FirebaseAuthDataSource>(FirebaseAuthDataSourceImpl());
+
+    register<OtpAuthDataSource>(
+      OtpAuthDataSourceImpl(travelSimApiService: get<TravelSimApiService>()),
     );
 
     // Repositories
-    
+
     register<AuthRepository>(
       AuthRepositoryImpl(
         remoteDataSource: get<AuthRemoteDataSource>(),
@@ -129,9 +144,7 @@ class ServiceLocator {
       ),
     );
 
-    // Use Cases  
-
-    register<LoginUseCase>(LoginUseCase(repository: get<AuthRepository>()));
+    // Use Cases
 
     register<ConfirmUseCase>(ConfirmUseCase(repository: get<AuthRepository>()));
 
@@ -143,39 +156,21 @@ class ServiceLocator {
       SendPasswordResetUseCase(get<FirebaseAuthRepositoryImpl>()),
     );
 
-    // Blocs 
+    // Blocs
 
-    register<AuthBloc>(AuthBloc(loginUseCase: get<LoginUseCase>()));
-
-    register<ConfirmBloc>(
-      ConfirmBloc(
-        confirmUseCase: get<ConfirmUseCase>(),
-        localDataSource: get<AuthLocalDataSource>(),
-      ),
+    register<OtpAuthBloc>(
+      OtpAuthBloc(otpAuthDataSource: get<OtpAuthDataSource>()),
     );
-
-    register<FirebaseAuthBloc>(
-      FirebaseAuthBloc(
-        firebaseLoginUseCase: get<FirebaseLoginUseCase>(),
-        sendPasswordResetUseCase: get<SendPasswordResetUseCase>(),
-      ),
-    );    
-    
   }
-
 
   Future<void> _initEsimManagement() async {
     // Data Sources
     register<EsimRemoteDataSource>(
-      EsimRemoteDataSourceImpl(
-        apiClient: get<ApiClient>(),
-      ),
+      EsimRemoteDataSourceImpl(apiClient: get<ApiClient>()),
     );
 
     register<EsimLocalDataSource>(
-      EsimLocalDataSourceImpl(
-        localStorage: get<LocalStorage>(),
-      ),
+      EsimLocalDataSourceImpl(localStorage: get<LocalStorage>()),
     );
 
     // Repository
@@ -187,31 +182,21 @@ class ServiceLocator {
     );
 
     // Use Cases
-    register<GetEsimsUseCase>(
-      GetEsimsUseCase(get<EsimRepository>()),
-    );
+    register<GetEsimsUseCase>(GetEsimsUseCase(get<EsimRepository>()));
 
-    register<ActivateEsimUseCase>(
-      ActivateEsimUseCase(get<EsimRepository>()),
-    );
+    register<ActivateEsimUseCase>(ActivateEsimUseCase(get<EsimRepository>()));
 
-    register<PurchaseEsimUseCase>(
-      PurchaseEsimUseCase(get<EsimRepository>()),
-    );
+    register<PurchaseEsimUseCase>(PurchaseEsimUseCase(get<EsimRepository>()));
   }
 
   Future<void> _initUserAccount() async {
     // Data Sources
     register<UserRemoteDataSource>(
-      UserRemoteDataSourceImpl(
-        apiClient: get<ApiClient>(),
-      ),
+      UserRemoteDataSourceImpl(apiClient: get<ApiClient>()),
     );
 
     register<UserLocalDataSource>(
-      UserLocalDataSourceImpl(
-        localStorage: get<LocalStorage>(),
-      ),
+      UserLocalDataSourceImpl(localStorage: get<LocalStorage>()),
     );
 
     // Repository
@@ -239,6 +224,15 @@ class ServiceLocator {
   Future<void> _initOnboarding() async {
     // Onboarding Bloc
     register<WelcomeBloc>(WelcomeBloc());
+  }
+
+  Future<void> _initSubscriber() async {
+    // Data Sources
+    register<SubscriberRemoteDataSource>(
+      SubscriberRemoteDataSourceImpl(
+        travelSimApiService: get<TravelSimApiService>(),
+      ),
+    );
   }
 
   void reset() {
