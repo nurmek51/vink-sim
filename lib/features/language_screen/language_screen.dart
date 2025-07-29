@@ -34,27 +34,28 @@ class _LanguageScreenState extends State<LanguageScreen> {
           child: Container(color: Colors.grey.shade300, height: 1),
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              LanguageButton(
-                icon: Assets.icons.russianFlag.path,
-                language: AppLocalizations.russian.tr(),
-                isSelected: currentLanguage == 'ru',
-                onTap: () => _changeLanguage('ru'),
-              ),
-              const SizedBox(height: 12),
-              LanguageButton(
-                icon: Assets.icons.chinaFlag.path,
-                language: AppLocalizations.appLanguageEn.tr(),
-                isSelected: currentLanguage == 'en',
-                onTap: () => _changeLanguage('en'),
-              ),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.only(
+          top: 15,
+          left: 16.0,
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            LanguageButton(
+              icon: Assets.icons.englandFlag.path,
+              language: AppLocalizations.appLanguageEn.tr(),
+              isSelected: currentLanguage == 'en',
+              onTap: () => _changeLanguage('en'),
+            ),
+            const SizedBox(height: 12),
+            LanguageButton(
+              icon: Assets.icons.russianFlag.path,
+              language: AppLocalizations.russian.tr(),
+              isSelected: currentLanguage == 'ru',
+              onTap: () => _changeLanguage('ru'),
+            ),              
+          ],
         ),
       ),
     );
@@ -81,39 +82,50 @@ class LanguageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SvgPicture.asset(icon),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      language, 
-                      style: FlexTypography.headline.xMedium.copyWith(
-                        color: isSelected ? Colors.blue : Colors.black,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,        
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SvgPicture.asset(icon),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        language, 
+                        style: FlexTypography.paragraph.large.copyWith(
+                          color: isSelected ? Colors.blue : Colors.black,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        ),
                       ),
-                    ),
-                    const Spacer(),
-                    if (isSelected)
-                      const Icon(
-                        Icons.check,
-                        color: Colors.blue,
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                const Divider(color: Colors.black26),
-              ],
+                      const Spacer(),
+                      if (isSelected)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 10,
+                          ),
+                          child: const Icon(
+                            Icons.check,
+                            color: Colors.blue,
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Divider(color: Colors.black26),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

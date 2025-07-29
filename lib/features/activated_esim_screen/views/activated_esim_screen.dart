@@ -18,7 +18,12 @@ class ActivatedEsimScreen extends StatelessWidget {
       backgroundColor: AppColors.backgroundColorLight,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 45, 16, 40),
+          padding: const EdgeInsets.only(
+            top: 20,
+            bottom: 50,
+            left : 20,
+            right: 20,
+          ),
           child: Column(
             children: [
               Header(
@@ -66,7 +71,7 @@ class ActivatedEsimScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 12),
               Row(
                 children: [
                   ExpandedContainer(
@@ -84,6 +89,7 @@ class ActivatedEsimScreen extends StatelessWidget {
               ),
 
               Spacer(),
+              
               BlueGradientButton(
                 onTap: () => openTopUpBalanceScreen(context),
                 title: AppLocalizations.topUpBalance,

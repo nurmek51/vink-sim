@@ -1,10 +1,9 @@
-import 'package:flex_travel_sim/components/widgets/go_back_arrow.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/setting_esim_page/widgets/steps_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/start_registration_button.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class SettingEsimPage extends StatelessWidget {
@@ -18,83 +17,77 @@ class SettingEsimPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 10, 16, 8),
-              child: Row(
+      backgroundColor: AppColors.backgroundColorLight,
+      appBar: AppBar(
+        backgroundColor: AppColors.backgroundColorLight,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
+        title: HelveticaneueFont(
+          text: AppLocalizations.guideForEsimSettings,
+          fontSize: 17,
+          fontWeight: FontWeight.w500,
+          height: 1.3,
+          color: AppColors.grayBlue,
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(color: Colors.grey.shade300, height: 1),
+        ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 10,
+              left: 20,
+              right: 20,
+            ),
+            child: Center(
+              child: Column(
                 children: [
-                  GoBackArrow(
-                    onTap: () => NavigationService.pop(context),
-                    width: 10,
-                    height: 14,
+                  StepsContainer(
+                    iconPath: Assets.icons.figma143.step1Icon.path,
+                    stepNum: '1',
+                    description: AppLocalizations.balanceAndEsimActivation,
                   ),
 
-                  Expanded(
-                    child: Center(
-                      child: HelveticaneueFont(
-                        text: AppLocalizations.guideForEsimSettings,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        height: 1.3,
-                        color: Color(0xFF363C45),
-                      ),
-                    ),
+                  SizedBox(height: 7),
+
+                  StepsContainer(
+                    iconPath: Assets.icons.figma143.step2Icon.path,
+                    stepNum: '2',
+                    description: AppLocalizations.profileSetupGuide,
+                  ),
+
+                  SizedBox(height: 7),
+
+                  StepsContainer(
+                    iconPath: Assets.icons.figma143.step3Icon.path,
+                    stepNum: '3',
+                    description: AppLocalizations.readyToTravelMessage,
                   ),
                 ],
               ),
             ),
+          ),
 
-            const Divider(thickness: 0),
+          Spacer(),
 
-            SizedBox(height: 10),
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Center(
-                child: Column(
-                  children: [
-                    StepsContainer(
-                      iconPath: Assets.icons.figma143.step1Icon.path,
-                      stepNum: '1',
-                      description: AppLocalizations.balanceAndEsimActivation,
-                    ),
-
-                    SizedBox(height: 7),
-
-                    StepsContainer(
-                      iconPath: Assets.icons.figma143.step2Icon.path,
-                      stepNum: '2',
-                      description: AppLocalizations.profileSetupGuide,
-                    ),
-
-                    SizedBox(height: 7),
-
-                    StepsContainer(
-                      iconPath: Assets.icons.figma143.step3Icon.path,
-                      stepNum: '3',
-                      description: AppLocalizations.readyToTravelMessage,
-                    ),
-                  ],
-                ),
-              ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: 50,
             ),
-
-            Spacer(),
-
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 50.0),
-              child: Visibility(
-                visible: isAuthorized,
-                child: StartRegistrationButton(),
-              ),
+            child: Visibility(
+              visible: isAuthorized,
+              child: StartRegistrationButton(),
             ),
-
-          ],
-        ),
+          ),
+      
+        ],
       ),
     );
   }

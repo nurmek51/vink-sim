@@ -35,7 +35,7 @@ class AppRouter {
           final config =
               isWelcome
                   ? WebScaffoldConfig(
-                    backgroundColor: AppColors.backgroundColorDark,
+                    backgroundColor: Colors.black,
                     leftSide: const Positioned.fill(child: WelcomeCircles()),
                   )
                   : WebScaffoldConfig(

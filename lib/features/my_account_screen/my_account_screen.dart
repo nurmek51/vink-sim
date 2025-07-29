@@ -28,7 +28,7 @@ class MyAccountScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 35),
               AccountWidget(
                 title: AppLocalizations.accountSettings,
                 icon: Assets.icons.accountSettings.path,

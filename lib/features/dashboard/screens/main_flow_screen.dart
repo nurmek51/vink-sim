@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.dart';
@@ -105,12 +106,19 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
         final canAdd =
             state.progressValues.length < MainFlowBloc.maxCircles - 1;
         final itemCount = actualCount + 1;
+        final isSmall = isSmallScreen(context);
+        final isSmallOrDesktop = isSmallScreen(context) || isDesktop(context);
 
         return Scaffold(
           backgroundColor: AppColors.backgroundColorLight,
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.only(
+                top: 20,
+                bottom: 50,
+                left: 20,
+                right: 20,
+              ),
               child: Column(
                 children: [
                   Header(
@@ -118,9 +126,9 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                     faqOnTap: () => openGuidePage(context),
                     avatarOnTap: () => openMyAccountScreen(context),
                   ),
-                  const SizedBox(height: 15),
+                  SizedBox(height: isSmallOrDesktop ? 0 : 15),
                   SizedBox(
-                    height: 320,
+                    height: isSmall ? 309 : 320,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: itemCount,
@@ -156,7 +164,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: isSmallOrDesktop ? 2 : 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
@@ -177,11 +185,12 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                     ),
                   ),
 
-                  const Spacer(),
+                  SizedBox(height: isSmallOrDesktop ? 3 : 16),
+
                   Row(
                     children: [
                       ExpandedContainer(
-                        title: AppLocalizations.howToInstallEsim,
+                        title: AppLocalizations.howToInstallEsim2,
                         icon: Assets.icons.simIcon.path,
                         onTap: () => openEsimSetupPage(context),
                       ),
@@ -193,7 +202,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 12),
                   Row(
                     children: [
                       ExpandedContainer(
@@ -209,7 +218,9 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15),
+
+                  const Spacer(),
+
                   BlueGradientButton(
                     onTap: () => openTopUpBalanceScreen(context),
                     title: AppLocalizations.topUpBalance,
