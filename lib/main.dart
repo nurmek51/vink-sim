@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
+import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_travel_sim/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +33,14 @@ void main() async {
       print('Firebase initialization error: $e');
     }
   }
+
+  final String? stripePublishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY'];
+
+  if (stripePublishableKey == null || stripePublishableKey.isEmpty) {
+    throw Exception('STRIPE_PUBLISHABLE_KEY not found in .env');
+  }
+
+  Stripe.publishableKey = stripePublishableKey;  
 
   await sl.init();
 
@@ -56,6 +66,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => MainFlowBloc()),
         BlocProvider(create: (_) => sl.get<WelcomeBloc>()),
+        BlocProvider(create: (_) => StripeBloc()),
       ],
       child: MaterialApp.router(
         title: 'FlexTravelSIM',

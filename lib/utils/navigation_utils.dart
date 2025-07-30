@@ -18,8 +18,13 @@ class NavigationService {
     context.push(AppRoutes.esimSetup);
   }
 
-  static void openTopUpBalanceScreen(BuildContext context) {
-    context.push(AppRoutes.topUpBalance);
+  static void openTopUpBalanceScreen(BuildContext context, {int? circleIndex}) {
+    context.push(
+      AppRoutes.topUpBalance,
+      extra: {
+      'circleIndex': circleIndex,
+    },
+    );
   }
 
   static void openAuthScreen(BuildContext context) {
@@ -51,6 +56,22 @@ class NavigationService {
   static void openLanguageScreen(BuildContext context) {
     context.push(AppRoutes.language);
   }
+
+  static void openStripeWebCheckoutPage(
+    BuildContext context, {
+    required String clientSecret,
+    required int amount,
+    int? circleIndex,
+  }) {
+    context.push(
+      AppRoutes.stripeWebCheckout,
+      extra: {
+        'clientSecret': clientSecret, 
+        'amount': amount, 
+        'circleIndex': circleIndex,
+      },
+    );
+  }  
 
   static void openUserProfileScreen(BuildContext context) {
     context.push(AppRoutes.myAccount);

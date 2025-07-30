@@ -1,11 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
+import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
@@ -16,19 +18,27 @@ import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/tariff_sc
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 
 class TopUpBalanceScreen extends StatelessWidget {
-  const TopUpBalanceScreen({super.key});
+  final int? circleIndex;
+  const TopUpBalanceScreen({
+    super.key,
+    this.circleIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => TopUpBalanceBloc(),
-      child: const _TopUpBalanceView(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => TopUpBalanceBloc()),
+        BlocProvider(create: (_) => StripeBloc()),
+      ],
+      child: _TopUpBalanceView(circleIndex: circleIndex),
     );
   }
 }
 
 class _TopUpBalanceView extends StatelessWidget {
-  const _TopUpBalanceView();
+  final int? circleIndex;
+  const _TopUpBalanceView({this.circleIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +93,117 @@ class _TopUpBalanceView extends StatelessWidget {
         _buildAutoTopUpCard(),
         const SizedBox(height: 15),
         if (!isScrollable) const Spacer(),
-        BlueGradientButton(
-          title: AppLocalizations.topUpBalance.tr(),
-          onTap: () => openActivatedEsimScreen(context),
-        ),
+
+              BlocConsumer<StripeBloc, StripeState>(
+                listener: (context, state) {
+                  if (state is StripeSuccess) { 
+                    if (kDebugMode) print('ОПЛАТА ПРОШЛА УСПЕШНО !');
+
+                    if (circleIndex != null) {
+                      context.read<MainFlowBloc>().add(
+                        UpdateCircleBalanceEvent(
+                          circleIndex: circleIndex!,
+                          addedAmount:
+                              context
+                                  .read<TopUpBalanceBloc>()
+                                  .state
+                                  .amount
+                                  .toDouble(), 
+                        ),
+                      );
+
+                      Navigator.of(context).pop();
+                    } else {
+                      NavigationService.openActivatedEsimScreen(context);
+                    }
+                  } else if (state is StripeCancelled) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Окно с оплатой было закрыто'),
+                      ),
+                    );
+                  } else if (state is StripeFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Ошибка оплаты: ${state.error}')),
+                    );
+                  }
+                },
+                builder: (context, stripeState) {
+                  final isLoading = stripeState is StripeLoading;
+                  return BlueGradientButton(
+                    title:
+                        isLoading
+                            ? 'Проверка...'
+                            : AppLocalizations.topUpBalance,
+                    onTap:
+                        isLoading
+                            ? null
+                            : () {
+                              final bloc = context.read<TopUpBalanceBloc>();
+                              final state = bloc.state;
+
+                              if (state.amount <= 0) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Укажите сумму для пополнения',
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              if (state.selectedPaymentMethod.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Выберите способ оплаты'),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              switch (state.selectedPaymentMethod) {
+                                case 'credit_card':
+                                  context.read<StripeBloc>().add(
+                                    StripePaymentRequested(
+                                      amount: state.amount,
+                                      context: context,
+                                      circleIndex: circleIndex,
+                                    ),
+                                  );
+                                  break;
+                                case 'crypto':
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Оплата криптовалютой пока недоступна',
+                                      ),
+                                    ),
+                                  );
+                                  break;
+                                case 'apple_pay':
+                                  context.read<StripeBloc>().add(
+                                    GooglePayPaymentRequested(
+                                      amount: state.amount,
+                                      currency: 'usd',
+                                    ),
+                                  );
+
+                                  break;
+                                default:
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Неизвестный способ оплаты',
+                                      ),
+                                    ),
+                                  );
+                              }
+                            },
+                  );
+                },
+              ),
+
         const SizedBox(height: 50),
       ],
     );

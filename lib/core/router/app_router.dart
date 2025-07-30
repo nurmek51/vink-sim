@@ -13,6 +13,7 @@ import 'package:flex_travel_sim/features/guide_page/views/guide_page.dart';
 import 'package:flex_travel_sim/features/setting_esim_page/views/setting_esim_page.dart';
 import 'package:flex_travel_sim/features/activated_esim_screen/views/activated_esim_screen.dart';
 import 'package:flex_travel_sim/features/initial_page/views/initial_page.dart';
+import 'package:flex_travel_sim/features/stripe_payment/presentation/screens/web_checkout_page.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flex_travel_sim/features/traffic_usage_screen/traffic_usage_screen.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/screens/tariffs_and_countries_screen.dart';
@@ -139,12 +140,15 @@ class AppRouter {
           GoRoute(
             path: AppRoutes.topUpBalance,
             name: AppRoutes.topUpBalanceName,
-            pageBuilder:
-                (context, state) => _buildPageWithNoTransition(
-                  context,
-                  state,
-                  const TopUpBalanceScreen(),
-                ),
+            pageBuilder: (context, state) {
+              final data = state.extra as Map<String, dynamic>?;
+              final circleIndex = data?['circleIndex'] as int?;
+              return _buildPageWithNoTransition(
+                context,
+                state,
+                TopUpBalanceScreen(circleIndex: circleIndex),
+              );
+            },
           ),
           GoRoute(
             path: AppRoutes.myAccount,
@@ -210,6 +214,38 @@ class AppRouter {
                   const TrafficUsageScreen(),
                 ),
           ),
+
+          GoRoute(
+            path: AppRoutes.stripeWebCheckout,
+            name: AppRoutes.stripeWebCheckoutName,
+            pageBuilder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>?;
+              final clientSecret = extra?['clientSecret'] as String?;
+              final amount = extra?['amount'] as int?;
+              final circleIndex = extra?['circleIndex'] as int?;
+
+              if (clientSecret == null || amount == null) {
+                return AppRouter._buildPageWithSlideTransition(
+                  context,
+                  state,
+                  const Scaffold(
+                    body: Center(child: Text("Invalid Stripe Payment")),
+                  ),
+                );
+              }
+
+              return AppRouter._buildPageWithSlideTransition(
+                context,
+                state,
+                StripeWebCheckout(
+                  clientSecret: clientSecret,
+                  amount: amount,
+                  circleIndex: circleIndex,
+                ),
+              );
+            },
+          ), 
+
           GoRoute(
             path: AppRoutes.language,
             name: AppRoutes.languageName,
@@ -293,6 +329,8 @@ class AppRoutes {
   static const String purchaseHistory = '/purchase-history';
   static const String trafficUsage = '/traffic-usage';
   static const String language = '/language';
+  static const String stripeWebCheckout = '/stripe-web-checkout';
+
 
   // Route names
   static const String welcomeName = 'welcome';
@@ -310,4 +348,5 @@ class AppRoutes {
   static const String purchaseHistoryName = 'purchaseHistory';
   static const String trafficUsageName = 'trafficUsage';
   static const String languageName = 'language';
+  static const String stripeWebCheckoutName = 'stripeWebCheckout';
 }
