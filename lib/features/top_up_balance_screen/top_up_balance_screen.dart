@@ -31,7 +31,10 @@ class TopUpBalanceScreen extends StatelessWidget {
         BlocProvider(create: (_) => TopUpBalanceBloc()),
         BlocProvider(create: (_) => StripeBloc()),
       ],
-      child: _TopUpBalanceView(circleIndex: circleIndex),
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.translucent,
+        child: _TopUpBalanceView(circleIndex: circleIndex)),
     );
   }
 }
@@ -45,6 +48,7 @@ class _TopUpBalanceView extends StatelessWidget {
     final isScrollable = isTopUpScreenScrollable(context);
     final content = _buildContent(context, isScrollable);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorLight,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -78,6 +82,10 @@ class _TopUpBalanceView extends StatelessWidget {
                   () => context.read<TopUpBalanceBloc>().add(
                     const DecrementAmount(),
                   ),
+              onAmountChanged:
+                  (newAmount) => context.read<TopUpBalanceBloc>().add(
+                    SetAmount(newAmount),
+                  ),     
             );
           },
         ),

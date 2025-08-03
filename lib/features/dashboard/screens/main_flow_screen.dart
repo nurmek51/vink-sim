@@ -110,6 +110,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
         final isSmallOrDesktop = isSmallScreen(context) || isDesktop(context);
 
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: AppColors.backgroundColorLight,
           body: SafeArea(
             child: Padding(
