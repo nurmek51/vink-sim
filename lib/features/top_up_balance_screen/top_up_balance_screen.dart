@@ -56,7 +56,11 @@ class _TopUpBalanceView extends StatelessWidget {
         scrolledUnderElevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          bottom: 50,
+        ),
         child: isScrollable ? SingleChildScrollView(child: content) : content,
       ),
     );
@@ -99,8 +103,7 @@ class _TopUpBalanceView extends StatelessWidget {
         const PaymentTypeSelector(),
         const SizedBox(height: 16),
         _buildAutoTopUpCard(),
-        const SizedBox(height: 15),
-        if (!isScrollable) const Spacer(),
+        isScrollable ? const SizedBox(height: 15) : const Spacer(),
 
               BlocConsumer<StripeBloc, StripeState>(
                 listener: (context, state) {
@@ -211,8 +214,6 @@ class _TopUpBalanceView extends StatelessWidget {
                   );
                 },
               ),
-
-        const SizedBox(height: 50),
       ],
     );
   }
