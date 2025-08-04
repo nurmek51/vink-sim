@@ -119,5 +119,9 @@
   "enter_amount_top_up_description": "Введите сумму, чтобы подключить\nFlex Travel eSIM",
   "flex_travel_esim_works_worldwide": "Flex Travel eSIM работает по всему миру, согласно тарифам страны присутствия.",
   "loading": "Загрузка...",
-  "pay_money": "Оплатить ${}"
+  "pay_money": "Оплатить ${}",
+  "in_europe": "в Европе",
+  "in_dubai": "в Дубаях",
+  "in_asia": "в странах Средней Азии",
+  "monaco": "Монако"
 }

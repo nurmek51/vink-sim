@@ -133,4 +133,7 @@ abstract class AppLocalizations {
   static const countryDescriptionExample = 'country_description_example';
   static const loading = 'loading';
   static const payMoney = 'pay_money';
+  static const inEurope = 'in_europe';
+  static const inDubai = 'in_dubai';
+  static const inAsia= 'in_asia';
 }
