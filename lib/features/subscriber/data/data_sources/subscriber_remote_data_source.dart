@@ -21,12 +21,23 @@ class SubscriberRemoteDataSourceImpl implements SubscriberRemoteDataSource {
       }
 
       final response = await _travelSimApiService.getSubscriberInfo(token);
+      
+      if (kDebugMode) {
+        print('Subscriber: Raw API response: $response');
+        print('Subscriber: Response type: ${response.runtimeType}');
+        print('Subscriber: Response keys: ${response.keys}');
+      }
+      
       final subscriber = SubscriberModel.fromJson(response);
 
       if (kDebugMode) {
         print('Subscriber: Info retrieved successfully');
         print('Balance: ${subscriber.balance}');
         print('IMSI Count: ${subscriber.imsiList.length}');
+        for (int i = 0; i < subscriber.imsiList.length; i++) {
+          final imsi = subscriber.imsiList[i];
+          print('IMSI $i: ${imsi.imsi}, Balance: ${imsi.balance}, Rate: ${imsi.rate}, Country: ${imsi.country}');
+        }
       }
 
       return subscriber;

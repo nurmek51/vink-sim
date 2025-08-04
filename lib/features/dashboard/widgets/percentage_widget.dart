@@ -7,6 +7,7 @@ import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.da
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class PercentageWidget extends StatelessWidget {
   const PercentageWidget({
@@ -14,13 +15,25 @@ class PercentageWidget extends StatelessWidget {
     required this.progressValue,
     required this.color,
     required this.backgroundColor,
+    required this.balance,
+    this.country,
+    this.rate,
     this.isYellow = false,
   });
 
   final double progressValue;
   final Color color;
   final Color backgroundColor;
+  final double balance;
+  final String? country;
+  final double? rate;
   final bool isYellow;
+
+  String _formatBalance(double value) {
+    String formatted =
+        value % 1 == 0 ? value.toInt().toString() : value.toStringAsFixed(2);
+    return formatted.replaceAll('.', ',');
+  }
 
   String _formatGB(double value) {
     String formatted =
@@ -30,11 +43,17 @@ class PercentageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double availableGB = progressValue;
+
+    if (kDebugMode) {
+      print(
+        'PercentageWidget: Displaying GB: $availableGB, Balance: $balance, Rate: $rate, Country: $country',
+      );
+    }
     final Color circleColor = ProgressColorUtils.getProgressColor(
       progressValue,
     );
     final bool isRedCircle = circleColor == AppColors.redCircleColor;
-    final bool isBlueCircle = circleColor == AppColors.blueCircleProgressColor;
     final isSmallSize = isSmallScreen(context);
 
     return TweenAnimationBuilder<double>(
@@ -71,53 +90,63 @@ class PercentageWidget extends StatelessWidget {
                             : AppColors.limeGreen,
                     borderRadius: BorderRadius.circular(9),
                   ),
-                  width: 73,
-                  height: 26,
-                  child: LocalizedText(
-                    AppLocalizations.monaco,
-                    style: FlexTypography.paragraph.medium.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color:
-                          isRedCircle
-                              ? AppColors.backgroundColorLight
-                              : AppColors.grayBlue,
+                  constraints: const BoxConstraints(
+                    minWidth: 100,
+                    maxWidth: 180,
+                    minHeight: 26,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    child: Text(
+                      country ?? 'N/A',
+                      style: FlexTypography.paragraph.medium.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color:
+                            isRedCircle
+                                ? AppColors.backgroundColorLight
+                                : AppColors.grayBlue,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  '${_formatGB(value)} GB',
+                  '${_formatGB(availableGB)} GB',
                   style: FlexTypography.label.xLarge.copyWith(
                     fontSize: 60,
                     color: AppColors.grayBlue,
                   ),
                 ),
                 const SizedBox(height: 4),
-                LocalizedText(
-                  AppLocalizations.dollarsOnAccount,
-                  style: FlexTypography.label.medium.copyWith(
-                    color: AppColors.grayBlue.withOpacity(0.6),
+
+                Text(
+                  'Balance: \$${_formatBalance(balance)}',
+                  style: FlexTypography.label.small.copyWith(
+                    color: AppColors.grayBlue.withOpacity(0.5),
                   ),
                 ),
+
                 const SizedBox(height: 13),
 
-                !isBlueCircle
-                    ? GestureDetector(
-                      onTap:
-                          () =>
-                              NavigationService.openTopUpBalanceScreen(context),
-                      child: LocalizedText(
-                        AppLocalizations.topUp,
-                        textAlign: TextAlign.center,
-                        style: FlexTypography.label.medium.copyWith(
-                          color: AppColors.accentBlue,
-                          decoration: TextDecoration.underline,
-                          decorationStyle: TextDecorationStyle.solid,
-                          decorationColor: AppColors.accentBlue,
-                        ),
-                      ),
-                    )
-                    : SizedBox.shrink(),
+                GestureDetector(
+                  onTap:
+                      () => NavigationService.openTopUpBalanceScreen(context),
+                  child: LocalizedText(
+                    AppLocalizations.topUp,
+                    textAlign: TextAlign.center,
+                    style: FlexTypography.label.medium.copyWith(
+                      color: AppColors.accentBlue,
+                      decoration: TextDecoration.underline,
+                      decorationStyle: TextDecorationStyle.solid,
+                      decorationColor: AppColors.accentBlue,
+                    ),
+                  ),
+                ),
               ],
             ),
           ],

@@ -59,9 +59,38 @@ class TravelSimApiService {
   }
 
   Future<Map<String, dynamic>> getSubscriberInfo(String token) async {
-    return await _apiClient.get(
-      '/subscriber',
-      headers: {'Authorization': 'Bearer $token'},
-    );
+    if (kDebugMode) {
+      print('TravelSimAPI: Getting subscriber info');
+      print('URL: ${_apiClient.baseUrl}/subscriber');
+      print('Token: ${token.substring(0, 20)}...');
+      print('Full token: $token');
+      print('Authorization header: Bearer $token');
+    }
+    
+    try {
+      final authHeaders = {
+        'Authorization': 'Bearer $token',
+      };
+      if (kDebugMode) {
+        print('TravelSimAPI: Request headers: $authHeaders');
+      }
+      
+      final response = await _apiClient.get(
+        '/subscriber',
+        headers: authHeaders,
+      );
+      
+      if (kDebugMode) {
+        print('TravelSimAPI: Subscriber info retrieved successfully');
+        print('Response keys: ${response.keys}');
+      }
+      
+      return response;
+    } catch (e) {
+      if (kDebugMode) {
+        print('TravelSimAPI: Failed to get subscriber info - $e');
+      }
+      rethrow;
+    }
   }
 }
