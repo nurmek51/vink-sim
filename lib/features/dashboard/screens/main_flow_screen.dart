@@ -30,51 +30,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     super.dispose();
   }
 
-  void _showAddDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Выберите уровень'),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  title: const Text('Low — 0 GB'),
-                  onTap: () {
-                    context.read<MainFlowBloc>().add(
-                      const AddCircleEvent(BalanceLevel.low),
-                    );
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: const Text('Medium — 0.6 GB'),
-                  onTap: () {
-                    context.read<MainFlowBloc>().add(
-                      const AddCircleEvent(BalanceLevel.medium),
-                    );
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: const Text('High — 15 GB'),
-                  onTap: () {
-                    context.read<MainFlowBloc>().add(
-                      const AddCircleEvent(BalanceLevel.high),
-                    );
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-    );
-  }
-
   void _showBottomSheet(BuildContext context) {
     context.read<MainFlowBloc>().add(ShowBottomSheetEvent());
     showModalBottomSheet(
@@ -162,7 +117,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                         } else {
                           return AddEsimCircle(
                             canAdd: canAdd,
-                            onAddButtonPressed: () => _showAddDialog(context),
+                            onAddButtonPressed: () => NavigationService.openTopUpBalanceScreen(context),
                           );
                         }
                       },
