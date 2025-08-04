@@ -14,7 +14,7 @@ class FastSelectedBody extends StatelessWidget {
     return Column(
       children: [
         BodyContainer(
-          stepNum: '1',
+          args: ['1'],
           description: AppLocalizations.fastDescriptionStep1,
           child: Padding(
             padding: const EdgeInsets.only(top: 30.0),
@@ -36,7 +36,7 @@ class FastSelectedBody extends StatelessWidget {
         const SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '2',
+          args: ['2'],
           description: AppLocalizations.fastDescriptionStep2,
           child: Center(
             child: SingleChildScrollView(
@@ -74,7 +74,7 @@ class FastSelectedBody extends StatelessWidget {
         const SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '3',
+          args: ['3'],
           description: AppLocalizations.fastDescriptionStep3,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -95,7 +95,7 @@ class FastSelectedBody extends StatelessWidget {
         const SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '4',
+          args: ['4'],
           description: AppLocalizations.fastDescriptionStep4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),

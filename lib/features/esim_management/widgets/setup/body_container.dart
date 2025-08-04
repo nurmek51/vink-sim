@@ -1,27 +1,28 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class BodyContainer extends StatelessWidget {
-  final String? stepNum;
   final String? stepTitle;
   final String description;
   final double? height;
   final double? widgth;
   final Widget? child;
+  final List<String>? args;
 
   const BodyContainer({
     super.key,
-    this.stepNum,
     this.stepTitle,
     this.widgth,
     this.height,
     required this.description,
     this.child,
+    this.args,
   });
 
   @override
   Widget build(BuildContext context) {
-    final String headerText = stepTitle ?? 'Шаг $stepNum';
+    final String headerText = stepTitle ?? AppLocalizations.stepNumber;
     return Container(
       width: widgth,
       height: height,
@@ -50,6 +51,7 @@ class BodyContainer extends StatelessWidget {
               ),
               child: HelveticaneueFont(
                 text: headerText,
+                args: args,
                 fontSize: 14,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

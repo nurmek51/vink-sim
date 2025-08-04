@@ -49,7 +49,7 @@ class SettingEsimPage extends StatelessWidget {
                 children: [
                   StepsContainer(
                     iconPath: Assets.icons.figma143.step1Icon.path,
-                    stepNum: '1',
+                    args: ['1'],
                     description: AppLocalizations.balanceAndEsimActivation,
                   ),
 
@@ -57,7 +57,7 @@ class SettingEsimPage extends StatelessWidget {
 
                   StepsContainer(
                     iconPath: Assets.icons.figma143.step2Icon.path,
-                    stepNum: '2',
+                    args: ['2'],
                     description: AppLocalizations.profileSetupGuide,
                   ),
 
@@ -65,7 +65,7 @@ class SettingEsimPage extends StatelessWidget {
 
                   StepsContainer(
                     iconPath: Assets.icons.figma143.step3Icon.path,
-                    stepNum: '3',
+                    args: ['3'],
                     description: AppLocalizations.readyToTravelMessage,
                   ),
                 ],
