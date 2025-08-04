@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/guide_page/components/widgets/table_view_cells.dart';
@@ -21,8 +22,8 @@ class GuidePage extends StatelessWidget {
         scrolledUnderElevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          top: 10,
+        padding: EdgeInsets.only(
+          top: isSmallScreen(context) ? 0 : 10,
           bottom: 50,
           left: 20,
           right: 20,
@@ -59,9 +60,11 @@ class GuidePage extends StatelessWidget {
               color: Color(0xFF363C45),
             ),
       
-            SizedBox(height: 12),
+            SizedBox(height: isSmallScreen(context) ? 3 : 12),
       
-            Expanded(child: TableViewCells(isAuthorized: isAuthorized)),
+            TableViewCells(isAuthorized: isAuthorized),
+
+            Spacer(),
       
             GestureDetector(
               onTap: () => openTopUpBalanceScreen(context),
