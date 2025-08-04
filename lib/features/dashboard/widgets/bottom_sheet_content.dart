@@ -1,4 +1,3 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/chat_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
@@ -31,14 +30,6 @@ class BottomSheetContent extends StatelessWidget {
                 title: AppLocalizations.whatsappSupport,
                 border: Border.all(color: const Color(0xFF25D366), width: 0),
                 icon: Assets.icons.whatsappIcon.path,
-              ),
-              const SizedBox(height: 16),
-              ChatContainer(
-                color: AppColors.backgroundColorLight,
-                title: AppLocalizations.emailSupport,
-                titleColor: Colors.black,
-                border: Border.all(color: Colors.black, width: 0),
-                icon: Assets.icons.mailIcon.path,
               ),
             ],
           ),
