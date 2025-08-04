@@ -131,4 +131,6 @@ abstract class AppLocalizations {
   static const monaco = 'monaco';
   static const countryExample = 'country_example';
   static const countryDescriptionExample = 'country_description_example';
+  static const loading = 'loading';
+  static const payMoney = 'pay_money';
 }

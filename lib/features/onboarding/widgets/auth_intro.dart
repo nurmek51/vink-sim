@@ -60,7 +60,10 @@ class AuthIntro extends StatelessWidget {
               title: AppLocalizations.infinityTitle,
             ),
             const SizedBox(height: 12),
-            BenefitTile(icon: Assets.icons.card.path, title: 'Пакеты от 1\$'),
+            BenefitTile(
+              icon: Assets.icons.card.path,
+              title: AppLocalizations.packagesFrom1Dollar,
+            ),
             const SizedBox(height: 30),
             WhatIsEsimButton(
               onTap: () {

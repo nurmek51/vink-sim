@@ -115,5 +115,9 @@
   "dollars_on_account": "{}$ на счету",
   "language": "Язык",
   "russian": "Русский",
-  "chinese": "Китайский"
+  "chinese": "Китайский",
+  "enter_amount_top_up_description": "Введите сумму, чтобы подключить\nFlex Travel eSIM",
+  "flex_travel_esim_works_worldwide": "Flex Travel eSIM работает по всему миру, согласно тарифам страны присутствия.",
+  "loading": "Загрузка...",
+  "pay_money": "Оплатить ${}"
 }

@@ -141,7 +141,7 @@ class _TopUpBalanceView extends StatelessWidget {
                   return BlueGradientButton(
                     title:
                         isLoading
-                            ? 'Проверка...'
+                            ? AppLocalizations.loading
                             : AppLocalizations.topUpBalance,
                     onTap:
                         isLoading
@@ -249,7 +249,7 @@ class _TopUpBalanceView extends StatelessWidget {
 
   Widget _buildTariffInfoCard(BuildContext context) => Container(
     padding: const EdgeInsets.all(20),
-    height: 171,
+    height: 183,
     decoration: BoxDecoration(
       color: AppColors.backgroundColorLight,
       borderRadius: BorderRadius.circular(20),

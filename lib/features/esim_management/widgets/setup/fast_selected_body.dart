@@ -1,7 +1,9 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class FastSelectedBody extends StatelessWidget {
@@ -23,13 +25,9 @@ class FastSelectedBody extends StatelessWidget {
                 gradient: AppColors.containerGradientPrimary,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Text(
+              child: LocalizedText(
                 AppLocalizations.download,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: FlexTypography.label.medium.copyWith(color: AppColors.textColorLight),
               ),
             ),
           ),

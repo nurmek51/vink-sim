@@ -3,6 +3,7 @@ import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/guide_page/components/widgets/table_view_cells.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -71,7 +72,7 @@ class GuidePage extends StatelessWidget {
                   gradient: AppColors.containerGradientPrimary,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Text(
+                child: LocalizedText(
                   AppLocalizations.topUpBalance,
                   style: FlexTypography.label.medium.copyWith(
                     color: Colors.white,

@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
@@ -76,7 +77,8 @@ class StripeWebCheckout extends StatelessWidget {
                 final isLoading = state is StripeLoading;
                 final returnUrl = 'http://localhost:62204/#/main-flow';
                 return BlueGradientButton(
-                  title: isLoading ? 'Проверка...' : 'Оплатить $amount\$',
+                  title: isLoading ? AppLocalizations.loading : AppLocalizations.payMoney,
+                  args: isLoading ? null : [amount.toString()],
                   onTap:
                       isLoading
                           ? null

@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 class BlueGradientButton extends StatelessWidget {
   final String title;
   final VoidCallback? onTap;
-  const BlueGradientButton({super.key, required this.title, this.onTap});
+  final List<String>? args;
+  const BlueGradientButton({super.key, required this.title, this.onTap, this.args});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class BlueGradientButton extends StatelessWidget {
         ),
         child: LocalizedText(
           title,
+          args: args,
           style: FlexTypography.label.medium.copyWith(
             color: Colors.white,
           ),
