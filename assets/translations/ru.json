@@ -1,7 +1,7 @@
 {
   "frame_title": "Одна eSim для всех\nпоездок",
   "storage_header_title": "Flex Travel Sim",
-  "frame_globus_title": "Одна поездка для всех направлении",
+  "frame_globus_title": "Одна карта для всех направлении",
   "frame_check_title": "Оплата только за потраченное",
   "infinity_title": "Без срока действия",
   "activation_button_title": "Войти через email",
@@ -138,5 +138,13 @@
   "otp_success": "OTP прошел проверку",
   "payment_fail": "Ошибка оплаты",
   "enter_top_up_amount": "Укажите сумму пополнения",
-  "not_available": "Недоступно"
+  "select_level_title": "Выберите уровень",
+  "low_level_balance": "Low — 0 GB",
+  "medium_level_balance": "Medium — 0.6 GB",
+  "high_level_balance": "High — 15 GB",
+  "error": "Ошибка",
+  "not_available": "Н/Д",
+  "gigabytes": "ГБ",
+  "balance_prefix": "на счету",
+  "step": "Шаг"
 }

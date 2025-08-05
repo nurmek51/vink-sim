@@ -28,6 +28,7 @@ dependencies:
   flutter_stripe_web: ^6.5.1
   url_launcher: ^6.3.2
   fluttertoast: ^8.2.12
+  country_flags: ^3.3.0
 
 dev_dependencies:
   flutter_test:
@@ -35,14 +36,15 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   build_runner: ^2.4.7
   flutter_gen_runner: ^5.3.2
+  flutter_launcher_icons: ^0.14.1
 
 flutter:
   uses-material-design: true
   assets:
-    - .env  
+    - .env
     - assets/
     - assets/icons/
-    - assets/icons/figma112/ 
+    - assets/icons/figma112/
     - assets/icons/figma141/
     - assets/icons/figma142/
     - assets/icons/figma143/
@@ -55,9 +57,9 @@ flutter:
         - asset: assets/fonts/HelveticaNeue_Roman.otf
           weight: 400
         - asset: assets/fonts/HelveticaNeue_Medium.otf
-          weight: 500          
+          weight: 500
         - asset: assets/fonts/HelveticaNeue_Bold.otf
-          weight: 700     
+          weight: 700
 
 flutter_gen:
   output: lib/gen
@@ -74,4 +76,10 @@ flutter_gen:
     flutter_svg: true
 
   fonts:
-    enabled: true    
+    enabled: true
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo/main_logo.png"
+  min_sdk_android: 21
