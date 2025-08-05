@@ -27,7 +27,7 @@ class StepsContainer extends StatelessWidget {
         child: ListTile(
           leading: SvgPicture.asset(iconPath, width: 50, height: 50),
           title: HelveticaneueFont(
-            text: '${AppLocalizations.step.tr()} $stepNum',
+            text: '${AppLocalizations.step} $stepNum',
             fontSize: 15,
             height: 1.3,
             color: Color(0xFF363C45),

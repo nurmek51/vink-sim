@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
+import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_travel_sim/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => MainFlowBloc()),
         BlocProvider(create: (_) => sl.get<WelcomeBloc>()),
+        BlocProvider(create: (_) => sl.get<SubscriberBloc>()),
       ],
       child: MaterialApp.router(
         title: 'FlexTravelSIM',

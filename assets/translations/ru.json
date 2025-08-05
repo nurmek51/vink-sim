@@ -1,7 +1,7 @@
 {
   "frame_title": "Одна eSim для всех\nпоездок",
   "storage_header_title": "Flex Travel Sim",
-  "frame_globus_title": "Одна поездка для всех направлении",
+  "frame_globus_title": "Одна карта для всех направлении",
   "frame_check_title": "Оплата только за потраченное",
   "infinity_title": "Без срока действия",
   "activation_button_title": "Войти через email",
@@ -115,5 +115,17 @@
   "dollars_on_account": "{}$ на счету",
   "language": "Язык",
   "russian": "Русский",
-  "chinese": "Китайский"
+  "chinese": "Китайский",
+  "select_level_title": "Выберите уровень",
+  "low_level_balance": "Low — 0 GB",
+  "medium_level_balance": "Medium — 0.6 GB",
+  "high_level_balance": "High — 15 GB",
+  "loading": "Загрузка...",
+  "error": "Ошибка",
+  "not_available": "Н/Д",
+  "gigabytes": "ГБ",
+  "balance_prefix": "на счету",
+  "step": "Шаг",
+  "enter_amount_top_up_description": "Введите сумму для пополнения",
+  "flex_travel_esim_works_worldwide": "Flex Travel eSIM работает по всему миру"
 }

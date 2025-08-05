@@ -28,6 +28,7 @@ import 'package:flex_travel_sim/features/user_account/domain/use_cases/get_curre
 import 'package:flex_travel_sim/features/user_account/domain/use_cases/update_user_profile_use_case.dart';
 import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/data/data_sources/subscriber_remote_data_source.dart';
+import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -231,6 +232,13 @@ class ServiceLocator {
     register<SubscriberRemoteDataSource>(
       SubscriberRemoteDataSourceImpl(
         travelSimApiService: get<TravelSimApiService>(),
+      ),
+    );
+
+    // Blocs
+    register<SubscriberBloc>(
+      SubscriberBloc(
+        subscriberRemoteDataSource: get<SubscriberRemoteDataSource>(),
       ),
     );
   }
