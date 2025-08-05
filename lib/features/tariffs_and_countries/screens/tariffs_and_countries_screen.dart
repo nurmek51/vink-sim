@@ -69,7 +69,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
   @override
   Widget build(BuildContext context) {
     const titleStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
-    const paddingSettings = EdgeInsets.only(left: 20, right: 20, bottom: 50);
+    const paddingSettings = EdgeInsets.symmetric(horizontal: 20);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -86,117 +86,111 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
           child: Container(color: Colors.grey.shade300, height: 1),
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: paddingSettings,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: TextField(
-                  controller: _searchController,
-                  decoration: const InputDecoration(
-                    hintText: 'Search countries',
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
+      body: Padding(
+        padding: paddingSettings,
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: TextField(
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  hintText: 'Search countries',
+                  prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
                   ),
-                  onChanged: (value) {
-                    context.read<TariffsBloc>().add(SearchTariffsEvent(value));
-                  },
                 ),
+                onChanged: (value) {
+                  context.read<TariffsBloc>().add(SearchTariffsEvent(value));
+                },
               ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: BlocBuilder<TariffsBloc, TariffsState>(
-                  builder: (context, state) {
-                    if (state is TariffsLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: BlocBuilder<TariffsBloc, TariffsState>(
+                builder: (context, state) {
+                  if (state is TariffsLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                    if (state is TariffsError) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Error: ${state.message}',
-                              style: const TextStyle(color: Colors.red),
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                context.read<TariffsBloc>().add(
-                                  const RefreshTariffsEvent(),
-                                );
-                              },
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    if (state is TariffsLoaded) {
-                      final operatorsToShow =
-                          state.searchQuery?.isNotEmpty == true
-                              ? _groupOperatorsByCountry(
-                                state.filteredOperators,
-                              )
-                              : state.operatorsByCountry;
-
-                      final countries = operatorsToShow.keys.toList();
-
-                      return ListView.builder(
-                        itemCount: countries.length,
-                        itemBuilder: (context, index) {
-                          final country = countries[index];
-                          final operators = operatorsToShow[country]!;
-                          final pricePerGB = _calculatePricePerGB(operators);
-
-                          // Use PLMN code from first operator for more accurate country mapping
-                          final firstOperator = operators.first;
-                          final countryCode =
-                              CountryCodeUtils.getCountryCodeEnhanced(
-                                country,
-                                plmnCode: firstOperator.plmn,
+                  if (state is TariffsError) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Error: ${state.message}',
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.read<TariffsBloc>().add(
+                                const RefreshTariffsEvent(),
                               );
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
 
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: CountryListTile(
-                              countryTitle: country,
-                              countrySubtitle:
-                                  '${operators.length} operators available',
-                              price: '\$${pricePerGB.toStringAsFixed(2)} / 1GB',
-                              countryCode: countryCode,
-                              onTap: () {},
-                            ),
-                          );
-                        },
-                      );
-                    }
+                  if (state is TariffsLoaded) {
+                    final operatorsToShow =
+                        state.searchQuery?.isNotEmpty == true
+                            ? _groupOperatorsByCountry(state.filteredOperators)
+                            : state.operatorsByCountry;
 
-                    return const Center(child: Text('No data available'));
-                  },
-                ),
+                    final countries = operatorsToShow.keys.toList();
+
+                    return ListView.builder(
+                      itemCount: countries.length,
+                      itemBuilder: (context, index) {
+                        final country = countries[index];
+                        final operators = operatorsToShow[country]!;
+                        final pricePerGB = _calculatePricePerGB(operators);
+
+                        // Use PLMN code from first operator for more accurate country mapping
+                        final firstOperator = operators.first;
+                        final countryCode =
+                            CountryCodeUtils.getCountryCodeEnhanced(
+                              country,
+                              plmnCode: firstOperator.plmn,
+                            );
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: CountryListTile(
+                            countryTitle: country,
+                            countrySubtitle:
+                                '${operators.length} operators available',
+                            price: '\$${pricePerGB.toStringAsFixed(2)} / 1GB',
+                            countryCode: countryCode,
+                            onTap: () {},
+                          ),
+                        );
+                      },
+                    );
+                  }
+
+                  return const Center(child: Text('No data available'));
+                },
               ),
+            ),
 
-              const SizedBox(height: 16),
-
-              Visibility(
-                visible: widget.isAuthorized,
-                child: StartRegistrationButton(),
-              ),
-            ],
-          ),
+            Visibility(
+              visible: widget.isAuthorized,
+              child: StartRegistrationButton(),
+            ),
+          ],
         ),
       ),
     );

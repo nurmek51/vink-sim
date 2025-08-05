@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
@@ -7,7 +8,6 @@ import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.da
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 class PercentageWidget extends StatelessWidget {
   const PercentageWidget({
@@ -45,11 +45,6 @@ class PercentageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final double availableGB = progressValue;
 
-    if (kDebugMode) {
-      print(
-        'PercentageWidget: Displaying GB: $availableGB, Balance: $balance, Rate: $rate, Country: $country',
-      );
-    }
     final Color circleColor = ProgressColorUtils.getProgressColor(
       progressValue,
     );
@@ -101,7 +96,7 @@ class PercentageWidget extends StatelessWidget {
                       vertical: 4,
                     ),
                     child: Text(
-                      country ?? 'N/A',
+                      country ?? AppLocalizations.notAvailable.tr(),
                       style: FlexTypography.paragraph.medium.copyWith(
                         fontWeight: FontWeight.bold,
                         color:
@@ -116,7 +111,7 @@ class PercentageWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  '${_formatGB(availableGB)} GB',
+                  '${_formatGB(availableGB)} ${AppLocalizations.gigabytes.tr()}',
                   style: FlexTypography.label.xLarge.copyWith(
                     fontSize: 60,
                     color: AppColors.grayBlue,
@@ -125,7 +120,7 @@ class PercentageWidget extends StatelessWidget {
                 const SizedBox(height: 4),
 
                 Text(
-                  'Balance: \$${_formatBalance(balance)}',
+                  '\$${_formatBalance(balance)} ${AppLocalizations.balancePrefix.tr()} ',
                   style: FlexTypography.label.small.copyWith(
                     color: AppColors.grayBlue.withOpacity(0.5),
                   ),

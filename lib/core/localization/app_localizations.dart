@@ -14,10 +14,8 @@ abstract class AppLocalizations {
   static const anotherDeviceDescription2 = 'another_device_description2';
   static const anotherDeviceDescription3 = 'another_device_description3';
   static const anotherDeviceDescription5 = 'another_device_description5';
-  static const anotherDeviceDescriptionImportant =
-      'another_device_description_important';
-  static const anotherDeviceDescriptionWarning =
-      'another_device_description_warning';
+  static const anotherDeviceDescriptionImportant = 'another_device_description_important';
+  static const anotherDeviceDescriptionWarning = 'another_device_description_warning';
   static const appLanguage = 'app_language';
   static const appLanguageEn = 'app_language_en';
   static const appLanguageRu = 'app_language_ru';
@@ -30,6 +28,7 @@ abstract class AppLocalizations {
   static const balance = 'balance';
   static const balance15Description = 'balance_15_description';
   static const balanceAndEsimActivation = 'balance_and_esim_activation';
+  static const balancePrefix = 'balance_prefix';
   static const checking = 'checking';
   static const chinese = 'chinese';
   static const choosePaymentMethod = 'choose_payment_method';
@@ -51,8 +50,10 @@ abstract class AppLocalizations {
   static const emailDescription = 'email_description';
   static const emailSupport = 'email_support';
   static const enterAmountDescription = 'enter_amount_description';
+  static const enterAmountTopUpDescription = 'enter_amount_top_up_description';
   static const enterCode = 'enter_code';
   static const enterCodeBelow = 'enter_code_below';
+  static const error = 'error';
   static const esimDescription1 = 'esim_description1';
   static const esimDescription2 = 'esim_description2';
   static const esimIsActivated = 'esim_is_activated';
@@ -61,11 +62,14 @@ abstract class AppLocalizations {
   static const fastDescriptionStep3 = 'fast_description_step3';
   static const fastDescriptionStep4 = 'fast_description_step4';
   static const fastSelectedRow = 'fast_selected_row';
+  static const flexTravelEsimWorksWorldwide = 'flex_travel_esim_works_worldwide';
   static const frameCheckTitle = 'frame_check_title';
   static const frameGlobusTitle = 'frame_globus_title';
   static const frameTitle = 'frame_title';
+  static const gigabytes = 'gigabytes';
   static const guideForEsimSettings = 'guide_for_esim_settings';
   static const highLevel = 'high_level';
+  static const highLevelBalance = 'high_level_balance';
   static const highSpeedLowCost = 'high_speed_low_cost';
   static const howDoesItWork = 'how_does_it_work';
   static const howToInstallEsim = 'how_to_install_esim';
@@ -74,16 +78,19 @@ abstract class AppLocalizations {
   static const infinityTitle = 'infinity_title';
   static const installEsim = 'install_esim';
   static const language = 'language';
+  static const loading = 'loading';
   static const loginAnotherWay = 'login_another_way';
   static const loginDifferentWay = 'login_different_way';
   static const lowLevel = 'low_level';
+  static const lowLevelBalance = 'low_level_balance';
   static const manageMoreEsims = 'manage_more_esims';
   static const manualDescription1 = 'manual_description1';
   static const manualSelectedRow = 'manual_selected_row';
   static const mediumLevel = 'medium_level';
-  static const mobileNumWhatsAppDescription =
-      'mobile_num_whats_app_description';
+  static const mediumLevelBalance = 'medium_level_balance';
+  static const mobileNumWhatsAppDescription = 'mobile_num_whats_app_description';
   static const myAccount = 'my_account';
+  static const notAvailable = 'not_available';
   static const nowYouNeedToInstallEsim = 'now_you_need_to_install_esim';
   static const packagesFrom1Dollar = 'packages_from_1_dollar';
   static const profileSetupGuide = 'profile_setup_guide';
@@ -99,11 +106,13 @@ abstract class AppLocalizations {
   static const searchCountries = 'search_countries';
   static const selectCountry = 'select_country';
   static const selectLevel = 'select_level';
+  static const selectLevelTitle = 'select_level_title';
   static const sendQr = 'send_qr';
   static const showQr = 'show_qr';
   static const smthMore = 'smth_more';
   static const start = 'start';
   static const startRegistration = 'start_registration';
+  static const step = 'step';
   static const stepNumber = 'step_number';
   static const storageHeaderTitle = 'storage_header_title';
   static const successMessage = 'success_message';
@@ -122,13 +131,4 @@ abstract class AppLocalizations {
   static const whatsappSupport = 'whatsapp_support';
   static const youCanActivateEsimOnlyOnce = 'you_can_activate_esim_only_once';
   static const yourTrafic = 'your_trafic';
-  static const testtesttest = 'testtesttest';
-  static const enterAmountTopUpDescription = 'enter_amount_top_up_description';
-  static const flexTravelEsimWorksWorldwide =
-      'flex_travel_esim_works_worldwide';
-  static const accordingToCountryTariffs = 'according_to_country_tariffs';
-  static const step = 'step';
-  static const monaco = 'monaco';
-  static const countryExample = 'country_example';
-  static const countryDescriptionExample = 'country_description_example';
 }

@@ -1,7 +1,7 @@
 {
   "frame_title": "One eSIM for all\nyour trips",
   "storage_header_title": "Flex Travel Sim",
-  "frame_globus_title": "One trip for all destinations",
+  "frame_globus_title": "One card for all destinations",
   "frame_check_title": "Pay only for what you spend",
   "infinity_title": "No expiration date",
   "activation_button_title": "Login via email",
@@ -115,5 +115,17 @@
   "dollars_on_account": "${} on account",
   "language": "Language",
   "russian": "Russian",
-  "chinese": "Chinese"
+  "chinese": "Chinese",
+  "select_level_title": "Select Level",
+  "low_level_balance": "Low — 0 GB",
+  "medium_level_balance": "Medium — 0.6 GB",
+  "high_level_balance": "High — 15 GB",
+  "loading": "Loading...",
+  "error": "Error",
+  "not_available": "N/A",
+  "gigabytes": "GB",
+  "balance_prefix": "on account",
+  "step": "Step",
+  "enter_amount_top_up_description": "Enter amount to top up",
+  "flex_travel_esim_works_worldwide": "Flex Travel eSIM works worldwide"
 }

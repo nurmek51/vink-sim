@@ -16,7 +16,6 @@ import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 import 'package:flex_travel_sim/shared/widgets/header.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainFlowScreen extends StatefulWidget {
@@ -40,7 +39,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Выберите уровень'),
+            title: Text(AppLocalizations.selectLevelTitle),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -48,7 +47,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  title: const Text('Low — 0 GB'),
+                  title: Text(AppLocalizations.lowLevelBalance),
                   onTap: () {
                     context.read<MainFlowBloc>().add(
                       const AddCircleEvent(BalanceLevel.low),
@@ -57,7 +56,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   },
                 ),
                 ListTile(
-                  title: const Text('Medium — 0.6 GB'),
+                  title: Text(AppLocalizations.mediumLevelBalance),
                   onTap: () {
                     context.read<MainFlowBloc>().add(
                       const AddCircleEvent(BalanceLevel.medium),
@@ -66,7 +65,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   },
                 ),
                 ListTile(
-                  title: const Text('High — 15 GB'),
+                  title: Text(AppLocalizations.highLevelBalance),
                   onTap: () {
                     context.read<MainFlowBloc>().add(
                       const AddCircleEvent(BalanceLevel.high),
@@ -123,11 +122,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
 
             final isLoading = subscriberState is SubscriberLoading;
             final hasError = subscriberState is SubscriberError;
-            
-            if (kDebugMode && hasError) {
-              final errorState = subscriberState as SubscriberError;
-              print('MainFlowScreen: SubscriberError detected: ${errorState.message}');
-            }
 
             final displayList =
                 loadedImsiList.isNotEmpty
@@ -138,8 +132,8 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                         balance: subscriberBalance,
                         country:
                             isLoading
-                                ? 'Loading...'
-                                : (hasError ? 'Error' : 'Monaco'),
+                                ? AppLocalizations.loading
+                                : (hasError ? AppLocalizations.error : 'N/A'),
                         rate: 1024.0,
                       ),
                     ];
@@ -154,9 +148,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
             double calculateAvailableGB(double balance, double rate) {
               if (rate == 0) return 0.0;
               final gb = balance / rate / 1024;
-              if (kDebugMode) {
-                print('MainFlowScreen: Calculating GB - Balance: $balance, Rate: $rate, GB: $gb');
-              }
               return gb;
             }
 

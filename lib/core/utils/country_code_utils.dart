@@ -16,6 +16,7 @@ class CountryCodeUtils {
     "ALBVF": "AL",
     "ANDMA": "AD",
     "ANTCT": "BQ",
+    "ANTK8": "CW",
     "ANTTC": "BQ",
     "AREDU": "AE",
     "ARETC": "AE",
@@ -31,13 +32,16 @@ class CountryCodeUtils {
     "AUTCA": "AT",
     "AUTMM": "AT",
     "AUTPT": "AT",
+    "AZEAC": "AZ",
     "AZEAF": "AZ",
+    "AZEBC": "AZ",
     "BDIL1": "BI",
     "BDIVG": "BI",
     "BELKO": "BE",
     "BELMO": "BE",
     "BELTB": "BE",
     "BEN02": "BJ",
+    "BENK8": "BJ",
     "BFACT": "BF",
     "BGDBL": "BD",
     "BGDGP": "BD",
@@ -52,11 +56,14 @@ class CountryCodeUtils {
     "BIHMS": "BA",
     "BIHPT": "BA",
     "BLR02": "BY",
+    "BLRBT": "BY",
     "BLRMD": "BY",
     "BLZ67": "BZ",
     "BLZSC": "BZ",
     "BMU01": "XX",
+    "BMUK9": "BM",
     "BOLNT": "BO",
+    "BOLK9": "BO",
     "BOLTE": "BO",
     "BRABT": "BR",
     "BRAC4": "BR",
@@ -69,6 +76,7 @@ class CountryCodeUtils {
     "BRAV1": "BR",
     "BRAV2": "BR",
     "BRAV3": "BR",
+    "BTNTC": "BT",
     "BRBCW": "BB",
     "BRNBR": "BN",
     "BRNDS": "BN",
@@ -150,6 +158,7 @@ class CountryCodeUtils {
     "FINTA": "FI",
     "FINTF": "FI",
     "FJIDP": "FJ",
+    "FJIK9": "FJ",
     "FRAF1": "FR",
     "FRAF2": "FR",
     "FRAF3": "FR",
@@ -175,11 +184,15 @@ class CountryCodeUtils {
     "GHAGT": "GH",
     "GHAMT": "GH",
     "GHASC": "GH",
+    "GHAK8": "GH",
     "GHAZN": "GH",
     "GIBGT": "GI",
     "GINAG": "GN",
     "GINGS": "GN",
+    "GLPK9": "GP",
     "GLP01": "BL",
+    "REU02": "RE",
+    "REUOT": "RE",
     "GMBAC": "GM",
     "GMBQC": "GM",
     "GNBSB": "GW",
@@ -193,6 +206,7 @@ class CountryCodeUtils {
     "GTMSC": "GT",
     "GTMTG": "GT",
     "GUMDP": "US",
+    "GUMHT": "GU",
     "GUYUM": "GY",
     "HKGH3": "HK",
     "HKGHT": "HK",
@@ -202,6 +216,7 @@ class CountryCodeUtils {
     "HKGPP": "HK",
     "HKGSM": "HK",
     "HNDDC": "HN",
+    "HNDK7": "HN",
     "HNDME": "HN",
     "HRVCN": "HR",
     "HRVT2": "HR",
@@ -330,6 +345,7 @@ class CountryCodeUtils {
     "IRNMI": "IR",
     "IRNTT": "IR",
     "IRQAC": "IQ",
+    "IRQKK": "IQ",
     "ISLNO": "IS",
     "ISLPS": "IS",
     "ISLTL": "IS",
@@ -355,6 +371,7 @@ class CountryCodeUtils {
     "K0001": "XK",
     "KAZ77": "KZ",
     "KAZKT": "KZ",
+    "KAZK9": "KZ",
     "KAZKZ": "KZ",
     "KENEC": "KE",
     "KENKC": "KE",
@@ -363,6 +380,7 @@ class CountryCodeUtils {
     "KGZ01": "KG",
     "KHMCC": "KH",
     "KHMGM": "KH",
+    "KHMK5": "KH",
     "KHMVC": "KH",
     "KIRKL": "KI",
     "KNACW": "KN",
@@ -371,13 +389,16 @@ class CountryCodeUtils {
     "KORSK": "KR",
     "KWTKT": "KW",
     "KWTMT": "KW",
+    "KWTK9": "KW",
     "KWTNM": "KW",
     "LAOAS": "LA",
     "LAOET": "LA",
     "LAOTC": "LA",
+    "LAOK7": "LA",
     "LAOTL": "LA",
     "LBNFL": "LB",
     "LBNLC": "LB",
+    "LBRLC": "LR",
     "LBY01": "LY",
     "LCACW": "LC",
     "LIEMK": "LI",
@@ -386,6 +407,7 @@ class CountryCodeUtils {
     "LKA71": "LK",
     "LKACT": "LK",
     "LKADG": "LK",
+    "LKAK5": "LK",
     "LKAHT": "LK",
     "LSOET": "LS",
     "LSOVL": "LS",
@@ -401,7 +423,10 @@ class CountryCodeUtils {
     "MACHT": "MO",
     "MARM1": "MA",
     "MARM3": "MA",
+    "MCOK8": "MC",
     "MCOM2": "MC",
+    "MDAK8": "MD",
+    "MDAMC": "MD",
     "MDAVX": "MD",
     "MDGCO": "MG",
     "MDGTM": "MG",
@@ -421,9 +446,11 @@ class CountryCodeUtils {
     "MMRPT": "MM",
     "MMRTN": "MM",
     "MNEMT": "ME",
+    "MNETM": "ME",
     "MNEPM": "ME",
     "MNGMC": "MN",
     "MNGMN": "MN",
+    "MNGSK": "MN",
     "MOZ01": "MZ",
     "MOZVC": "MZ",
     "MOZVG": "MZ",
@@ -459,14 +486,18 @@ class CountryCodeUtils {
     "NORMC": "XX",
     "NORNN": "NO",
     "NORTD": "NO",
+    "NORIC": "NO",
+    "NORNC": "NO",
     "NORTM": "NO",
     "NPLM2": "NP",
     "NPLNM": "NP",
     "NZLBS": "NZ",
     "NZLNH": "NZ",
+    "NZLK8": "NZ",
     "NZLTM": "NZ",
     "OMNGT": "OM",
     "OMNNT": "OM",
+    "OMNVF": "OM",
     "PAKMK": "PK",
     "PAKTP": "PK",
     "PAKUF": "PK",
@@ -508,13 +539,16 @@ class CountryCodeUtils {
     "RUST2": "RU",
     "RWAAR": "RW",
     "RWAMN": "RW",
+    "RWAK9": "RW",
     "RWATG": "RW",
     "SAUAJ": "SA",
     "SAUET": "SA",
     "SAUZN": "SA",
     "SDNBT": "SD",
     "SENEX": "SN",
+    "SENAZ": "SN",
     "SENSG": "SN",
+    "WSMDP": "WS",
     "SGPM1": "SG",
     "SGPML": "SG",
     "SGPSH": "SG",
@@ -557,6 +591,7 @@ class CountryCodeUtils {
     "THAWN": "TH",
     "THAWP": "TH",
     "TJK91": "TJ",
+    "TJKK6": "TJ",
     "TLSVG": "TL",
     "TONDP": "TO",
     "TTODL": "TT",
@@ -608,6 +643,7 @@ class CountryCodeUtils {
     "UZB05": "UZ",
     "UZBDU": "UZ",
     "VCTCW": "VC",
+    "VEND2": "VE",
     "VENMS": "VE",
     "VGBCC": "VG",
     "VGBCW": "VG",
@@ -674,6 +710,102 @@ class CountryCodeUtils {
           case 'IT':
             uniqueCountries['Italy'] = code;
             break;
+          case 'AZ':
+            uniqueCountries['Azerbaijan'] = code;
+            break;
+          case 'BY':
+            uniqueCountries['Belarus'] = code;
+            break;
+          case 'BJ':
+            uniqueCountries['Benin'] = code;
+            break;
+          case 'BT':
+            uniqueCountries['Bhutan'] = code;
+            break;
+          case 'BO':
+            uniqueCountries['Bolivia'] = code;
+            break;
+          case 'BM':
+            uniqueCountries['Bermuda'] = code;
+            break;
+          case 'KZ':
+            uniqueCountries['Kazakhstan'] = code;
+            break;
+          case 'KH':
+            uniqueCountries['Cambodia'] = code;
+            break;
+          case 'FJ':
+            uniqueCountries['Fiji'] = code;
+            break;
+          case 'GH':
+            uniqueCountries['Ghana'] = code;
+            break;
+          case 'GP':
+            uniqueCountries['Guadeloupe'] = code;
+            break;
+          case 'GU':
+            uniqueCountries['Guam'] = code;
+            break;
+          case 'HN':
+            uniqueCountries['Honduras'] = code;
+            break;
+          case 'IQ':
+            uniqueCountries['Iraq'] = code;
+            break;
+          case 'KW':
+            uniqueCountries['Kuwait'] = code;
+            break;
+          case 'LA':
+            uniqueCountries['Laos'] = code;
+            break;
+          case 'LR':
+            uniqueCountries['Liberia'] = code;
+            break;
+          case 'MD':
+            uniqueCountries['Moldova'] = code;
+            break;
+          case 'MC':
+            uniqueCountries['Monaco'] = code;
+            break;
+          case 'MN':
+            uniqueCountries['Mongolia'] = code;
+            break;
+          case 'ME':
+            uniqueCountries['Montenegro'] = code;
+            break;
+          case 'CW':
+            uniqueCountries['Netherlands Antilles'] = code;
+            break;
+          case 'NZ':
+            uniqueCountries['New Zealand'] = code;
+            break;
+          case 'NO':
+            uniqueCountries['Norway'] = code;
+            break;
+          case 'OM':
+            uniqueCountries['Oman'] = code;
+            break;
+          case 'RE':
+            uniqueCountries['Reunion'] = code;
+            break;
+          case 'RW':
+            uniqueCountries['Rwanda'] = code;
+            break;
+          case 'WS':
+            uniqueCountries['Samoa'] = code;
+            break;
+          case 'SN':
+            uniqueCountries['Senegal'] = code;
+            break;
+          case 'LK':
+            uniqueCountries['Sri Lanka'] = code;
+            break;
+          case 'TJ':
+            uniqueCountries['Tajikistan'] = code;
+            break;
+          case 'VE':
+            uniqueCountries['Venezuela'] = code;
+            break;
         }
       }
     }
@@ -705,6 +837,38 @@ class CountryCodeUtils {
     if (lowerCountryName.contains('russia')) return 'RU';
     if (lowerCountryName.contains('spain')) return 'ES';
     if (lowerCountryName.contains('italy')) return 'IT';
+    if (lowerCountryName.contains('azerbaijan')) return 'AZ';
+    if (lowerCountryName.contains('belarus')) return 'BY';
+    if (lowerCountryName.contains('benin')) return 'BJ';
+    if (lowerCountryName.contains('bhutan')) return 'BT';
+    if (lowerCountryName.contains('bolivia')) return 'BO';
+    if (lowerCountryName.contains('bermuda')) return 'BM';
+    if (lowerCountryName.contains('kazakhstan')) return 'KZ';
+    if (lowerCountryName.contains('cambodia')) return 'KH';
+    if (lowerCountryName.contains('fiji')) return 'FJ';
+    if (lowerCountryName.contains('ghana')) return 'GH';
+    if (lowerCountryName.contains('guadeloupe')) return 'GP';
+    if (lowerCountryName.contains('guam')) return 'GU';
+    if (lowerCountryName.contains('honduras')) return 'HN';
+    if (lowerCountryName.contains('iraq')) return 'IQ';
+    if (lowerCountryName.contains('kuwait')) return 'KW';
+    if (lowerCountryName.contains('laos')) return 'LA';
+    if (lowerCountryName.contains('liberia')) return 'LR';
+    if (lowerCountryName.contains('moldova')) return 'MD';
+    if (lowerCountryName.contains('monaco')) return 'MC';
+    if (lowerCountryName.contains('mongolia')) return 'MN';
+    if (lowerCountryName.contains('montenegro')) return 'ME';
+    if (lowerCountryName.contains('netherlands antilles')) return 'CW';
+    if (lowerCountryName.contains('new zealand')) return 'NZ';
+    if (lowerCountryName.contains('norway')) return 'NO';
+    if (lowerCountryName.contains('oman')) return 'OM';
+    if (lowerCountryName.contains('reunion')) return 'RE';
+    if (lowerCountryName.contains('rwanda')) return 'RW';
+    if (lowerCountryName.contains('samoa')) return 'WS';
+    if (lowerCountryName.contains('senegal')) return 'SN';
+    if (lowerCountryName.contains('sri lanka')) return 'LK';
+    if (lowerCountryName.contains('tajikistan')) return 'TJ';
+    if (lowerCountryName.contains('venezuela')) return 'VE';
 
     return 'UN'; // Default to UN flag if not found
   }
