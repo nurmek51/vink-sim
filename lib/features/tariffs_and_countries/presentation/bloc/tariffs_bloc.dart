@@ -9,8 +9,8 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
   final TariffsRemoteDataSource _dataSource;
 
   TariffsBloc({required TariffsRemoteDataSource dataSource})
-      : _dataSource = dataSource,
-        super(const TariffsInitial()) {
+    : _dataSource = dataSource,
+      super(const TariffsInitial()) {
     on<LoadTariffsEvent>(_onLoadTariffs);
     on<RefreshTariffsEvent>(_onRefreshTariffs);
     on<FilterTariffsByCountryEvent>(_onFilterByCountry);
@@ -39,7 +39,7 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
       }
 
       final operators = await _dataSource.getNetworkOperators();
-      
+
       if (kDebugMode) {
         print('TariffsBloc: Loaded ${operators.length} operators');
       }
@@ -58,14 +58,18 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
       }
 
       if (kDebugMode) {
-        print('TariffsBloc: Grouped operators by ${sortedOperatorsByCountry.length} countries');
+        print(
+          'TariffsBloc: Grouped operators by ${sortedOperatorsByCountry.length} countries',
+        );
       }
 
-      emit(TariffsLoaded(
-        operators: operators,
-        filteredOperators: operators,
-        operatorsByCountry: sortedOperatorsByCountry,
-      ));
+      emit(
+        TariffsLoaded(
+          operators: operators,
+          filteredOperators: operators,
+          operatorsByCountry: sortedOperatorsByCountry,
+        ),
+      );
     } catch (e) {
       if (kDebugMode) {
         print('TariffsBloc: Error loading operators - $e');
@@ -80,36 +84,41 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
   ) {
     if (state is TariffsLoaded) {
       final currentState = state as TariffsLoaded;
-      final filtered = currentState.operators
-          .where((op) => op.countryName == event.countryName)
-          .toList();
+      final filtered =
+          currentState.operators
+              .where((op) => op.countryName == event.countryName)
+              .toList();
 
-      emit(currentState.copyWith(
-        filteredOperators: filtered,
-        currentFilter: event.countryName,
-      ));
+      emit(
+        currentState.copyWith(
+          filteredOperators: filtered,
+          currentFilter: event.countryName,
+        ),
+      );
     }
   }
 
-  void _onSearchTariffs(
-    SearchTariffsEvent event,
-    Emitter<TariffsState> emit,
-  ) {
+  void _onSearchTariffs(SearchTariffsEvent event, Emitter<TariffsState> emit) {
     if (state is TariffsLoaded) {
       final currentState = state as TariffsLoaded;
       final query = event.query.toLowerCase();
 
-      final filtered = currentState.operators
-          .where((op) =>
-              op.countryName.toLowerCase().contains(query) ||
-              op.networkName.toLowerCase().contains(query))
-          .toList();
+      final filtered =
+          currentState.operators
+              .where(
+                (op) =>
+                    op.countryName.toLowerCase().contains(query) ||
+                    op.networkName.toLowerCase().contains(query),
+              )
+              .toList();
 
-      emit(currentState.copyWith(
-        filteredOperators: filtered,
-        searchQuery: event.query,
-        currentFilter: null,
-      ));
+      emit(
+        currentState.copyWith(
+          filteredOperators: filtered,
+          searchQuery: event.query,
+          currentFilter: null,
+        ),
+      );
     }
   }
 }

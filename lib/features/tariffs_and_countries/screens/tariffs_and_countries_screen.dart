@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/core/utils/country_code_utils.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/data/data_sources/tariffs_remote_data_source.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_bloc.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
@@ -45,7 +46,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
     super.dispose();
   }
 
-  double _calculateGBPerDollar(List<dynamic> operators) {
+  double _calculatePricePerGB(List<dynamic> operators) {
     if (operators.isEmpty) return 0.0;
 
     final avgRate =
@@ -54,7 +55,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
 
     if (avgRate == 0) return 0.0;
 
-    return 1.0 / avgRate / 1024;
+    return avgRate * 1024;
   }
 
   Map<String, List<dynamic>> _groupOperatorsByCountry(List<dynamic> operators) {
@@ -158,16 +159,24 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                         itemBuilder: (context, index) {
                           final country = countries[index];
                           final operators = operatorsToShow[country]!;
-                          final gbPerDollar = _calculateGBPerDollar(operators);
+                          final pricePerGB = _calculatePricePerGB(operators);
+
+                          // Use PLMN code from first operator for more accurate country mapping
+                          final firstOperator = operators.first;
+                          final countryCode =
+                              CountryCodeUtils.getCountryCodeEnhanced(
+                                country,
+                                plmnCode: firstOperator.plmn,
+                              );
 
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: CountryListTile(
-                              imagePath: 'assets/icons/globus.svg',
                               countryTitle: country,
                               countrySubtitle:
                                   '${operators.length} operators available',
-                              price: '${gbPerDollar.toStringAsFixed(2)} GB',
+                              price: '\$${pricePerGB.toStringAsFixed(2)} / 1GB',
+                              countryCode: countryCode,
                               onTap: () {},
                             ),
                           );
