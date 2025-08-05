@@ -144,4 +144,11 @@ abstract class AppLocalizations {
   static const april2023 = 'april_2023';
   static const balanceRefill = 'balance_refill';
   static const myESIMS = 'my_esims';
+  static const sendError = 'send_error';
+  static const otpResesnt = 'otp_resent';
+  static const otpFail = 'otp_fail';
+  static const otpSuccess = 'otp_success';
+  static const paymentFail = 'payment_fail';
+  static const enterTopUpAmount= 'enter_top_up_amount';
+  static const notAvailable = 'not_available';
 }

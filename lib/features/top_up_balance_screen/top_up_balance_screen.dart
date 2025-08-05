@@ -4,6 +4,7 @@ import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
+import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -127,16 +128,8 @@ class _TopUpBalanceView extends StatelessWidget {
                     } else {
                       NavigationService.openActivatedEsimScreen(context);
                     }
-                  } else if (state is StripeCancelled) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Окно с оплатой было закрыто'),
-                      ),
-                    );
                   } else if (state is StripeFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Ошибка оплаты: ${state.error}')),
-                    );
+                    AppNotifier.error(AppLocalizations.paymentFail).showAppToast(context);
                   }
                 },
                 builder: (context, stripeState) {
@@ -154,22 +147,12 @@ class _TopUpBalanceView extends StatelessWidget {
                               final state = bloc.state;
 
                               if (state.amount <= 0) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Укажите сумму для пополнения',
-                                    ),
-                                  ),
-                                );
+                                AppNotifier.info(AppLocalizations.enterTopUpAmount).showAppToast(context);
                                 return;
                               }
 
                               if (state.selectedPaymentMethod.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Выберите способ оплаты'),
-                                  ),
-                                );
+                                AppNotifier.info("Выберите способ оплаты!").showAppToast(context);
                                 return;
                               }
 
@@ -184,13 +167,7 @@ class _TopUpBalanceView extends StatelessWidget {
                                   );
                                   break;
                                 case 'crypto':
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'Оплата криптовалютой пока недоступна',
-                                      ),
-                                    ),
-                                  );
+                                AppNotifier.info(AppLocalizations.notAvailable).showAppToast(context);
                                   break;
                                 case 'apple_pay':
                                   context.read<StripeBloc>().add(
@@ -202,13 +179,7 @@ class _TopUpBalanceView extends StatelessWidget {
 
                                   break;
                                 default:
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'Неизвестный способ оплаты',
-                                      ),
-                                    ),
-                                  );
+                                  AppNotifier.info("Неизвестный способ оплаты").showAppToast(context);
                               }
                             },
                   );

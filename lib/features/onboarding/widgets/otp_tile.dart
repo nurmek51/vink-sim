@@ -1,5 +1,7 @@
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
@@ -97,12 +99,7 @@ class _OtpTileState extends State<OtpTile> {
         body: BlocConsumer<OtpAuthBloc, OtpAuthState>(
           listener: (context, state) {
             if (state is OtpVerificationSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('OTP verified successfully!'),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              AppNotifier.success(AppLocalizations.otpSuccess).showAppToast(context);
               // Call success callback or navigate
               if (widget.onSuccess != null) {
                 widget.onSuccess!();
@@ -110,19 +107,11 @@ class _OtpTileState extends State<OtpTile> {
                 openMainFlowScreen(context);
               }
             } else if (state is OtpAuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              AppNotifier.error(AppLocalizations.otpFail).showAppToast(context);
+              if(kDebugMode) print(state.message);
+              
             } else if (state is OtpSmsSent) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('OTP resent successfully!'),
-                  backgroundColor: Colors.blue,
-                ),
-              );
+              AppNotifier.info(AppLocalizations.otpResesnt).showAppToast(context);
             }
           },
           builder: (context, state) {

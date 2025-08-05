@@ -131,5 +131,12 @@
   "sended_six_digit_code": "Мы отправили 6-значный код на {phone}",
   "april_2023": "12 апреля 2023",
   "balance_refill": "Пополнение счета",
-  "my_esims": "Мои eSIM"
+  "my_esims": "Мои eSIM",
+  "send_error": "Ошибка отправки",
+  "otp_resent": "OTP отправлен повторно",
+  "otp_fail": "Ошибка OTP",
+  "otp_success": "OTP прошел проверку",
+  "payment_fail": "Ошибка оплаты",
+  "enter_top_up_amount": "Укажите сумму пополнения",
+  "not_available": "Недоступно"
 }

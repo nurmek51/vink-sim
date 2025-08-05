@@ -131,5 +131,12 @@
   "sended_six_digit_code": "We sent a 6-digit code to {phone}",
   "april_2023": "12 april 2023",
   "balance_refill": "Balance Top-Up",
-  "my_esims": "My eSIMs"
+  "my_esims": "My eSIMs",
+  "send_error": "Sending Error",
+  "otp_resent": "OTP resent successfully",
+  "otp_fail": "OTP Fail",
+  "otp_success": "OTP verified successfully",
+  "payment_fail": "Payment Fail",
+  "enter_top_up_amount": "Enter Top-Up amount",
+  "not_available": "Not available"  
 }

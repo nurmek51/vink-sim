@@ -2,6 +2,7 @@ import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
+import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class StripeWebCheckout extends StatelessWidget {
               right: 40,
             ),
             child: BlocConsumer<StripeBloc, StripeState>(
-              listener: (contenxt, state) {
+              listener: (context, state) {
                 if (state is StripeSuccess) {
                   if (circleIndex != null) {
                     context.read<MainFlowBloc>().add(
@@ -62,15 +63,8 @@ class StripeWebCheckout extends StatelessWidget {
                     NavigationService.openActivatedEsimScreen(context);
                   }
                 }
-                if (state is StripeCancelled) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Пользователь отменил')),
-                  );
-                }
                 if (state is StripeFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Ошибка оплаты: ${state.error}')),
-                  );
+                  AppNotifier.error(AppLocalizations.paymentFail).showAppToast(context);
                 }
               },
               builder: (context, state) {
