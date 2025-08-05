@@ -1,7 +1,7 @@
 {
   "frame_title": "One eSIM for all\nyour trips",
   "storage_header_title": "Flex Travel Sim",
-  "frame_globus_title": "One trip for all destinations",
+  "frame_globus_title": "One card for all destinations",
   "frame_check_title": "Pay only for what you spend",
   "infinity_title": "No expiration date",
   "activation_button_title": "Login via email",
@@ -116,9 +116,18 @@
   "language": "Language",
   "russian": "Russian",
   "chinese": "Chinese",
+  "select_level_title": "Select Level",
+  "low_level_balance": "Low — 0 GB",
+  "medium_level_balance": "Medium — 0.6 GB",
+  "high_level_balance": "High — 15 GB",
+  "loading": "Loading...",
+  "error": "Error",
+  "not_available": "N/A",
+  "gigabytes": "GB",
+  "balance_prefix": "on account",
+  "step": "Step",
   "enter_amount_top_up_description": "Enter the amount to activate\nFlex Travel eSIM",
   "flex_travel_esim_works_worldwide": "Flex Travel eSIM works worldwide, according to the tariffs of the country of presence.",
-  "loading": "Loading...",
   "pay_money": "Pay ${}",
   "in_europe": "in Europe",
   "in_dubai": "in Dubai",
@@ -137,6 +146,5 @@
   "otp_fail": "OTP Fail",
   "otp_success": "OTP verified successfully",
   "payment_fail": "Payment Fail",
-  "enter_top_up_amount": "Enter Top-Up amount",
-  "not_available": "Not available"  
+  "enter_top_up_amount": "Enter Top-Up amount"
 }
