@@ -130,5 +130,6 @@
   "did_not_receive_the_code": "Didn't receive the code?",
   "sended_six_digit_code": "We sent a 6-digit code to {phone}",
   "april_2023": "12 april 2023",
-  "balance_refill": "Balance Top-Up"
+  "balance_refill": "Balance Top-Up",
+  "my_esims": "My eSIMs"
 }

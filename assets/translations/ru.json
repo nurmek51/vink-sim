@@ -130,5 +130,6 @@
   "did_not_receive_the_code": "Не получили код?",
   "sended_six_digit_code": "Мы отправили 6-значный код на {phone}",
   "april_2023": "12 апреля 2023",
-  "balance_refill": "Пополнение счета"
+  "balance_refill": "Пополнение счета",
+  "my_esims": "Мои eSIM"
 }

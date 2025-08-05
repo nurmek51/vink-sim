@@ -143,4 +143,5 @@ abstract class AppLocalizations {
   static const sendedSixDigitCode = 'sended_six_digit_code';
   static const april2023 = 'april_2023';
   static const balanceRefill = 'balance_refill';
+  static const myESIMS = 'my_esims';
 }
