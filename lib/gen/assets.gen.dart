@@ -25,7 +25,11 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/england_flag.svg
   SvgGenImage get englandFlag =>
-      const SvgGenImage('assets/icons/england_flag.svg');      
+      const SvgGenImage('assets/icons/england_flag.svg');
+
+  /// File path: assets/icons/usa_flag.svg
+  SvgGenImage get usaFlag =>
+      const SvgGenImage('assets/icons/usa_flag.svg');        
 
   /// File path: assets/icons/app_language.svg
   SvgGenImage get appLanguage =>
@@ -179,6 +183,10 @@ class $AssetsIconsGen {
   SvgGenImage get whatsappIcon =>
       const SvgGenImage('assets/icons/whatsapp_icon.svg');
 
+  /// File path: assets/icons/globus_with_background.svg
+  SvgGenImage get globusWithBackground =>
+      const SvgGenImage('assets/icons/globus_with_background.svg');      
+
   /// List of all assets
   List<SvgGenImage> get values => [
     telegramLogo,
@@ -221,6 +229,8 @@ class $AssetsIconsGen {
     whatsappIcon,
     leftVector,
     rightVector,
+    globusWithBackground,
+    usaFlag,
   ];
 }
 

@@ -43,7 +43,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
           children: [
             const SizedBox(height: 20),
             LanguageButton(
-              icon: Assets.icons.englandFlag.path,
+              icon: Assets.icons.usaFlag.path,
               language: AppLocalizations.appLanguageEn.tr(),
               isSelected: currentLanguage == 'en',
               onTap: () => _changeLanguage('en'),
@@ -92,7 +92,11 @@ class LanguageButton extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset(icon),
+            SvgPicture.asset(
+              icon,
+              width: 32,
+              height: 32,
+            ),
             const SizedBox(width: 20),
             Expanded(
               child: Column(

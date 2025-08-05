@@ -43,7 +43,7 @@ class MyAccountScreen extends StatelessWidget {
               const SizedBox(height: 12),
               AccountWidget(
                 title: AppLocalizations.appLanguage,
-                icon: Assets.icons.appLanguage.path,
+                icon: Assets.icons.globusWithBackground.path,
                 onTap: () => NavigationService.openLanguageScreen(context),
               ),
             ],
