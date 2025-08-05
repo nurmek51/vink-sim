@@ -44,15 +44,15 @@ class PurchaseScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Text(
-                      'Пополнение счета',
+                    LocalizedText(
+                      AppLocalizations.balanceRefill,
                       style: FlexTypography.label.medium.copyWith(
                         color: Colors.black,
                       ),
                     ),
                     const Spacer(),
-                    Text(
-                      '12 апреля 2023',
+                    LocalizedText(
+                      AppLocalizations.april2023,
                       style: FlexTypography.label.medium.copyWith(
                         color: Colors.black26,
                       ),

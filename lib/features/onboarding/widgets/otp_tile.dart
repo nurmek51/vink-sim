@@ -1,3 +1,5 @@
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
@@ -137,8 +139,8 @@ class _OtpTileState extends State<OtpTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 30),
-                  const Text(
-                    'Введите код подтверждения',
+                  const LocalizedText(
+                    AppLocalizations.enterVerificationCode,
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w500,
@@ -146,8 +148,11 @@ class _OtpTileState extends State<OtpTile> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    'Мы отправили 6-значный код на ${widget.phoneNumber}',
+                  LocalizedText(
+                    AppLocalizations.sendedSixDigitCode,
+                    namedArgs: {
+                      'phone': widget.phoneNumber,
+                    }, 
                     style: const TextStyle(
                       fontSize: 16,
                       color: AppColors.textColorLight,
@@ -193,7 +198,7 @@ class _OtpTileState extends State<OtpTile> {
                   const SizedBox(height: 20),
                   RegistrationContainer(
                     onTap: _isValidCode && !isLoading ? _verifyOtp : null,
-                    buttonText: isLoading ? 'Проверка...' : 'Подтвердить код',
+                    buttonText: isLoading ? AppLocalizations.loading : AppLocalizations.confirmCode,
                     buttonTextColor:
                         _isValidCode && !isLoading
                             ? AppColors.textColorDark
@@ -207,8 +212,8 @@ class _OtpTileState extends State<OtpTile> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Не получили код? ",
+                      const LocalizedText(
+                        AppLocalizations.didNotReceiveTheCode,
                         style: TextStyle(
                           color: AppColors.textColorLight,
                           fontSize: 16,
@@ -216,8 +221,8 @@ class _OtpTileState extends State<OtpTile> {
                       ),
                       TextButton(
                         onPressed: state is OtpSmsLoading ? null : _resendOtp,
-                        child: Text(
-                          'Отправить заново',
+                        child: LocalizedText(
+                          AppLocalizations.sendAgain,
                           style: TextStyle(
                             color:
                                 state is OtpSmsLoading
@@ -243,8 +248,8 @@ class _OtpTileState extends State<OtpTile> {
                       alignment: Alignment.center,
                       child: GestureDetector(
                         onTap: widget.onTap,
-                        child: const Text(
-                          'Войти другим способом',
+                        child: const LocalizedText(
+                          AppLocalizations.loginUsingAnotherMethod,
                           style: TextStyle(
                             fontSize: 14,
                             color: AppColors.textColorLight,

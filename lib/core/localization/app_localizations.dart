@@ -135,5 +135,12 @@ abstract class AppLocalizations {
   static const payMoney = 'pay_money';
   static const inEurope = 'in_europe';
   static const inDubai = 'in_dubai';
-  static const inAsia= 'in_asia';
+  static const inAsia = 'in_asia';
+  static const enterVerificationCode = 'enter_verification_code';
+  static const loginUsingAnotherMethod = 'login_using_another_method';
+  static const sendAgain = 'send_again';
+  static const didNotReceiveTheCode = 'did_not_receive_the_code';
+  static const sendedSixDigitCode = 'sended_six_digit_code';
+  static const april2023 = 'april_2023';
+  static const balanceRefill = 'balance_refill';
 }
