@@ -1,60 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-
-// class AppNotifier {
-//   // static final FToast _fToast = FToast();
-
-//   static void showTestToast(BuildContext context) {
-//     final fToast = FToast();
-//     fToast.init(context);
-
-//     fToast.showToast(
-//       child: buildToast(context),
-//       positionedToastBuilder:(context, child, gravity) => Positioned(
-//         top: 20,
-//         left: 0,
-//         right: 0,
-//         child: child,
-//       ),
-//       // gravity: ToastGravity.TOP,
-//       toastDuration: const Duration(seconds: 2),
-//     );
-//   } 
-  
-//   static Widget buildToast(BuildContext context) {    
-//     return Container(
-//       padding: EdgeInsets.all(5),
-//       height: 100,
-//       width: 200,
-//       decoration: BoxDecoration(
-//         color: Colors.green,
-//         borderRadius: BorderRadius.circular(12),
-//       ),
-//       child: Row(
-//         children: [
-//           Icon(Icons.check),
-//           SizedBox(height:12),
-//           Text('success', style: TextStyle(color: Colors.white)),
-//         ],
-//       ),
-//     );
-//   }
-
-//   static void showToast(String msg, Color backgroundColor, Color textColor) => Fluttertoast.showToast(
-//       msg: msg,
-//       fontSize: 18,
-//       gravity: ToastGravity.TOP,
-//       backgroundColor: backgroundColor,
-//       textColor: textColor,
-//       webPosition: "center",
-//   );
-
-//   static void cancelToast() => Fluttertoast.cancel();
-
-// }
-
-
-
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -101,8 +44,6 @@ class AppNotifier {
     );
   }    
 
-  // static final FToast _fToast = FToast();
-
    void showAppToast(BuildContext context) {
     if (_isToastShowing) return;
     _isToastShowing = true;
@@ -116,7 +57,6 @@ class AppNotifier {
         right: 0,
         child: child,
       ),
-      // gravity: ToastGravity.TOP,
       toastDuration: const Duration(seconds: 2),
     );
 
@@ -177,19 +117,4 @@ class AppNotifier {
     );
   }
 
-  //  void showToast(String msg, Color backgroundColor, Color textColor) => Fluttertoast.showToast(
-  //     msg: msg,
-  //     fontSize: 18,
-  //     gravity: ToastGravity.TOP,
-  //     backgroundColor: backgroundColor,
-  //     textColor: textColor,
-  //     webPosition: "center",
-  // );
-
-  // void cancelToast() => Fluttertoast.cancel();
-
 }
-
-
-
-// AppNotifier.success("Готово!").show(context);
