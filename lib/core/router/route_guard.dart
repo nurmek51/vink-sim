@@ -1,13 +1,19 @@
 import 'package:flex_travel_sim/core/router/app_router.dart';
+import 'package:flex_travel_sim/core/di/injection_container.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:go_router/go_router.dart';
 
 /// Route guard for handling authentication and navigation permissions
 class RouteGuard {
-  /// Check if user is authenticated (placeholder for future implementation)
-  static bool get isAuthenticated {
-    // TODO: Implement actual authentication check
-    // This could check SharedPreferences, Secure Storage, or global state
-    return true; // For now, always return true
+  /// Check if user is authenticated
+  static Future<bool> get isAuthenticated async {
+    try {
+      final authLocalDataSource = sl.get<AuthLocalDataSource>();
+      final token = await authLocalDataSource.getToken();
+      return token != null && token.isNotEmpty;
+    } catch (e) {
+      return false;
+    }
   }
 
   /// Check if user has completed onboarding
@@ -17,18 +23,30 @@ class RouteGuard {
   }
 
   /// Redirect logic for protected routes
-  static String? redirectLogic(GoRouterState state) {
-    final isOnWelcomeScreen = state.uri.path == AppRoutes.initial;
-    final isOnAuthScreen = state.uri.path == AppRoutes.auth;
+  static Future<String?> redirectLogic(GoRouterState state) async {
+    final currentPath = state.uri.path;
+    final isOnWelcomeScreen = currentPath == AppRoutes.welcome;
+    final isOnAuthScreen = currentPath == AppRoutes.auth;
+    final isOnInitialScreen = currentPath == AppRoutes.initial;
+    final userIsAuthenticated = await isAuthenticated;
     
-    // If user is not authenticated and not on auth/welcome screens
-    if (!isAuthenticated && !isOnAuthScreen && !isOnWelcomeScreen) {
-      return AppRoutes.initial;
+    // If we're on initial screen, decide where to go based on auth status
+    if (isOnInitialScreen) {
+      if (userIsAuthenticated) {
+        return AppRoutes.mainFlow; // Redirect to main app
+      } else {
+        return AppRoutes.welcome; // Redirect to welcome/auth flow
+      }
     }
-
-    // If user is authenticated but hasn't completed onboarding
-    if (isAuthenticated && !hasCompletedOnboarding && !isOnWelcomeScreen) {
-      return AppRoutes.initial;
+    
+    // If user is not authenticated and trying to access protected routes
+    if (!userIsAuthenticated && isProtectedRoute(currentPath)) {
+      return AppRoutes.welcome;
+    }
+    
+    // If user is authenticated but on welcome/auth screens
+    if (userIsAuthenticated && (isOnWelcomeScreen || isOnAuthScreen)) {
+      return AppRoutes.mainFlow;
     }
 
     // No redirect needed

@@ -29,6 +29,7 @@ abstract class AppLocalizations {
   static const balance15Description = 'balance_15_description';
   static const balanceAndEsimActivation = 'balance_and_esim_activation';
   static const balancePrefix = 'balance_prefix';
+  static const cancel = 'cancel';
   static const checking = 'checking';
   static const chinese = 'chinese';
   static const choosePaymentMethod = 'choose_payment_method';
@@ -81,6 +82,9 @@ abstract class AppLocalizations {
   static const loading = 'loading';
   static const loginAnotherWay = 'login_another_way';
   static const loginDifferentWay = 'login_different_way';
+  static const logout = 'logout';
+  static const logoutConfirmationMessage = 'logout_confirmation_message';
+  static const logoutConfirmationTitle = 'logout_confirmation_title';
   static const lowLevel = 'low_level';
   static const lowLevelBalance = 'low_level_balance';
   static const manageMoreEsims = 'manage_more_esims';
