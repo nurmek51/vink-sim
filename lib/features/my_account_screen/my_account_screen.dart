@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/my_account_screen/widgets/account_widget.dart';
@@ -45,6 +46,26 @@ class MyAccountScreen extends StatelessWidget {
                 title: AppLocalizations.appLanguage,
                 icon: Assets.icons.globusWithBackground.path,
                 onTap: () => NavigationService.openLanguageScreen(context),
+              ),
+              Spacer(),
+              InkWell(
+                onTap: () => NavigationService.showLogoutDialog(context),
+                child: Container(
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: AppColors.redCircleColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Center(
+                    child: LocalizedText(
+                      AppLocalizations.logout,
+                      style: FlexTypography.paragraph.xMedium.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
