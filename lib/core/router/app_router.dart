@@ -25,8 +25,8 @@ import 'package:flutter/material.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.welcome,
-    redirect: (context, state) => RouteGuard.redirectLogic(state),
+    initialLocation: AppRoutes.initial,
+    redirect: (context, state) async => await RouteGuard.redirectLogic(state),
     routes: [
       ShellRoute(
         builder: (context, state, child) {

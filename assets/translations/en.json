@@ -127,5 +127,9 @@
   "balance_prefix": "on account",
   "step": "Step",
   "enter_amount_top_up_description": "Enter amount to top up",
-  "flex_travel_esim_works_worldwide": "Flex Travel eSIM works worldwide"
+  "flex_travel_esim_works_worldwide": "Flex Travel eSIM works worldwide",
+  "logout": "Logout",
+  "logout_confirmation_title": "Confirm Logout",
+  "logout_confirmation_message": "Are you sure you want to logout?",
+  "cancel": "Cancel"
 }

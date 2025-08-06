@@ -127,5 +127,9 @@
   "balance_prefix": "на счету",
   "step": "Шаг",
   "enter_amount_top_up_description": "Введите сумму для пополнения",
-  "flex_travel_esim_works_worldwide": "Flex Travel eSIM работает по всему миру"
+  "flex_travel_esim_works_worldwide": "Flex Travel eSIM работает по всему миру",
+  "logout": "Выйти из аккаунта",
+  "logout_confirmation_title": "Подтверждение выхода",
+  "logout_confirmation_message": "Вы уверены, что хотите выйти из аккаунта?",
+  "cancel": "Отмена"
 }
