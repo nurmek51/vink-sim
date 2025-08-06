@@ -166,6 +166,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeOut,
                                 child: PercentageWidget(
+                                  circleIndex: index,
                                   progressValue: availableGB,
                                   color: ProgressColorUtils.getProgressColor(
                                     availableGB,
@@ -177,14 +178,16 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                       ),
                                   balance: imsi.balance,
                                   country: imsi.country,
-                                  rate: imsi.rate,
+                                  rate: imsi.rate, 
+                                  // moneyBalance: imsi.balance,
                                 ),
                               );
-                            } else {
+                            }
+                             else {
                               return AddEsimCircle(
                                 canAdd: canAdd,
                                 onAddButtonPressed:
-                                    () => _showAddDialog(context),
+                                    () => NavigationService.openTopUpBalanceScreen(context),
                               );
                             }
                           },

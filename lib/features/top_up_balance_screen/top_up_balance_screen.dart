@@ -57,10 +57,10 @@ class _TopUpBalanceView extends StatelessWidget {
         scrolledUnderElevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
+        padding: EdgeInsets.only(
           left: 20,
           right: 20,
-          bottom: 50,
+          bottom: isScrollable ? 0 : 50,
         ),
         child: isScrollable ? SingleChildScrollView(child: content) : content,
       ),
@@ -185,6 +185,8 @@ class _TopUpBalanceView extends StatelessWidget {
                   );
                 },
               ),
+
+              isScrollable ? const SizedBox(height: 50) : const SizedBox.shrink()
       ],
     );
   }

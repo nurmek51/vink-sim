@@ -15,7 +15,7 @@ class PercentageWidget extends StatelessWidget {
     required this.progressValue,
     required this.color,
     required this.circleIndex,
-    required this.moneyBalance,    
+    // required this.moneyBalance,    
     required this.backgroundColor,
     required this.balance,
     this.country,
@@ -31,7 +31,7 @@ class PercentageWidget extends StatelessWidget {
   final double? rate;
   final bool isYellow;
   final int circleIndex;
-  final double moneyBalance;   
+  // final double moneyBalance;   
 
   String _formatBalance(double value) {
     String formatted =
@@ -117,20 +117,28 @@ class PercentageWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  '${_formatGB(availableGB)} ${AppLocalizations.whatsApp.tr()}',
+                  '${_formatGB(availableGB)} ${AppLocalizations.gigabytes.tr()}',
                   style: FlexTypography.label.xLarge.copyWith(
                     fontSize: 60,
                     color: AppColors.grayBlue,
                   ),
                 ),
                 const SizedBox(height: 4),
-                LocalizedText(
-                  AppLocalizations.dollarsOnAccount,
-                  args: [balance.toInt().toString()],
-                  style: FlexTypography.label.medium.copyWith(
-                    color: AppColors.grayBlue.withOpacity(0.6),
+
+                Text(
+                  '\$${_formatBalance(balance)} ${AppLocalizations.balancePrefix.tr()} ',
+                  style: FlexTypography.label.small.copyWith(
+                    color: AppColors.grayBlue.withOpacity(0.5),
                   ),
                 ),
+
+                // LocalizedText(
+                //   AppLocalizations.dollarsOnAccount,
+                //   args: [balance.toInt().toString()],
+                //   style: FlexTypography.label.medium.copyWith(
+                //     color: AppColors.grayBlue.withOpacity(0.6),
+                //   ),
+                // ),
 
                 const SizedBox(height: 13),
 
