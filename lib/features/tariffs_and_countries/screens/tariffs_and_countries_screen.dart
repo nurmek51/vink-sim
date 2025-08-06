@@ -135,24 +135,6 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                         },
                         child: const Text('Retry'),
                       ),
-                      // child: Column(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Text(
-                      //       'Error: ${state.message}',
-                      //       style: const TextStyle(color: Colors.red),
-                      //     ),
-                      //     const SizedBox(height: 16),
-                      //     ElevatedButton(
-                      //       onPressed: () {
-                      //         context.read<TariffsBloc>().add(
-                      //           const RefreshTariffsEvent(),
-                      //         );
-                      //       },
-                      //       child: const Text('Retry'),
-                      //     ),
-                      //   ],
-                      // ),
                     );
                   }
 
