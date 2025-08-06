@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
@@ -105,6 +108,7 @@ class _OtpTileState extends State<OtpTile> {
             BlocListener<OtpAuthBloc, OtpAuthState>(
               listener: (context, state) async {
                 if (state is OtpVerificationSuccess) {
+                  AppNotifier.success(AppLocalizations.otpSuccess).showAppToast(context);
                   if (kDebugMode) {
                     print('OTP_TILE: OTP verification successful!');
                     print(
@@ -112,6 +116,8 @@ class _OtpTileState extends State<OtpTile> {
                     );
                     print('OTP_TILE: Token length: ${state.token.length}');
                   }
+                  
+                  // Запускаем загрузку данных пользователя в фоне
 
                   try {
                     final authLocalDataSource = sl.get<AuthLocalDataSource>();
@@ -126,13 +132,6 @@ class _OtpTileState extends State<OtpTile> {
                       print('OTP_TILE: Error saving token: $e');
                     }
                   }
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('OTP verified successfully!'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
 
                   if (kDebugMode) {
                     print(
@@ -149,19 +148,10 @@ class _OtpTileState extends State<OtpTile> {
                     openMainFlowScreen(context);
                   }
                 } else if (state is OtpAuthError) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                  AppNotifier.error(AppLocalizations.otpFail).showAppToast(context);
+                  if(kDebugMode) print(state.message);
                 } else if (state is OtpSmsSent) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('OTP resent successfully!'),
-                      backgroundColor: Colors.blue,
-                    ),
-                  );
+                  AppNotifier.info(AppLocalizations.otpResesnt).showAppToast(context);
                 }
               },
             ),
@@ -206,8 +196,8 @@ class _OtpTileState extends State<OtpTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 30),
-          const Text(
-            'Введите код подтверждения',
+          const LocalizedText(
+            AppLocalizations.enterVerificationCode,
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w500,
@@ -215,8 +205,11 @@ class _OtpTileState extends State<OtpTile> {
             ),
           ),
           const SizedBox(height: 16),
-          Text(
-            'Мы отправили 6-значный код на ${widget.phoneNumber}',
+          LocalizedText(
+            AppLocalizations.sendedSixDigitCode,
+            namedArgs: {
+              'phone': widget.phoneNumber,
+            },            
             style: const TextStyle(
               fontSize: 16,
               color: AppColors.textColorLight,
@@ -260,7 +253,7 @@ class _OtpTileState extends State<OtpTile> {
           const SizedBox(height: 20),
           RegistrationContainer(
             onTap: _isValidCode && !isLoading ? _verifyOtp : null,
-            buttonText: isLoading ? 'Проверка...' : 'Подтвердить код',
+            buttonText: isLoading ? AppLocalizations.loading : AppLocalizations.confirmCode,
             buttonTextColor:
                 _isValidCode && !isLoading
                     ? AppColors.textColorDark
@@ -274,14 +267,17 @@ class _OtpTileState extends State<OtpTile> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Не получили код? ",
-                style: TextStyle(color: AppColors.textColorLight, fontSize: 16),
+              const LocalizedText(
+                AppLocalizations.didNotReceiveTheCode,
+                style: TextStyle(
+                  color: AppColors.textColorLight,
+                  fontSize: 16,
+                ),
               ),
               TextButton(
                 onPressed: otpState is OtpSmsLoading ? null : _resendOtp,
-                child: Text(
-                  'Отправить заново',
+                child: LocalizedText(
+                  AppLocalizations.sendAgain,
                   style: TextStyle(
                     color:
                         otpState is OtpSmsLoading
@@ -307,8 +303,8 @@ class _OtpTileState extends State<OtpTile> {
               alignment: Alignment.center,
               child: GestureDetector(
                 onTap: widget.onTap,
-                child: const Text(
-                  'Войти другим способом',
+                child: const LocalizedText(
+                  AppLocalizations.loginAnotherWay,
                   style: TextStyle(
                     fontSize: 14,
                     color: AppColors.textColorLight,

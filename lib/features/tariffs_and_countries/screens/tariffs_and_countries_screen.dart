@@ -5,6 +5,7 @@ import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc
 import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_state.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/widgets/country_list_tile.dart';
+import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/shared/widgets/start_registration_button.dart';
 import 'package:flutter/material.dart';
@@ -69,13 +70,14 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
   @override
   Widget build(BuildContext context) {
     const titleStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
-    const paddingSettings = EdgeInsets.symmetric(horizontal: 20);
+    const paddingSettings = EdgeInsets.only(left: 20, right: 20, bottom: 50);
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        scrolledUnderElevation: 0,
         title: LocalizedText(
           AppLocalizations.tariffsAndCountries,
           style: titleStyle,
@@ -121,24 +123,17 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                   }
 
                   if (state is TariffsError) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+    AppNotifier.error(AppLocalizations.error).showAppToast(context);
+  });
                     return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Error: ${state.message}',
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.read<TariffsBloc>().add(
-                                const RefreshTariffsEvent(),
-                              );
-                            },
-                            child: const Text('Retry'),
-                          ),
-                        ],
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.read<TariffsBloc>().add(
+                            const RefreshTariffsEvent(),
+                          );
+                        },
+                        child: const Text('Retry'),
                       ),
                     );
                   }
@@ -185,6 +180,8 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                 },
               ),
             ),
+
+            widget.isAuthorized ? const SizedBox(height: 10) : const SizedBox.shrink(),
 
             Visibility(
               visible: widget.isAuthorized,

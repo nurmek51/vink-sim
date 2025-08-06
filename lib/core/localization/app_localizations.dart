@@ -135,4 +135,27 @@ abstract class AppLocalizations {
   static const whatsappSupport = 'whatsapp_support';
   static const youCanActivateEsimOnlyOnce = 'you_can_activate_esim_only_once';
   static const yourTrafic = 'your_trafic';
+  static const testtesttest = 'testtesttest';
+  static const accordingToCountryTariffs = 'according_to_country_tariffs';
+  static const monaco = 'monaco';
+  static const countryExample = 'country_example';
+  static const countryDescriptionExample = 'country_description_example';
+  static const payMoney = 'pay_money';
+  static const inEurope = 'in_europe';
+  static const inDubai = 'in_dubai';
+  static const inAsia = 'in_asia';
+  static const enterVerificationCode = 'enter_verification_code';
+  static const loginUsingAnotherMethod = 'login_using_another_method';
+  static const sendAgain = 'send_again';
+  static const didNotReceiveTheCode = 'did_not_receive_the_code';
+  static const sendedSixDigitCode = 'sended_six_digit_code';
+  static const april2023 = 'april_2023';
+  static const balanceRefill = 'balance_refill';
+  static const myESIMS = 'my_esims';
+  static const sendError = 'send_error';
+  static const otpResesnt = 'otp_resent';
+  static const otpFail = 'otp_fail';
+  static const otpSuccess = 'otp_success';
+  static const paymentFail = 'payment_fail';
+  static const enterTopUpAmount= 'enter_top_up_amount';
 }

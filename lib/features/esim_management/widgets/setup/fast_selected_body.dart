@@ -1,7 +1,9 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class FastSelectedBody extends StatelessWidget {
@@ -12,7 +14,7 @@ class FastSelectedBody extends StatelessWidget {
     return Column(
       children: [
         BodyContainer(
-          stepNum: '1',
+          args: ['1'],
           description: AppLocalizations.fastDescriptionStep1,
           child: Padding(
             padding: const EdgeInsets.only(top: 30.0),
@@ -23,13 +25,9 @@ class FastSelectedBody extends StatelessWidget {
                 gradient: AppColors.containerGradientPrimary,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Text(
+              child: LocalizedText(
                 AppLocalizations.download,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: FlexTypography.label.medium.copyWith(color: AppColors.textColorLight),
               ),
             ),
           ),
@@ -38,7 +36,7 @@ class FastSelectedBody extends StatelessWidget {
         const SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '2',
+          args: ['2'],
           description: AppLocalizations.fastDescriptionStep2,
           child: Center(
             child: SingleChildScrollView(
@@ -76,7 +74,7 @@ class FastSelectedBody extends StatelessWidget {
         const SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '3',
+          args: ['3'],
           description: AppLocalizations.fastDescriptionStep3,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -97,7 +95,7 @@ class FastSelectedBody extends StatelessWidget {
         const SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '4',
+          args: ['4'],
           description: AppLocalizations.fastDescriptionStep4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),

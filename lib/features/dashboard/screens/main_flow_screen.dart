@@ -34,51 +34,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     super.dispose();
   }
 
-  void _showAddDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text(AppLocalizations.selectLevelTitle),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  title: Text(AppLocalizations.lowLevelBalance),
-                  onTap: () {
-                    context.read<MainFlowBloc>().add(
-                      const AddCircleEvent(BalanceLevel.low),
-                    );
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text(AppLocalizations.mediumLevelBalance),
-                  onTap: () {
-                    context.read<MainFlowBloc>().add(
-                      const AddCircleEvent(BalanceLevel.medium),
-                    );
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text(AppLocalizations.highLevelBalance),
-                  onTap: () {
-                    context.read<MainFlowBloc>().add(
-                      const AddCircleEvent(BalanceLevel.high),
-                    );
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-    );
-  }
-
   void _showBottomSheet(BuildContext context) {
     context.read<MainFlowBloc>().add(ShowBottomSheetEvent());
     showModalBottomSheet(
@@ -211,6 +166,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeOut,
                                 child: PercentageWidget(
+                                  circleIndex: index,
                                   progressValue: availableGB,
                                   color: ProgressColorUtils.getProgressColor(
                                     availableGB,
@@ -222,14 +178,16 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                       ),
                                   balance: imsi.balance,
                                   country: imsi.country,
-                                  rate: imsi.rate,
+                                  rate: imsi.rate, 
+                                  // moneyBalance: imsi.balance,
                                 ),
                               );
-                            } else {
+                            }
+                             else {
                               return AddEsimCircle(
                                 canAdd: canAdd,
                                 onAddButtonPressed:
-                                    () => _showAddDialog(context),
+                                    () => NavigationService.openTopUpBalanceScreen(context),
                               );
                             }
                           },

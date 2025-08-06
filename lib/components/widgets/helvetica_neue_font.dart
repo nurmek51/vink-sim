@@ -9,6 +9,7 @@ class HelveticaneueFont extends StatelessWidget {
   final FontWeight? fontWeight;
   final double? height;
   final TextAlign? textAlign;
+  final List<String>? args;
 
   const HelveticaneueFont({
     super.key,
@@ -19,12 +20,14 @@ class HelveticaneueFont extends StatelessWidget {
     this.fontWeight,
     this.height,
     this.textAlign,
+    this.args,
   });
 
   @override
   Widget build(BuildContext context) {
     return LocalizedText(
       text,
+      args: args,
       textAlign: textAlign,
       style: TextStyle(
         fontFamily: 'HelveticaNeue',

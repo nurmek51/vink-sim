@@ -14,6 +14,8 @@ class PercentageWidget extends StatelessWidget {
     super.key,
     required this.progressValue,
     required this.color,
+    required this.circleIndex,
+    // required this.moneyBalance,    
     required this.backgroundColor,
     required this.balance,
     this.country,
@@ -28,6 +30,8 @@ class PercentageWidget extends StatelessWidget {
   final String? country;
   final double? rate;
   final bool isYellow;
+  final int circleIndex;
+  // final double moneyBalance;   
 
   String _formatBalance(double value) {
     String formatted =
@@ -49,6 +53,8 @@ class PercentageWidget extends StatelessWidget {
       progressValue,
     );
     final bool isRedCircle = circleColor == AppColors.redCircleColor;
+    final bool isBlueCircle = circleColor == AppColors.blueCircleProgressColor;
+  
     final isSmallSize = isSmallScreen(context);
 
     return TweenAnimationBuilder<double>(
@@ -126,22 +132,34 @@ class PercentageWidget extends StatelessWidget {
                   ),
                 ),
 
+                // LocalizedText(
+                //   AppLocalizations.dollarsOnAccount,
+                //   args: [balance.toInt().toString()],
+                //   style: FlexTypography.label.medium.copyWith(
+                //     color: AppColors.grayBlue.withOpacity(0.6),
+                //   ),
+                // ),
+
                 const SizedBox(height: 13),
 
-                GestureDetector(
-                  onTap:
-                      () => NavigationService.openTopUpBalanceScreen(context),
-                  child: LocalizedText(
-                    AppLocalizations.topUp,
-                    textAlign: TextAlign.center,
-                    style: FlexTypography.label.medium.copyWith(
-                      color: AppColors.accentBlue,
-                      decoration: TextDecoration.underline,
-                      decorationStyle: TextDecorationStyle.solid,
-                      decorationColor: AppColors.accentBlue,
-                    ),
-                  ),
-                ),
+                !isBlueCircle
+                    ? GestureDetector(
+                      onTap: () => NavigationService.openTopUpBalanceScreen(
+                        context,
+                        circleIndex: circleIndex,
+                      ),
+                      child: LocalizedText(
+                        AppLocalizations.topUp,
+                        textAlign: TextAlign.center,
+                        style: FlexTypography.label.medium.copyWith(
+                          color: AppColors.accentBlue,
+                          decoration: TextDecoration.underline,
+                          decorationStyle: TextDecorationStyle.solid,
+                          decorationColor: AppColors.accentBlue,
+                        ),
+                      ),
+                    )
+                    : SizedBox.shrink(),
               ],
             ),
           ],

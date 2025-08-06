@@ -4,8 +4,10 @@ import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_bloc.da
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_event.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_state.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
+import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/core/di/injection_container.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
@@ -82,9 +84,8 @@ class _WhatsappTileState extends State<WhatsappTile> {
             if (state is OtpSmsSent) {
               widget.onNext(state.phone, ConfirmMethod.byPhone);
             } else if (state is OtpAuthError) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
+              AppNotifier.error(AppLocalizations.sendError).showAppToast(context);
+              if(kDebugMode) print(state.message);
             }
           },
           builder: (context, state) {

@@ -30,12 +30,6 @@ class MyAccountScreen extends StatelessWidget {
               ),
               const SizedBox(height: 35),
               AccountWidget(
-                title: AppLocalizations.accountSettings,
-                icon: Assets.icons.accountSettings.path,
-                onTap: () => openSettingsScreen(context),
-              ),
-              const SizedBox(height: 12),
-              AccountWidget(
                 title: AppLocalizations.purchaseHistory,
                 icon: Assets.icons.purchaseHistory.path,
                 onTap: () => NavigationService.openPurchaseScreen(context),
@@ -49,7 +43,7 @@ class MyAccountScreen extends StatelessWidget {
               const SizedBox(height: 12),
               AccountWidget(
                 title: AppLocalizations.appLanguage,
-                icon: Assets.icons.appLanguage.path,
+                icon: Assets.icons.globusWithBackground.path,
                 onTap: () => NavigationService.openLanguageScreen(context),
               ),
             ],

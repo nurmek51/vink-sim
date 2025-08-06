@@ -1,4 +1,6 @@
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart' show LocalizedText;
 import 'package:flutter/material.dart';
 
 class AuthButton extends StatelessWidget {
@@ -19,12 +21,12 @@ class AuthButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Начать',
+            LocalizedText(
+              AppLocalizations.start,
               style: FlexTypography.label.medium.copyWith(
                 color: Colors.white,
               ),
-            ),
+            ), 
             const Icon(Icons.arrow_forward, color: Colors.white),
           ],
         ),

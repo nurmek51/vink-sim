@@ -45,14 +45,14 @@ class TrafficUsageScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      '147.5 ГБ',
+                      '147.5 GB',
                       style: FlexTypography.label.medium.copyWith(
                         color: Colors.black,
                       ),
                     ),
                     const Spacer(),
-                    Text(
-                      '12 апреля 2023',
+                    LocalizedText(
+                      AppLocalizations.april2023,
                       style: FlexTypography.label.medium.copyWith(
                         color: Colors.black26,
                       ),

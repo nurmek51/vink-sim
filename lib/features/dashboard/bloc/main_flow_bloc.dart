@@ -22,6 +22,18 @@ class ShowBottomSheetEvent extends MainFlowEvent {}
 
 class HideBottomSheetEvent extends MainFlowEvent {}
 
+class UpdateCircleBalanceEvent extends MainFlowEvent {
+  final int circleIndex;
+  final double addedAmount;
+  const UpdateCircleBalanceEvent({
+    required this.circleIndex,
+    required this.addedAmount,
+  });
+
+  @override
+  List<Object?> get props => [circleIndex, addedAmount];
+}
+
 enum BalanceLevel { low, medium, high }
 
 class AddCircleEvent extends MainFlowEvent {
@@ -37,21 +49,25 @@ class MainFlowState extends Equatable {
   final int currentPage;
   final List<double> progressValues;
   final bool isBottomSheetVisible;
+  final List<double> moneyBalance;
 
   const MainFlowState({
     this.currentPage = 0,
     this.progressValues = const [0.40, 0],
     this.isBottomSheetVisible = false,
+    this.moneyBalance = const [0.0, 0.0],
   });
 
   MainFlowState copyWith({
     int? currentPage,
     List<double>? progressValues,
+    List<double>? moneyBalance,
     bool? isBottomSheetVisible,
   }) {
     return MainFlowState(
       currentPage: currentPage ?? this.currentPage,
       progressValues: progressValues ?? this.progressValues,
+      moneyBalance: moneyBalance ?? this.moneyBalance,
       isBottomSheetVisible: isBottomSheetVisible ?? this.isBottomSheetVisible,
     );
   }
@@ -74,6 +90,7 @@ class MainFlowBloc extends Bloc<MainFlowEvent, MainFlowState> {
     on<ShowBottomSheetEvent>(_onShowBottomSheet);
     on<HideBottomSheetEvent>(_onHideBottomSheet);
     on<AddCircleEvent>(_onAddCircle);
+    on<UpdateCircleBalanceEvent>(_onUpdateCircleBalanceEvent);
   }
 
   void _onPageChanged(PageChangedEvent event, Emitter<MainFlowState> emit) {
@@ -94,9 +111,10 @@ class MainFlowBloc extends Bloc<MainFlowEvent, MainFlowState> {
     emit(state.copyWith(isBottomSheetVisible: false));
   }
 
-  void _onAddCircle(AddCircleEvent event, Emitter<MainFlowState> emit) {
-    final list = List.of(state.progressValues);
-    if (list.length >= maxCircles - 1) return;
+  void _onAddCircle(AddCircleEvent event, Emitter<MainFlowState> emit) { 
+    final List<double> updatedProgressValues = List.of(state.progressValues);
+    final List<double> updatedMoneyBalance = List.of(state.moneyBalance);
+    if (updatedProgressValues.length >= maxCircles - 1) return;
 
     double newValue;
     switch (event.level) {
@@ -111,8 +129,38 @@ class MainFlowBloc extends Bloc<MainFlowEvent, MainFlowState> {
         break;
     }
 
-    list.insert(list.length, newValue);
+    updatedProgressValues.insert(updatedProgressValues.length, newValue);
+    updatedMoneyBalance.insert(updatedMoneyBalance.length, 0.0); 
 
-    emit(state.copyWith(progressValues: list));
+    emit(state.copyWith(
+      progressValues: updatedProgressValues,
+      moneyBalance: updatedMoneyBalance,
+    ));
   }
+
+  void _onUpdateCircleBalanceEvent(
+    UpdateCircleBalanceEvent event,
+    Emitter<MainFlowState> emit,
+  ) {
+    final List<double> updatedProgressValues = List.from(state.progressValues);
+    final List<double> updatedMoneyBalances = List.from(state.moneyBalance);
+
+    if (event.circleIndex >= 0 &&
+        event.circleIndex < updatedProgressValues.length) {
+      updatedMoneyBalances[event.circleIndex] += event.addedAmount;
+      const double gbPerDollar = 1.0 / 15.0;
+      final double addedGb = event.addedAmount * gbPerDollar;
+
+      final double newGbValue =
+          updatedProgressValues[event.circleIndex] + addedGb;
+      updatedProgressValues[event.circleIndex] = newGbValue;
+
+      emit(
+        state.copyWith(
+          progressValues: updatedProgressValues,
+          moneyBalance: updatedMoneyBalances,
+        ),
+      );
+    }
+  }  
 }

@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class ScrollContainer extends StatelessWidget {
@@ -29,9 +30,15 @@ class ScrollContainer extends StatelessWidget {
               text: '${sum}GB ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            TextSpan(
-              text: country,
-              style: TextStyle(fontWeight: FontWeight.w500),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.baseline,
+              baseline: TextBaseline.alphabetic,
+              child: LocalizedText(
+                country,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ],
         ),

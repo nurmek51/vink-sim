@@ -13,7 +13,7 @@ class ManualSelectedBody extends StatelessWidget {
     return Column(
       children: [
         BodyContainer(
-          stepNum: '1',
+          args: ['1'],
           description: AppLocalizations.manualDescription1,
           child: Center(
             child: Padding(
@@ -153,7 +153,7 @@ class ManualSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '2',
+          args: ['2'],
           description: AppLocalizations.anotherDeviceDescription3,
           child: Center(
             child: SingleChildScrollView(
@@ -191,7 +191,7 @@ class ManualSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '3',
+          args: ['3'],
           description: AppLocalizations.fastDescriptionStep2,
           child: Center(
             child: SingleChildScrollView(
@@ -229,7 +229,7 @@ class ManualSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '4',
+          args: ['4'],
           description: AppLocalizations.anotherDeviceDescription5,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -250,7 +250,7 @@ class ManualSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '5',
+          args: ['5'],
           description: AppLocalizations.fastDescriptionStep4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),

@@ -91,8 +91,8 @@ class ActivatedEsimScreen extends StatelessWidget {
               Spacer(),
               
               BlueGradientButton(
-                onTap: () => openTopUpBalanceScreen(context),
-                title: AppLocalizations.topUpBalance,
+                onTap: () => NavigationService.openMainFlowScreen(context),
+                title: AppLocalizations.myESIMS,
               ),
             ],
           ),

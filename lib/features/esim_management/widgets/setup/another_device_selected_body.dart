@@ -51,7 +51,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '1',
+          args: ['1'],
           description: AppLocalizations.anotherDeviceDescription1,
           child: Center(
             child: SingleChildScrollView(
@@ -109,7 +109,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '2',
+          args: ['2'],
           description: AppLocalizations.anotherDeviceDescription2,
           child: Center(
             child: SingleChildScrollView(
@@ -137,7 +137,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '3',
+          args: ['3'],
           description: AppLocalizations.anotherDeviceDescription3,
           child: Center(
             child: SingleChildScrollView(
@@ -175,7 +175,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '4',
+          args: ['4'],
           description: AppLocalizations.fastDescriptionStep2,
           child: Center(
             child: SingleChildScrollView(
@@ -213,7 +213,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '5',
+          args: ['5'],
           description: AppLocalizations.anotherDeviceDescription5,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -234,7 +234,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepNum: '6',
+          args: ['6'],
           description: AppLocalizations.fastDescriptionStep4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),

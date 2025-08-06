@@ -9,6 +9,7 @@ class ChatContainer extends StatelessWidget {
   final Border border;
   final Color titleColor;
   final String icon;
+  final VoidCallback? onTap;
   const ChatContainer({
     super.key,
     required this.color,
@@ -16,38 +17,42 @@ class ChatContainer extends StatelessWidget {
     required this.border,
     this.titleColor = Colors.white,
     required this.icon,
+    this.onTap,
   });
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      alignment: Alignment.center,
-      height: 50,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(100),
-        border: border,
-      ),
-      child: Stack(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         alignment: Alignment.center,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: SvgPicture.asset(
-              icon,
-              width: 25,
-              height: 25,
-              color: titleColor,
+        height: 50,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(100),
+          border: border,
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SvgPicture.asset(
+                icon,
+                width: 25,
+                height: 25,
+                color: titleColor,
+              ),
             ),
-          ),
-          Center(
-            child: LocalizedText(
-              title,
-              style: FlexTypography.label.medium.copyWith(color: titleColor),
+            Center(
+              child: LocalizedText(
+                title,
+                style: FlexTypography.label.medium.copyWith(color: titleColor),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
