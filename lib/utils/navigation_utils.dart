@@ -1,4 +1,7 @@
 import 'package:flex_travel_sim/core/router/app_router.dart';
+import 'package:flex_travel_sim/core/storage/local_storage.dart';
+import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
@@ -119,6 +122,44 @@ class NavigationService {
 
   static bool canPop(BuildContext context) {
     return context.canPop();
+  }
+
+  // Logout functionality
+  static Future<void> logout(BuildContext context) async {
+    final storage = SharedPreferencesStorage();
+    await storage.clear();
+    goToWelcome(context);
+  }
+
+  static Future<void> showLogoutDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: LocalizedText(AppLocalizations.logoutConfirmationTitle),
+          content: LocalizedText(AppLocalizations.logoutConfirmationMessage),
+          actions: <Widget>[
+            TextButton(
+              child: LocalizedText(AppLocalizations.cancel),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+            TextButton(
+              child: LocalizedText(
+                AppLocalizations.logout,
+                style: const TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                logout(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
