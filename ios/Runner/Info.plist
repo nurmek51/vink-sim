@@ -64,5 +64,9 @@
 	<array>
 		<string>applinks:travel-sim-test-aa.firebaseapp.com</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan your card to add it automatically</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>This app uses the local network to connect to Flutter DevTools during development</string>
 </dict>
 </plist>

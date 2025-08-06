@@ -146,5 +146,9 @@
   "not_available": "N/A",
   "gigabytes": "GB",
   "balance_prefix": "on account",
-  "step": "Step"
+  "step": "Step",
+  "logout": "Logout",
+  "logout_confirmation_title": "Confirm Logout",
+  "logout_confirmation_message": "Are you sure you want to logout?",
+  "cancel": "Cancel"
 }

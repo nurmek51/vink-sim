@@ -83,7 +83,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 25),
           GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(

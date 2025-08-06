@@ -13,6 +13,7 @@ import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
@@ -79,7 +80,7 @@ class _OtpTileState extends State<OtpTile> {
   @override
   Widget build(BuildContext context) {
     _subscriberBloc = context.read<SubscriberBloc>();
-    
+
     return BlocProvider(
       create: (context) {
         _otpAuthBloc = OtpAuthBloc(
@@ -105,23 +106,42 @@ class _OtpTileState extends State<OtpTile> {
         body: MultiBlocListener(
           listeners: [
             BlocListener<OtpAuthBloc, OtpAuthState>(
-              listener: (context, state) {
+              listener: (context, state) async {
                 if (state is OtpVerificationSuccess) {
+                  AppNotifier.success(AppLocalizations.otpSuccess).showAppToast(context);
                   if (kDebugMode) {
                     print('OTP_TILE: OTP verification successful!');
-                    print('OTP_TILE: Token received: ${state.token.substring(0, 20)}...');
+                    print(
+                      'OTP_TILE: Token received: ${state.token.substring(0, 20)}...',
+                    );
                     print('OTP_TILE: Token length: ${state.token.length}');
                   }
                   
-                  AppNotifier.success(AppLocalizations.otpSuccess).showAppToast(context);
-                  
                   // Запускаем загрузку данных пользователя в фоне
-                  if (kDebugMode) {
-                    print('OTP_TILE: Sending token to SubscriberBloc: ${state.token.substring(0, 20)}...');
+
+                  try {
+                    final authLocalDataSource = sl.get<AuthLocalDataSource>();
+                    await authLocalDataSource.saveToken(state.token);
+                    if (kDebugMode) {
+                      print(
+                        'OTP_TILE: Token saved to localStorage successfully',
+                      );
+                    }
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print('OTP_TILE: Error saving token: $e');
+                    }
                   }
-                  _subscriberBloc.add(LoadSubscriberInfoEvent(token: state.token));
-                  
-                  // Сразу переходим на главный экран
+
+                  if (kDebugMode) {
+                    print(
+                      'OTP_TILE: Sending token to SubscriberBloc: ${state.token.substring(0, 20)}...',
+                    );
+                  }
+                  _subscriberBloc.add(
+                    LoadSubscriberInfoEvent(token: state.token),
+                  );
+
                   if (widget.onSuccess != null) {
                     widget.onSuccess!();
                   } else {
@@ -138,10 +158,10 @@ class _OtpTileState extends State<OtpTile> {
             BlocListener<SubscriberBloc, SubscriberState>(
               listener: (context, state) {
                 if (state is SubscriberLoaded) {
-                  // Данные пользователя загружены успешно
-                  print('User info loaded! Balance: ${state.subscriber.balance}');
+                  print(
+                    'User info loaded! Balance: ${state.subscriber.balance}',
+                  );
                 } else if (state is SubscriberError) {
-                  // Ошибка загрузки данных пользователя (не критично)
                   print('Failed to load user info: ${state.message}');
                 }
               },
@@ -151,8 +171,9 @@ class _OtpTileState extends State<OtpTile> {
             builder: (context, otpState) {
               return BlocBuilder<SubscriberBloc, SubscriberState>(
                 builder: (context, subscriberState) {
-                  final isLoading = otpState is OtpVerificationLoading || 
-                                   subscriberState is SubscriberLoading;
+                  final isLoading =
+                      otpState is OtpVerificationLoading ||
+                      subscriberState is SubscriberLoading;
 
                   return _buildBody(context, otpState, isLoading);
                 },
@@ -164,14 +185,13 @@ class _OtpTileState extends State<OtpTile> {
     );
   }
 
-  Widget _buildBody(BuildContext context, OtpAuthState otpState, bool isLoading) {
+  Widget _buildBody(
+    BuildContext context,
+    OtpAuthState otpState,
+    bool isLoading,
+  ) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 5,
-        bottom: 50,
-      ),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 50),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -228,9 +248,7 @@ class _OtpTileState extends State<OtpTile> {
           const SizedBox(height: 40),
           if (isLoading)
             const Center(
-              child: CircularProgressIndicator(
-                color: AppColors.accentBlue,
-              ),
+              child: CircularProgressIndicator(color: AppColors.accentBlue),
             ),
           const SizedBox(height: 20),
           RegistrationContainer(

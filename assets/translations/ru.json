@@ -146,5 +146,9 @@
   "not_available": "Н/Д",
   "gigabytes": "ГБ",
   "balance_prefix": "на счету",
-  "step": "Шаг"
+  "step": "Шаг",
+  "logout": "Выйти из аккаунта",
+  "logout_confirmation_title": "Подтверждение выхода",
+  "logout_confirmation_message": "Вы уверены, что хотите выйти из аккаунта?",
+  "cancel": "Отмена"
 }
