@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
@@ -18,6 +20,44 @@ import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class MainFlowDataProcessor {
+  static double calculateAvailableGB(double balance, double rate) {
+    if (rate == 0) return 0.0;
+    final gb = balance / rate / 1024;
+    return gb;
+  }
+
+  static List<ImsiModel> processImsiList(SubscriberState state) {
+    final loadedImsiList = state is SubscriberLoaded
+        ? state.subscriber.imsiList
+        : <ImsiModel>[];
+
+    final subscriberBalance = state is SubscriberLoaded
+        ? state.subscriber.balance
+        : 0.0;
+
+    final isLoading = state is SubscriberLoading;
+    final hasError = state is SubscriberError;
+
+    return loadedImsiList.isNotEmpty
+        ? loadedImsiList
+        : [
+            ImsiModel(
+              imsi: 'default',
+              balance: subscriberBalance,
+              country: isLoading
+                  ? AppLocalizations.loading
+                  : (hasError ? AppLocalizations.error : 'N/A'),
+              rate: 1024.0,
+            ),
+          ];
+  }
+
+  static bool isLoadingWithNoData(SubscriberState state, List<ImsiModel> list) {
+    return state is SubscriberLoading && list.isEmpty;
+  }
+}
+
 class MainFlowScreen extends StatefulWidget {
   const MainFlowScreen({super.key});
 
@@ -34,42 +74,17 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     super.dispose();
   }
 
-  void _showBottomSheet(BuildContext context) {
-    context.read<MainFlowBloc>().add(ShowBottomSheetEvent());
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder:
-          (context) => Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              child: BottomSheetContent(),
-            ),
-          ),
-    ).then((_) {
-      context.read<MainFlowBloc>().add(HideBottomSheetEvent());
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainFlowBloc, MainFlowState>(
       builder: (context, mainFlowState) {
         return BlocBuilder<SubscriberBloc, SubscriberState>(
           builder: (context, subscriberState) {
-            // Get IMSI list from subscriber data instead of using mainFlowState
             final loadedImsiList =
                 subscriberState is SubscriberLoaded
                     ? subscriberState.subscriber.imsiList
                     : <ImsiModel>[];
 
-            // If no IMSI data, create a default one with subscriber balance
             final subscriberBalance =
                 subscriberState is SubscriberLoaded
                     ? subscriberState.subscriber.balance
@@ -107,6 +122,15 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
             }
 
             return Scaffold(
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                ).copyWith(bottom: 30, top: 12),
+                child: BlueGradientButton(
+                  onTap: () => openTopUpBalanceScreen(context),
+                  title: AppLocalizations.topUpBalance,
+                ),
+              ),
               backgroundColor: AppColors.backgroundColorLight,
               body: SafeArea(
                 child: SingleChildScrollView(
@@ -138,7 +162,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             },
                             itemBuilder: (context, index) {
                               if (index < actualCount) {
-                                // Show shimmer while loading and no data available
                                 if (isLoading && loadedImsiList.isEmpty) {
                                   return AnimatedScale(
                                     scale:
@@ -218,7 +241,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                         ),
 
                         SizedBox(height: isSmallOrDesktop ? 3 : 16),
-
                         Row(
                           children: [
                             ExpandedContainer(
@@ -250,13 +272,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             ),
                           ],
                         ),
-
-                        SizedBox(height: 16),
-
-                        BlueGradientButton(
-                          onTap: () => openTopUpBalanceScreen(context),
-                          title: AppLocalizations.topUpBalance,
-                        ),
                       ],
                     ),
                   ),
@@ -267,5 +282,28 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
         );
       },
     );
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    context.read<MainFlowBloc>().add(ShowBottomSheetEvent());
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder:
+          (context) => Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              child: BottomSheetContent(),
+            ),
+          ),
+    ).then((_) {
+      context.read<MainFlowBloc>().add(HideBottomSheetEvent());
+    });
   }
 }
