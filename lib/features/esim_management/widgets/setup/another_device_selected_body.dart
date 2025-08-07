@@ -120,7 +120,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.qrImageForManual.image(
+                      child: Assets.icons.figma112.qrManual.image(
                         width: 228,
                         height: 228,
                         fit: BoxFit.contain,
@@ -196,7 +196,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                     SizedBox(width: 10),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.faceTimeAndImessage.image(
+                      child: Assets.icons.figma112.facetimeImessage.image(
                         width: 271.59,
                         height: 287.61,
                         fit: BoxFit.contain,

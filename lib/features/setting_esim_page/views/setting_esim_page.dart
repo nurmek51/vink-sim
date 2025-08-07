@@ -1,18 +1,16 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/setting_esim_page/widgets/steps_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/shared/widgets/start_registration_button.dart';
 import 'package:flutter/material.dart';
 
 class SettingEsimPage extends StatelessWidget {
   final bool isAuthorized;
 
-  const SettingEsimPage({
-    super.key,
-    this.isAuthorized = false,
-  });
+  const SettingEsimPage({super.key, this.isAuthorized = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +21,9 @@ class SettingEsimPage extends StatelessWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        title: HelveticaneueFont(
-          text: AppLocalizations.guideForEsimSettings,
-          fontSize: 17,
-          fontWeight: FontWeight.w500,
-          height: 1.3,
-          color: AppColors.grayBlue,
+        title: LocalizedText(
+          AppLocalizations.tariffsAndCountries,
+          style: FlexTypography.label.medium,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
@@ -39,11 +34,7 @@ class SettingEsimPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-              top: 10,
-              left: 20,
-              right: 20,
-            ),
+            padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
             child: Center(
               child: Column(
                 children: [
@@ -52,17 +43,13 @@ class SettingEsimPage extends StatelessWidget {
                     args: ['1'],
                     description: AppLocalizations.balanceAndEsimActivation,
                   ),
-
                   SizedBox(height: 7),
-
                   StepsContainer(
                     iconPath: Assets.icons.figma143.step2Icon.path,
                     args: ['2'],
                     description: AppLocalizations.profileSetupGuide,
                   ),
-
                   SizedBox(height: 7),
-
                   StepsContainer(
                     iconPath: Assets.icons.figma143.step3Icon.path,
                     args: ['3'],
@@ -72,21 +59,14 @@ class SettingEsimPage extends StatelessWidget {
               ),
             ),
           ),
-
           Spacer(),
-
           Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-              bottom: 50,
-            ),
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 50),
             child: Visibility(
               visible: isAuthorized,
               child: StartRegistrationButton(),
             ),
           ),
-      
         ],
       ),
     );

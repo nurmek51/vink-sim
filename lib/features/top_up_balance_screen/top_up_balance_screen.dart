@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
@@ -20,10 +21,7 @@ import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 
 class TopUpBalanceScreen extends StatelessWidget {
   final int? circleIndex;
-  const TopUpBalanceScreen({
-    super.key,
-    this.circleIndex,
-  });
+  const TopUpBalanceScreen({super.key, this.circleIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +33,8 @@ class TopUpBalanceScreen extends StatelessWidget {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         behavior: HitTestBehavior.translucent,
-        child: _TopUpBalanceView(circleIndex: circleIndex)),
+        child: _TopUpBalanceView(circleIndex: circleIndex),
+      ),
     );
   }
 }
@@ -51,18 +50,44 @@ class _TopUpBalanceView extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorLight,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          bottom: isScrollable ? 0 : 50,
-        ),
-        child: isScrollable ? SingleChildScrollView(child: content) : content,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 100,
+            pinned: true,
+            backgroundColor: AppColors.backgroundColorLight,
+            surfaceTintColor: AppColors.backgroundColorLight,
+            leading: Transform.translate(
+              offset: const Offset(-12, 0),
+              child: BackButton(
+                color: Colors.black,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              titlePadding: const EdgeInsets.only(bottom: 16),
+              expandedTitleScale: 1.4,
+              title: HelveticaneueFont(
+                text: AppLocalizations.topUpBalance,
+
+                fontSize: 20,
+                letterSpacing: -0.5,
+                height: 1.1,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF363C45),
+              ),
+              background: Container(
+                color: AppColors.backgroundColorLight,
+                child: const SizedBox.shrink(),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            sliver: SliverToBoxAdapter(child: content),
+          ),
+        ],
       ),
     );
   }
@@ -71,8 +96,6 @@ class _TopUpBalanceView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle(),
-        const SizedBox(height: 16),
         _buildSubtitle(),
         const SizedBox(height: 16),
         BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
@@ -90,7 +113,7 @@ class _TopUpBalanceView extends StatelessWidget {
               onAmountChanged:
                   (newAmount) => context.read<TopUpBalanceBloc>().add(
                     SetAmount(newAmount),
-                  ),     
+                  ),
             );
           },
         ),
@@ -104,97 +127,102 @@ class _TopUpBalanceView extends StatelessWidget {
         const PaymentTypeSelector(),
         const SizedBox(height: 16),
         _buildAutoTopUpCard(),
-        isScrollable ? const SizedBox(height: 15) : const Spacer(),
+        const SizedBox(height: 15),
 
-              BlocConsumer<StripeBloc, StripeState>(
-                listener: (context, state) {
-                  if (state is StripeSuccess) { 
-                    if (kDebugMode) print('ОПЛАТА ПРОШЛА УСПЕШНО !');
+        BlocConsumer<StripeBloc, StripeState>(
+          listener: (context, state) {
+            if (state is StripeSuccess) {
+              if (kDebugMode) print('ОПЛАТА ПРОШЛА УСПЕШНО !');
 
-                    if (circleIndex != null) {
-                      context.read<MainFlowBloc>().add(
-                        UpdateCircleBalanceEvent(
-                          circleIndex: circleIndex!,
-                          addedAmount:
-                              context
-                                  .read<TopUpBalanceBloc>()
-                                  .state
-                                  .amount
-                                  .toDouble(), 
-                        ),
-                      );
+              if (circleIndex != null) {
+                context.read<MainFlowBloc>().add(
+                  UpdateCircleBalanceEvent(
+                    circleIndex: circleIndex!,
+                    addedAmount:
+                        context
+                            .read<TopUpBalanceBloc>()
+                            .state
+                            .amount
+                            .toDouble(),
+                  ),
+                );
 
-                      Navigator.of(context).pop();
-                    } else {
-                      NavigationService.openActivatedEsimScreen(context);
-                    }
-                  } else if (state is StripeFailure) {
-                    AppNotifier.error(AppLocalizations.paymentFail).showAppToast(context);
-                  }
-                },
-                builder: (context, stripeState) {
-                  final isLoading = stripeState is StripeLoading;
-                  return BlueGradientButton(
-                    title:
-                        isLoading
-                            ? AppLocalizations.loading
-                            : AppLocalizations.topUpBalance,
-                    onTap:
-                        isLoading
-                            ? null
-                            : () {
-                              final bloc = context.read<TopUpBalanceBloc>();
-                              final state = bloc.state;
+                Navigator.of(context).pop();
+              } else {
+                NavigationService.openActivatedEsimScreen(context);
+              }
+            } else if (state is StripeFailure) {
+              AppNotifier.error(
+                AppLocalizations.paymentFail,
+              ).showAppToast(context);
+            }
+          },
+          builder: (context, stripeState) {
+            final isLoading = stripeState is StripeLoading;
+            return BlueGradientButton(
+              title:
+                  isLoading
+                      ? AppLocalizations.loading
+                      : AppLocalizations.topUpBalance,
+              onTap:
+                  isLoading
+                      ? null
+                      : () {
+                        final bloc = context.read<TopUpBalanceBloc>();
+                        final state = bloc.state;
 
-                              if (state.amount <= 0) {
-                                AppNotifier.info(AppLocalizations.enterTopUpAmount).showAppToast(context);
-                                return;
-                              }
+                        if (state.amount <= 0) {
+                          AppNotifier.info(
+                            AppLocalizations.enterTopUpAmount,
+                          ).showAppToast(context);
+                          return;
+                        }
 
-                              if (state.selectedPaymentMethod.isEmpty) {
-                                AppNotifier.info("Выберите способ оплаты!").showAppToast(context);
-                                return;
-                              }
+                        if (state.selectedPaymentMethod.isEmpty) {
+                          AppNotifier.info(
+                            "Выберите способ оплаты!",
+                          ).showAppToast(context);
+                          return;
+                        }
 
-                              switch (state.selectedPaymentMethod) {
-                                case 'credit_card':
-                                  context.read<StripeBloc>().add(
-                                    StripePaymentRequested(
-                                      amount: state.amount,
-                                      context: context,
-                                      circleIndex: circleIndex,
-                                    ),
-                                  );
-                                  break;
-                                case 'crypto':
-                                AppNotifier.info(AppLocalizations.notAvailable).showAppToast(context);
-                                  break;
-                                case 'apple_pay':
-                                  context.read<StripeBloc>().add(
-                                    GooglePayPaymentRequested(
-                                      amount: state.amount,
-                                      currency: 'usd',
-                                    ),
-                                  );
+                        switch (state.selectedPaymentMethod) {
+                          case 'credit_card':
+                            context.read<StripeBloc>().add(
+                              StripePaymentRequested(
+                                amount: state.amount,
+                                context: context,
+                                circleIndex: circleIndex,
+                              ),
+                            );
+                            break;
+                          case 'crypto':
+                            AppNotifier.info(
+                              AppLocalizations.notAvailable,
+                            ).showAppToast(context);
+                            break;
+                          case 'apple_pay':
+                            context.read<StripeBloc>().add(
+                              GooglePayPaymentRequested(
+                                amount: state.amount,
+                                currency: 'usd',
+                              ),
+                            );
 
-                                  break;
-                                default:
-                                  AppNotifier.info("Неизвестный способ оплаты").showAppToast(context);
-                              }
-                            },
-                  );
-                },
-              ),
+                            break;
+                          default:
+                            AppNotifier.info(
+                              "Неизвестный способ оплаты",
+                            ).showAppToast(context);
+                        }
+                      },
+            );
+          },
+        ),
 
-              isScrollable ? const SizedBox(height: 50) : const SizedBox.shrink()
+        const SizedBox(height: 80),
       ],
     );
   }
-
-  Widget _buildTitle() => LocalizedText(
-    AppLocalizations.topUpBalance,
-    style: FlexTypography.headline.large.copyWith(color: AppColors.grayBlue),
-  );
 
   Widget _buildSubtitle() => LocalizedText(
     AppLocalizations.enterAmountTopUpDescription,

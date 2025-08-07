@@ -91,6 +91,7 @@ class BottomSetupContainer extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

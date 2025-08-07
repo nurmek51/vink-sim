@@ -51,14 +51,14 @@ class _FrameContentState extends State<FrameContent>
 
     _verticalAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: const Offset(0, -20),
+      end: const Offset(0, -50),
     ).animate(
       CurvedAnimation(parent: _moveController, curve: Curves.easeInOut),
     );
 
     _horizontalAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: const Offset(20, 0),
+      end: const Offset(50, 0),
     ).animate(
       CurvedAnimation(parent: _moveController, curve: Curves.easeInOut),
     );
