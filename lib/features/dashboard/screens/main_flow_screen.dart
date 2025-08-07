@@ -109,35 +109,56 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
             return Scaffold(
               backgroundColor: AppColors.backgroundColorLight,
               body: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 20,
-                    bottom: 50,
-                    left: 20,
-                    right: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      Header(
-                        color: AppColors.grayBlue,
-                        faqOnTap: () => openGuidePage(context),
-                        avatarOnTap: () => openMyAccountScreen(context),
-                      ),
-                      SizedBox(height: isSmallOrDesktop ? 0 : 15),
-                      SizedBox(
-                        height: isSmall ? 309 : 320,
-                        child: PageView.builder(
-                          controller: _pageController,
-                          itemCount: itemCount,
-                          onPageChanged: (index) {
-                            context.read<MainFlowBloc>().add(
-                              PageChangedEvent(index),
-                            );
-                          },
-                          itemBuilder: (context, index) {
-                            if (index < actualCount) {
-                              // Show shimmer while loading and no data available
-                              if (isLoading && loadedImsiList.isEmpty) {
+                child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                      bottom: 50,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        Header(
+                          color: AppColors.grayBlue,
+                          faqOnTap: () => openGuidePage(context),
+                          avatarOnTap: () => openMyAccountScreen(context),
+                        ),
+                        SizedBox(height: isSmallOrDesktop ? 0 : 15),
+                        SizedBox(
+                          height: isSmall ? 309 : 320,
+                          child: PageView.builder(
+                            controller: _pageController,
+                            itemCount: itemCount,
+                            onPageChanged: (index) {
+                              context.read<MainFlowBloc>().add(
+                                PageChangedEvent(index),
+                              );
+                            },
+                            itemBuilder: (context, index) {
+                              if (index < actualCount) {
+                                // Show shimmer while loading and no data available
+                                if (isLoading && loadedImsiList.isEmpty) {
+                                  return AnimatedScale(
+                                    scale:
+                                        mainFlowState.currentPage == index
+                                            ? 1.0
+                                            : 0.9,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeOut,
+                                    child: const PercentageShimmerWidget(),
+                                  );
+                                }
+
+                                final imsi = displayList[index];
+                                final availableGB = calculateAvailableGB(
+                                  imsi.balance,
+                                  imsi.rate ?? 1024.0,
+                                );
+                                final isYellow =
+                                    availableGB > 0 && availableGB <= 1.0;
+
                                 return AnimatedScale(
                                   scale:
                                       mainFlowState.currentPage == index
@@ -145,116 +166,99 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                           : 0.9,
                                   duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeOut,
-                                  child: const PercentageShimmerWidget(),
+                                  child: PercentageWidget(
+                                    circleIndex: index,
+                                    progressValue: availableGB,
+                                    color: ProgressColorUtils.getProgressColor(
+                                      availableGB,
+                                    ),
+                                    isYellow: isYellow,
+                                    backgroundColor:
+                                        ProgressColorUtils.getProgressBackgroundColor(
+                                          availableGB,
+                                        ),
+                                    balance: imsi.balance,
+                                    country: imsi.country,
+                                    rate: imsi.rate,
+                                    // moneyBalance: imsi.balance,
+                                  ),
+                                );
+                              } else {
+                                return AddEsimCircle(
+                                  canAdd: canAdd,
+                                  onAddButtonPressed:
+                                      () =>
+                                          NavigationService.openTopUpBalanceScreen(
+                                            context,
+                                          ),
                                 );
                               }
-
-                              // Get specific IMSI data for this circle
-                              final imsi = displayList[index];
-                              final availableGB = calculateAvailableGB(
-                                imsi.balance,
-                                imsi.rate ?? 1024.0,
-                              );
-                              final isYellow =
-                                  availableGB > 0 && availableGB <= 1.0;
-
-                              return AnimatedScale(
-                                scale:
-                                    mainFlowState.currentPage == index
-                                        ? 1.0
-                                        : 0.9,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeOut,
-                                child: PercentageWidget(
-                                  circleIndex: index,
-                                  progressValue: availableGB,
-                                  color: ProgressColorUtils.getProgressColor(
-                                    availableGB,
-                                  ),
-                                  isYellow: isYellow,
-                                  backgroundColor:
-                                      ProgressColorUtils.getProgressBackgroundColor(
-                                        availableGB,
-                                      ),
-                                  balance: imsi.balance,
-                                  country: imsi.country,
-                                  rate: imsi.rate, 
-                                  // moneyBalance: imsi.balance,
-                                ),
-                              );
-                            }
-                             else {
-                              return AddEsimCircle(
-                                canAdd: canAdd,
-                                onAddButtonPressed:
-                                    () => NavigationService.openTopUpBalanceScreen(context),
-                              );
-                            }
-                          },
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(height: isSmallOrDesktop ? 2 : 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          itemCount,
-                          (index) => AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              color:
-                                  mainFlowState.currentPage == index
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              shape: BoxShape.circle,
+                        SizedBox(height: isSmallOrDesktop ? 2 : 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            itemCount,
+                            (index) => AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color:
+                                    mainFlowState.currentPage == index
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
                             ),
                           ),
                         ),
-                      ),
 
-                      SizedBox(height: isSmallOrDesktop ? 3 : 16),
+                        SizedBox(height: isSmallOrDesktop ? 3 : 16),
 
-                      Row(
-                        children: [
-                          ExpandedContainer(
-                            title: AppLocalizations.howToInstallEsim2,
-                            icon: Assets.icons.simIcon.path,
-                            onTap: () => openEsimSetupPage(context),
-                          ),
-                          const SizedBox(width: 16),
-                          ExpandedContainer(
-                            title: AppLocalizations.supportChat,
-                            icon: Assets.icons.telegramIcon.path,
-                            onTap: () => _showBottomSheet(context),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 12),
-                      Row(
-                        children: [
-                          ExpandedContainer(
-                            title: AppLocalizations.questionsAndAnswers,
-                            icon: Assets.icons.faqIconFull.path,
-                            onTap: () => openGuidePage(context),
-                          ),
-                          const SizedBox(width: 16),
-                          ExpandedContainer(
-                            title: AppLocalizations.countriesAndRates,
-                            icon: Assets.icons.globus.path,
-                            onTap: () => openTariffsAndCountriesPage(context),
-                          ),
-                        ],
-                      ),
+                        Row(
+                          children: [
+                            ExpandedContainer(
+                              title: AppLocalizations.howToInstallEsim2,
+                              icon: Assets.icons.simIcon.path,
+                              onTap: () => openEsimSetupPage(context),
+                            ),
+                            const SizedBox(width: 16),
+                            ExpandedContainer(
+                              title: AppLocalizations.supportChat,
+                              icon: Assets.icons.telegramIcon.path,
+                              onTap: () => _showBottomSheet(context),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        Row(
+                          children: [
+                            ExpandedContainer(
+                              title: AppLocalizations.questionsAndAnswers,
+                              icon: Assets.icons.faqIconFull.path,
+                              onTap: () => openGuidePage(context),
+                            ),
+                            const SizedBox(width: 16),
+                            ExpandedContainer(
+                              title: AppLocalizations.countriesAndRates,
+                              icon: Assets.icons.globus.path,
+                              onTap: () => openTariffsAndCountriesPage(context),
+                            ),
+                          ],
+                        ),
 
-                      const Spacer(),
+                        SizedBox(height: 16),
 
-                      BlueGradientButton(
-                        onTap: () => openTopUpBalanceScreen(context),
-                        title: AppLocalizations.topUpBalance,
-                      ),
-                    ],
+                        BlueGradientButton(
+                          onTap: () => openTopUpBalanceScreen(context),
+                          title: AppLocalizations.topUpBalance,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

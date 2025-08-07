@@ -51,6 +51,7 @@ class _TopUpBalanceView extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorLight,
       body: CustomScrollView(
+        physics: ClampingScrollPhysics(),
         slivers: [
           SliverAppBar(
             expandedHeight: 100,
@@ -219,7 +220,7 @@ class _TopUpBalanceView extends StatelessWidget {
           },
         ),
 
-        const SizedBox(height: 80),
+        const SizedBox(height: 30),
       ],
     );
   }
