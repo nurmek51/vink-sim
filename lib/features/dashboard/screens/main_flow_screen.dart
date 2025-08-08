@@ -89,22 +89,18 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
       builder: (context, mainFlowState) {
         return BlocBuilder<SubscriberBloc, SubscriberState>(
           builder: (context, subscriberState) {
-            // Get IMSI list from subscriber data instead of using mainFlowState
             final loadedImsiList =
                 subscriberState is SubscriberLoaded
                     ? subscriberState.subscriber.imsiList
                     : <ImsiModel>[];
-
-            // If no IMSI data, create a default one with subscriber balance
             final subscriberBalance =
                 subscriberState is SubscriberLoaded
                     ? subscriberState.subscriber.balance
                     : 0.0;
-
-            // Показываем лоадер для всех состояний кроме SubscriberLoaded
-            final isLoading = subscriberState is! SubscriberLoaded;
-            final hasError = false; // Не показываем ошибки в UI
-
+            final isLoading =
+                subscriberState is SubscriberLoading ||
+                subscriberState is SubscriberInitial;
+            final hasError = subscriberState is SubscriberError;
             final displayList =
                 loadedImsiList.isNotEmpty
                     ? loadedImsiList
@@ -163,7 +159,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                           },
                           itemBuilder: (context, index) {
                             if (index < actualCount) {
-                              // Show shimmer while loading and no data available
                               if (isLoading && loadedImsiList.isEmpty) {
                                 return AnimatedScale(
                                   scale:
@@ -176,7 +171,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                 );
                               }
 
-                              // Get specific IMSI data for this circle
                               final imsi = displayList[index];
                               final availableGB = calculateAvailableGB(
                                 imsi.balance,
@@ -206,7 +200,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                   balance: imsi.balance,
                                   country: imsi.country,
                                   rate: imsi.rate,
-                                  // moneyBalance: imsi.balance,
                                 ),
                               );
                             } else {
