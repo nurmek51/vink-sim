@@ -22,7 +22,7 @@ class SettingEsimPage extends StatelessWidget {
         scrolledUnderElevation: 0,
         centerTitle: true,
         title: LocalizedText(
-          AppLocalizations.tariffsAndCountries,
+          AppLocalizations.guideForEsimSettings,
           style: FlexTypography.label.medium,
         ),
         bottom: PreferredSize(
