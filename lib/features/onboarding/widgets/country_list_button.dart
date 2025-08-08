@@ -26,9 +26,11 @@ class WhatIsEsimButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Assets.icons.simIcon.svg(),
+            SizedBox(width: 12),
             LocalizedText(
               AppLocalizations.whatIsEsom,
-              style: FlexTypography.paragraph.medium.copyWith(
+              style: FlexTypography.paragraph.xMedium.copyWith(
                 fontWeight: FontWeight.w500,
                 color: AppColors.textColorLight,
               ),

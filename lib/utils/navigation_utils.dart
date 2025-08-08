@@ -7,12 +7,18 @@ import 'package:flutter/material.dart';
 
 class NavigationService {
   // Push navigation (adds to stack)
-  static void openTariffsAndCountriesPage(BuildContext context, {bool isAuthorized = false}) {
+  static void openTariffsAndCountriesPage(
+    BuildContext context, {
+    bool isAuthorized = false,
+  }) {
     final qp = isAuthorized ? '?isAuthorized=true' : '';
     context.push('${AppRoutes.tariffsAndCountries}$qp');
   }
-  
-  static void openSettingsEsimPage(BuildContext context, {bool isAuthorized = false}) {
+
+  static void openSettingsEsimPage(
+    BuildContext context, {
+    bool isAuthorized = false,
+  }) {
     final qp = isAuthorized ? '?isAuthorized=true' : '';
     context.push('${AppRoutes.settingEsim}$qp');
   }
@@ -22,18 +28,12 @@ class NavigationService {
   }
 
   static void openTopUpBalanceScreen(BuildContext context, {int? circleIndex}) {
-    context.push(
-      AppRoutes.topUpBalance,
-      extra: {
-      'circleIndex': circleIndex,
-    },
-    );
+    context.push(AppRoutes.topUpBalance, extra: {'circleIndex': circleIndex});
   }
 
   static void openAuthScreen(BuildContext context) {
     context.push(AppRoutes.auth);
   }
-
 
   static void openPurchaseScreen(BuildContext context) {
     context.push(AppRoutes.purchaseHistory);
@@ -42,7 +42,7 @@ class NavigationService {
   static void openMyAccountScreen(BuildContext context) {
     context.push(AppRoutes.myAccount);
   }
-  
+
   static void openGuidePage(BuildContext context, {bool isAuthorized = false}) {
     final qp = isAuthorized ? '?isAuthorized=true' : '';
     context.push('${AppRoutes.guide}$qp');
@@ -69,12 +69,12 @@ class NavigationService {
     context.push(
       AppRoutes.stripeWebCheckout,
       extra: {
-        'clientSecret': clientSecret, 
-        'amount': amount, 
+        'clientSecret': clientSecret,
+        'amount': amount,
         'circleIndex': circleIndex,
       },
     );
-  }  
+  }
 
   static void openUserProfileScreen(BuildContext context) {
     context.push(AppRoutes.myAccount);
@@ -107,11 +107,19 @@ class NavigationService {
   }
 
   // Named navigation
-  static void pushNamed(BuildContext context, String routeName, {Map<String, String>? pathParameters}) {
+  static void pushNamed(
+    BuildContext context,
+    String routeName, {
+    Map<String, String>? pathParameters,
+  }) {
     context.pushNamed(routeName, pathParameters: pathParameters ?? {});
   }
 
-  static void goNamed(BuildContext context, String routeName, {Map<String, String>? pathParameters}) {
+  static void goNamed(
+    BuildContext context,
+    String routeName, {
+    Map<String, String>? pathParameters,
+  }) {
     context.goNamed(routeName, pathParameters: pathParameters ?? {});
   }
 
@@ -164,15 +172,27 @@ class NavigationService {
 }
 
 // Legacy function aliases for backward compatibility
-void openSettingsEsimPage(BuildContext context) => NavigationService.openSettingsEsimPage(context);
-void openEsimSetupPage(BuildContext context) => NavigationService.openEsimSetupPage(context);
-void openInitialPage(BuildContext context) => NavigationService.openInitialPage(context);
-void openTopUpBalanceScreen(BuildContext context) => NavigationService.openTopUpBalanceScreen(context);
-void openMainFlowScreen(BuildContext context) => NavigationService.openMainFlowScreen(context);
-void openAuthScreen(BuildContext context) => NavigationService.openAuthScreen(context);
-void openActivatedEsimScreen(BuildContext context) => NavigationService.openActivatedEsimScreen(context);
-void openPurchaseScreen(BuildContext context) => NavigationService.openPurchaseScreen(context);
-void openMyAccountScreen(BuildContext context) => NavigationService.openMyAccountScreen(context);
-void openGuidePage(BuildContext context) => NavigationService.openGuidePage(context);
-void openTariffsAndCountriesPage(BuildContext context) => NavigationService.openTariffsAndCountriesPage(context);
-void openSettingsScreen(BuildContext context) => NavigationService.openSettingsScreen(context);
+void openSettingsEsimPage(BuildContext context) =>
+    NavigationService.openSettingsEsimPage(context);
+void openEsimSetupPage(BuildContext context) =>
+    NavigationService.openEsimSetupPage(context);
+void openInitialPage(BuildContext context) =>
+    NavigationService.openInitialPage(context);
+void openTopUpBalanceScreen(BuildContext context) =>
+    NavigationService.openTopUpBalanceScreen(context);
+void openMainFlowScreen(BuildContext context) =>
+    NavigationService.openMainFlowScreen(context);
+void openAuthScreen(BuildContext context) =>
+    NavigationService.openAuthScreen(context);
+void openActivatedEsimScreen(BuildContext context) =>
+    NavigationService.openActivatedEsimScreen(context);
+void openPurchaseScreen(BuildContext context) =>
+    NavigationService.openPurchaseScreen(context);
+void openMyAccountScreen(BuildContext context) =>
+    NavigationService.openMyAccountScreen(context);
+void openGuidePage(BuildContext context) =>
+    NavigationService.openGuidePage(context);
+void openTariffsAndCountriesPage(BuildContext context) =>
+    NavigationService.openTariffsAndCountriesPage(context);
+void openSettingsScreen(BuildContext context) =>
+    NavigationService.openSettingsScreen(context);
