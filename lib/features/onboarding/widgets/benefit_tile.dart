@@ -17,7 +17,7 @@ class BenefitTile extends StatelessWidget {
         const SizedBox(width: 10),
         LocalizedText(
           title,
-          style: FlexTypography.paragraph.medium.copyWith(
+          style: FlexTypography.paragraph.xMedium.copyWith(
             color: AppColors.textColorLight,
           ),
         ),

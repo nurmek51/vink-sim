@@ -28,11 +28,54 @@ class EsimSetupPage extends StatelessWidget {
       create: (_) => EsimSetupBloc(),
       child: Scaffold(
         backgroundColor: const Color(0xFFD0DEEB),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              // body
-              Container(
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 100,
+              pinned: true,
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16),
+                ),
+              ),
+              leading: Transform.translate(
+                offset: const Offset(-12, 0),
+                child: BackButton(
+                  color: Colors.black,
+                  onPressed: () => NavigationService.pop(context),
+                ),
+              ),
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                titlePadding: const EdgeInsets.only(bottom: 16),
+                expandedTitleScale: 1.4,
+                title: HelveticaneueFont(
+                  text: AppLocalizations.installEsim,
+                  fontSize: 20,
+                  letterSpacing: -0.5,
+                  height: 1.1,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF363C45),
+                ),
+                background: Container(
+                  decoration: const BoxDecoration(color: Colors.white),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: safePaddingArea(context) + 56,
+                      left: 20,
+                      right: 20,
+                      bottom: 20,
+                    ),
+                    child: const SizedBox.shrink(),
+                  ),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(16),
@@ -41,32 +84,13 @@ class EsimSetupPage extends StatelessWidget {
                   color: Colors.white,
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(
-                    top: safePaddingArea(context),
-                    bottom: 40,
+                  padding: const EdgeInsets.only(
                     left: 20,
                     right: 20,
+                    bottom: 40,
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Transform.translate(
-                        offset: const Offset(-12, 0),
-                        child: BackButton(
-                          color: Colors.black,
-                          onPressed: () => NavigationService.pop(context),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-                      HelveticaneueFont(
-                        text: AppLocalizations.installEsim,
-                        fontSize: 28,
-                        letterSpacing: -1,
-                        height: 1.1,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF363C45),
-                      ),
                       const SizedBox(height: 20),
                       BlocBuilder<EsimSetupBloc, EsimSetupState>(
                         builder: (context, state) {
@@ -83,7 +107,6 @@ class EsimSetupPage extends StatelessWidget {
                           );
                         },
                       ),
-                      // BODY
                       BlocBuilder<EsimSetupBloc, EsimSetupState>(
                         builder: (context, state) {
                           return Column(
@@ -105,10 +128,13 @@ class EsimSetupPage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              const BottomSetupContainer(),
-            ],
-          ),
+            ),
+            const SliverToBoxAdapter(
+              child: Column(
+                children: [SizedBox(height: 16), BottomSetupContainer()],
+              ),
+            ),
+          ],
         ),
       ),
     );

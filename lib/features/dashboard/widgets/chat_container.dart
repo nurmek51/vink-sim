@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 class ChatContainer extends StatelessWidget {
   final Color color;
   final String title;
-  final Border border;
   final Color titleColor;
   final String icon;
   final VoidCallback? onTap;
@@ -14,7 +13,6 @@ class ChatContainer extends StatelessWidget {
     super.key,
     required this.color,
     required this.title,
-    required this.border,
     this.titleColor = Colors.white,
     required this.icon,
     this.onTap,
@@ -31,7 +29,6 @@ class ChatContainer extends StatelessWidget {
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(100),
-          border: border,
         ),
         child: Stack(
           alignment: Alignment.center,

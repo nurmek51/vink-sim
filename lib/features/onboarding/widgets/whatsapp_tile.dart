@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_event.dart';
@@ -84,8 +85,10 @@ class _WhatsappTileState extends State<WhatsappTile> {
             if (state is OtpSmsSent) {
               widget.onNext(state.phone, ConfirmMethod.byPhone);
             } else if (state is OtpAuthError) {
-              AppNotifier.error(AppLocalizations.sendError).showAppToast(context);
-              if(kDebugMode) print(state.message);
+              AppNotifier.error(
+                AppLocalizations.sendError,
+              ).showAppToast(context);
+              if (kDebugMode) print(state.message);
             }
           },
           builder: (context, state) {
@@ -102,25 +105,22 @@ class _WhatsappTileState extends State<WhatsappTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 30),
-                  const LocalizedText(
+                  LocalizedText(
                     AppLocalizations.authWithTheHelpOf,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w500,
+                    style: FlexTypography.headline.large.copyWith(
                       color: AppColors.backgroundColorLight,
                     ),
                   ),
-                  const SizedBox(height: 3),
                   Row(
                     children: [
-                      const LocalizedText(
+                      LocalizedText(
                         AppLocalizations.whatsApp,
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w500,
+
+                        style: FlexTypography.headline.large.copyWith(
                           color: AppColors.whatsAppColor,
                         ),
                       ),
+
                       const SizedBox(width: 10),
                       SvgPicture.asset(
                         Assets.icons.whatsappIcon.path,
@@ -180,6 +180,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
                     color: AppColors.babyBlue,
                     iconPath: Assets.icons.emailLogo.path,
                   ),
+                  SizedBox(height: 35,),
                 ],
               ),
             );
