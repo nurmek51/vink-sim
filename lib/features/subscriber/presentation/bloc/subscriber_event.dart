@@ -24,3 +24,7 @@ class RefreshSubscriberInfoEvent extends SubscriberEvent {
   @override
   List<Object> get props => [token];
 }
+
+class ResetSubscriberStateEvent extends SubscriberEvent {
+  const ResetSubscriberStateEvent();
+}

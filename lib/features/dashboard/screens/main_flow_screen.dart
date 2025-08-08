@@ -5,7 +5,11 @@ import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/models/imsi_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/add_esim_circle.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
@@ -27,6 +31,28 @@ class MainFlowScreen extends StatefulWidget {
 
 class _MainFlowScreenState extends State<MainFlowScreen> {
   final PageController _pageController = PageController(viewportFraction: 1);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSubscriberDataIfNeeded();
+  }
+
+  void _loadSubscriberDataIfNeeded() async {
+    final authDataSource = sl.get<AuthLocalDataSource>();
+    try {
+      final token = await authDataSource.getToken();
+      if (token != null && mounted) {
+        context.read<SubscriberBloc>().add(
+          LoadSubscriberInfoEvent(token: token),
+        );
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('MainFlowScreen: Error loading token: $e');
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -75,8 +101,9 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                     ? subscriberState.subscriber.balance
                     : 0.0;
 
-            final isLoading = subscriberState is SubscriberLoading;
-            final hasError = subscriberState is SubscriberError;
+            // Показываем лоадер для всех состояний кроме SubscriberLoaded
+            final isLoading = subscriberState is! SubscriberLoaded;
+            final hasError = false; // Не показываем ошибки в UI
 
             final displayList =
                 loadedImsiList.isNotEmpty
@@ -178,16 +205,18 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                       ),
                                   balance: imsi.balance,
                                   country: imsi.country,
-                                  rate: imsi.rate, 
+                                  rate: imsi.rate,
                                   // moneyBalance: imsi.balance,
                                 ),
                               );
-                            }
-                             else {
+                            } else {
                               return AddEsimCircle(
                                 canAdd: canAdd,
                                 onAddButtonPressed:
-                                    () => NavigationService.openTopUpBalanceScreen(context),
+                                    () =>
+                                        NavigationService.openTopUpBalanceScreen(
+                                          context,
+                                        ),
                               );
                             }
                           },

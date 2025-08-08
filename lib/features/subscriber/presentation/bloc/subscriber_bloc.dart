@@ -13,6 +13,7 @@ class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
         super(const SubscriberInitial()) {
     on<LoadSubscriberInfoEvent>(_onLoadSubscriberInfo);
     on<RefreshSubscriberInfoEvent>(_onRefreshSubscriberInfo);
+    on<ResetSubscriberStateEvent>(_onResetSubscriberState);
   }
 
   Future<void> _onLoadSubscriberInfo(
@@ -23,6 +24,7 @@ class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
       print('SubscriberBloc: Loading subscriber info with token: ${event.token.substring(0, 20)}...');
     }
     
+    // Всегда начинаем с состояния Loading, независимо от текущего состояния
     emit(const SubscriberLoading());
 
     try {
@@ -59,5 +61,12 @@ class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
     } catch (e) {
       emit(SubscriberError(message: e.toString()));
     }
+  }
+
+  void _onResetSubscriberState(
+    ResetSubscriberStateEvent event,
+    Emitter<SubscriberState> emit,
+  ) {
+    emit(const SubscriberInitial());
   }
 }
