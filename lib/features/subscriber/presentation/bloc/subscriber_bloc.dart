@@ -9,10 +9,11 @@ class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
 
   SubscriberBloc({
     required SubscriberRemoteDataSource subscriberRemoteDataSource,
-  })  : _subscriberRemoteDataSource = subscriberRemoteDataSource,
-        super(const SubscriberInitial()) {
+  }) : _subscriberRemoteDataSource = subscriberRemoteDataSource,
+       super(const SubscriberInitial()) {
     on<LoadSubscriberInfoEvent>(_onLoadSubscriberInfo);
     on<RefreshSubscriberInfoEvent>(_onRefreshSubscriberInfo);
+    on<ResetSubscriberStateEvent>(_onResetSubscriberState);
   }
 
   Future<void> _onLoadSubscriberInfo(
@@ -20,29 +21,31 @@ class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
     Emitter<SubscriberState> emit,
   ) async {
     if (kDebugMode) {
-      print('SubscriberBloc: Loading subscriber info with token: ${event.token.substring(0, 20)}...');
+      print(
+        'SubscriberBloc: Loading subscriber info with token: ${event.token.substring(0, 20)}...',
+      );
     }
-    
+
     emit(const SubscriberLoading());
 
     try {
       final subscriber = await _subscriberRemoteDataSource.getSubscriberInfo(
         event.token,
       );
-      
+
       if (kDebugMode) {
         print('SubscriberBloc: Successfully loaded subscriber info');
         print('SubscriberBloc: Balance: ${subscriber.balance}');
         print('SubscriberBloc: IMSI count: ${subscriber.imsiList.length}');
       }
-      
+
       emit(SubscriberLoaded(subscriber: subscriber));
     } catch (e) {
       if (kDebugMode) {
         print('SubscriberBloc: Error loading subscriber info: $e');
         print('SubscriberBloc: Error type: ${e.runtimeType}');
       }
-      
+
       emit(SubscriberError(message: e.toString()));
     }
   }
@@ -59,5 +62,12 @@ class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
     } catch (e) {
       emit(SubscriberError(message: e.toString()));
     }
+  }
+
+  void _onResetSubscriberState(
+    ResetSubscriberStateEvent event,
+    Emitter<SubscriberState> emit,
+  ) {
+    emit(const SubscriberInitial());
   }
 }

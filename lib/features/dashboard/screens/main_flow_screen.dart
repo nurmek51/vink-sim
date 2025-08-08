@@ -5,11 +5,15 @@ import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.dart';
+import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/models/imsi_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/add_esim_circle.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/percentage_widget.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/percentage_shimmer_widget.dart';
@@ -28,13 +32,11 @@ class MainFlowDataProcessor {
   }
 
   static List<ImsiModel> processImsiList(SubscriberState state) {
-    final loadedImsiList = state is SubscriberLoaded
-        ? state.subscriber.imsiList
-        : <ImsiModel>[];
+    final loadedImsiList =
+        state is SubscriberLoaded ? state.subscriber.imsiList : <ImsiModel>[];
 
-    final subscriberBalance = state is SubscriberLoaded
-        ? state.subscriber.balance
-        : 0.0;
+    final subscriberBalance =
+        state is SubscriberLoaded ? state.subscriber.balance : 0.0;
 
     final isLoading = state is SubscriberLoading;
     final hasError = state is SubscriberError;
@@ -42,15 +44,16 @@ class MainFlowDataProcessor {
     return loadedImsiList.isNotEmpty
         ? loadedImsiList
         : [
-            ImsiModel(
-              imsi: 'default',
-              balance: subscriberBalance,
-              country: isLoading
-                  ? AppLocalizations.loading
-                  : (hasError ? AppLocalizations.error : 'N/A'),
-              rate: 1024.0,
-            ),
-          ];
+          ImsiModel(
+            imsi: 'default',
+            balance: subscriberBalance,
+            country:
+                isLoading
+                    ? AppLocalizations.loading
+                    : (hasError ? AppLocalizations.error : 'N/A'),
+            rate: 1024.0,
+          ),
+        ];
   }
 
   static bool isLoadingWithNoData(SubscriberState state, List<ImsiModel> list) {
@@ -67,6 +70,28 @@ class MainFlowScreen extends StatefulWidget {
 
 class _MainFlowScreenState extends State<MainFlowScreen> {
   final PageController _pageController = PageController(viewportFraction: 1);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSubscriberDataIfNeeded();
+  }
+
+  void _loadSubscriberDataIfNeeded() async {
+    final authDataSource = sl.get<AuthLocalDataSource>();
+    try {
+      final token = await authDataSource.getToken();
+      if (token != null && mounted) {
+        context.read<SubscriberBloc>().add(
+          LoadSubscriberInfoEvent(token: token),
+        );
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('MainFlowScreen: Error loading token: $e');
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -89,10 +114,10 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                 subscriberState is SubscriberLoaded
                     ? subscriberState.subscriber.balance
                     : 0.0;
-
-            final isLoading = subscriberState is SubscriberLoading;
+            final isLoading =
+                subscriberState is SubscriberLoading ||
+                subscriberState is SubscriberInitial;
             final hasError = subscriberState is SubscriberError;
-
             final displayList =
                 loadedImsiList.isNotEmpty
                     ? loadedImsiList
@@ -252,7 +277,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             ExpandedContainer(
                               title: AppLocalizations.supportChat,
                               icon: Assets.icons.telegramIcon.path,
-                              onTap: () => _showBottomSheet(context),
+                              onTap: () => BottomSheetContent(),
                             ),
                           ],
                         ),
@@ -282,28 +307,5 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
         );
       },
     );
-  }
-
-  void _showBottomSheet(BuildContext context) {
-    context.read<MainFlowBloc>().add(ShowBottomSheetEvent());
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder:
-          (context) => Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              child: BottomSheetContent(),
-            ),
-          ),
-    ).then((_) {
-      context.read<MainFlowBloc>().add(HideBottomSheetEvent());
-    });
   }
 }
