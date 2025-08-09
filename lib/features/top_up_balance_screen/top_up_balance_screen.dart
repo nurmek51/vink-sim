@@ -1,22 +1,18 @@
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
+import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
-import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
-import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/auto_top_up_container.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/fix_sum_button_widget.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/tariff_info_card_widget.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/top_up_balance_widget.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/counter_widget.dart';
-import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/fix_sum_button.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/payment_type_selector.dart';
-import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/tariff_scroll_view.dart';
-import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 
 class TopUpBalanceScreen extends StatelessWidget {
   final String? imsi;
@@ -46,34 +42,74 @@ class _TopUpBalanceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isScrollable = isTopUpScreenScrollable(context);
-    final content = _buildContent(context, isScrollable);
     return Scaffold(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+        ).copyWith(bottom: 30, top: 12),
+        child: TopUpBalanceWidget(),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorLight,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          bottom: isScrollable ? 0 : 50,
-        ),
-        child: isScrollable ? SingleChildScrollView(child: content) : content,
+      body: CustomScrollView(
+        physics: ClampingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 100,
+            pinned: true,
+            backgroundColor: AppColors.backgroundColorLight,
+            surfaceTintColor: AppColors.backgroundColorLight,
+            leading: Transform.translate(
+              offset: const Offset(-12, 0),
+              child: BackButton(
+                color: Colors.black,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              titlePadding: const EdgeInsets.only(bottom: 16),
+              expandedTitleScale: 1.4,
+              title: HelveticaneueFont(
+                text: AppLocalizations.topUpBalance,
+
+                fontSize: 20,
+                letterSpacing: -0.5,
+                height: 1.1,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF363C45),
+              ),
+              background: Container(
+                color: AppColors.backgroundColorLight,
+                child: const SizedBox.shrink(),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            sliver: SliverToBoxAdapter(child: TopUpBalanceContent()),
+          ),
+        ],
       ),
     );
   }
+}
 
-  Widget _buildContent(BuildContext context, bool isScrollable) {
+class TopUpBalanceContent extends StatelessWidget {
+  final String? imsi;
+  const TopUpBalanceContent({super.key, this.imsi});
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle(),
-        const SizedBox(height: 16),
-        _buildSubtitle(),
+        LocalizedText(
+          AppLocalizations.enterAmountTopUpDescription,
+          style: FlexTypography.label.medium.copyWith(
+            color: AppColors.grayBlue,
+          ),
+        ),
         const SizedBox(height: 16),
         BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
           builder: (context, state) {
@@ -90,219 +126,26 @@ class _TopUpBalanceView extends StatelessWidget {
               onAmountChanged:
                   (newAmount) => context.read<TopUpBalanceBloc>().add(
                     SetAmount(newAmount),
-                  ),     
+                  ),
             );
           },
         ),
         const SizedBox(height: 16),
-        _buildFixSumButtons(),
+        FixSumButtonWidget(),
         const SizedBox(height: 16),
-        _buildTariffInfoCard(context),
+        TariffInfoCardWidget(),
         const SizedBox(height: 30),
-        _buildPaymentTitle(),
-        const SizedBox(height: 16),
-        const PaymentTypeSelector(),
-        const SizedBox(height: 16),
-        _buildAutoTopUpCard(),
-        isScrollable ? const SizedBox(height: 15) : const Spacer(),
-
-              BlocConsumer<StripeBloc, StripeState>(
-                listener: (context, state) {
-                  if (state is StripeSuccess) { 
-                    if (kDebugMode) print('ОПЛАТА ПРОШЛА УСПЕШНО !');
-
-                    if (imsi != null) {
-                      NavigationService.goToMainFlow(context);
-                    }
-                    else {
-                      NavigationService.openActivatedEsimScreen(context);
-                    }
-                  } else if (state is StripeFailure) {
-                    AppNotifier.error(AppLocalizations.paymentFail).showAppToast(context);
-                  }
-                },
-                builder: (context, stripeState) {
-                  final isLoading = stripeState is StripeLoading;
-                  return BlueGradientButton(
-                    title:
-                        isLoading
-                            ? AppLocalizations.loading
-                            : AppLocalizations.topUpBalance,
-                    onTap:
-                        isLoading
-                            ? null
-                            : () {
-                              final bloc = context.read<TopUpBalanceBloc>();
-                              final state = bloc.state;
-
-                              if (state.amount <= 0) {
-                                AppNotifier.info(AppLocalizations.enterTopUpAmount).showAppToast(context);
-                                return;
-                              }
-
-                              if (state.selectedPaymentMethod.isEmpty) {
-                                AppNotifier.info("Выберите способ оплаты!").showAppToast(context);
-                                return;
-                              }
-                              
-                        final isOperationTypeTopUp = (imsi?.isNotEmpty ?? false);
-                        final operationType =
-                            isOperationTypeTopUp
-                                ? StripeOperationType.addFunds
-                                : StripeOperationType.newImsi;
-
-                              switch (state.selectedPaymentMethod) {
-                                case 'credit_card':
-                                  context.read<StripeBloc>().add(
-                                    StripePaymentRequested(
-                                      amount: state.amount,
-                                      context: context,
-                                      operationType: operationType,
-                                      imsi: isOperationTypeTopUp ? imsi : null,
-                                    ),
-                                  );
-                                  break;
-                                case 'crypto':
-                                AppNotifier.info(AppLocalizations.notAvailable).showAppToast(context);
-                                  break;
-                                case 'apple_pay':
-                                  context.read<StripeBloc>().add(
-                                    GooglePayPaymentRequested(
-                                      amount: state.amount,
-                                      context: context,
-                                      operationType: operationType,
-                                      imsi: isOperationTypeTopUp ? imsi : null,
-                                    ),
-                                  );
-
-                                  break;
-                                default:
-                                  AppNotifier.info("Неизвестный способ оплаты").showAppToast(context);
-                              }
-                            },
-                  );
-                },
-              ),
-
-              isScrollable ? const SizedBox(height: 50) : const SizedBox.shrink()
-      ],
-    );
-  }
-
-  Widget _buildTitle() => LocalizedText(
-    AppLocalizations.topUpBalance,
-    style: FlexTypography.headline.large.copyWith(color: AppColors.grayBlue),
-  );
-
-  Widget _buildSubtitle() => LocalizedText(
-    AppLocalizations.enterAmountTopUpDescription,
-    style: FlexTypography.label.medium.copyWith(color: AppColors.grayBlue),
-  );
-
-  Widget _buildFixSumButtons() =>
-      BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
-        builder: (context, state) {
-          return Row(
-            children:
-                [1, 5, 15, 50, 100]
-                    .map(
-                      (sum) => FixSumButton(
-                        sum: sum,
-                        onTap:
-                            (value) => context.read<TopUpBalanceBloc>().add(
-                              SetAmount(value),
-                            ),
-                      ),
-                    )
-                    .toList(),
-          );
-        },
-      );
-
-  Widget _buildTariffInfoCard(BuildContext context) => Container(
-    padding: const EdgeInsets.all(20),
-    height: 183,
-    decoration: BoxDecoration(
-      color: AppColors.backgroundColorLight,
-      borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: const Color(0xFFD4D4D4), width: 1),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
         LocalizedText(
-          AppLocalizations.flexTravelEsimWorksWorldwide,
-          style: FlexTypography.paragraph.medium.copyWith(color: Colors.black),
-        ),
-        const SizedBox(height: 8),
-        LocalizedText(
-          AppLocalizations.balance15Description,
-          style: FlexTypography.paragraph.medium.copyWith(
+          AppLocalizations.choosePaymentMethod,
+          style: FlexTypography.headline.medium.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
-        const TariffScrollView(),
-        const SizedBox(height: 20),
-        GestureDetector(
-          onTap: () => openTariffsAndCountriesPage(context),
-          child: LocalizedText(
-            AppLocalizations.allCountriesAndTariffs,
-            style: FlexTypography.paragraph.medium.copyWith(
-              color: Colors.blueAccent,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        const SizedBox(height: 16),
+        const PaymentTypeSelector(),
+        const SizedBox(height: 16),
+        AutoTopUpContainer(),
       ],
-    ),
-  );
-
-  Widget _buildPaymentTitle() => LocalizedText(
-    AppLocalizations.choosePaymentMethod,
-    style: FlexTypography.headline.medium.copyWith(fontWeight: FontWeight.bold),
-  );
-
-  Widget _buildAutoTopUpCard() => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 16),
-    height: 100,
-    decoration: BoxDecoration(
-      color: AppColors.containerGray,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              LocalizedText(
-                AppLocalizations.autoTopUp,
-                style: FlexTypography.paragraph.medium.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 5),
-              LocalizedText(
-                AppLocalizations.autoTopUpDescription,
-                style: FlexTypography.paragraph.small,
-              ),
-            ],
-          ),
-        ),
-        BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
-          builder: (context, state) {
-            return CupertinoSwitch(
-              value: state.autoTopUpEnabled,
-              onChanged:
-                  (value) => context.read<TopUpBalanceBloc>().add(
-                    ToggleAutoTopUp(value),
-                  ),
-              activeTrackColor: CupertinoColors.systemBlue,
-            );
-          },
-        ),
-      ],
-    ),
-  );
+    );
+  }
 }

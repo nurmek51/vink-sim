@@ -23,14 +23,6 @@ class $AssetsIconsGen {
   SvgGenImage get accountSettings =>
       const SvgGenImage('assets/icons/account_settings.svg');
 
-  /// File path: assets/icons/england_flag.svg
-  SvgGenImage get englandFlag =>
-      const SvgGenImage('assets/icons/england_flag.svg');
-
-  /// File path: assets/icons/usa_flag.svg
-  SvgGenImage get usaFlag =>
-      const SvgGenImage('assets/icons/usa_flag.svg');        
-
   /// File path: assets/icons/app_language.svg
   SvgGenImage get appLanguage =>
       const SvgGenImage('assets/icons/app_language.svg');
@@ -76,14 +68,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/email_logo.svg
   SvgGenImage get emailLogo => const SvgGenImage('assets/icons/email_logo.svg');
 
+  /// File path: assets/icons/england_flag.svg
+  SvgGenImage get englandFlag =>
+      const SvgGenImage('assets/icons/england_flag.svg');
+
   /// File path: assets/icons/faq_icon.svg
   SvgGenImage get faqIcon => const SvgGenImage('assets/icons/faq_icon.svg');
-
-  /// File path: assets/icons/left_vector.svg
-  SvgGenImage get leftVector => const SvgGenImage('assets/icons/left_vector.svg');
-
-  /// File path: assets/icons/right_vector.svg
-  SvgGenImage get rightVector => const SvgGenImage('assets/icons/right_vector.svg');    
 
   /// File path: assets/icons/faq_icon_full.svg
   SvgGenImage get faqIconFull =>
@@ -110,6 +100,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/globus_icon.svg
   SvgGenImage get globusIcon =>
       const SvgGenImage('assets/icons/globus_icon.svg');
+
+  /// File path: assets/icons/globus_with_background.svg
+  SvgGenImage get globusWithBackground =>
+      const SvgGenImage('assets/icons/globus_with_background.svg');
 
   /// File path: assets/icons/google_logo.svg
   SvgGenImage get googleLogo =>
@@ -142,6 +136,10 @@ class $AssetsIconsGen {
   SvgGenImage get infoQrCircle =>
       const SvgGenImage('assets/icons/info_qr_circle.svg');
 
+  /// File path: assets/icons/left_vector.svg
+  SvgGenImage get leftVector =>
+      const SvgGenImage('assets/icons/left_vector.svg');
+
   /// File path: assets/icons/mail_icon.svg
   SvgGenImage get mailIcon => const SvgGenImage('assets/icons/mail_icon.svg');
 
@@ -155,6 +153,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/qr_code_image.svg
   SvgGenImage get qrCodeImage =>
       const SvgGenImage('assets/icons/qr_code_image.svg');
+
+  /// File path: assets/icons/right_vector.svg
+  SvgGenImage get rightVector =>
+      const SvgGenImage('assets/icons/right_vector.svg');
 
   /// File path: assets/icons/russian_flag.svg
   SvgGenImage get russianFlag =>
@@ -179,123 +181,88 @@ class $AssetsIconsGen {
   SvgGenImage get trafficUsage =>
       const SvgGenImage('assets/icons/traffic_usage.svg');
 
+  /// File path: assets/icons/usa_flag.svg
+  SvgGenImage get usaFlag => const SvgGenImage('assets/icons/usa_flag.svg');
+
   /// File path: assets/icons/whatsapp_icon.svg
   SvgGenImage get whatsappIcon =>
       const SvgGenImage('assets/icons/whatsapp_icon.svg');
 
-  /// File path: assets/icons/globus_with_background.svg
-  SvgGenImage get globusWithBackground =>
-      const SvgGenImage('assets/icons/globus_with_background.svg');      
-
   /// List of all assets
   List<SvgGenImage> get values => [
-    telegramLogo,
-    accountSettings,
-    appLanguage,
-    appleLogo,
-    applePayLogo,
-    arrowComeback,
-    arrowRight,
-    attentionCircle,
-    avatarIcon,
-    card,
-    check,
-    chinaFlag,
-    credCard,
-    crypto,
-    emailLogo,
-    faqIcon,
-    faqIconFull,
-    globus,
-    globusIcon,
-    googleLogo,
-    greenWhatsappIcon,
-    guideTableView1,
-    guideTableView2,
-    guideTableView3,
-    guideTableView4,
-    infinity,
-    infoQrCircle,
-    mailIcon,
-    mainIcon,
-    purchaseHistory,
-    qrCodeImage,
-    russianFlag,
-    selectedCardIcon,
-    simContainer,
-    simIcon,
-    telegramIcon,
-    trafficUsage,
-    whatsappIcon,
-    leftVector,
-    rightVector,
-    globusWithBackground,
-    usaFlag,
-  ];
+        telegramLogo,
+        accountSettings,
+        appLanguage,
+        appleLogo,
+        applePayLogo,
+        arrowComeback,
+        arrowRight,
+        attentionCircle,
+        avatarIcon,
+        card,
+        check,
+        chinaFlag,
+        credCard,
+        crypto,
+        emailLogo,
+        englandFlag,
+        faqIcon,
+        faqIconFull,
+        globus,
+        globusIcon,
+        globusWithBackground,
+        googleLogo,
+        greenWhatsappIcon,
+        guideTableView1,
+        guideTableView2,
+        guideTableView3,
+        guideTableView4,
+        infinity,
+        infoQrCircle,
+        leftVector,
+        mailIcon,
+        mainIcon,
+        purchaseHistory,
+        qrCodeImage,
+        rightVector,
+        russianFlag,
+        selectedCardIcon,
+        simContainer,
+        simIcon,
+        telegramIcon,
+        trafficUsage,
+        usaFlag,
+        whatsappIcon
+      ];
+}
+
+class $AssetsTranslationsGen {
+  const $AssetsTranslationsGen();
+
+  /// File path: assets/translations/en.json
+  String get en => 'assets/translations/en.json';
+
+  /// File path: assets/translations/ru.json
+  String get ru => 'assets/translations/ru.json';
+
+  /// List of all assets
+  List<String> get values => [en, ru];
 }
 
 class $AssetsIconsFigma112Gen {
   const $AssetsIconsFigma112Gen();
 
-  /// File path: assets/icons/figma112/another_step1_1.jpg
-  AssetGenImage get anotherStep11 =>
-      const AssetGenImage('assets/icons/figma112/another_step1_1.jpg');
-
-  /// File path: assets/icons/figma112/data_rouming.png
-  AssetGenImage get dataRouming =>
-      const AssetGenImage('assets/icons/figma112/data_rouming.png');    
-
-  /// File path: assets/icons/figma112/choose_mobile_data.png
-  AssetGenImage get chooseMobileData =>
-      const AssetGenImage('assets/icons/figma112/choose_mobile_data.png');
-
-  /// File path: assets/icons/figma112/default_number.png
-  AssetGenImage get defaultNumber =>
-      const AssetGenImage('assets/icons/figma112/default_number.png');
-
-  /// File path: assets/icons/figma112/facetime_imessage.png
-  AssetGenImage get faceTimeAndImessage =>
-      const AssetGenImage('assets/icons/figma112/facetime_imessage.png');
-
-  /// File path: assets/icons/figma112/qr_manual.png
-  AssetGenImage get qrImageForManual =>
-      const AssetGenImage('assets/icons/figma112/qr_manual.png');   
-
-  /// File path: assets/icons/figma112/important_step_todo.png
-  AssetGenImage get importantStepTodo =>
-      const AssetGenImage('assets/icons/figma112/important_step_todo.png');
-
-  /// File path: assets/icons/figma112/mobile_communication.png
-  AssetGenImage get mobileCommunication =>
-      const AssetGenImage('assets/icons/figma112/mobile_communication.png');
-
-  /// File path: assets/icons/figma112/qr_mobile_tariff.png
-  AssetGenImage get qrMobileTariff =>
-      const AssetGenImage('assets/icons/figma112/qr_mobile_tariff.png');   
+  /// File path: assets/icons/figma112/activation_code.png
+  AssetGenImage get activationCode =>
+      const AssetGenImage('assets/icons/figma112/activation_code.png');
 
   /// File path: assets/icons/figma112/add_esim.png
   AssetGenImage get addEsim =>
-      const AssetGenImage('assets/icons/figma112/add_esim.png'); 
+      const AssetGenImage('assets/icons/figma112/add_esim.png');
 
-  /// File path: assets/icons/figma112/settings_by_qr.png
-  AssetGenImage get settingsByQr =>
-      const AssetGenImage('assets/icons/figma112/settings_by_qr.png');
-
-  /// File path: assets/icons/figma112/settings_by_qr.png
-  AssetGenImage get flexPlan =>
-      const AssetGenImage('assets/icons/figma112/flex_plan.png'); 
-
-  /// File path: assets/icons/figma112/settings_by_qr.png
-  AssetGenImage get forTravels =>
-      const AssetGenImage('assets/icons/figma112/for_travels.png');
-
-  /// File path: assets/icons/figma112/scan_qr.png
-  AssetGenImage get scanQr =>
-      const AssetGenImage('assets/icons/figma112/scan_qr.png');   
-
-  /// File path: assets/icons/figma112/activation_code.png
-  AssetGenImage get activationCode =>
-      const AssetGenImage('assets/icons/figma112/activation_code.png');                                                                          
+  /// File path: assets/icons/figma112/another_step1_1.jpg
+  AssetGenImage get anotherStep11 =>
+      const AssetGenImage('assets/icons/figma112/another_step1_1.jpg');
 
   /// File path: assets/icons/figma112/another_step1_2.jpg
   AssetGenImage get anotherStep12 =>
@@ -325,9 +292,37 @@ class $AssetsIconsFigma112Gen {
   AssetGenImage get anotherStep5 =>
       const AssetGenImage('assets/icons/figma112/another_step_5.jpg');
 
+  /// File path: assets/icons/figma112/choose_mobile_data.png
+  AssetGenImage get chooseMobileData =>
+      const AssetGenImage('assets/icons/figma112/choose_mobile_data.png');
+
+  /// File path: assets/icons/figma112/data_rouming.png
+  AssetGenImage get dataRouming =>
+      const AssetGenImage('assets/icons/figma112/data_rouming.png');
+
+  /// File path: assets/icons/figma112/default_number.png
+  AssetGenImage get defaultNumber =>
+      const AssetGenImage('assets/icons/figma112/default_number.png');
+
+  /// File path: assets/icons/figma112/facetime_imessage.png
+  AssetGenImage get facetimeImessage =>
+      const AssetGenImage('assets/icons/figma112/facetime_imessage.png');
+
+  /// File path: assets/icons/figma112/flex_plan.png
+  AssetGenImage get flexPlan =>
+      const AssetGenImage('assets/icons/figma112/flex_plan.png');
+
+  /// File path: assets/icons/figma112/for_travels.png
+  AssetGenImage get forTravels =>
+      const AssetGenImage('assets/icons/figma112/for_travels.png');
+
   /// File path: assets/icons/figma112/important_step.jpg
   AssetGenImage get importantStep =>
       const AssetGenImage('assets/icons/figma112/important_step.jpg');
+
+  /// File path: assets/icons/figma112/important_step_todo.png
+  AssetGenImage get importantStepTodo =>
+      const AssetGenImage('assets/icons/figma112/important_step_todo.png');
 
   /// File path: assets/icons/figma112/manual_step1_4.jpg
   AssetGenImage get manualStep14 =>
@@ -336,6 +331,26 @@ class $AssetsIconsFigma112Gen {
   /// File path: assets/icons/figma112/manual_step1_5.jpg
   AssetGenImage get manualStep15 =>
       const AssetGenImage('assets/icons/figma112/manual_step1_5.jpg');
+
+  /// File path: assets/icons/figma112/mobile_communication.png
+  AssetGenImage get mobileCommunication =>
+      const AssetGenImage('assets/icons/figma112/mobile_communication.png');
+
+  /// File path: assets/icons/figma112/qr_manual.png
+  AssetGenImage get qrManual =>
+      const AssetGenImage('assets/icons/figma112/qr_manual.png');
+
+  /// File path: assets/icons/figma112/qr_mobile_tariff.png
+  AssetGenImage get qrMobileTariff =>
+      const AssetGenImage('assets/icons/figma112/qr_mobile_tariff.png');
+
+  /// File path: assets/icons/figma112/scan_qr.png
+  AssetGenImage get scanQr =>
+      const AssetGenImage('assets/icons/figma112/scan_qr.png');
+
+  /// File path: assets/icons/figma112/settings_by_qr.png
+  AssetGenImage get settingsByQr =>
+      const AssetGenImage('assets/icons/figma112/settings_by_qr.png');
 
   /// File path: assets/icons/figma112/step2_112_1.jpg
   AssetGenImage get step21121 =>
@@ -359,35 +374,37 @@ class $AssetsIconsFigma112Gen {
 
   /// List of all assets
   List<dynamic> get values => [
-    anotherStep11,
-    anotherStep12,
-    anotherStep13,
-    anotherStep14,
-    anotherStep31,
-    anotherStep32,
-    anotherStep2,
-    anotherStep5,
-    importantStep,
-    manualStep14,
-    manualStep15,
-    step21121,
-    step21122,
-    step3Jpg112,
-    step4Jpg112,
-    successIcon,
-    dataRouming,
-    chooseMobileData,
-    defaultNumber,
-    faceTimeAndImessage,
-    qrImageForManual,
-    importantStepTodo,
-    mobileCommunication,
-    qrMobileTariff,
-    settingsByQr,
-    addEsim,
-    flexPlan,
-    forTravels,
-  ];
+        activationCode,
+        addEsim,
+        anotherStep11,
+        anotherStep12,
+        anotherStep13,
+        anotherStep14,
+        anotherStep31,
+        anotherStep32,
+        anotherStep2,
+        anotherStep5,
+        chooseMobileData,
+        dataRouming,
+        defaultNumber,
+        facetimeImessage,
+        flexPlan,
+        forTravels,
+        importantStep,
+        importantStepTodo,
+        manualStep14,
+        manualStep15,
+        mobileCommunication,
+        qrManual,
+        qrMobileTariff,
+        scanQr,
+        settingsByQr,
+        step21121,
+        step21122,
+        step3Jpg112,
+        step4Jpg112,
+        successIcon
+      ];
 }
 
 class $AssetsIconsFigma141Gen {
@@ -495,32 +512,41 @@ class $AssetsIconsFigma149Gen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
-    blueIcon1,
-    blueIcon11,
-    blueIcon2,
-    blueIcon22,
-    blueIcon3,
-    blueIcon33,
-    blueIcon4,
-    blueIcon44,
-    column1,
-    column2,
-    column3,
-    column4,
-    moneyIcon,
-    profileIcon,
-    whiteLogo,
-  ];
+        blueIcon1,
+        blueIcon11,
+        blueIcon2,
+        blueIcon22,
+        blueIcon3,
+        blueIcon33,
+        blueIcon4,
+        blueIcon44,
+        column1,
+        column2,
+        column3,
+        column4,
+        moneyIcon,
+        profileIcon,
+        whiteLogo
+      ];
 }
 
 class Assets {
-  const Assets._();
+  Assets._();
 
+  static const String aEnv = '.env';
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
+
+  /// List of all assets
+  static List<String> get values => [aEnv];
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  });
 
   final String _assetName;
 
@@ -548,7 +574,7 @@ class AssetGenImage {
     bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.medium,
+    FilterQuality filterQuality = FilterQuality.low,
     int? cacheWidth,
     int? cacheHeight,
   }) {
@@ -580,8 +606,15 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   String get path => _assetName;
@@ -590,11 +623,17 @@ class AssetGenImage {
 }
 
 class SvgGenImage {
-  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = false;
+  const SvgGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = false;
 
-  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = true;
+  const SvgGenImage.vec(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -648,8 +687,7 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter:
-          colorFilter ??
+      colorFilter: colorFilter ??
           (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,

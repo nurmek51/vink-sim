@@ -27,7 +27,7 @@ class $FlexTypographyHeadline implements $FlexTypographyBase {
       _baseStyle.copyWith(fontSize: 32, height: 37 / 32, letterSpacing: -0.13);
 
   TextStyle get large =>
-      _baseStyle.copyWith(fontSize: 26, height: 31 / 26, letterSpacing: -0.05);
+      _baseStyle.copyWith(fontSize: 28, height: 31 / 26, letterSpacing: -0.05);
 
   TextStyle get xMedium => _baseStyle.copyWith(fontSize: 22, height: 27 / 22);
 

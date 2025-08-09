@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/core/utils/country_code_utils.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/data/data_sources/tariffs_remote_data_source.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_bloc.dart';
@@ -69,7 +70,6 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
 
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
     const paddingSettings = EdgeInsets.only(left: 20, right: 20, bottom: 50);
 
     return Scaffold(
@@ -80,7 +80,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
         scrolledUnderElevation: 0,
         title: LocalizedText(
           AppLocalizations.tariffsAndCountries,
-          style: titleStyle,
+          style: FlexTypography.label.medium,
         ),
         centerTitle: true,
         bottom: PreferredSize(
@@ -101,7 +101,6 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
               child: TextField(
                 controller: _searchController,
                 decoration: const InputDecoration(
-                  hintText: 'Search countries',
                   prefixIcon: Icon(Icons.search, color: Colors.grey),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
@@ -123,9 +122,11 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                   }
 
                   if (state is TariffsError) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-    AppNotifier.error(AppLocalizations.error).showAppToast(context);
-  });
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      AppNotifier.error(
+                        AppLocalizations.error,
+                      ).showAppToast(context);
+                    });
                     return Center(
                       child: ElevatedButton(
                         onPressed: () {
@@ -181,7 +182,9 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
               ),
             ),
 
-            widget.isAuthorized ? const SizedBox(height: 10) : const SizedBox.shrink(),
+            widget.isAuthorized
+                ? const SizedBox(height: 10)
+                : const SizedBox.shrink(),
 
             Visibility(
               visible: widget.isAuthorized,

@@ -200,7 +200,7 @@ class _OtpTileState extends State<OtpTile> {
             AppLocalizations.enterVerificationCode,
             style: TextStyle(
               fontSize: 28,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w700,
               color: AppColors.backgroundColorLight,
             ),
           ),
