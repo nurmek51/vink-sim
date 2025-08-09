@@ -14,8 +14,7 @@ class PercentageWidget extends StatelessWidget {
     super.key,
     required this.progressValue,
     required this.color,
-    required this.circleIndex,
-    // required this.moneyBalance,    
+    required this.imsi,
     required this.backgroundColor,
     required this.balance,
     this.country,
@@ -30,8 +29,7 @@ class PercentageWidget extends StatelessWidget {
   final String? country;
   final double? rate;
   final bool isYellow;
-  final int circleIndex;
-  // final double moneyBalance;   
+  final String imsi;  
 
   String _formatBalance(double value) {
     String formatted =
@@ -132,21 +130,14 @@ class PercentageWidget extends StatelessWidget {
                   ),
                 ),
 
-                // LocalizedText(
-                //   AppLocalizations.dollarsOnAccount,
-                //   args: [balance.toInt().toString()],
-                //   style: FlexTypography.label.medium.copyWith(
-                //     color: AppColors.grayBlue.withOpacity(0.6),
-                //   ),
-                // ),
-
                 const SizedBox(height: 13),
 
                 !isBlueCircle
-                    ? GestureDetector(
+                    ? 
+                    GestureDetector(
                       onTap: () => NavigationService.openTopUpBalanceScreen(
                         context,
-                        circleIndex: circleIndex,
+                        imsi: imsi,
                       ),
                       child: LocalizedText(
                         AppLocalizations.topUp,

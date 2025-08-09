@@ -17,9 +17,16 @@ class StripePaymentRequested extends StripeEvent {
   final int amount;
   final String currency;
   final BuildContext context;
-  final int? circleIndex;
+  final StripeOperationType operationType;
+  final String? imsi;  
 
-  const StripePaymentRequested({required this.amount, this.currency = 'usd', required this.context,  this.circleIndex});
+  const StripePaymentRequested({
+    required this.amount,
+    this.currency = 'usd',
+    required this.context,
+    required this.operationType,
+    this.imsi,
+  });
 
   @override
   List<Object?> get props => [amount, currency];
@@ -28,8 +35,17 @@ class StripePaymentRequested extends StripeEvent {
 class GooglePayPaymentRequested extends StripeEvent {
   final int amount;
   final String currency;
+  final BuildContext context;
+  final StripeOperationType operationType;
+  final String? imsi;  
 
-  const GooglePayPaymentRequested({required this.amount, this.currency = 'usd'});
+  const GooglePayPaymentRequested({
+    required this.amount,
+    this.currency = 'usd',
+    required this.context,
+    required this.operationType,
+    this.imsi,
+  });
 
   @override
   List<Object?> get props => [amount, currency];
@@ -97,7 +113,8 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
         amount: event.amount,
         currency: event.currency,
         context: event.context,
-        circleIndex: event.circleIndex,
+        operationType: event.operationType,
+        imsi: event.imsi,
       );
 
       switch (result) {
@@ -132,7 +149,9 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
     try {
       final result = await StripeService.instance.makeGooglePayOnlyPayment(
         amount: event.amount,
-        currency: event.currency,
+        currency: event.currency, 
+        operationType: event.operationType,
+        imsi: event.imsi,
       );
 
       switch (result) {

@@ -14,6 +14,7 @@ import 'package:flex_travel_sim/features/setting_esim_page/views/setting_esim_pa
 import 'package:flex_travel_sim/features/activated_esim_screen/views/activated_esim_screen.dart';
 import 'package:flex_travel_sim/features/initial_page/views/initial_page.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/screens/web_checkout_page.dart';
+import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/top_up_balance_screen.dart';
 import 'package:flex_travel_sim/features/traffic_usage_screen/traffic_usage_screen.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/screens/tariffs_and_countries_screen.dart';
@@ -142,11 +143,11 @@ class AppRouter {
             name: AppRoutes.topUpBalanceName,
             pageBuilder: (context, state) {
               final data = state.extra as Map<String, dynamic>?;
-              final circleIndex = data?['circleIndex'] as int?;
+              final imsi = data?['imsi'] as String?;
               return _buildPageWithNoTransition(
                 context,
                 state,
-                TopUpBalanceScreen(circleIndex: circleIndex),
+                TopUpBalanceScreen(imsi: imsi),
               );
             },
           ),
@@ -222,9 +223,12 @@ class AppRouter {
               final extra = state.extra as Map<String, dynamic>?;
               final clientSecret = extra?['clientSecret'] as String?;
               final amount = extra?['amount'] as int?;
-              final circleIndex = extra?['circleIndex'] as int?;
+              final operationType = extra?['operationType'] as StripeOperationType?;
+              final userId = extra?['userId'] as String?;
+              final imsi = extra?['imsi'] as String?;              
 
-              if (clientSecret == null || amount == null) {
+
+              if (clientSecret == null || amount == null || operationType == null || userId == null) {
                 return AppRouter._buildPageWithSlideTransition(
                   context,
                   state,
@@ -240,7 +244,10 @@ class AppRouter {
                 StripeWebCheckout(
                   clientSecret: clientSecret,
                   amount: amount,
-                  circleIndex: circleIndex,
+                  imsi: imsi,
+                  operationType: operationType,
+                  userId: userId,
+
                 ),
               );
             },

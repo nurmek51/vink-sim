@@ -166,7 +166,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeOut,
                                 child: PercentageWidget(
-                                  circleIndex: index,
+                                  imsi: imsi.imsi,
                                   progressValue: availableGB,
                                   color: ProgressColorUtils.getProgressColor(
                                     availableGB,
@@ -179,7 +179,6 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                   balance: imsi.balance,
                                   country: imsi.country,
                                   rate: imsi.rate, 
-                                  // moneyBalance: imsi.balance,
                                 ),
                               );
                             }

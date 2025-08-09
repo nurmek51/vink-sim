@@ -1,8 +1,8 @@
 import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
+import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
@@ -19,10 +19,10 @@ import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/tariff_sc
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 
 class TopUpBalanceScreen extends StatelessWidget {
-  final int? circleIndex;
+  final String? imsi;
   const TopUpBalanceScreen({
     super.key,
-    this.circleIndex,
+    this.imsi,
   });
 
   @override
@@ -35,14 +35,14 @@ class TopUpBalanceScreen extends StatelessWidget {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         behavior: HitTestBehavior.translucent,
-        child: _TopUpBalanceView(circleIndex: circleIndex)),
+        child: _TopUpBalanceView(imsi: imsi)),
     );
   }
 }
 
 class _TopUpBalanceView extends StatelessWidget {
-  final int? circleIndex;
-  const _TopUpBalanceView({this.circleIndex});
+  final String? imsi;
+  const _TopUpBalanceView({this.imsi});
 
   @override
   Widget build(BuildContext context) {
@@ -111,21 +111,10 @@ class _TopUpBalanceView extends StatelessWidget {
                   if (state is StripeSuccess) { 
                     if (kDebugMode) print('ОПЛАТА ПРОШЛА УСПЕШНО !');
 
-                    if (circleIndex != null) {
-                      context.read<MainFlowBloc>().add(
-                        UpdateCircleBalanceEvent(
-                          circleIndex: circleIndex!,
-                          addedAmount:
-                              context
-                                  .read<TopUpBalanceBloc>()
-                                  .state
-                                  .amount
-                                  .toDouble(), 
-                        ),
-                      );
-
-                      Navigator.of(context).pop();
-                    } else {
+                    if (imsi != null) {
+                      NavigationService.goToMainFlow(context);
+                    }
+                    else {
                       NavigationService.openActivatedEsimScreen(context);
                     }
                   } else if (state is StripeFailure) {
@@ -155,6 +144,12 @@ class _TopUpBalanceView extends StatelessWidget {
                                 AppNotifier.info("Выберите способ оплаты!").showAppToast(context);
                                 return;
                               }
+                              
+                        final isOperationTypeTopUp = (imsi?.isNotEmpty ?? false);
+                        final operationType =
+                            isOperationTypeTopUp
+                                ? StripeOperationType.addFunds
+                                : StripeOperationType.newImsi;
 
                               switch (state.selectedPaymentMethod) {
                                 case 'credit_card':
@@ -162,7 +157,8 @@ class _TopUpBalanceView extends StatelessWidget {
                                     StripePaymentRequested(
                                       amount: state.amount,
                                       context: context,
-                                      circleIndex: circleIndex,
+                                      operationType: operationType,
+                                      imsi: isOperationTypeTopUp ? imsi : null,
                                     ),
                                   );
                                   break;
@@ -173,7 +169,9 @@ class _TopUpBalanceView extends StatelessWidget {
                                   context.read<StripeBloc>().add(
                                     GooglePayPaymentRequested(
                                       amount: state.amount,
-                                      currency: 'usd',
+                                      context: context,
+                                      operationType: operationType,
+                                      imsi: isOperationTypeTopUp ? imsi : null,
                                     ),
                                   );
 

@@ -1,6 +1,7 @@
 import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flex_travel_sim/core/storage/local_storage.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,11 @@ class NavigationService {
     context.push(AppRoutes.esimSetup);
   }
 
-  static void openTopUpBalanceScreen(BuildContext context, {int? circleIndex}) {
+  static void openTopUpBalanceScreen(BuildContext context, {String? imsi}) {
     context.push(
       AppRoutes.topUpBalance,
       extra: {
-      'circleIndex': circleIndex,
+      'imsi': imsi,
     },
     );
   }
@@ -64,14 +65,18 @@ class NavigationService {
     BuildContext context, {
     required String clientSecret,
     required int amount,
-    int? circleIndex,
+    required StripeOperationType operationType,
+    required String userId,
+    String? imsi,    
   }) {
     context.push(
       AppRoutes.stripeWebCheckout,
       extra: {
         'clientSecret': clientSecret, 
         'amount': amount, 
-        'circleIndex': circleIndex,
+        'imsi': imsi,
+        'operationType': operationType,
+        'userId': userId,        
       },
     );
   }  

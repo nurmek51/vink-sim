@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flex_travel_sim/features/auth/utils/user_id_utils.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,30 +11,86 @@ import 'package:flex_travel_sim/features/stripe_payment/utils/stripe_web.dart';
 
 enum StripePaymentResult { success, cancelled, failure, redirectedToWeb }
 
+enum StripeOperationType {
+  addFunds,
+  newImsi;
+
+  String get operationType {
+    switch (this) {
+      case StripeOperationType.addFunds:
+        return 'add_funds';
+      case StripeOperationType.newImsi:
+        return 'new_imsi';
+    }
+  }
+
+Map<String, String> buildMetadata({
+  required String userId,
+  String? imsi,
+}) {
+  switch (this) {
+    case StripeOperationType.addFunds:
+      if (imsi == null) {
+        throw ArgumentError('StripeService: IMSI is required for add_funds operation');
+      }
+      return {
+        'metadata[operation]': operationType,
+        'metadata[userId]': userId,
+        'metadata[imsi]': imsi,
+      };
+    case StripeOperationType.newImsi:
+      return {
+        'metadata[operation]': operationType,
+        'metadata[userId]': userId,
+      };
+  }
+}
+
+}
+
+
 class StripeService {
   StripeService._();
 
   static final StripeService instance = StripeService._();
 
+  String get _userId {
+    final userId = UserIdUtils.currentUserId;
+
+    return userId;
+  } 
+
   Future<StripePaymentResult> makePayment({
     required int amount,
     String currency = 'usd',
     required BuildContext context,
-    int? circleIndex,
+    required StripeOperationType operationType,
+    String? imsi,
   }) async {
     try {
+
       String? paymentIntentClientSecret = await _createPaymentIntent(
-        amount,
-        "usd",
+        amount: amount,
+        currency: currency,
+        userId: _userId,
+        operationType: operationType,
+        imsi: imsi,       
       );
       if (paymentIntentClientSecret == null) return StripePaymentResult.failure;
+
+    if (kDebugMode) {
+      print("StripeService: Операция ${operationType.name} успешно инициирована");
+    }
+
 
       if(kIsWeb && context.mounted) {
         NavigationService.openStripeWebCheckoutPage(
           context,
           clientSecret: paymentIntentClientSecret,
           amount: amount,
-          circleIndex: circleIndex,
+          imsi: imsi,
+          operationType: operationType,
+          userId: _userId,
         );
 
         return StripePaymentResult.redirectedToWeb;
@@ -60,7 +117,7 @@ class StripeService {
   Future<StripePaymentResult> confirmWebPayment({
     required String clientSecret,
     required String returnUrl, 
-    int? circleIndex,
+    String? imsi,
   }) async {
     try {
       await WebStripe.instance.confirmPaymentElement(
@@ -87,13 +144,24 @@ class StripeService {
   Future<StripePaymentResult> makeGooglePayOnlyPayment({
     required int amount,
     String currency = 'usd',
+    required StripeOperationType operationType,
+    String? imsi,
+    
   }) async {
     try {
       String? paymentIntentClientSecret = await _createPaymentIntent(
-        amount,
-        "usd",
+        amount: amount, 
+        currency: currency,
+        userId: _userId,
+        operationType: operationType,
+        imsi: imsi,        
+
       );
       if (paymentIntentClientSecret == null) return StripePaymentResult.failure;
+
+      if (kDebugMode) {
+        print("StripeService: Операция ${operationType.name} успешно инициирована");
+      }
 
       final supported = await Stripe.instance.isPlatformPaySupported(
         googlePay: const IsGooglePaySupportedParams(
@@ -136,12 +204,28 @@ class StripeService {
   }
 }
 
-  Future<String?> _createPaymentIntent(int amount, String currency) async {
+  Future<String?> _createPaymentIntent({
+    required int amount,
+    required String currency,
+    required String userId,
+    required StripeOperationType operationType,
+    String? imsi,
+  }) async {
     final String? stripeSecretKey = dotenv.env['STRIPE_SECRET_KEY'];
+    final metadata = operationType.buildMetadata(
+      userId: userId,
+      imsi: imsi,
+    );
+    if (kDebugMode) {
+      print('StripeService: starting ${operationType.name} payment...');
+      print('StripeService: Metadata - $metadata');
+    }
+
     try {
       Map<String, dynamic>? paymentInfo = {
         "amount": _calculateAmount(amount),
         "currency": currency,
+        ...metadata,
       };
 
       final response = await http.post(
