@@ -70,11 +70,15 @@ class MainFlowScreen extends StatefulWidget {
 
 class _MainFlowScreenState extends State<MainFlowScreen> {
   final PageController _pageController = PageController(viewportFraction: 1);
+  bool _hasUserScrolled = false;
 
   @override
   void initState() {
     super.initState();
     _loadSubscriberDataIfNeeded();
+
+    context.read<MainFlowBloc>().add(PageChangedEvent(0));
+    _hasUserScrolled = false;
   }
 
   void _loadSubscriberDataIfNeeded() async {
@@ -181,6 +185,11 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             controller: _pageController,
                             itemCount: itemCount,
                             onPageChanged: (index) {
+                                if (!_hasUserScrolled) {
+                                setState(() {
+                                  _hasUserScrolled = true;
+                                });
+                              }
                               context.read<MainFlowBloc>().add(
                                 PageChangedEvent(index),
                               );
@@ -189,10 +198,10 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                               if (index < actualCount) {
                                 if (isLoading && loadedImsiList.isEmpty) {
                                   return AnimatedScale(
-                                    scale:
-                                        mainFlowState.currentPage == index
-                                            ? 1.0
-                                            : 0.9,
+                                   scale:
+                                     !_hasUserScrolled
+                                         ? 1.0
+                                         : (mainFlowState.currentPage == index? 1.0 : 0.9),
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeOut,
                                     child: const PercentageShimmerWidget(),
@@ -209,9 +218,9 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
 
                                 return AnimatedScale(
                                   scale:
-                                      mainFlowState.currentPage == index
-                                          ? 1.0
-                                          : 0.9,
+                                    !_hasUserScrolled
+                                        ? 1.0
+                                        : (mainFlowState.currentPage == index? 1.0 : 0.9),
                                   duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeOut,
                                   child: PercentageWidget(
