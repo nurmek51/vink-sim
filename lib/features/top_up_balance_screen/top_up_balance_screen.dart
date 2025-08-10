@@ -1,7 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/auto_top_up_container.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/fix_sum_button_widget.dart';
@@ -26,7 +25,7 @@ class TopUpBalanceScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => TopUpBalanceBloc()),
-        BlocProvider(create: (_) => StripeBloc()),
+        // BlocProvider(create: (_) => sl.get<StripeBloc>()),
       ],
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -47,7 +46,7 @@ class _TopUpBalanceView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           horizontal: 20.0,
         ).copyWith(bottom: 30, top: 12),
-        child: TopUpBalanceWidget(),
+        child: TopUpBalanceWidget(imsi: imsi),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorLight,
@@ -87,7 +86,7 @@ class _TopUpBalanceView extends StatelessWidget {
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            sliver: SliverToBoxAdapter(child: TopUpBalanceContent()),
+            sliver: SliverToBoxAdapter(child: TopUpBalanceContent(imsi: imsi)),
           ),
         ],
       ),

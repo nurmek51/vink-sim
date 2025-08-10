@@ -8,6 +8,7 @@ abstract class FirebaseAuthDataSource {
   Future<void> signOut();
   User? getCurrentUser();
   Stream<User?> get authStateChanges;
+  Future<String?> signInWithCustomToken(String token);
 }
 
 class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
@@ -208,4 +209,33 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
 
   @override
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+
+  @override
+  Future<String?> signInWithCustomToken(String token) async {
+    try {
+      if (kDebugMode) {
+        print('Firebase: Signing in with custom token');
+      }
+
+      final userCredential = await _firebaseAuth.signInWithCustomToken(token);
+
+      final user = userCredential.user;
+      if (user != null) {
+        final idToken = await user.getIdToken();
+        if (kDebugMode) {
+          print('Firebase: Custom token sign-in successful');
+          print('Firebase: User ID - ${user.uid}');
+        }
+        return idToken;
+      }
+
+      return null;
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        print('Firebase Auth Error: ${e.code} - ${e.message}');
+      }
+      throw Exception('Custom token sign-in error: ${e.message}');
+    }
+  }
+
 }

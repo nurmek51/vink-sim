@@ -27,6 +27,7 @@ class StripeWebCheckout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('123 $imsi');
     return Scaffold(
       backgroundColor: AppColors.backgroundColorLight,
       appBar: AppBar(

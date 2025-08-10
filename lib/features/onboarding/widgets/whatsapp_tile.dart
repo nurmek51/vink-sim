@@ -1,6 +1,7 @@
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
+import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_event.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_state.dart';
@@ -79,7 +80,10 @@ class _WhatsappTileState extends State<WhatsappTile> {
       body: BlocProvider<OtpAuthBloc>(
         create:
             (context) =>
-                OtpAuthBloc(otpAuthDataSource: sl.get<OtpAuthDataSource>()),
+                OtpAuthBloc(
+                  otpAuthDataSource: sl.get<OtpAuthDataSource>(),
+                  firebaseLoginUseCase: sl.get<FirebaseLoginUseCase>(),
+                ),
         child: BlocConsumer<OtpAuthBloc, OtpAuthState>(
           listener: (context, state) {
             if (state is OtpSmsSent) {

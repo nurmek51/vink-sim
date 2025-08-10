@@ -120,4 +120,33 @@ class FirebaseAuthRepositoryImpl {
     final user = _firebaseDataSource.getCurrentUser();
     return user?.emailVerified ?? false;
   }
+
+  Future<String?> signInWithCustomToken(String token) async {
+    try {
+      if (kDebugMode) {
+        print('FirebaseAuthRepository: Signing in with custom token');
+      }
+
+      final idToken = await _firebaseDataSource.signInWithCustomToken(token);
+
+      if (idToken != null) {
+        await _localDataSource.saveAuthToken(idToken);
+        if (kDebugMode) {
+          print('FirebaseAuthRepository: Custom token sign-in successful - $idToken');
+        }
+      } else {
+        if (kDebugMode) {
+          print('FirebaseAuthRepository: Custom token FAIL - $idToken');
+        }
+      }
+
+      return idToken;
+    } catch (e) {
+      if (kDebugMode) {
+        print('FirebaseAuthRepository: Custom token sign-in error: $e');
+      }
+      rethrow;
+    }
+  }
+
 }

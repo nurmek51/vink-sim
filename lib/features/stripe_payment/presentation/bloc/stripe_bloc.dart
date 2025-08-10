@@ -95,7 +95,9 @@ class StripeFailure extends StripeState {
 
 // Bloc
 class StripeBloc extends Bloc<StripeEvent, StripeState> {
-  StripeBloc() : super(StripeInitial()) {
+  final StripeService stripeService;
+
+  StripeBloc({required this.stripeService}) : super(StripeInitial()) {
     on<StripePaymentRequested>(_onPaymentRequested);
     on<GooglePayPaymentRequested>(_onGooglePayRequested);
     on<WebPaymentConfirmed>(_onWebPaymentConfirmed);
@@ -109,7 +111,7 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
     emit(StripeLoading());
 
     try {
-      final result = await StripeService.instance.makePayment(
+      final result = await stripeService.makePayment(
         amount: event.amount,
         currency: event.currency,
         context: event.context,
@@ -147,7 +149,7 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
     emit(StripeLoading());
 
     try {
-      final result = await StripeService.instance.makeGooglePayOnlyPayment(
+      final result = await stripeService.makeGooglePayOnlyPayment(
         amount: event.amount,
         currency: event.currency, 
         operationType: event.operationType,
@@ -183,7 +185,7 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
     Emitter<StripeState> emit,
   ) async {
     emit(StripeLoading());
-    final result = await StripeService.instance.confirmWebPayment(
+    final result = await stripeService.confirmWebPayment(
       clientSecret: event.clientSecret,
       returnUrl: event.returnUrl,
     );

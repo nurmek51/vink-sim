@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flex_travel_sim/features/auth/utils/user_id_utils.dart';
+import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -50,15 +50,13 @@ Map<String, String> buildMetadata({
 
 
 class StripeService {
-  StripeService._();
+  final FirebaseLoginUseCase _firebaseLoginUseCase;
 
-  static final StripeService instance = StripeService._();
+  StripeService(
+    this._firebaseLoginUseCase,
+  );
 
-  String get _userId {
-    final userId = UserIdUtils.currentUserId;
-
-    return userId;
-  } 
+  String get _userId => _firebaseLoginUseCase.getCurrentUserId() ?? '';
 
   Future<StripePaymentResult> makePayment({
     required int amount,

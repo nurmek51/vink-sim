@@ -20,6 +20,8 @@ import 'package:flex_travel_sim/features/esim_management/domain/repositories/esi
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/activate_esim_use_case.dart';
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/get_esims_use_case.dart';
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/purchase_esim_use_case.dart';
+import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
+import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_local_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_remote_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/repositories/user_repository_impl.dart';
@@ -74,6 +76,7 @@ class ServiceLocator {
     await _initTariffsAndCountries();
     await _initOnboarding();
     await _initSubscriber();
+    await _initStripeService();
 
     _isInitialized = true;
   }
@@ -160,7 +163,10 @@ class ServiceLocator {
     // Blocs
 
     register<OtpAuthBloc>(
-      OtpAuthBloc(otpAuthDataSource: get<OtpAuthDataSource>()),
+      OtpAuthBloc(
+        otpAuthDataSource: get<OtpAuthDataSource>(),
+        firebaseLoginUseCase: get<FirebaseLoginUseCase>(),
+      ),
     );
   }
 
@@ -239,6 +245,19 @@ class ServiceLocator {
     register<SubscriberBloc>(
       SubscriberBloc(
         subscriberRemoteDataSource: get<SubscriberRemoteDataSource>(),
+      ),
+    );
+  }
+  
+  Future<void> _initStripeService() async {
+    register<StripeService>(
+      StripeService(
+        get<FirebaseLoginUseCase>(),
+      )
+    );
+    register<StripeBloc>(
+      StripeBloc(
+        stripeService: get<StripeService>(),
       ),
     );
   }

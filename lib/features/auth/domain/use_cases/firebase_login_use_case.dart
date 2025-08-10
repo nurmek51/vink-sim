@@ -105,4 +105,20 @@ class FirebaseLoginUseCase {
   bool isEmailVerified() {
     return _repository.isEmailVerified();
   }
+
+  Future<String?> signInWithCustomToken(String token) async {
+    try {
+      if (kDebugMode) {
+        print('FirebaseLoginUseCase: Signing in with custom token');
+      }
+      final idToken = await _repository.signInWithCustomToken(token);
+      return idToken;
+    } catch (e) {
+      if (kDebugMode) {
+        print('FirebaseLoginUseCase: Custom token sign-in error: $e');
+      }
+      rethrow;
+    }
+  }
+
 }
