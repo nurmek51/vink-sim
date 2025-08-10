@@ -3,6 +3,7 @@ import 'package:flex_travel_sim/core/web/adaptive/phone_frame.dart';
 import 'package:flex_travel_sim/core/web/adaptive/web_scaffold_config.dart';
 import 'package:flex_travel_sim/core/web/adaptive/welcome_desktop_circles.dart';
 import 'package:flex_travel_sim/features/auth/presentation/screens/auth_screen.dart';
+import 'package:flex_travel_sim/features/initial_screen/presentation/initial_screen.dart';
 import 'package:flex_travel_sim/features/language_screen/language_screen.dart';
 import 'package:flex_travel_sim/features/dashboard/screens/main_flow_screen.dart';
 import 'package:flex_travel_sim/features/my_account_screen/my_account_screen.dart';
@@ -12,7 +13,7 @@ import 'package:flex_travel_sim/features/esim_management/screens/esim_setup_page
 import 'package:flex_travel_sim/features/guide_page/views/guide_page.dart';
 import 'package:flex_travel_sim/features/setting_esim_page/views/setting_esim_page.dart';
 import 'package:flex_travel_sim/features/activated_esim_screen/views/activated_esim_screen.dart';
-import 'package:flex_travel_sim/features/initial_page/views/initial_page.dart';
+import 'package:flex_travel_sim/features/esim_entry_screen/views/esim_entry_screen.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/screens/web_checkout_page.dart';
 import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/top_up_balance_screen.dart';
@@ -86,13 +87,13 @@ class AppRouter {
                 ),
           ),
           GoRoute(
-            path: AppRoutes.initial,
-            name: AppRoutes.initialName,
+            path: AppRoutes.esimEntry,
+            name: AppRoutes.esimEntry,
             pageBuilder:
                 (context, state) => _buildPageWithNoTransition(
                   context,
                   state,
-                  const InitialPage(),
+                  const EsimEntryScreen(),
                 ),
           ),
           GoRoute(
@@ -263,6 +264,17 @@ class AppRouter {
                   const LanguageScreen(),
                 ),
           ),
+
+          GoRoute(
+            path: AppRoutes.initial,
+            name: AppRoutes.initialName,
+            pageBuilder:
+                (context, state) => _buildPageWithNoTransition(
+                  context,
+                  state,
+                  const InitialScreen(),
+                ),
+          ),          
         ],
       ),
     ],
@@ -337,6 +349,7 @@ class AppRoutes {
   static const String trafficUsage = '/traffic-usage';
   static const String language = '/language';
   static const String stripeWebCheckout = '/stripe-web-checkout';
+  static const String esimEntry = '/esim-entry';  
 
 
   // Route names
@@ -356,4 +369,5 @@ class AppRoutes {
   static const String trafficUsageName = 'trafficUsage';
   static const String languageName = 'language';
   static const String stripeWebCheckoutName = 'stripeWebCheckout';
+  static const String esimEntryName = 'esimEntry';  
 }

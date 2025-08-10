@@ -10,14 +10,14 @@ import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
-class InitialPage extends StatefulWidget {
-  const InitialPage({super.key});
+class EsimEntryScreen extends StatefulWidget {
+  const EsimEntryScreen({super.key});
 
   @override
-  State<InitialPage> createState() => _InitialPageState();
+  State<EsimEntryScreen> createState() => _EsimEntryScreenState();
 }
 
-class _InitialPageState extends State<InitialPage>
+class _EsimEntryScreenState extends State<EsimEntryScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _scaleAnimation;

@@ -1,17 +1,18 @@
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_event.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_state.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
@@ -148,7 +149,16 @@ class _OtpTileState extends State<OtpTile> {
                       if (widget.onSuccess != null) {
                         widget.onSuccess!();
                       } else {
-                        openMainFlowScreen(context);
+                          if (context.mounted) {
+                            context.go(AppRoutes.initial);
+                          }
+
+                        // Future.microtask(() {
+                        //   if (context.mounted) {
+                        //     context.go(AppRoutes.initial);
+                        //   }
+                        // });
+
                       }
                     } 
                   } catch (e) {
