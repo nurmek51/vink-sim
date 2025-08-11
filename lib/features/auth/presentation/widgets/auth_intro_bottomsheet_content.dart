@@ -8,7 +8,12 @@ import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class AuthIntroBottomsheetContent extends StatelessWidget {
-  const AuthIntroBottomsheetContent({super.key});
+  final VoidCallback? onActivateTap;
+
+  const AuthIntroBottomsheetContent({
+    super.key,
+    this.onActivateTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +90,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
           ),
           const SizedBox(height: 25),
           GestureDetector(
-            onTap: () => Navigator.pop(context),
+            onTap: onActivateTap ?? () => Navigator.pop(context),
             child: Container(
               alignment: Alignment.center,
               height: 52,
