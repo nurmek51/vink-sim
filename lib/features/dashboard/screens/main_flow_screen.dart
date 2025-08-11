@@ -101,6 +101,29 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     super.dispose();
   }
 
+  void _showBottomSheet(BuildContext context) {
+    context.read<MainFlowBloc>().add(ShowBottomSheetEvent());
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder:
+          (context) => Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              child: BottomSheetContent(),
+            ),
+          ),
+    ).then((_) {
+      context.read<MainFlowBloc>().add(HideBottomSheetEvent());
+    });
+  }  
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainFlowBloc, MainFlowState>(
@@ -283,7 +306,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             ExpandedContainer(
                               title: AppLocalizations.supportChat,
                               icon: Assets.icons.telegramIcon.path,
-                              onTap: () => BottomSheetContent(),
+                              onTap: () => _showBottomSheet(context),
                             ),
                           ],
                         ),
