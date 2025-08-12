@@ -1,7 +1,6 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/auto_top_up_container.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/fix_sum_button_widget.dart';
@@ -15,28 +14,30 @@ import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/counter_w
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/payment_type_selector.dart';
 
 class TopUpBalanceScreen extends StatelessWidget {
-  final int? circleIndex;
-  const TopUpBalanceScreen({super.key, this.circleIndex});
+  final String? imsi;
+  const TopUpBalanceScreen({
+    super.key,
+    this.imsi,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => TopUpBalanceBloc()),
-        BlocProvider(create: (_) => StripeBloc()),
+        // BlocProvider(create: (_) => sl.get<StripeBloc>()),
       ],
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         behavior: HitTestBehavior.translucent,
-        child: _TopUpBalanceView(circleIndex: circleIndex),
-      ),
+        child: _TopUpBalanceView(imsi: imsi)),
     );
   }
 }
 
 class _TopUpBalanceView extends StatelessWidget {
-  final int? circleIndex;
-  const _TopUpBalanceView({this.circleIndex});
+  final String? imsi;
+  const _TopUpBalanceView({this.imsi});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class _TopUpBalanceView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           horizontal: 20.0,
         ).copyWith(bottom: 30, top: 12),
-        child: TopUpBalanceWidget(),
+        child: TopUpBalanceWidget(imsi: imsi),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorLight,
@@ -85,7 +86,7 @@ class _TopUpBalanceView extends StatelessWidget {
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            sliver: SliverToBoxAdapter(child: TopUpBalanceContent()),
+            sliver: SliverToBoxAdapter(child: TopUpBalanceContent(imsi: imsi)),
           ),
         ],
       ),
@@ -94,8 +95,8 @@ class _TopUpBalanceView extends StatelessWidget {
 }
 
 class TopUpBalanceContent extends StatelessWidget {
-  final int? circleIndex;
-  const TopUpBalanceContent({super.key, this.circleIndex});
+  final String? imsi;
+  const TopUpBalanceContent({super.key, this.imsi});
 
   @override
   Widget build(BuildContext context) {

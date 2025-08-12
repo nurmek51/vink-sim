@@ -1,16 +1,18 @@
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/core/router/app_router.dart';
+import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_event.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_state.dart';
 import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
@@ -85,6 +87,7 @@ class _OtpTileState extends State<OtpTile> {
       create: (context) {
         _otpAuthBloc = OtpAuthBloc(
           otpAuthDataSource: sl.get<OtpAuthDataSource>(),
+          firebaseLoginUseCase: sl.get<FirebaseLoginUseCase>(),
         );
         return _otpAuthBloc;
       },
@@ -108,44 +111,60 @@ class _OtpTileState extends State<OtpTile> {
             BlocListener<OtpAuthBloc, OtpAuthState>(
               listener: (context, state) async {
                 if (state is OtpVerificationSuccess) {
-                  AppNotifier.success(AppLocalizations.otpSuccess).showAppToast(context);
+                  AppNotifier.success(
+                    AppLocalizations.otpSuccess,
+                  ).showAppToast(context);
+
                   if (kDebugMode) {
                     print('OTP_TILE: OTP verification successful!');
                     print(
-                      'OTP_TILE: Token received: ${state.token.substring(0, 20)}...',
+                      'OTP_TILE: Custom token received: ${state.token.substring(0, 20)}...',
                     );
-                    print('OTP_TILE: Token length: ${state.token.length}');
+                    print(
+                      'OTP_TILE: Custom token length: ${state.token.length}',
+                    );
                   }
-                  
-                  // Запускаем загрузку данных пользователя в фоне
+
+                  final firebaseLoginUseCase = sl.get<FirebaseLoginUseCase>();
+                  final authLocalDataSource = sl.get<AuthLocalDataSource>();
 
                   try {
-                    final authLocalDataSource = sl.get<AuthLocalDataSource>();
-                    await authLocalDataSource.saveToken(state.token);
-                    if (kDebugMode) {
-                      print(
-                        'OTP_TILE: Token saved to localStorage successfully',
+                    final idToken = await firebaseLoginUseCase.signInWithCustomToken(state.token);
+
+                    if (idToken != null) {
+                      await authLocalDataSource.saveAuthToken(idToken);
+
+                      if (kDebugMode) {
+                        print('OTP_TILE: Firebase ID token saved: ${idToken.substring(0, 20)}...',);
+                      }
+
+                      _subscriberBloc.add(
+                        LoadSubscriberInfoEvent(token: idToken),
                       );
-                    }
+
+                      if (kDebugMode) {
+                        print('OTP_TILE: ID token sent to SubscriberBloc');
+                      }
+
+                      if (widget.onSuccess != null) {
+                        widget.onSuccess!();
+                      } else {
+                          if (context.mounted) {
+                            context.go(AppRoutes.initial);
+                          }
+
+                        // Future.microtask(() {
+                        //   if (context.mounted) {
+                        //     context.go(AppRoutes.initial);
+                        //   }
+                        // });
+
+                      }
+                    } 
                   } catch (e) {
                     if (kDebugMode) {
-                      print('OTP_TILE: Error saving token: $e');
+                      print('OTP_TILE: Ошибка при входе через кастомный токен: $e');
                     }
-                  }
-
-                  if (kDebugMode) {
-                    print(
-                      'OTP_TILE: Sending token to SubscriberBloc: ${state.token.substring(0, 20)}...',
-                    );
-                  }
-                  _subscriberBloc.add(
-                    LoadSubscriberInfoEvent(token: state.token),
-                  );
-
-                  if (widget.onSuccess != null) {
-                    widget.onSuccess!();
-                  } else {
-                    openMainFlowScreen(context);
                   }
                 } else if (state is OtpAuthError) {
                   AppNotifier.error(AppLocalizations.otpFail).showAppToast(context);

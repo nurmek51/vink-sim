@@ -1,7 +1,7 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
+import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
 import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
@@ -12,16 +12,22 @@ import 'package:flex_travel_sim/features/stripe_payment/utils/stripe_web.dart';
 class StripeWebCheckout extends StatelessWidget {
   final String clientSecret;
   final int amount;
-  final int? circleIndex;
+  final StripeOperationType operationType;
+  final String userId;
+  final String? imsi;
+
   const StripeWebCheckout({
     super.key,
     required this.clientSecret,
-    this.circleIndex,
     required this.amount,
+    required this.operationType,
+    required this.userId,
+    this.imsi,
   });
 
   @override
   Widget build(BuildContext context) {
+    print('123 $imsi');
     return Scaffold(
       backgroundColor: AppColors.backgroundColorLight,
       appBar: AppBar(
@@ -49,16 +55,8 @@ class StripeWebCheckout extends StatelessWidget {
             child: BlocConsumer<StripeBloc, StripeState>(
               listener: (context, state) {
                 if (state is StripeSuccess) {
-                  if (circleIndex != null) {
-                    context.read<MainFlowBloc>().add(
-                      UpdateCircleBalanceEvent(
-                        circleIndex: circleIndex!,
-                        addedAmount: amount.toDouble(),
-                      ),
-                    );
-                    Navigator.of(context)
-                      ..pop()
-                      ..pop();
+                  if (imsi != null) {
+                    NavigationService.goToMainFlow(context);
                   } else {
                     NavigationService.openActivatedEsimScreen(context);
                   }

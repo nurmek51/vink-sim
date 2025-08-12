@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => MainFlowBloc()),
         BlocProvider(create: (_) => sl.get<WelcomeBloc>()),
-        BlocProvider(create: (_) => StripeBloc()),
+        BlocProvider(create: (_) => sl.get<StripeBloc>()),
         BlocProvider(create: (_) => sl.get<SubscriberBloc>()),
       ],
       child: MaterialApp.router(

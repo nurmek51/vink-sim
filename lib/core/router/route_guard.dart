@@ -25,28 +25,14 @@ class RouteGuard {
   /// Redirect logic for protected routes
   static Future<String?> redirectLogic(GoRouterState state) async {
     final currentPath = state.uri.path;
-    final isOnWelcomeScreen = currentPath == AppRoutes.welcome;
-    final isOnAuthScreen = currentPath == AppRoutes.auth;
     final isOnInitialScreen = currentPath == AppRoutes.initial;
     final userIsAuthenticated = await isAuthenticated;
-    
-    // If we're on initial screen, decide where to go based on auth status
-    if (isOnInitialScreen) {
-      if (userIsAuthenticated) {
-        return AppRoutes.mainFlow; // Redirect to main app
-      } else {
-        return AppRoutes.welcome; // Redirect to welcome/auth flow
-      }
-    }
-    
+
+    if (isOnInitialScreen) return null;
+        
     // If user is not authenticated and trying to access protected routes
     if (!userIsAuthenticated && isProtectedRoute(currentPath)) {
       return AppRoutes.welcome;
-    }
-    
-    // If user is authenticated but on welcome/auth screens
-    if (userIsAuthenticated && (isOnWelcomeScreen || isOnAuthScreen)) {
-      return AppRoutes.mainFlow;
     }
 
     // No redirect needed
@@ -57,7 +43,7 @@ class RouteGuard {
   static const List<String> publicRoutes = [
     AppRoutes.welcome,
     AppRoutes.auth,
-    AppRoutes.initial,
+    AppRoutes.initial,    
   ];
 
   /// Check if a route is public
@@ -73,6 +59,7 @@ class RouteGuard {
     AppRoutes.purchaseHistory,
     AppRoutes.trafficUsage,
     AppRoutes.settings,
+    AppRoutes.esimEntry,
   ];
 
   /// Check if a route requires authentication

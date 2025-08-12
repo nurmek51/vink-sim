@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_event.dart';
@@ -8,6 +9,7 @@ class OtpAuthBloc extends Bloc<OtpAuthEvent, OtpAuthState> {
 
   OtpAuthBloc({
     required OtpAuthDataSource otpAuthDataSource,
+    required FirebaseLoginUseCase firebaseLoginUseCase,
   })  : _otpAuthDataSource = otpAuthDataSource,
         super(const OtpAuthInitial()) {
     on<SendOtpSmsEvent>(_onSendOtpSms);
@@ -40,6 +42,7 @@ class OtpAuthBloc extends Bloc<OtpAuthEvent, OtpAuthState> {
         event.phone,
         event.code,
       );
+
       emit(OtpVerificationSuccess(
         token: response.token,
         phone: event.phone,
@@ -55,4 +58,5 @@ class OtpAuthBloc extends Bloc<OtpAuthEvent, OtpAuthState> {
   ) {
     emit(const OtpAuthInitial());
   }
+
 }

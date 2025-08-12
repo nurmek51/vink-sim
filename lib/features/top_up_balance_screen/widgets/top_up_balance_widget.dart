@@ -1,16 +1,17 @@
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
+import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TopUpBalanceWidget extends StatelessWidget {
-  final int? circleIndex;
-  const TopUpBalanceWidget({super.key, this.circleIndex});
+  final String? imsi;
+  const TopUpBalanceWidget({super.key, this.imsi});
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +32,10 @@ class TopUpBalanceWidget extends StatelessWidget {
 
   void _handleStripeStateChange(BuildContext context, StripeState state) {
     if (state is StripeSuccess) {
-      if (circleIndex != null) {
-        context.read<MainFlowBloc>().add(
-          UpdateCircleBalanceEvent(
-            circleIndex: circleIndex!,
-            addedAmount:
-                context.read<TopUpBalanceBloc>().state.amount.toDouble(),
-          ),
-        );
-        Navigator.of(context).pop();
+      if (kDebugMode) print('StripeService: StripeSuccess - ОПЛАТА ПРОШЛА УСПЕШНО !');
+
+      if (imsi != null) {
+        NavigationService.goToMainFlow(context);
       } else {
         NavigationService.openActivatedEsimScreen(context);
       }
@@ -71,27 +67,38 @@ class TopUpBalanceWidget extends StatelessWidget {
   }
 
   void _processPayment(BuildContext context, TopUpBalanceState state) {
+    final isTopUp = (imsi?.isNotEmpty ?? false);
+    final operationType =
+        isTopUp
+            ? StripeOperationType.addFunds
+            : StripeOperationType.newImsi;    
     switch (state.selectedPaymentMethod) {
       case 'credit_card':
         context.read<StripeBloc>().add(
           StripePaymentRequested(
             amount: state.amount,
             context: context,
-            circleIndex: circleIndex,
+            operationType: operationType,
+            imsi: isTopUp ? imsi : null,
           ),
         );
         break;
       case 'crypto':
         AppNotifier.info(AppLocalizations.notAvailable).showAppToast(context);
-
         break;
       case 'apple_pay':
         context.read<StripeBloc>().add(
-          GooglePayPaymentRequested(amount: state.amount, currency: 'usd'),
+          GooglePayPaymentRequested(
+            amount: state.amount,
+            context: context,
+            operationType: operationType,
+            imsi: isTopUp ? imsi : null,
+          ),
         );
+
         break;
       default:
         AppNotifier.info("Неизвестный способ оплаты").showAppToast(context);
-    }
+    }    
   }
 }

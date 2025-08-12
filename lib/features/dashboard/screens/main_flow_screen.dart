@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
@@ -70,11 +68,15 @@ class MainFlowScreen extends StatefulWidget {
 
 class _MainFlowScreenState extends State<MainFlowScreen> {
   final PageController _pageController = PageController(viewportFraction: 1);
+  bool _hasUserScrolled = false;
 
   @override
   void initState() {
     super.initState();
     _loadSubscriberDataIfNeeded();
+
+    context.read<MainFlowBloc>().add(PageChangedEvent(0));
+    _hasUserScrolled = false;
   }
 
   void _loadSubscriberDataIfNeeded() async {
@@ -98,6 +100,29 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     _pageController.dispose();
     super.dispose();
   }
+
+  void _showBottomSheet(BuildContext context) {
+    context.read<MainFlowBloc>().add(ShowBottomSheetEvent());
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder:
+          (context) => Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              child: BottomSheetContent(),
+            ),
+          ),
+    ).then((_) {
+      context.read<MainFlowBloc>().add(HideBottomSheetEvent());
+    });
+  }  
 
   @override
   Widget build(BuildContext context) {
@@ -181,6 +206,11 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             controller: _pageController,
                             itemCount: itemCount,
                             onPageChanged: (index) {
+                                if (!_hasUserScrolled) {
+                                setState(() {
+                                  _hasUserScrolled = true;
+                                });
+                              }
                               context.read<MainFlowBloc>().add(
                                 PageChangedEvent(index),
                               );
@@ -189,10 +219,10 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                               if (index < actualCount) {
                                 if (isLoading && loadedImsiList.isEmpty) {
                                   return AnimatedScale(
-                                    scale:
-                                        mainFlowState.currentPage == index
-                                            ? 1.0
-                                            : 0.9,
+                                   scale:
+                                     !_hasUserScrolled
+                                         ? 1.0
+                                         : (mainFlowState.currentPage == index? 1.0 : 0.9),
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeOut,
                                     child: const PercentageShimmerWidget(),
@@ -209,27 +239,26 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
 
                                 return AnimatedScale(
                                   scale:
-                                      mainFlowState.currentPage == index
-                                          ? 1.0
-                                          : 0.9,
+                                    !_hasUserScrolled
+                                        ? 1.0
+                                        : (mainFlowState.currentPage == index? 1.0 : 0.9),
                                   duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeOut,
                                   child: PercentageWidget(
-                                    circleIndex: index,
-                                    progressValue: availableGB,
-                                    color: ProgressColorUtils.getProgressColor(
-                                      availableGB,
-                                    ),
-                                    isYellow: isYellow,
-                                    backgroundColor:
-                                        ProgressColorUtils.getProgressBackgroundColor(
-                                          availableGB,
-                                        ),
-                                    balance: imsi.balance,
-                                    country: imsi.country,
-                                    rate: imsi.rate,
-                                    // moneyBalance: imsi.balance,
+                                  imsi: imsi.imsi,
+                                  progressValue: availableGB,
+                                  color: ProgressColorUtils.getProgressColor(
+                                    availableGB,
                                   ),
+                                  isYellow: isYellow,
+                                  backgroundColor:
+                                      ProgressColorUtils.getProgressBackgroundColor(
+                                        availableGB,
+                                      ),
+                                  balance: imsi.balance,
+                                  country: imsi.country,
+                                  rate: imsi.rate, 
+                                ),
                                 );
                               } else {
                                 return AddEsimCircle(
@@ -277,7 +306,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             ExpandedContainer(
                               title: AppLocalizations.supportChat,
                               icon: Assets.icons.telegramIcon.path,
-                              onTap: () => BottomSheetContent(),
+                              onTap: () => _showBottomSheet(context),
                             ),
                           ],
                         ),
