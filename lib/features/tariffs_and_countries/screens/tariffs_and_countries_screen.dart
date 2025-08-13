@@ -42,13 +42,6 @@ class _TariffsAndCountriesView extends StatefulWidget {
 class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
   final TextEditingController _searchController = TextEditingController();
 
-@override
-void initState() {
-  super.initState();
-  // Триггерим загрузку данных при каждом создании виджета
-  context.read<TariffsBloc>().add(const LoadTariffsEvent());
-}
-
   @override
   void dispose() {
     _searchController.dispose();
