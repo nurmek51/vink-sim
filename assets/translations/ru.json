@@ -150,5 +150,6 @@
   "logout": "Выйти из аккаунта",
   "logout_confirmation_title": "Подтверждение выхода",
   "logout_confirmation_message": "Вы уверены, что хотите выйти из аккаунта?",
-  "cancel": "Отмена"
+  "cancel": "Отмена",
+  "in_country": "в"
 }

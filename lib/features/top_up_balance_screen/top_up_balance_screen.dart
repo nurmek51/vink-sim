@@ -1,6 +1,9 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/features/tariffs_and_countries/data/data_sources/tariffs_remote_data_source.dart';
+import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_bloc.dart';
+import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/auto_top_up_container.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/fix_sum_button_widget.dart';
@@ -25,7 +28,7 @@ class TopUpBalanceScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => TopUpBalanceBloc()),
-        // BlocProvider(create: (_) => sl.get<StripeBloc>()),
+        BlocProvider(create: (_) => TariffsBloc(dataSource: TariffsRemoteDataSourceImpl())..add(const LoadTariffsEvent())),
       ],
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),

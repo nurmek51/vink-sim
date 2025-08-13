@@ -158,4 +158,5 @@ abstract class AppLocalizations {
   static const otpSuccess = 'otp_success';
   static const paymentFail = 'payment_fail';
   static const enterTopUpAmount= 'enter_top_up_amount';
+  static const inCountry= 'in_country';
 }
