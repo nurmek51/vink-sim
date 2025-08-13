@@ -48,18 +48,6 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
     super.dispose();
   }
 
-  double _calculatePricePerGB(List<dynamic> operators) {
-    if (operators.isEmpty) return 0.0;
-
-    final avgRate =
-        operators.map((e) => e.dataRate as double).reduce((a, b) => a + b) /
-        operators.length;
-
-    if (avgRate == 0) return 0.0;
-
-    return avgRate * 1024;
-  }
-
   Map<String, List<dynamic>> _groupOperatorsByCountry(List<dynamic> operators) {
     final Map<String, List<dynamic>> grouped = {};
     for (final operator in operators) {
@@ -152,7 +140,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                       itemBuilder: (context, index) {
                         final country = countries[index];
                         final operators = operatorsToShow[country]!;
-                        final pricePerGB = _calculatePricePerGB(operators);
+                        final pricePerGB = state.pricePerGbByCountry[country] ?? 0.0;
 
                         // Use PLMN code from first operator for more accurate country mapping
                         final firstOperator = operators.first;

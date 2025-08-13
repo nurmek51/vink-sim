@@ -18,6 +18,7 @@ class TariffsLoaded extends TariffsState {
   final Map<String, List<NetworkOperatorModel>> operatorsByCountry;
   final String? currentFilter;
   final String? searchQuery;
+  final Map<String, double> pricePerGbByCountry;
 
   const TariffsLoaded({
     required this.operators,
@@ -25,6 +26,7 @@ class TariffsLoaded extends TariffsState {
     required this.operatorsByCountry,
     this.currentFilter,
     this.searchQuery,
+    this.pricePerGbByCountry = const {},
   });
 
   TariffsLoaded copyWith({
@@ -33,6 +35,7 @@ class TariffsLoaded extends TariffsState {
     Map<String, List<NetworkOperatorModel>>? operatorsByCountry,
     String? currentFilter,
     String? searchQuery,
+    Map<String, double>? pricePerGbByCountry,
   }) {
     return TariffsLoaded(
       operators: operators ?? this.operators,
@@ -40,6 +43,7 @@ class TariffsLoaded extends TariffsState {
       operatorsByCountry: operatorsByCountry ?? this.operatorsByCountry,
       currentFilter: currentFilter ?? this.currentFilter,
       searchQuery: searchQuery ?? this.searchQuery,
+      pricePerGbByCountry: pricePerGbByCountry ?? this.pricePerGbByCountry,
     );
   }
 }
@@ -48,4 +52,4 @@ class TariffsError extends TariffsState {
   final String message;
 
   const TariffsError(this.message);
-}
+} 

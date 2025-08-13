@@ -57,6 +57,19 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
         sortedOperatorsByCountry[country] = operatorsByCountry[country]!;
       }
 
+      final Map<String, double> pricePerGbByCountry = {};
+      for (final country in sortedOperatorsByCountry.keys) {
+        final countryOperators = sortedOperatorsByCountry[country]!;
+
+        final avgDataRate =
+            countryOperators
+                .map((e) => e.dataRate)
+                .fold<double>(0, (sum, rate) => sum + rate) /
+            countryOperators.length;
+
+        pricePerGbByCountry[country] = avgDataRate * 1024;
+      }
+
       if (kDebugMode) {
         print(
           'TariffsBloc: Grouped operators by ${sortedOperatorsByCountry.length} countries',
@@ -68,6 +81,7 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
           operators: operators,
           filteredOperators: operators,
           operatorsByCountry: sortedOperatorsByCountry,
+          pricePerGbByCountry: pricePerGbByCountry,
         ),
       );
     } catch (e) {
@@ -93,6 +107,7 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
         currentState.copyWith(
           filteredOperators: filtered,
           currentFilter: event.countryName,
+          pricePerGbByCountry: currentState.pricePerGbByCountry,
         ),
       );
     }
@@ -117,6 +132,7 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
           filteredOperators: filtered,
           searchQuery: event.query,
           currentFilter: null,
+          pricePerGbByCountry: currentState.pricePerGbByCountry,
         ),
       );
     }
