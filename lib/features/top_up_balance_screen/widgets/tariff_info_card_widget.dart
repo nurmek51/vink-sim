@@ -1,10 +1,12 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/tariff_scroll_view.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TariffInfoCardWidget extends StatelessWidget {
   const TariffInfoCardWidget({super.key});
@@ -29,11 +31,17 @@ class TariffInfoCardWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          LocalizedText(
-            AppLocalizations.balance15Description,
-            style: FlexTypography.paragraph.medium.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+          BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
+            builder: (context, state) {
+              final amount = state.amount.toString();
+              return LocalizedText(
+                AppLocalizations.balance15Description,
+                args: [amount],
+                style: FlexTypography.paragraph.medium.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            },
           ),
           const TariffScrollView(),
           const SizedBox(height: 20),

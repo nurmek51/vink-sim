@@ -92,7 +92,7 @@
   "medium_level": "Medium — 0.6 GB",
   "high_level": "High — 15 GB",
   "enter_amount_description": "Введите сумму, чтобы подключить\nFlex Travel eSIM",
-  "balance_15_description": "15$ на балансе, это:",
+  "balance_15_description": "{}$ на балансе, это:",
   "all_countries_and_tariffs": "Все страны и тарифы",
   "choose_payment_method": "Выберите способ оплаты",
   "auto_top_up": "Автопополнение",

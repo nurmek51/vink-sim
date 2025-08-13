@@ -92,7 +92,7 @@
   "medium_level": "Medium — 0.6 GB",
   "high_level": "High — 15 GB",
   "enter_amount_description": "Enter amount to connect\nFlex Travel eSIM",
-  "balance_15_description": "$15 on balance, that's:",
+  "balance_15_description": "{}$ on balance, that's:",
   "all_countries_and_tariffs": "All countries and tariffs",
   "choose_payment_method": "Choose payment method",
   "auto_top_up": "Auto top-up",
