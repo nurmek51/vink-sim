@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class TariffScrollView extends StatelessWidget {
   const TariffScrollView({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
@@ -23,8 +22,8 @@ class TariffScrollView extends StatelessWidget {
         return BlocBuilder<TariffsBloc, TariffsState>(
           builder: (context, tariffsState) {
             if (tariffsState is TariffsLoaded) {
-              // Берем первые 10 стран
-              final entries = tariffsState.pricePerGbByCountry.entries.take(10).toList();
+              final entries =
+                  tariffsState.pricePerGbByCountry.entries.take(10).toList();
 
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -39,10 +38,10 @@ class TariffScrollView extends StatelessWidget {
                           (entries[i].value > 0 ? amount / entries[i].value : 0)
                               .toStringAsFixed(1),
                         ),
-                        country: '${AppLocalizations.inCountry.tr()} ${entries[i].key}',
+                        country:
+                            '${AppLocalizations.inCountry.tr()} ${entries[i].key}',
                       ),
-                      if (i != entries.length - 1)
-                        const SizedBox(width: 8), 
+                      if (i != entries.length - 1) const SizedBox(width: 8),
                     ],
                   ],
                 ),

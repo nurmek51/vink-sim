@@ -151,5 +151,9 @@
   "logout_confirmation_title": "Confirm Logout",
   "logout_confirmation_message": "Are you sure you want to logout?",
   "cancel": "Cancel",
-  "in_country": "in"
+  "in_country": "in",
+  "select_sim_card": "Select SIM card",
+  "sim_card_fallback": "SIM card",
+  "on_balance": "on balance",
+  "select_for_top_up": "Select for top-up"
 }

@@ -92,7 +92,7 @@ class ActivatedEsimScreen extends StatelessWidget {
               
               BlueGradientButton(
                 onTap: () => NavigationService.openMainFlowScreen(context),
-                title: AppLocalizations.myESIMS,
+                title: AppLocalizations.myEsims,
               ),
             ],
           ),

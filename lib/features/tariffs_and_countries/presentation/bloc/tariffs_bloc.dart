@@ -51,7 +51,8 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
             .add(operator);
       }
 
-      final sortedCountries = operatorsByCountry.keys.toList()..sort();
+      final sortedCountries = operatorsByCountry.keys.toList()
+        ..sort((a, b) => operatorsByCountry[b]!.length.compareTo(operatorsByCountry[a]!.length));
       final sortedOperatorsByCountry = <String, List<NetworkOperatorModel>>{};
       for (final country in sortedCountries) {
         sortedOperatorsByCountry[country] = operatorsByCountry[country]!;
