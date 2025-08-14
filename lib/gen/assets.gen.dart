@@ -38,6 +38,9 @@ class $AssetsIconsGen {
   SvgGenImage get arrowComeback =>
       const SvgGenImage('assets/icons/arrow_comeback.svg');
 
+  /// File path: assets/icons/arrow_down.svg
+  SvgGenImage get arrowDown => const SvgGenImage('assets/icons/arrow_down.svg');
+
   /// File path: assets/icons/arrow_right.svg
   SvgGenImage get arrowRight =>
       const SvgGenImage('assets/icons/arrow_right.svg');
@@ -55,6 +58,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/check.svg
   SvgGenImage get check => const SvgGenImage('assets/icons/check.svg');
+
+  /// File path: assets/icons/checkbox.svg
+  SvgGenImage get checkbox => const SvgGenImage('assets/icons/checkbox.svg');
 
   /// File path: assets/icons/china_flag.svg
   SvgGenImage get chinaFlag => const SvgGenImage('assets/icons/china_flag.svg');
@@ -196,11 +202,13 @@ class $AssetsIconsGen {
         appleLogo,
         applePayLogo,
         arrowComeback,
+        arrowDown,
         arrowRight,
         attentionCircle,
         avatarIcon,
         card,
         check,
+        checkbox,
         chinaFlag,
         credCard,
         crypto,

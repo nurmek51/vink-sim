@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flex_travel_sim/core/models/imsi_model.dart';
 
 // Events
 abstract class TopUpBalanceEvent extends Equatable {
@@ -48,32 +49,45 @@ class ResetState extends TopUpBalanceEvent {
   const ResetState();
 }
 
+class SelectSimCard extends TopUpBalanceEvent {
+  final ImsiModel simCard;
+  
+  const SelectSimCard(this.simCard);
+  
+  @override
+  List<Object?> get props => [simCard];
+}
+
 // State
 class TopUpBalanceState extends Equatable {
   final int amount;
   final bool autoTopUpEnabled;
   final String selectedPaymentMethod;
+  final ImsiModel? selectedSimCard;
 
   const TopUpBalanceState({
     this.amount = 0,
-    this.autoTopUpEnabled = true,
+    this.autoTopUpEnabled = false,
     this.selectedPaymentMethod = 'apple_pay',
+    this.selectedSimCard,
   });
 
   TopUpBalanceState copyWith({
     int? amount,
     bool? autoTopUpEnabled,
     String? selectedPaymentMethod,
+    ImsiModel? selectedSimCard,
   }) {
     return TopUpBalanceState(
       amount: amount ?? this.amount,
       autoTopUpEnabled: autoTopUpEnabled ?? this.autoTopUpEnabled,
       selectedPaymentMethod: selectedPaymentMethod ?? this.selectedPaymentMethod,
+      selectedSimCard: selectedSimCard ?? this.selectedSimCard,
     );
   }
 
   @override
-  List<Object?> get props => [amount, autoTopUpEnabled, selectedPaymentMethod];
+  List<Object?> get props => [amount, autoTopUpEnabled, selectedPaymentMethod, selectedSimCard];
 }
 
 // Bloc
@@ -84,6 +98,7 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
     on<DecrementAmount>(_onDecrementAmount);
     on<ToggleAutoTopUp>(_onToggleAutoTopUp);
     on<SelectPaymentMethod>(_onSelectPaymentMethod);
+    on<SelectSimCard>(_onSelectSimCard);
     on<ResetState>(_onResetState);
   }
 
@@ -107,6 +122,10 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
 
   void _onSelectPaymentMethod(SelectPaymentMethod event, Emitter<TopUpBalanceState> emit) {
     emit(state.copyWith(selectedPaymentMethod: event.method));
+  }
+
+  void _onSelectSimCard(SelectSimCard event, Emitter<TopUpBalanceState> emit) {
+    emit(state.copyWith(selectedSimCard: event.simCard));
   }
 
   void _onResetState(ResetState event, Emitter<TopUpBalanceState> emit) {

@@ -129,13 +129,16 @@ class _OtpTileState extends State<OtpTile> {
                   final authLocalDataSource = sl.get<AuthLocalDataSource>();
 
                   try {
-                    final idToken = await firebaseLoginUseCase.signInWithCustomToken(state.token);
+                    final idToken = await firebaseLoginUseCase
+                        .signInWithCustomToken(state.token);
 
                     if (idToken != null) {
                       await authLocalDataSource.saveAuthToken(idToken);
 
                       if (kDebugMode) {
-                        print('OTP_TILE: Firebase ID token saved: ${idToken.substring(0, 20)}...',);
+                        print(
+                          'OTP_TILE: Firebase ID token saved: ${idToken.substring(0, 20)}...',
+                        );
                       }
 
                       _subscriberBloc.add(
@@ -149,28 +152,33 @@ class _OtpTileState extends State<OtpTile> {
                       if (widget.onSuccess != null) {
                         widget.onSuccess!();
                       } else {
-                          if (context.mounted) {
-                            context.go(AppRoutes.initial);
-                          }
+                        if (context.mounted) {
+                          context.go(AppRoutes.initial);
+                        }
 
                         // Future.microtask(() {
                         //   if (context.mounted) {
                         //     context.go(AppRoutes.initial);
                         //   }
                         // });
-
                       }
-                    } 
+                    }
                   } catch (e) {
                     if (kDebugMode) {
-                      print('OTP_TILE: Ошибка при входе через кастомный токен: $e');
+                      print(
+                        'OTP_TILE: Ошибка при входе через кастомный токен: $e',
+                      );
                     }
                   }
                 } else if (state is OtpAuthError) {
-                  AppNotifier.error(AppLocalizations.otpFail).showAppToast(context);
-                  if(kDebugMode) print(state.message);
+                  AppNotifier.error(
+                    AppLocalizations.otpFail,
+                  ).showAppToast(context);
+                  if (kDebugMode) print(state.message);
                 } else if (state is OtpSmsSent) {
-                  AppNotifier.info(AppLocalizations.otpResesnt).showAppToast(context);
+                  AppNotifier.info(
+                    AppLocalizations.otpResent,
+                  ).showAppToast(context);
                 }
               },
             ),
@@ -226,9 +234,7 @@ class _OtpTileState extends State<OtpTile> {
           const SizedBox(height: 16),
           LocalizedText(
             AppLocalizations.sendedSixDigitCode,
-            namedArgs: {
-              'phone': widget.phoneNumber,
-            },            
+            namedArgs: {'phone': widget.phoneNumber},
             style: const TextStyle(
               fontSize: 16,
               color: AppColors.textColorLight,
@@ -266,13 +272,14 @@ class _OtpTileState extends State<OtpTile> {
           ),
           const SizedBox(height: 40),
           if (isLoading)
-            const Center(
-              child: CircularProgressIndicator(color: AppColors.accentBlue),
-            ),
+            const Center(child: CircularProgressIndicator(color: Colors.grey)),
           const SizedBox(height: 20),
           RegistrationContainer(
             onTap: _isValidCode && !isLoading ? _verifyOtp : null,
-            buttonText: isLoading ? AppLocalizations.loading : AppLocalizations.confirmCode,
+            buttonText:
+                isLoading
+                    ? AppLocalizations.loading
+                    : AppLocalizations.confirmCode,
             buttonTextColor:
                 _isValidCode && !isLoading
                     ? AppColors.textColorDark
@@ -288,10 +295,7 @@ class _OtpTileState extends State<OtpTile> {
             children: [
               const LocalizedText(
                 AppLocalizations.didNotReceiveTheCode,
-                style: TextStyle(
-                  color: AppColors.textColorLight,
-                  fontSize: 16,
-                ),
+                style: TextStyle(color: AppColors.textColorLight, fontSize: 16),
               ),
               TextButton(
                 onPressed: otpState is OtpSmsLoading ? null : _resendOtp,

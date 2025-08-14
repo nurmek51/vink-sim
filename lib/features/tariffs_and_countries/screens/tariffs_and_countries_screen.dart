@@ -53,7 +53,12 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
     for (final operator in operators) {
       grouped.putIfAbsent(operator.countryName, () => []).add(operator);
     }
-    return grouped;
+    
+    // Sort countries by number of operators (descending)
+    final sortedEntries = grouped.entries.toList()
+      ..sort((a, b) => b.value.length.compareTo(a.value.length));
+    
+    return Map.fromEntries(sortedEntries);
   }
 
   @override
@@ -106,7 +111,14 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
               child: BlocBuilder<TariffsBloc, TariffsState>(
                 builder: (context, state) {
                   if (state is TariffsLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: 0.3,
+                        strokeWidth: 18,
+                        backgroundColor: Colors.grey[300],
+                        valueColor: AlwaysStoppedAnimation(Colors.grey[400]!),
+                      ),
+                    );
                   }
 
                   if (state is TariffsError) {
@@ -140,7 +152,8 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                       itemBuilder: (context, index) {
                         final country = countries[index];
                         final operators = operatorsToShow[country]!;
-                        final pricePerGB = state.pricePerGbByCountry[country] ?? 0.0;
+                        final pricePerGB =
+                            state.pricePerGbByCountry[country] ?? 0.0;
 
                         // Use PLMN code from first operator for more accurate country mapping
                         final firstOperator = operators.first;

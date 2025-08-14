@@ -51,7 +51,12 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
             .add(operator);
       }
 
-      final sortedCountries = operatorsByCountry.keys.toList()..sort();
+      final sortedCountries =
+          operatorsByCountry.keys.toList()..sort(
+            (a, b) => operatorsByCountry[b]!.length.compareTo(
+              operatorsByCountry[a]!.length,
+            ),
+          );
       final sortedOperatorsByCountry = <String, List<NetworkOperatorModel>>{};
       for (final country in sortedCountries) {
         sortedOperatorsByCountry[country] = operatorsByCountry[country]!;
@@ -76,12 +81,17 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
         );
       }
 
+      final cheapestPricesByCountry = _getCheapestPricesByCountryOrdered(
+        operators,
+      );
+
       emit(
         TariffsLoaded(
           operators: operators,
           filteredOperators: operators,
           operatorsByCountry: sortedOperatorsByCountry,
           pricePerGbByCountry: pricePerGbByCountry,
+          cheapestPricesByCountryOrdered: cheapestPricesByCountry,
         ),
       );
     } catch (e) {
@@ -108,6 +118,8 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
           filteredOperators: filtered,
           currentFilter: event.countryName,
           pricePerGbByCountry: currentState.pricePerGbByCountry,
+          cheapestPricesByCountryOrdered:
+              currentState.cheapestPricesByCountryOrdered,
         ),
       );
     }
@@ -133,8 +145,45 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
           searchQuery: event.query,
           currentFilter: null,
           pricePerGbByCountry: currentState.pricePerGbByCountry,
+          cheapestPricesByCountryOrdered:
+              currentState.cheapestPricesByCountryOrdered,
         ),
       );
     }
+  }
+
+  Map<String, double> _getCheapestPricesByCountryOrdered(
+    List<NetworkOperatorModel> operators,
+  ) {
+    final countryOrder = [
+      'Turkey',
+      'United Arab Emirates',
+      'France',
+      'Armenia',
+      'Thailand',
+      'Georgia',
+      'United States',
+      'Egypt',
+      'Kazakhstan',
+      'Cyprus',
+    ];
+
+    final Map<String, double> cheapestByCountry = {};
+    for (final operator in operators) {
+      final country = operator.countryName;
+      final currentCheapest = cheapestByCountry[country];
+      if (currentCheapest == null || operator.dataRate < currentCheapest) {
+        cheapestByCountry[country] = operator.dataRate;
+      }
+    }
+
+    final Map<String, double> orderedCheapest = {};
+    for (final country in countryOrder) {
+      if (cheapestByCountry.containsKey(country)) {
+        orderedCheapest[country] = cheapestByCountry[country]! * 1024;
+      }
+    }
+
+    return orderedCheapest;
   }
 }
