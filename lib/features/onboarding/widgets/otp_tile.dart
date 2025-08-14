@@ -272,9 +272,7 @@ class _OtpTileState extends State<OtpTile> {
           ),
           const SizedBox(height: 40),
           if (isLoading)
-            const Center(
-              child: CircularProgressIndicator(color: AppColors.accentBlue),
-            ),
+            const Center(child: CircularProgressIndicator(color: Colors.grey)),
           const SizedBox(height: 20),
           RegistrationContainer(
             onTap: _isValidCode && !isLoading ? _verifyOtp : null,

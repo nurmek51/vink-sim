@@ -44,7 +44,7 @@ class _InitialScreenState extends State<InitialScreen> {
     if (!mounted) return;
 
     if (token == null || token.isEmpty) {
-      if(kDebugMode) print('Initial: Token empty → go(welcome)');
+      if (kDebugMode) print('Initial: Token empty → go(welcome)');
       _safeGo(AppRoutes.welcome);
       return;
     }
@@ -73,22 +73,27 @@ class _InitialScreenState extends State<InitialScreen> {
         subscriberBloc.state is SubscriberError) {
       subscriberBloc.add(LoadSubscriberInfoEvent(token: token));
     } else {
-      if(kDebugMode) print('Initial: Skip dispatch, current state: ${subscriberBloc.state.runtimeType}');
+      if (kDebugMode)
+        print(
+          'Initial: Skip dispatch, current state: ${subscriberBloc.state.runtimeType}',
+        );
     }
 
     _timeout = Timer(const Duration(seconds: 20), () {
       if (_navigated || !mounted) return;
-      if(kDebugMode) print('Initial: Waiting for subscriber too long → go(welcome)');
-      _safeGo(AppRoutes.welcome); 
+      if (kDebugMode)
+        print('Initial: Waiting for subscriber too long → go(welcome)');
+      _safeGo(AppRoutes.welcome);
     });
   }
 
   void _decideAndNavigate(SubscriberLoaded loaded) {
     final imsiList = loaded.subscriber.imsiList;
-    if(kDebugMode) print('Initial: IMSI list len: ${imsiList.length}');
-    if(kDebugMode) print('Initial: IMSI values: ${imsiList.map((e) => e.imsi).toList()}');
+    if (kDebugMode) print('Initial: IMSI list len: ${imsiList.length}');
+    if (kDebugMode)
+      print('Initial: IMSI values: ${imsiList.map((e) => e.imsi).toList()}');
 
-    final hasRealImsi = imsiList.isNotEmpty; 
+    final hasRealImsi = imsiList.isNotEmpty;
     final route = hasRealImsi ? AppRoutes.mainFlow : AppRoutes.esimEntry;
 
     debugPrint('Initial: Decide route: $route');
@@ -106,10 +111,8 @@ class _InitialScreenState extends State<InitialScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: const Center(
-        child: CircularProgressIndicator(),
-      ),
+      backgroundColor: Colors.black,
+      body: Center(child: CircularProgressIndicator(color: Colors.grey)),
     );
   }
 }
