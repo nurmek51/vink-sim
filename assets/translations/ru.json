@@ -155,5 +155,6 @@
   "select_sim_card": "Выберите SIM-карту",
   "sim_card_fallback": "SIM-карта",
   "on_balance": "на балансе",
-  "select_for_top_up": "Выбрать для пополнения"
+  "select_for_top_up": "Выбрать для пополнения",
+  "sim_card_default": "SIM-карта 1"
 }

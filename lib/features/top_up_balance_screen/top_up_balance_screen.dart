@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
@@ -83,9 +84,7 @@ class _TopUpBalanceViewState extends State<_TopUpBalanceView> {
           LoadSubscriberInfoEvent(token: token),
         );
       }
-    } catch (e) {
-      // Handle error if needed
-    }
+    } catch (e) {}
   }
 
   @override
@@ -186,46 +185,49 @@ class TopUpBalanceContent extends StatelessWidget {
             final displayText =
                 selectedSimCard?.country ??
                 (simCards.isNotEmpty ? simCards.first.country : null) ??
-                'SIM-карта 1';
+                AppLocalizations.simCardDefault.tr();
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Выберите SIM-карту для пополнения'),
-                SizedBox(height: 16),
-                GestureDetector(
-                  onTap:
-                      simCards.isNotEmpty
-                          ? () => _showSimCardSelectionModal(
-                            context,
-                            simCards,
-                            selectedSimCard?.imsi ?? simCards.first.imsi,
-                          )
-                          : null,
-                  child: Container(
-                    height: 52,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFE7EFF7),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Assets.icons.simIcon.svg(
-                          colorFilter: const ColorFilter.mode(
-                            Colors.black,
-                            BlendMode.srcIn,
-                          ),
+                if (simCards.isNotEmpty) ...[
+                  LocalizedText(
+                    AppLocalizations.selectSimCard,
+                    style: FlexTypography.label.medium,
+                  ),
+                  SizedBox(height: 16),
+                  GestureDetector(
+                    onTap:
+                        () => _showSimCardSelectionModal(
+                          context,
+                          simCards,
+                          selectedSimCard?.imsi ?? simCards.first.imsi,
                         ),
-                        SizedBox(width: 6),
-                        Text(displayText),
-                        Spacer(),
-                        Assets.icons.arrowDown.svg(),
-                      ],
+                    child: Container(
+                      height: 52,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFE7EFF7),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          Assets.icons.simIcon.svg(
+                            colorFilter: const ColorFilter.mode(
+                              Colors.black,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 6),
+                          Text(displayText),
+                          Spacer(),
+                          Assets.icons.arrowDown.svg(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 30),
+                  SizedBox(height: 30),
+                ],
                 LocalizedText(
                   AppLocalizations.enterAmountTopUpDescription,
                   style: FlexTypography.label.medium.copyWith(

@@ -136,6 +136,7 @@ abstract class AppLocalizations {
   static const sendQr = 'send_qr';
   static const sendedSixDigitCode = 'sended_six_digit_code';
   static const showQr = 'show_qr';
+  static const simCardDefault = 'sim_card_default';
   static const simCardFallback = 'sim_card_fallback';
   static const smthMore = 'smth_more';
   static const start = 'start';

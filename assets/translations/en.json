@@ -155,5 +155,6 @@
   "select_sim_card": "Select SIM card",
   "sim_card_fallback": "SIM card",
   "on_balance": "on balance",
-  "select_for_top_up": "Select for top-up"
+  "select_for_top_up": "Select for top-up",
+  "sim_card_default": "SIM card 1"
 }

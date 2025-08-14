@@ -67,7 +67,7 @@ class TopUpBalanceState extends Equatable {
 
   const TopUpBalanceState({
     this.amount = 0,
-    this.autoTopUpEnabled = true,
+    this.autoTopUpEnabled = false,
     this.selectedPaymentMethod = 'apple_pay',
     this.selectedSimCard,
   });
