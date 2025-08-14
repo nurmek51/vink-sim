@@ -29,6 +29,7 @@ dependencies:
   url_launcher: ^6.3.2
   fluttertoast: ^8.2.12
   country_flags: ^3.3.0
+  web: ^1.1.1
 
 dev_dependencies:
   flutter_test:

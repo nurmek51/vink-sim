@@ -1,6 +1,7 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/core/platform_device/platform_detector.dart';
 import 'package:flex_travel_sim/features/esim_management/bloc/esim_setup_bloc.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/another_device_selected_body.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/bottom_setup_container.dart';
@@ -9,21 +10,37 @@ import 'package:flex_travel_sim/features/esim_management/widgets/setup/fast_sele
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/manual_selected_body.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/qr_code_selected_body.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EsimSetupPage extends StatelessWidget {
   const EsimSetupPage({super.key});
 
-  static const List<String> rowOptions = [
-    AppLocalizations.fastSelectedRow,
-    AppLocalizations.qrCodeSelectedRow,
-    AppLocalizations.manualSelectedRow,
-    AppLocalizations.toAnotherDeviceSelectedRow,
-  ];
+  List<String> getRowOptions() {
+    if (PlatformDetector.isIos) {
+      return [
+        AppLocalizations.fastSelectedRow,
+        AppLocalizations.qrCodeSelectedRow,
+        AppLocalizations.manualSelectedRow,
+        AppLocalizations.toAnotherDeviceSelectedRow,
+      ];
+    }
+    return [
+      AppLocalizations.qrCodeSelectedRow,
+      AppLocalizations.manualSelectedRow,
+      AppLocalizations.toAnotherDeviceSelectedRow,
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final options = getRowOptions();
+    // final showFast = PlatformDetector.isIos;
+
+    if (kDebugMode) {
+      print(PlatformDetector.platformLog);
+    }
     return BlocProvider(
       create: (_) => EsimSetupBloc(),
       child: Scaffold(
@@ -97,7 +114,7 @@ class EsimSetupPage extends StatelessWidget {
                           return Center(
                             child: LazyRow(
                               selectedIndex: state.selectedIndex,
-                              options: rowOptions,
+                              options: options,
                               onSelectedIndex: (index) {
                                 context.read<EsimSetupBloc>().add(
                                   SelectOption(index),
@@ -112,14 +129,7 @@ class EsimSetupPage extends StatelessWidget {
                           return Column(
                             children: [
                               const SizedBox(height: 25),
-                              if (state.selectedIndex == 0)
-                                const FastSelectedBody()
-                              else if (state.selectedIndex == 1)
-                                const QrCodeSelectedBody()
-                              else if (state.selectedIndex == 2)
-                                const ManualSelectedBody()
-                              else if (state.selectedIndex == 3)
-                                const AnotherDeviceSelectedBody(),
+                              _buildSelectedBody(options[state.selectedIndex]),
                             ],
                           );
                         },
@@ -138,5 +148,20 @@ class EsimSetupPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Widget _buildSelectedBody(String option) {
+  switch (option) {
+    case AppLocalizations.fastSelectedRow:
+      return const FastSelectedBody();
+    case AppLocalizations.qrCodeSelectedRow:
+      return const QrCodeSelectedBody();
+    case AppLocalizations.manualSelectedRow:
+      return const ManualSelectedBody();
+    case AppLocalizations.toAnotherDeviceSelectedRow:
+      return const AnotherDeviceSelectedBody();
+    default:
+      return const SizedBox.shrink();
   }
 }
