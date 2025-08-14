@@ -8,12 +8,14 @@ class MobileNumberField extends StatefulWidget {
   final void Function(String digits, String formatted)? onChanged;
   final void Function(Country country)? onCountryChanged;
   final Country? initialCountry;
+  final String? initialPhone;
 
   const MobileNumberField({
     super.key,
     this.onChanged,
     this.onCountryChanged,
     this.initialCountry,
+    this.initialPhone,
   });
 
   @override
@@ -30,6 +32,22 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
   void initState() {
     super.initState();
     _selectedCountry = widget.initialCountry ?? CountryData.defaultCountry;
+    
+    if (widget.initialPhone != null && widget.initialPhone!.isNotEmpty) {
+      String phoneWithoutDialCode = widget.initialPhone!;
+      if (phoneWithoutDialCode.startsWith(_selectedCountry.dialCode)) {
+        phoneWithoutDialCode = phoneWithoutDialCode.substring(_selectedCountry.dialCode.length);
+      }
+      final formatted = _formatPhoneNumber(phoneWithoutDialCode);
+      _controller.text = formatted;
+      _lastFormatted = formatted;
+      
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final fullNumber = _selectedCountry.dialCode + phoneWithoutDialCode;
+        widget.onChanged?.call(fullNumber, formatted);
+      });
+    }
+    
     _controller.addListener(_onTextChanged);
   }
 

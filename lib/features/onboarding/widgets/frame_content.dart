@@ -5,6 +5,7 @@ import 'package:flex_travel_sim/features/onboarding/widgets/auth_intro.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/otp_tile.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/whatsapp_tile.dart';
+import 'package:flex_travel_sim/features/auth/domain/entities/country.dart';
 import 'package:flutter/material.dart';
 
 class FrameContent extends StatefulWidget {
@@ -37,6 +38,8 @@ class _FrameContentState extends State<FrameContent>
 
   int _currentPage = 0;
   String _phoneForOtp = '';
+  String _savedPhoneDigits = '';
+  Country? _savedCountry;
 
   @override
   void initState() {
@@ -77,9 +80,20 @@ class _FrameContentState extends State<FrameContent>
     widget.onContinueTap();
   }
 
-  void _goToOtpPage(String formattedPhone, ConfirmMethod method) {
+  void _goToOtpPage(
+    String formattedPhone,
+    ConfirmMethod method, [
+    String? phoneDigits,
+    Country? country,
+  ]) {
     setState(() {
       _phoneForOtp = formattedPhone;
+      if (phoneDigits != null) {
+        _savedPhoneDigits = phoneDigits;
+      }
+      if (country != null) {
+        _savedCountry = country;
+      }
       _currentPage = 2;
     });
   }
@@ -87,7 +101,6 @@ class _FrameContentState extends State<FrameContent>
   void _goToEmailPage() {
     setState(() => _currentPage = 3);
   }
-
 
   void _goBackToIntro() {
     setState(() => _currentPage = 0);
@@ -135,11 +148,17 @@ class _FrameContentState extends State<FrameContent>
           pageBuilders: [
             (context) => AuthIntro(onAuthTap: _goToWhatsappPage),
             (context) => WhatsappTile(
+              key: ValueKey(
+                'whatsapp_${_savedPhoneDigits}_${_savedCountry?.dialCode}',
+              ),
               onNext: _goToOtpPage,
               appBarPop: _goBackToIntro,
               onEmailTap: _goToEmailPage,
+              initialPhoneDigits: _savedPhoneDigits,
+              initialCountry: _savedCountry,
             ),
             (context) => OtpTile(
+              key: ValueKey('otp_$_phoneForOtp'),
               phoneNumber: _phoneForOtp,
               onTap: _goToWhatsappPage,
               appBarPop: _goToWhatsappPage,
