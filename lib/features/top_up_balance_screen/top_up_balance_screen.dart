@@ -158,7 +158,7 @@ class TopUpBalanceContent extends StatelessWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder:
-          (context) => SimCardSelectionModal(
+          (modalContext) => SimCardSelectionModal(
             simCards: simCards,
             selectedImsi: selectedImsi,
             onSimCardSelected: (selectedSimCard) {
