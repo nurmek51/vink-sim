@@ -26,6 +26,11 @@ class _LazyRowState extends State<LazyRow> {
   void initState() {
     super.initState();
     _itemKeys = List.generate(widget.options.length, (_) => GlobalKey());
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    _jumpToSelected(widget.selectedIndex);
+  });
+
   }
 
   @override
@@ -79,6 +84,40 @@ class _LazyRowState extends State<LazyRow> {
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
     );
+  }
+
+  void _jumpToSelected(int index) {
+    final itemContext = _itemKeys[index].currentContext;
+    final scrollContext = _scrollViewKey.currentContext;
+    if (itemContext == null || scrollContext == null) return;
+
+    final RenderBox itemBox = itemContext.findRenderObject() as RenderBox;
+    final RenderBox scrollBox = scrollContext.findRenderObject() as RenderBox;
+
+    final Offset itemOffset = itemBox.localToGlobal(
+      Offset.zero,
+      ancestor: scrollBox,
+    );
+
+    final double itemLeft = itemOffset.dx;
+    final double itemRight = itemLeft + itemBox.size.width;
+    final double viewWidth = scrollBox.size.width;
+    const double padding = 16.0;
+
+    double targetOffset = _scrollController.offset;
+
+    if (itemRight > viewWidth) {
+      targetOffset += (itemRight - viewWidth) + padding;
+    } else if (itemLeft < 0) {
+      targetOffset += itemLeft - padding;
+    }
+
+    targetOffset = targetOffset.clamp(
+      _scrollController.position.minScrollExtent,
+      _scrollController.position.maxScrollExtent,
+    );
+
+    _scrollController.jumpTo(targetOffset);
   }
 
 

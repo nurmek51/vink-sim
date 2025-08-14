@@ -22,6 +22,7 @@ import 'package:flex_travel_sim/features/esim_management/domain/use_cases/get_es
 import 'package:flex_travel_sim/features/esim_management/domain/use_cases/purchase_esim_use_case.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
+import 'package:flex_travel_sim/features/subscriber/data/data_sources/subscriber_local_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_local_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/data_sources/user_remote_data_source.dart';
 import 'package:flex_travel_sim/features/user_account/data/repositories/user_repository_impl.dart';
@@ -240,6 +241,10 @@ class ServiceLocator {
         travelSimApiService: get<TravelSimApiService>(),
       ),
     );
+
+    register<SubscriberLocalDataSource>(
+      SubscriberLocalDataSourceImpl(localStorage: get<LocalStorage>()),
+    );    
 
     // Blocs
     register<SubscriberBloc>(

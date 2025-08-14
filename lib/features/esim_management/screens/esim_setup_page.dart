@@ -36,13 +36,12 @@ class EsimSetupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final options = getRowOptions();
-    // final showFast = PlatformDetector.isIos;
 
     if (kDebugMode) {
       print(PlatformDetector.platformLog);
     }
     return BlocProvider(
-      create: (_) => EsimSetupBloc(),
+      create: (_) => EsimSetupBloc(options: options)..add(const LoadImsiListLength()),
       child: Scaffold(
         backgroundColor: const Color(0xFFD0DEEB),
         body: CustomScrollView(
@@ -111,8 +110,17 @@ class EsimSetupPage extends StatelessWidget {
                       const SizedBox(height: 20),
                       BlocBuilder<EsimSetupBloc, EsimSetupState>(
                         builder: (context, state) {
-                          return Center(
-                            child: LazyRow(
+                          if (state is EsimSetupLoading ||
+                              state is EsimSetupInitial) {
+                            return const SizedBox(height: 48);
+                          }
+
+                          if (state is EsimSetupError) {
+                            return Text(state.message); 
+                          }
+
+                          if (state is EsimSetupLoaded) {
+                            return LazyRow(
                               selectedIndex: state.selectedIndex,
                               options: options,
                               onSelectedIndex: (index) {
@@ -120,18 +128,26 @@ class EsimSetupPage extends StatelessWidget {
                                   SelectOption(index),
                                 );
                               },
-                            ),
-                          );
+                            );
+                          }
+
+                          return const SizedBox.shrink();
                         },
                       ),
                       BlocBuilder<EsimSetupBloc, EsimSetupState>(
                         builder: (context, state) {
-                          return Column(
-                            children: [
-                              const SizedBox(height: 25),
-                              _buildSelectedBody(options[state.selectedIndex]),
-                            ],
-                          );
+                          if (state is EsimSetupLoaded) {
+                            return Column(
+                              children: [
+                                const SizedBox(height: 25),
+                                _buildSelectedBody(
+                                  options[state.selectedIndex],
+                                ),
+                              ],
+                            );
+                          }
+
+                          return const SizedBox.shrink();
                         },
                       ),
                     ],
