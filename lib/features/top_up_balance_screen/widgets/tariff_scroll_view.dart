@@ -23,7 +23,7 @@ class TariffScrollView extends StatelessWidget {
           builder: (context, tariffsState) {
             if (tariffsState is TariffsLoaded) {
               final entries =
-                  tariffsState.pricePerGbByCountry.entries.take(10).toList();
+                  tariffsState.cheapestPricesByCountryOrdered.entries.toList();
 
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
