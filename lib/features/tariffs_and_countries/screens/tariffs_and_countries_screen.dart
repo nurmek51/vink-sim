@@ -53,7 +53,12 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
     for (final operator in operators) {
       grouped.putIfAbsent(operator.countryName, () => []).add(operator);
     }
-    return grouped;
+    
+    // Sort countries by number of operators (descending)
+    final sortedEntries = grouped.entries.toList()
+      ..sort((a, b) => b.value.length.compareTo(a.value.length));
+    
+    return Map.fromEntries(sortedEntries);
   }
 
   @override

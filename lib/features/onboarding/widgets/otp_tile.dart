@@ -177,7 +177,7 @@ class _OtpTileState extends State<OtpTile> {
                   if (kDebugMode) print(state.message);
                 } else if (state is OtpSmsSent) {
                   AppNotifier.info(
-                    AppLocalizations.otpResesnt,
+                    AppLocalizations.otpResent,
                   ).showAppToast(context);
                 }
               },

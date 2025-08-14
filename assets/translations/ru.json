@@ -151,5 +151,10 @@
   "logout_confirmation_title": "Подтвердите выхода",
   "logout_confirmation_message": "Вы уверены, что хотите выйти?",
   "cancel": "Отмена",
-  "in_country": "в"
+  "in_country": "в",
+  "select_sim_card": "Выберите SIM-карту",
+  "sim_card_fallback": "SIM-карта",
+  "on_balance": "на балансе",
+  "select_for_top_up": "Выбрать для пополнения",
+  "sim_card_default": "SIM-карта 1"
 }
