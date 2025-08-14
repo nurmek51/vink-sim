@@ -1,4 +1,3 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/web/adaptive/phone_frame.dart';
 import 'package:flex_travel_sim/core/web/adaptive/web_scaffold_config.dart';
 import 'package:flex_travel_sim/core/web/adaptive/welcome_desktop_circles.dart';
@@ -42,7 +41,7 @@ class AppRouter {
                     leftSide: const Positioned.fill(child: WelcomeCircles()),
                   )
                   : WebScaffoldConfig(
-                    backgroundColor: AppColors.backgroundColorLight,
+                    backgroundColor: Colors.black,
                     leftSide: SvgPicture.asset(
                       Assets.icons.leftVector.path,
                       width: 650,

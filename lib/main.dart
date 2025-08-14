@@ -41,16 +41,15 @@ void main() async {
     throw Exception('STRIPE_PUBLISHABLE_KEY not found in .env');
   }
 
-  Stripe.publishableKey = stripePublishableKey;  
+  Stripe.publishableKey = stripePublishableKey;
 
   await sl.init();
 
+  await Future.delayed(const Duration(seconds: 2));
+
   runApp(
     EasyLocalization(
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ru'),
-      ],
+      supportedLocales: const [Locale('en'), Locale('ru')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
       child: const MyApp(),
@@ -73,6 +72,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'FlexTravelSIM',
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.black,
+          primarySwatch: Colors.blue,
+        ),
         routerConfig: AppRouter.router,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
