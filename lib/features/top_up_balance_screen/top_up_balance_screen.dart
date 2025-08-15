@@ -29,7 +29,8 @@ import 'package:flex_travel_sim/core/network/travel_sim_api_service.dart';
 
 class TopUpBalanceScreen extends StatelessWidget {
   final String? imsi;
-  const TopUpBalanceScreen({super.key, this.imsi});
+  final bool isNewEsim;
+  const TopUpBalanceScreen({super.key, this.imsi, this.isNewEsim = false});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class TopUpBalanceScreen extends StatelessWidget {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         behavior: HitTestBehavior.translucent,
-        child: _TopUpBalanceView(imsi: imsi),
+        child: _TopUpBalanceView(imsi: imsi, isNewEsim: isNewEsim),
       ),
     );
   }
@@ -62,7 +63,8 @@ class TopUpBalanceScreen extends StatelessWidget {
 
 class _TopUpBalanceView extends StatefulWidget {
   final String? imsi;
-  const _TopUpBalanceView({this.imsi});
+  final bool isNewEsim;
+  const _TopUpBalanceView({this.imsi, this.isNewEsim = false});
 
   @override
   State<_TopUpBalanceView> createState() => _TopUpBalanceViewState();
@@ -135,7 +137,7 @@ class _TopUpBalanceViewState extends State<_TopUpBalanceView> {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             sliver: SliverToBoxAdapter(
-              child: TopUpBalanceContent(imsi: widget.imsi),
+              child: TopUpBalanceContent(imsi: widget.imsi, isNewEsim: widget.isNewEsim),
             ),
           ),
         ],
@@ -146,7 +148,8 @@ class _TopUpBalanceViewState extends State<_TopUpBalanceView> {
 
 class TopUpBalanceContent extends StatelessWidget {
   final String? imsi;
-  const TopUpBalanceContent({super.key, this.imsi});
+  final bool isNewEsim;
+  const TopUpBalanceContent({super.key, this.imsi, this.isNewEsim = false});
 
   void _showSimCardSelectionModal(
     BuildContext context,
@@ -180,17 +183,21 @@ class TopUpBalanceContent extends StatelessWidget {
                 subscriberState is SubscriberLoaded
                     ? subscriberState.subscriber.imsiList
                     : <ImsiModel>[];
-
+            if (imsi != null &&
+                simCards.isNotEmpty &&
+                topUpState.selectedSimCard == null) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.read<TopUpBalanceBloc>().add(
+                  InitializeWithImsi(imsi, simCards),
+                );
+              });
+            }
             final selectedSimCard = topUpState.selectedSimCard;
-            final displayText =
-                selectedSimCard?.country ??
-                (simCards.isNotEmpty ? simCards.first.country : null) ??
-                AppLocalizations.simCardDefault.tr();
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (simCards.isNotEmpty) ...[
+                if (simCards.isNotEmpty && simCards.any((card) => card.balance > 0) && !isNewEsim) ...[
                   LocalizedText(
                     AppLocalizations.selectSimCard,
                     style: FlexTypography.label.medium,
@@ -219,7 +226,13 @@ class TopUpBalanceContent extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 6),
-                          Text(displayText),
+                          Text(
+                            selectedSimCard?.country ??
+                                (simCards.isNotEmpty
+                                    ? simCards.first.country
+                                    : null) ??
+                                AppLocalizations.simCardDefault.tr(),
+                          ),
                           Spacer(),
                           Assets.icons.arrowDown.svg(),
                         ],

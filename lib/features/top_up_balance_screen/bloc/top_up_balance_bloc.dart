@@ -58,6 +58,16 @@ class SelectSimCard extends TopUpBalanceEvent {
   List<Object?> get props => [simCard];
 }
 
+class InitializeWithImsi extends TopUpBalanceEvent {
+  final String? imsi;
+  final List<ImsiModel> simCards;
+  
+  const InitializeWithImsi(this.imsi, this.simCards);
+  
+  @override
+  List<Object?> get props => [imsi, simCards];
+}
+
 // State
 class TopUpBalanceState extends Equatable {
   final int amount;
@@ -100,6 +110,7 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
     on<SelectPaymentMethod>(_onSelectPaymentMethod);
     on<SelectSimCard>(_onSelectSimCard);
     on<ResetState>(_onResetState);
+    on<InitializeWithImsi>(_onInitializeWithImsi);
   }
 
   void _onSetAmount(SetAmount event, Emitter<TopUpBalanceState> emit) {
@@ -130,5 +141,15 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
 
   void _onResetState(ResetState event, Emitter<TopUpBalanceState> emit) {
     emit(const TopUpBalanceState());
+  }
+
+  void _onInitializeWithImsi(InitializeWithImsi event, Emitter<TopUpBalanceState> emit) {
+    if (event.imsi != null && event.simCards.isNotEmpty) {
+      final simCard = event.simCards.firstWhere(
+        (sim) => sim.imsi == event.imsi,
+        orElse: () => event.simCards.first,
+      );
+      emit(state.copyWith(selectedSimCard: simCard));
+    }
   }
 }

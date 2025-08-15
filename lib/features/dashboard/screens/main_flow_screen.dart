@@ -278,18 +278,19 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                   ),
                                 );
                               } else {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  child: AddEsimCircle(
-                                    canAdd: canAdd,
-                                    onAddButtonPressed:
-                                        () =>
-                                            NavigationService.openTopUpBalanceScreen(
-                                              context,
-                                            ),
-                                  ),
+                                return AddEsimCircle(
+                                  canAdd: canAdd,
+                                  onAddButtonPressed:
+                                      () {
+                                        final currentPageImsi = mainFlowState.currentPage < displayList.length 
+                                            ? displayList[mainFlowState.currentPage].imsi 
+                                            : null;
+                                        NavigationService.openTopUpBalanceScreen(
+                                          context,
+                                          imsi: currentPageImsi,
+                                          isNewEsim: true,
+                                        );
+                                      },
                                 );
                               }
                             },

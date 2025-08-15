@@ -6,7 +6,7 @@ import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
-class SimCardSelectionModal extends StatelessWidget {
+class SimCardSelectionModal extends StatefulWidget {
   final List<ImsiModel> simCards;
   final String? selectedImsi;
   final Function(ImsiModel) onSimCardSelected;
@@ -17,6 +17,19 @@ class SimCardSelectionModal extends StatelessWidget {
     this.selectedImsi,
     required this.onSimCardSelected,
   });
+
+  @override
+  State<SimCardSelectionModal> createState() => _SimCardSelectionModalState();
+}
+
+class _SimCardSelectionModalState extends State<SimCardSelectionModal> {
+  late String? selectedImsi;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedImsi = widget.selectedImsi;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,16 +70,18 @@ class SimCardSelectionModal extends StatelessWidget {
             child: ListView.separated(
               shrinkWrap: true,
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: simCards.length,
+              itemCount: widget.simCards.length,
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
-                final simCard = simCards[index];
+                final simCard = widget.simCards[index];
                 final isSelected = simCard.imsi == selectedImsi;
 
                 return GestureDetector(
                   onTap: () {
-                    onSimCardSelected(simCard);
-                    Navigator.of(context).pop();
+                    setState(() {
+                      selectedImsi = simCard.imsi;
+                    });
+                    widget.onSimCardSelected(simCard);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(16),
@@ -145,11 +160,11 @@ class SimCardSelectionModal extends StatelessWidget {
             child: BlueGradientButton(
               title: AppLocalizations.selectForTopUp.tr(),
               onTap: () {
-                final selectedSimCard = simCards.firstWhere(
+                final selectedSimCard = widget.simCards.firstWhere(
                   (simCard) => simCard.imsi == selectedImsi,
-                  orElse: () => simCards.first,
+                  orElse: () => widget.simCards.first,
                 );
-                onSimCardSelected(selectedSimCard);
+                widget.onSimCardSelected(selectedSimCard);
                 Navigator.of(context).pop();
               },
             ),
