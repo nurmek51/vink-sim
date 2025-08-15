@@ -3,10 +3,12 @@ import 'dart:ui';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/features/esim_management/widgets/share_qr/qr_service.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class QrCodeSelectedBody extends StatefulWidget {
   const QrCodeSelectedBody({super.key});
@@ -16,6 +18,7 @@ class QrCodeSelectedBody extends StatefulWidget {
 }
 
 class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
+  final GlobalKey qrKey = GlobalKey();
   bool _isQrVisible = false;
 
   void _toggleQrVisibility() {
@@ -43,11 +46,34 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                       borderRadius: BorderRadius.circular(16),
                       child: Stack(
                         children: [
-                          Assets.icons.figma112.qrManual.image(
-                            width: 228,
-                            height: 228,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.high,
+                          RepaintBoundary(
+                            key: qrKey,
+                            child: Container(
+                              height: 240,
+                              width: 240,
+                              decoration: BoxDecoration(
+                                color: AppColors.backgroundColorLight,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 210,
+                                  width: 210,
+                                  child: QrImageView(
+                                    data: 'LPA:1\$smdp.io\$K2-2DJM5S-18WUF79',
+                                    version: QrVersions.auto,
+                                    errorStateBuilder: (cxt, err) {
+                                      return Center(
+                                        child: Text(
+                                          'Uh oh! Something went wrong...',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           Positioned.fill(
                             child: AnimatedOpacity(
@@ -109,7 +135,18 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                   ),
                   const SizedBox(height: 15),
                   GestureDetector(
-                    onTap: _toggleQrVisibility,
+                    // onTap: _toggleQrVisibility,
+                    onTap: () async {
+                      if (_isQrVisible) {
+                        // шарим QR
+                        await QrShareService.shareWidget(
+                          qrKey,
+                          text: 'Мой QR',
+                        );
+                      } else {
+                        _toggleQrVisibility();
+                      }
+                    },                    
                     child: Container(
                       alignment: Alignment.center,
                       height: 52,

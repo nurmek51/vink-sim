@@ -30,6 +30,9 @@ dependencies:
   fluttertoast: ^8.2.12
   country_flags: ^3.3.0
   web: ^1.1.1
+  qr_flutter: ^4.1.0
+  share_plus: ^11.1.0
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
