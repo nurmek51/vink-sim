@@ -144,10 +144,11 @@ class AppRouter {
             pageBuilder: (context, state) {
               final data = state.extra as Map<String, dynamic>?;
               final imsi = data?['imsi'] as String?;
+              final isNewEsim = data?['isNewEsim'] as bool? ?? false;
               return _buildPageWithNoTransition(
                 context,
                 state,
-                TopUpBalanceScreen(imsi: imsi),
+                TopUpBalanceScreen(imsi: imsi, isNewEsim: isNewEsim),
               );
             },
           ),

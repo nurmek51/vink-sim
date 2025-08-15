@@ -25,8 +25,8 @@ class NavigationService {
     context.push(AppRoutes.esimSetup);
   }
 
-  static void openTopUpBalanceScreen(BuildContext context, {String? imsi}) {
-    context.push(AppRoutes.topUpBalance, extra: {'imsi': imsi});
+  static void openTopUpBalanceScreen(BuildContext context, {String? imsi, bool isNewEsim = false}) {
+    context.push(AppRoutes.topUpBalance, extra: {'imsi': imsi, 'isNewEsim': isNewEsim});
   }
 
   static void openAuthScreen(BuildContext context) {

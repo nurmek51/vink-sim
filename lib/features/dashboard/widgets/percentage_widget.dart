@@ -29,7 +29,7 @@ class PercentageWidget extends StatelessWidget {
   final String? country;
   final double? rate;
   final bool isYellow;
-  final String imsi;  
+  final String imsi;
 
   String _formatBalance(double value) {
     String formatted =
@@ -52,7 +52,6 @@ class PercentageWidget extends StatelessWidget {
     );
     final bool isRedCircle = circleColor == AppColors.redCircleColor;
     final bool isBlueCircle = circleColor == AppColors.blueCircleProgressColor;
-  
     final isSmallSize = isSmallScreen(context);
 
     return TweenAnimationBuilder<double>(
@@ -133,12 +132,12 @@ class PercentageWidget extends StatelessWidget {
                 const SizedBox(height: 13),
 
                 !isBlueCircle
-                    ? 
-                    GestureDetector(
-                      onTap: () => NavigationService.openTopUpBalanceScreen(
-                        context,
-                        imsi: imsi,
-                      ),
+                    ? GestureDetector(
+                      onTap:
+                          () => NavigationService.openTopUpBalanceScreen(
+                            context,
+                            imsi: imsi,
+                          ),
                       child: LocalizedText(
                         AppLocalizations.topUp,
                         textAlign: TextAlign.center,

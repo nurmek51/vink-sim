@@ -68,7 +68,7 @@ class MainFlowScreen extends StatefulWidget {
 }
 
 class _MainFlowScreenState extends State<MainFlowScreen> {
-  final PageController _pageController = PageController(viewportFraction: 1);
+  final PageController _pageController = PageController(viewportFraction: 0.9);
   bool _hasUserScrolled = false;
 
   @override
@@ -123,7 +123,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     ).then((_) {
       context.read<MainFlowBloc>().add(HideBottomSheetEvent());
     });
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,9 +214,10 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                           height: isSmall ? 309 : 320,
                           child: PageView.builder(
                             controller: _pageController,
+                            clipBehavior: Clip.none,
                             itemCount: itemCount,
                             onPageChanged: (index) {
-                                if (!_hasUserScrolled) {
+                              if (!_hasUserScrolled) {
                                 setState(() {
                                   _hasUserScrolled = true;
                                 });
@@ -229,13 +230,21 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                               if (index < actualCount) {
                                 if (isLoading && loadedImsiList.isEmpty) {
                                   return AnimatedScale(
-                                   scale:
-                                     !_hasUserScrolled
-                                         ? 1.0
-                                         : (mainFlowState.currentPage == index? 1.0 : 0.9),
+                                    scale:
+                                        !_hasUserScrolled
+                                            ? 1.0
+                                            : (mainFlowState.currentPage ==
+                                                    index
+                                                ? 1.0
+                                                : 0.9),
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeOut,
-                                    child: const PercentageShimmerWidget(),
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                      ),
+                                      child: PercentageShimmerWidget(),
+                                    ),
                                   );
                                 }
 
@@ -249,35 +258,49 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
 
                                 return AnimatedScale(
                                   scale:
-                                    !_hasUserScrolled
-                                        ? 1.0
-                                        : (mainFlowState.currentPage == index? 1.0 : 0.9),
+                                      !_hasUserScrolled
+                                          ? 1.0
+                                          : (mainFlowState.currentPage == index
+                                              ? 1.0
+                                              : 0.9),
                                   duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeOut,
-                                  child: PercentageWidget(
-                                  imsi: imsi.imsi,
-                                  progressValue: availableGB,
-                                  color: ProgressColorUtils.getProgressColor(
-                                    availableGB,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: PercentageWidget(
+                                      imsi: imsi.imsi,
+                                      progressValue: availableGB,
+                                      color:
+                                          ProgressColorUtils.getProgressColor(
+                                            availableGB,
+                                          ),
+                                      isYellow: isYellow,
+                                      backgroundColor:
+                                          ProgressColorUtils.getProgressBackgroundColor(
+                                            availableGB,
+                                          ),
+                                      balance: imsi.balance,
+                                      country: imsi.country,
+                                      rate: imsi.rate,
+                                    ),
                                   ),
-                                  isYellow: isYellow,
-                                  backgroundColor:
-                                      ProgressColorUtils.getProgressBackgroundColor(
-                                        availableGB,
-                                      ),
-                                  balance: imsi.balance,
-                                  country: imsi.country,
-                                  rate: imsi.rate, 
-                                ),
                                 );
                               } else {
                                 return AddEsimCircle(
                                   canAdd: canAdd,
                                   onAddButtonPressed:
-                                      () =>
-                                          NavigationService.openTopUpBalanceScreen(
-                                            context,
-                                          ),
+                                      () {
+                                        final currentPageImsi = mainFlowState.currentPage < displayList.length 
+                                            ? displayList[mainFlowState.currentPage].imsi 
+                                            : null;
+                                        NavigationService.openTopUpBalanceScreen(
+                                          context,
+                                          imsi: currentPageImsi,
+                                          isNewEsim: true,
+                                        );
+                                      },
                                 );
                               }
                             },
