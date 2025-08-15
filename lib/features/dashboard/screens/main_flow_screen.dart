@@ -264,10 +264,16 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                 return AddEsimCircle(
                                   canAdd: canAdd,
                                   onAddButtonPressed:
-                                      () =>
-                                          NavigationService.openTopUpBalanceScreen(
-                                            context,
-                                          ),
+                                      () {
+                                        final currentPageImsi = mainFlowState.currentPage < displayList.length 
+                                            ? displayList[mainFlowState.currentPage].imsi 
+                                            : null;
+                                        NavigationService.openTopUpBalanceScreen(
+                                          context,
+                                          imsi: currentPageImsi,
+                                          isNewEsim: true,
+                                        );
+                                      },
                                 );
                               }
                             },
