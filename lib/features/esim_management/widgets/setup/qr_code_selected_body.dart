@@ -388,13 +388,17 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
 
     if (widget.errorMessage != null) {
       return Center(
-        child: Text(widget.errorMessage!),
+        child: LocalizedText(
+          widget.errorMessage!,
+        ),
       );
     }
 
     if (widget.qrCode == null || widget.qrCode!.isEmpty) {
       return const Center(
-        child: Text('NOT AVAILABLE'),
+        child: LocalizedText(
+          AppLocalizations.notAvailable,
+        ),
       );
     }
 

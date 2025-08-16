@@ -3,13 +3,45 @@ import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ManualSelectedBody extends StatelessWidget {
-  const ManualSelectedBody({super.key});
+  final String? smdpServer;
+  final String? activationCode;
+  final bool isLoading;
+  final String? errorMessage; 
+
+  const ManualSelectedBody({
+    super.key,
+    this.smdpServer,
+    this.activationCode,
+    this.isLoading = false,
+    this.errorMessage,
+  });
 
   @override
   Widget build(BuildContext context) {
+    String resolveText(String? value) {
+      if (isLoading) {
+        return AppLocalizations.loading;
+      }
+      if (errorMessage != null && errorMessage!.isNotEmpty) {
+        return errorMessage!;
+      }
+      if (value != null && value.isNotEmpty) {
+        return value;
+      }
+      return AppLocalizations.notAvailable;
+    }
+
+    final smdpServerText = resolveText(smdpServer);
+    final activationCodeText = resolveText(activationCode);
+
+    if(kDebugMode) {
+      print('smdpServer: $smdpServer - activationCode: $activationCode');
+    }
+
     return Column(
       children: [
         BodyContainer(
@@ -44,7 +76,7 @@ class ManualSelectedBody extends StatelessWidget {
                           ),
                           const SizedBox(height: 3),
                           HelveticaneueFont(
-                            text: 'server.com',
+                            text: smdpServerText,
                             fontSize: 16,
                             color: AppColors.textColorDark,
                           ),
@@ -76,7 +108,7 @@ class ManualSelectedBody extends StatelessWidget {
                           ),
                           const SizedBox(height: 3),
                           HelveticaneueFont(
-                            text: 'P4-DPFOTM-ERLKBG',
+                            text: activationCodeText,
                             fontSize: 16,
                             color: AppColors.textColorDark,
                           ),

@@ -178,6 +178,8 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                                 BlocBuilder<SubscriberBloc, SubscriberState>(
                                   builder: (context, subscriberState) {
                                     String? qrCode;
+                                    String? smdpServer;
+                                    String? activationCode;
                                     bool isLoading = false;
                                     String? errorMessage;
 
@@ -186,17 +188,23 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                                     } else if (subscriberState is SubscriberLoaded) {
                                       final list = subscriberState.subscriber.imsiList;
                                       if (list.isNotEmpty && list.last.qr != null && list.last.qr!.isNotEmpty) {
-                                        qrCode = list.last.qr;
+                                        final lastImsiIndex = list.last;
+                                        qrCode = lastImsiIndex.qr;
+                                        smdpServer = lastImsiIndex.smdpServer;
+                                        activationCode = lastImsiIndex.activationCode;
                                       } else {
-                                        errorMessage = 'QR IS NOT AVAILABLE';
+                                        errorMessage = AppLocalizations.notAvailable;
                                       }
                                     } else if (subscriberState is SubscriberError) {
-                                      errorMessage = subscriberState.message;
+                                      errorMessage = AppLocalizations.notAvailable;
+                                      if (kDebugMode) print('Subscriber Error: ${subscriberState.message}');
                                     }
 
                                     return _buildSelectedBody(
                                       options[state.selectedIndex],
                                       qrCode: qrCode,
+                                      smdpServer: smdpServer,
+                                      activationCode: activationCode,
                                       isLoading: isLoading,
                                       errorMessage: errorMessage,
                                     );
@@ -229,6 +237,8 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
 Widget _buildSelectedBody(
   String option, {
   String? qrCode,
+  String? smdpServer,
+  String? activationCode,
   bool isLoading = false,
   String? errorMessage,
 }) {
@@ -242,7 +252,12 @@ Widget _buildSelectedBody(
         errorMessage: errorMessage,
       );
     case AppLocalizations.manualSelectedRow:
-      return const ManualSelectedBody();
+      return ManualSelectedBody(
+        smdpServer: smdpServer,
+        activationCode: activationCode,
+        isLoading: isLoading,
+        errorMessage: errorMessage,
+      );
     case AppLocalizations.toAnotherDeviceSelectedRow:
       return const AnotherDeviceSelectedBody();
     default:
