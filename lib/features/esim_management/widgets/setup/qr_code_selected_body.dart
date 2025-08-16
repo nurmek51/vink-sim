@@ -3,19 +3,32 @@ import 'dart:ui';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/features/esim_management/widgets/share_qr/qr_service.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class QrCodeSelectedBody extends StatefulWidget {
-  const QrCodeSelectedBody({super.key});
+  final String? qrCode;
+  final bool isLoading;
+  final String? errorMessage;
+
+  const QrCodeSelectedBody({
+    super.key,
+    this.qrCode,
+    this.isLoading = false,
+    this.errorMessage,
+  });
 
   @override
   State<QrCodeSelectedBody> createState() => _QrCodeSelectedBodyState();
 }
 
 class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
+  final GlobalKey qrKey = GlobalKey();
   bool _isQrVisible = false;
 
   void _toggleQrVisibility() {
@@ -28,6 +41,10 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
 
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print('QR Code: ${widget.qrCode}');
+    }
+
     return Column(
       children: [
         BodyContainer(
@@ -43,11 +60,23 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                       borderRadius: BorderRadius.circular(16),
                       child: Stack(
                         children: [
-                          Assets.icons.figma112.qrManual.image(
-                            width: 228,
-                            height: 228,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.high,
+                          RepaintBoundary(
+                            key: qrKey,
+                            child: Container(
+                              height: 240,
+                              width: 240,
+                              decoration: BoxDecoration(
+                                color: AppColors.backgroundColorLight,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 210,
+                                  width: 210,
+                                  child: _buildQrContent(),
+                                ),
+                              ),
+                            ),
                           ),
                           Positioned.fill(
                             child: AnimatedOpacity(
@@ -109,7 +138,16 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                   ),
                   const SizedBox(height: 15),
                   GestureDetector(
-                    onTap: _toggleQrVisibility,
+                    onTap: () async {
+                      if (_isQrVisible && widget.qrCode != null) {
+                        await QrShareService.shareWidget(
+                          qrKey,
+                          text: 'eSIM QR',
+                        );
+                      } else {
+                        _toggleQrVisibility();
+                      }
+                    },                    
                     child: Container(
                       alignment: Alignment.center,
                       height: 52,
@@ -340,4 +378,43 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
       ],
     );
   }
+
+  Widget _buildQrContent() {
+    if (widget.isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (widget.errorMessage != null) {
+      return Center(
+        child: LocalizedText(
+          widget.errorMessage!,
+        ),
+      );
+    }
+
+    if (widget.qrCode == null || widget.qrCode!.isEmpty) {
+      return const Center(
+        child: LocalizedText(
+          AppLocalizations.notAvailable,
+        ),
+      );
+    }
+
+    return QrImageView(
+      data: widget.qrCode!,
+      version: QrVersions.auto,
+      errorStateBuilder: (cxt, err) {
+        return const Center(
+          child: Text(
+            'Uh oh! Something went wrong...',
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
+    );
+  }
+
+
 }

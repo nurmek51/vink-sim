@@ -10,6 +10,7 @@ import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/models/imsi_model.dart';
+import 'package:flex_travel_sim/features/subscriber/services/subscriber_local_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/add_esim_circle.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
@@ -126,14 +127,23 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainFlowBloc, MainFlowState>(
-      builder: (context, mainFlowState) {
-        return BlocBuilder<SubscriberBloc, SubscriberState>(
-          builder: (context, subscriberState) {
-            final loadedImsiList =
-                subscriberState is SubscriberLoaded
-                    ? subscriberState.subscriber.imsiList
-                    : <ImsiModel>[];
+    return BlocListener<SubscriberBloc, SubscriberState>(
+      listener: (context, state) {
+        if (state is SubscriberLoaded) {
+          SubscriberLocalService.saveImsiListLength(
+            length: state.subscriber.imsiList.length,
+            screenRoute: 'MainFlowScreen',
+          );
+        }
+      },
+      child: BlocBuilder<MainFlowBloc, MainFlowState>(
+        builder: (context, mainFlowState) {
+          return BlocBuilder<SubscriberBloc, SubscriberState>(
+            builder: (context, subscriberState) {
+              final loadedImsiList =
+                  subscriberState is SubscriberLoaded
+                      ? subscriberState.subscriber.imsiList
+                      : <ImsiModel>[];
 
             final subscriberBalance =
                 subscriberState is SubscriberLoaded
@@ -353,11 +363,12 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                     ),
                   ),
                 ),
-              ),
-            );
-          },
-        );
-      },
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

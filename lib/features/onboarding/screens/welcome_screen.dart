@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/frame_content.dart';
+import 'package:flex_travel_sim/features/subscriber/services/subscriber_local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,6 +30,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       begin: 1.0,
       end: 0.8,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    SubscriberLocalService.resetImsiList(screenRoute: 'WelcomeScreen');
   }
 
   @override

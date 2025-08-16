@@ -1,0 +1,1 @@
+export 'qr_share_stub.dart' if (dart.library.io) 'qr_share_io.dart';

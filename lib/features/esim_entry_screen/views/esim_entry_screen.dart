@@ -4,6 +4,7 @@ import 'package:flex_travel_sim/features/auth/presentation/widgets/auth_intro_bo
 import 'package:flex_travel_sim/features/onboarding/widgets/benefit_tile.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/country_list_button.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
+import 'package:flex_travel_sim/features/subscriber/services/subscriber_local_service.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,8 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
       begin: 1.0,
       end: 0.8,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+     SubscriberLocalService.resetImsiList(screenRoute: 'Esim Entry Screen');
   }
 
   @override
