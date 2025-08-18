@@ -30,6 +30,14 @@ class SettingEsimPage extends StatelessWidget {
           child: Container(color: Colors.grey.shade300, height: 1),
         ),
       ),
+      bottomNavigationBar: isAuthorized
+          ? Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                ).copyWith(bottom: 30, top: 12),
+                child: StartRegistrationButton(),
+              )
+              : null,      
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -57,14 +65,6 @@ class SettingEsimPage extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-          ),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 50),
-            child: Visibility(
-              visible: isAuthorized,
-              child: StartRegistrationButton(),
             ),
           ),
         ],

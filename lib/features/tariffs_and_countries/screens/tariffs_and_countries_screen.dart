@@ -63,9 +63,10 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
 
   @override
   Widget build(BuildContext context) {
-    const paddingSettings = EdgeInsets.only(left: 20, right: 20, bottom: 50);
+    const paddingSettings = EdgeInsets.only(left: 20, right: 20);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -81,6 +82,14 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
           child: Container(color: Colors.grey.shade300, height: 1),
         ),
       ),
+      bottomNavigationBar: widget.isAuthorized
+          ? Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                ).copyWith(bottom: 30, top: 12),
+                child: StartRegistrationButton(),
+              )
+              : null,
       body: Padding(
         padding: paddingSettings,
         child: Column(
@@ -181,15 +190,6 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                   return const Center(child: Text('No data available'));
                 },
               ),
-            ),
-
-            widget.isAuthorized
-                ? const SizedBox(height: 10)
-                : const SizedBox.shrink(),
-
-            Visibility(
-              visible: widget.isAuthorized,
-              child: StartRegistrationButton(),
             ),
           ],
         ),

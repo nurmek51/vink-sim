@@ -10,12 +10,12 @@ class TravelSimApiService {
     if (kDebugMode) {
       print('TravelSimAPI: Sending OTP SMS request');
       print('Phone: $phone');
-      print('URL: ${_apiClient.baseUrl}/otp/sms');
+      print('URL: ${_apiClient.baseUrl}/otp/whatsapp');
     }
     
     try {
       final response = await _apiClient.post(
-        '/otp/sms',
+        '/otp/whatsapp',
         body: {'phone': phone},
       );
       if (kDebugMode) {
