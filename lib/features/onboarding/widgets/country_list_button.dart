@@ -8,7 +8,12 @@ import 'package:flutter_svg/svg.dart';
 
 class WhatIsEsimButton extends StatelessWidget {
   final Function()? onTap;
-  const WhatIsEsimButton({super.key, required this.onTap});
+  final String? buttonTitle;
+  const WhatIsEsimButton({
+    super.key,
+    required this.onTap,
+    this.buttonTitle = AppLocalizations.whatIsEsom,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class WhatIsEsimButton extends StatelessWidget {
             Assets.icons.simIcon.svg(),
             SizedBox(width: 12),
             LocalizedText(
-              AppLocalizations.whatIsEsom,
+              buttonTitle!,
               style: FlexTypography.paragraph.xMedium.copyWith(
                 fontWeight: FontWeight.w500,
                 color: AppColors.textColorLight,
