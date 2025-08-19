@@ -63,6 +63,7 @@ abstract class AppLocalizations {
   static const esimDescription1 = 'esim_description1';
   static const esimDescription2 = 'esim_description2';
   static const esimIsActivated = 'esim_is_activated';
+  static const esimIsActivating = 'esim_is_activating';
   static const fastDescriptionStep1 = 'fast_description_step1';
   static const fastDescriptionStep2 = 'fast_description_step2';
   static const fastDescriptionStep3 = 'fast_description_step3';

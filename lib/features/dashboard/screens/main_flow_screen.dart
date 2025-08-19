@@ -85,7 +85,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     _hasUserScrolled = false;
   }
 
-  void _loadSubscriberDataIfNeeded() async {
+  Future <void> _loadSubscriberDataIfNeeded() async {
     final authDataSource = sl.get<AuthLocalDataSource>();
     try {
       final token = await authDataSource.getToken();
