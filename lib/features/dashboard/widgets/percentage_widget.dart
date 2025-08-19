@@ -134,18 +134,12 @@ class PercentageWidget extends StatelessWidget {
               children: [
                 const SizedBox(height: 80),
                 Container(
-                  alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color:
                         isRedCircle
                             ? AppColors.redCircleColor
                             : AppColors.limeGreen,
                     borderRadius: BorderRadius.circular(9),
-                  ),
-                  constraints: const BoxConstraints(
-                    minWidth: 100,
-                    maxWidth: 180,
-                    minHeight: 26,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
