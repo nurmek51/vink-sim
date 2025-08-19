@@ -58,6 +58,18 @@ class TopUpBalanceWidget extends StatelessWidget {
       return false;
     }
 
+    final isTopUp = (imsi?.isNotEmpty ?? false);
+    
+    if (!isTopUp && state.amount < 5) {
+      AppNotifier.info("Minimum amount for new eSIM is \$5").showAppToast(context);
+      return false;
+    }
+    
+    if (isTopUp && state.amount < 1) {
+      AppNotifier.info("Minimum top-up amount is \$1").showAppToast(context);
+      return false;
+    }
+
     if (state.selectedPaymentMethod.isEmpty) {
       AppNotifier.info("Выберите способ оплаты!").showAppToast(context);
       return false;
@@ -87,6 +99,7 @@ class TopUpBalanceWidget extends StatelessWidget {
         AppNotifier.info(AppLocalizations.notAvailable).showAppToast(context);
         break;
       case 'apple_pay':
+      case 'google_pay':
         context.read<StripeBloc>().add(
           GooglePayPaymentRequested(
             amount: state.amount,
@@ -95,7 +108,6 @@ class TopUpBalanceWidget extends StatelessWidget {
             imsi: isTopUp ? imsi : null,
           ),
         );
-
         break;
       default:
         AppNotifier.info("Неизвестный способ оплаты").showAppToast(context);

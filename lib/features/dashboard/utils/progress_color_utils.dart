@@ -4,13 +4,19 @@ import 'package:flutter/material.dart';
 class ProgressColorUtils {
   static const double maxGB = 25.0;
 
-  static Color getProgressColor(double value) {
+  static bool isInactiveEsim(String? country) {
+    return country == null || country == 'N/A' || country.isEmpty;
+  }
+
+  static Color getProgressColor(double value, {String? country}) {
+    if (isInactiveEsim(country)) return Colors.grey.shade400;
     if (value == 0) return AppColors.redCircleColor;
     if (value > 0 && value <= 1.0) return AppColors.yellowCircleProgressColor;
     return const Color(0xFF73BAE7);
   }
 
-  static Color getProgressBackgroundColor(double value) {
+  static Color getProgressBackgroundColor(double value, {String? country}) {
+    if (isInactiveEsim(country)) return Colors.grey.shade200;
     if (value == 0) return const Color(0xFFFFCCCC);
     if (value > 0 && value <= 1.0) return AppColors.yellowCircleBackgroundColor;
     return AppColors.blueCircleBackgroundColor;

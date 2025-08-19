@@ -1,4 +1,5 @@
 import 'package:flex_travel_sim/features/tariffs_and_countries/data/models/network_operator_model.dart';
+import 'package:flex_travel_sim/features/tariffs_and_countries/data/models/sort_type.dart';
 
 abstract class TariffsState {
   const TariffsState();
@@ -20,6 +21,7 @@ class TariffsLoaded extends TariffsState {
   final String? searchQuery;
   final Map<String, double> pricePerGbByCountry;
   final Map<String, double> cheapestPricesByCountryOrdered;
+  final CountrySortType currentSortType;
 
   const TariffsLoaded({
     required this.operators,
@@ -29,6 +31,7 @@ class TariffsLoaded extends TariffsState {
     this.searchQuery,
     this.pricePerGbByCountry = const {},
     this.cheapestPricesByCountryOrdered = const {},
+    this.currentSortType = CountrySortType.byPopularity,
   });
 
   TariffsLoaded copyWith({
@@ -39,6 +42,7 @@ class TariffsLoaded extends TariffsState {
     String? searchQuery,
     Map<String, double>? pricePerGbByCountry,
     Map<String, double>? cheapestPricesByCountryOrdered,
+    CountrySortType? currentSortType,
   }) {
     return TariffsLoaded(
       operators: operators ?? this.operators,
@@ -48,6 +52,7 @@ class TariffsLoaded extends TariffsState {
       searchQuery: searchQuery ?? this.searchQuery,
       pricePerGbByCountry: pricePerGbByCountry ?? this.pricePerGbByCountry,
       cheapestPricesByCountryOrdered: cheapestPricesByCountryOrdered ?? this.cheapestPricesByCountryOrdered,
+      currentSortType: currentSortType ?? this.currentSortType,
     );
   }
 }
