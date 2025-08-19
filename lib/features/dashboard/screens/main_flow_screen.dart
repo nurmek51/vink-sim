@@ -288,20 +288,39 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                   ),
                                 );
                               } else {
-                                return AddEsimCircle(
-                                  canAdd: canAdd,
-                                  onAddButtonPressed:
-                                      () {
-                                        final currentPageImsi = mainFlowState.currentPage < displayList.length 
-                                            ? displayList[mainFlowState.currentPage].imsi 
-                                            : null;
-                                        NavigationService.openTopUpBalanceScreen(
-                                          context,
-                                          imsi: currentPageImsi,
-                                          isNewEsim: true,
-                                        );
-                                      },
-                                );
+                                return AnimatedScale(
+                                    scale:
+                                        !_hasUserScrolled
+                                            ? 1.0
+                                            : (mainFlowState.currentPage ==
+                                                    index
+                                                ? 1.0
+                                                : 0.9),
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeOut,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                      ),
+                                      child: AddEsimCircle(
+                                        canAdd: canAdd,
+                                        onAddButtonPressed: () {
+                                          final currentPageImsi =
+                                              mainFlowState.currentPage <
+                                                      displayList.length
+                                                  ? displayList[mainFlowState
+                                                          .currentPage]
+                                                      .imsi
+                                                  : null;
+                                          NavigationService.openTopUpBalanceScreen(
+                                            context,
+                                            imsi: currentPageImsi,
+                                            isNewEsim: true,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
                               }
                             },
                           ),
