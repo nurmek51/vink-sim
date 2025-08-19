@@ -9,7 +9,7 @@ class InactiveEsimWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSmallSize = isSmallScreen(context);
-    
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -19,7 +19,7 @@ class InactiveEsimWidget extends StatelessWidget {
             width: isSmallSize ? 281 : 292,
             height: isSmallSize ? 281 : 292,
             child: CircularProgressIndicator(
-              value: 1.0, // Full gray circle
+              value: 1.0,
               strokeWidth: 18,
               backgroundColor: Colors.grey.shade200,
               valueColor: AlwaysStoppedAnimation(Colors.grey.shade400),
@@ -29,11 +29,7 @@ class InactiveEsimWidget extends StatelessWidget {
         Column(
           children: [
             const SizedBox(height: 120),
-            Icon(
-              Icons.credit_card_off,
-              size: 64,
-              color: Colors.grey.shade400,
-            ),
+            Icon(Icons.credit_card_off, size: 64, color: Colors.grey.shade400),
             const SizedBox(height: 16),
             Text(
               'eSIM Inactive',
