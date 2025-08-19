@@ -28,6 +28,7 @@ class AppColors {
   static const redCircleColor = Color(0XFFE94D4D);
   static const lightSteelBlue = Color(0xFFB4C6D9);
   static const limeGreen = Color(0xFFB3F242);
+  static const deepBlueGray = Color(0xFF536279);
   static const containerGradientPrimary = LinearGradient(
     colors: [Color(0xFF2875FF), Color(0xFF0059F9)],
     begin: Alignment.topLeft,

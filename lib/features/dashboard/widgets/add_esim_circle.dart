@@ -3,6 +3,7 @@ import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 
 class AddEsimCircle extends StatelessWidget {
   final bool canAdd;
@@ -16,9 +17,11 @@ class AddEsimCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSmallSize = isSmallScreen(context);
+    final double circleSize = isSmallSize ? 281 : 292;    
     return Container(
-      width: 300,
-      height: 300,
+      width: circleSize,
+      height: circleSize,
       padding: const EdgeInsets.only(top: 30, left: 24, right: 24),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
