@@ -156,5 +156,6 @@
   "sim_card_fallback": "SIM card",
   "on_balance": "on balance",
   "select_for_top_up": "Select for top-up",
-  "sim_card_default": "SIM card 1"
+  "sim_card_default": "SIM card 1",
+  "esim_is_activating": "eSIM is activating..."
 }

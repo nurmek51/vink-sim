@@ -45,14 +45,68 @@ class PercentageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double availableGB = progressValue;
+    final isSmallSize = isSmallScreen(context);
+    final double circleSize = isSmallSize ? 281 : 292;
+    final bool isActivationOnly = country == null || rate == null;
 
+    if (isActivationOnly) {
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            width: circleSize,
+            height: circleSize,
+            child: CircularProgressIndicator(
+              value: 1.0,
+              strokeWidth: 18,
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.deepBlueGray),
+            ),
+          ),
+
+          Transform.rotate(
+            angle: -0.017,
+            child: SizedBox(
+              width: circleSize,
+              height: circleSize,
+              child: CircularProgressIndicator(
+                value: 1.0,
+                strokeWidth: 18,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  AppColors.deepBlueGray,
+                ),
+              ),
+            ),
+          ),
+
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '${_formatBalance(balance)} \$',
+                style: FlexTypography.label.xLarge.copyWith(
+                  fontSize: 70,
+                  color: AppColors.grayBlue,
+                ),
+              ),
+              const SizedBox(height: 4),
+              LocalizedText(
+                AppLocalizations.esimIsActivating,
+                style: FlexTypography.label.medium.copyWith(
+                  color: AppColors.grayBlue,
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }  
+
+    final double availableGB = progressValue;
     final Color circleColor = ProgressColorUtils.getProgressColor(
       progressValue,
     );
     final bool isRedCircle = circleColor == AppColors.redCircleColor;
     final bool isBlueCircle = circleColor == AppColors.blueCircleProgressColor;
-    final isSmallSize = isSmallScreen(context);
 
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.0, end: progressValue),
@@ -65,8 +119,8 @@ class PercentageWidget extends StatelessWidget {
             Transform.rotate(
               angle: pi / 180,
               child: SizedBox(
-                width: isSmallSize ? 281 : 292,
-                height: isSmallSize ? 281 : 292,
+                width: circleSize,
+                height: circleSize,
                 child: CircularProgressIndicator(
                   value:
                       1.0 - (value / (isYellow ? 1.0 : 25.0)).clamp(0.0, 1.0),
