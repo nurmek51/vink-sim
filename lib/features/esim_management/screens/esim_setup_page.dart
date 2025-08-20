@@ -260,7 +260,11 @@ Widget _buildSelectedBody(
         errorMessage: errorMessage,
       );
     case AppLocalizations.toAnotherDeviceSelectedRow:
-      return const AnotherDeviceSelectedBody();
+      return AnotherDeviceSelectedBody(
+        qrCode: qrCode,
+        isLoading: isLoading,
+        errorMessage: errorMessage,
+      );
     default:
       return const SizedBox.shrink();
   }

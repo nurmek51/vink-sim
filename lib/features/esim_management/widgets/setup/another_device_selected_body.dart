@@ -1,12 +1,22 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/features/esim_management/widgets/build_qr_code.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class AnotherDeviceSelectedBody extends StatelessWidget {
-  const AnotherDeviceSelectedBody({super.key});
+  final String? qrCode;
+  final bool isLoading;
+  final String? errorMessage;
+
+  const AnotherDeviceSelectedBody({
+    super.key,
+    this.qrCode,
+    this.isLoading = false,
+    this.errorMessage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -111,23 +121,24 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
         BodyContainer(
           args: ['2'],
           description: AppLocalizations.anotherDeviceDescription2,
-          child: Center(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.qrManual.image(
-                        width: 228,
-                        height: 228,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.high,
-                      ),
-                    ),
-                  ],
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Container(
+              height: 228,
+              width: 228,
+              decoration: BoxDecoration(
+                color: AppColors.backgroundColorLight,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Center(
+                child: SizedBox(
+                  height: 210,
+                  width: 210,
+                  child: BuildQrCode(
+                    qrCode: qrCode,
+                    isLoading: isLoading,
+                    errorMessage: errorMessage,
+                  ),
                 ),
               ),
             ),
