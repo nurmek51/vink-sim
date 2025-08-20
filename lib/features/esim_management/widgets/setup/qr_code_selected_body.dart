@@ -3,13 +3,13 @@ import 'dart:ui';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/features/esim_management/widgets/build_qr_code.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/share_qr/qr_service.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class QrCodeSelectedBody extends StatefulWidget {
   final String? qrCode;
@@ -63,8 +63,8 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                           RepaintBoundary(
                             key: qrKey,
                             child: Container(
-                              height: 240,
-                              width: 240,
+                              height: 228,
+                              width: 228,
                               decoration: BoxDecoration(
                                 color: AppColors.backgroundColorLight,
                                 borderRadius: BorderRadius.circular(16),
@@ -73,7 +73,11 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                                 child: SizedBox(
                                   height: 210,
                                   width: 210,
-                                  child: _buildQrContent(),
+                                  child: BuildQrCode(
+                                    qrCode: widget.qrCode,
+                                    isLoading: widget.isLoading,
+                                    errorMessage: widget.errorMessage,
+                                  ),
                                 ),
                               ),
                             ),
@@ -378,43 +382,4 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
       ],
     );
   }
-
-  Widget _buildQrContent() {
-    if (widget.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    if (widget.errorMessage != null) {
-      return Center(
-        child: LocalizedText(
-          widget.errorMessage!,
-        ),
-      );
-    }
-
-    if (widget.qrCode == null || widget.qrCode!.isEmpty) {
-      return const Center(
-        child: LocalizedText(
-          AppLocalizations.notAvailable,
-        ),
-      );
-    }
-
-    return QrImageView(
-      data: widget.qrCode!,
-      version: QrVersions.auto,
-      errorStateBuilder: (cxt, err) {
-        return const Center(
-          child: Text(
-            'Uh oh! Something went wrong...',
-            textAlign: TextAlign.center,
-          ),
-        );
-      },
-    );
-  }
-
-
 }

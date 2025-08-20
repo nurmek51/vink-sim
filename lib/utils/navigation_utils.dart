@@ -21,9 +21,15 @@ class NavigationService {
     context.push('${AppRoutes.settingEsim}$qp');
   }
 
-  static void openEsimSetupPage(BuildContext context) {
-    context.push(AppRoutes.esimSetup);
-  }
+  static void openEsimSetupPage(
+    BuildContext context, {
+    bool isActivatedEsimScreen = false,
+  }) {
+    context.push(
+      AppRoutes.esimSetup,
+      extra: {'isActivatedEsimScreen': isActivatedEsimScreen},
+    );
+}
 
   static void openTopUpBalanceScreen(BuildContext context, {String? imsi, bool isNewEsim = false}) {
     context.push(AppRoutes.topUpBalance, extra: {'imsi': imsi, 'isNewEsim': isNewEsim});

@@ -108,14 +108,17 @@ class AppRouter {
           GoRoute(
             path: AppRoutes.esimSetup,
             name: AppRoutes.esimSetupName,
-            pageBuilder:
-                (context, state) => _buildPageWithSlideTransition(
-                  context,
-                  state,
-                  const EsimSetupPage(),
-                ),
+            pageBuilder: (context, state) {
+              final isActivated =
+                  state.extra != null &&
+                  (state.extra as Map)['isActivatedEsimScreen'] == true;
+              return _buildPageWithSlideTransition(
+                context,
+                state,
+                EsimSetupPage(isActivatedEsimScreen: isActivated),
+              );
+            },
           ),
-
           GoRoute(
             path: AppRoutes.settingEsim,
             pageBuilder: (context, state) {

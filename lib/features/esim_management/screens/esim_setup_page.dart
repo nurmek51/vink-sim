@@ -20,7 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EsimSetupPage extends StatefulWidget {
-  const EsimSetupPage({super.key});
+  final bool isActivatedEsimScreen;
+  const EsimSetupPage({super.key, this.isActivatedEsimScreen = false});
 
   @override
   State<EsimSetupPage> createState() => _EsimSetupPageState();
@@ -222,9 +223,9 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Column(
-                children: [SizedBox(height: 16), BottomSetupContainer()],
+                children: [SizedBox(height: 16), BottomSetupContainer(isActivatedEsimScreen: widget.isActivatedEsimScreen)],
               ),
             ),
           ],
@@ -259,7 +260,11 @@ Widget _buildSelectedBody(
         errorMessage: errorMessage,
       );
     case AppLocalizations.toAnotherDeviceSelectedRow:
-      return const AnotherDeviceSelectedBody();
+      return AnotherDeviceSelectedBody(
+        qrCode: qrCode,
+        isLoading: isLoading,
+        errorMessage: errorMessage,
+      );
     default:
       return const SizedBox.shrink();
   }
