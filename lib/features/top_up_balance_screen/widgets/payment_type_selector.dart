@@ -1,5 +1,7 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/platform_device/platform_detector_mobile.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/coming_soon_modal.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,11 +9,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PaymentTypeSelector extends StatelessWidget {
   const PaymentTypeSelector({super.key});
 
-  static const List<Map<String, String>> paymentMethods = [
-    {'logo': 'apple_pay_logo', 'method': 'apple_pay'},
-    {'logo': 'crypto', 'method': 'crypto'},
-    {'logo': 'credCard', 'method': 'credit_card'},
-  ];
+  static List<Map<String, dynamic>> get paymentMethods {
+    List<Map<String, dynamic>> methods = [
+      {'logo': 'credCard', 'method': 'credit_card', 'enabled': true},
+    ];
+
+    if (PlatformDetector.isIos) {
+      methods.insert(0, {
+        'logo': 'apple_pay_logo',
+        'method': 'apple_pay',
+        'enabled': true,
+      });
+    } else if (PlatformDetector.isAndroid) {
+      methods.insert(0, {
+        'logo': 'google_pay_logo',
+        'method': 'google_pay',
+        'enabled': true,
+      });
+    }
+
+    methods.add({'logo': 'crypto', 'method': 'crypto', 'enabled': false});
+
+    return methods;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +47,15 @@ class PaymentTypeSelector extends StatelessWidget {
             return PaymentTypeWidget(
               logo: payment['logo']!,
               isSelected: isSelected,
+              enabled: payment['enabled'] ?? true,
               onTap: () {
-                context.read<TopUpBalanceBloc>().add(
-                  SelectPaymentMethod(payment['method']!),
-                );
+                if (payment['enabled'] == false) {
+                  ComingSoonModal.show(context, payment['method']!);
+                } else {
+                  context.read<TopUpBalanceBloc>().add(
+                    SelectPaymentMethod(payment['method']!),
+                  );
+                }
               },
             );
           }),
@@ -43,6 +68,7 @@ class PaymentTypeSelector extends StatelessWidget {
 class PaymentTypeWidget extends StatelessWidget {
   final String logo;
   final bool isSelected;
+  final bool enabled;
   final VoidCallback onTap;
 
   const PaymentTypeWidget({
@@ -50,6 +76,7 @@ class PaymentTypeWidget extends StatelessWidget {
     required this.logo,
     required this.isSelected,
     required this.onTap,
+    this.enabled = true,
   });
 
   @override
@@ -77,6 +104,42 @@ class PaymentTypeWidget extends StatelessWidget {
                 right: -1,
                 child: Assets.icons.selectedCardIcon.svg(),
               ),
+            if (!enabled)
+              Positioned(
+                top: 6,
+                right: 6,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.orange.shade400,
+                        Colors.orange.shade600,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.orange.withValues(alpha: 0.3),
+                        blurRadius: 3,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'SOON',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -90,14 +153,30 @@ class PaymentTypeWidget extends StatelessWidget {
           colorFilter:
               isSelected
                   ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-                  : const ColorFilter.mode(AppColors.lightSteelBlue, BlendMode.srcIn),
+                  : const ColorFilter.mode(
+                    AppColors.lightSteelBlue,
+                    BlendMode.srcIn,
+                  ),
+        );
+      case 'google_pay_logo':
+        return Assets.icons.applePayLogo.svg(
+          colorFilter:
+              isSelected
+                  ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+                  : const ColorFilter.mode(
+                    AppColors.lightSteelBlue,
+                    BlendMode.srcIn,
+                  ),
         );
       case 'crypto':
         return Assets.icons.crypto.svg(
           colorFilter:
               isSelected
                   ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-                  : const ColorFilter.mode(AppColors.lightSteelBlue, BlendMode.srcIn),
+                  : const ColorFilter.mode(
+                    AppColors.lightSteelBlue,
+                    BlendMode.srcIn,
+                  ),
         );
       case 'credCard':
         return ColorFiltered(

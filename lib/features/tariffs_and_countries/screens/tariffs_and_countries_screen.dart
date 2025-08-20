@@ -6,6 +6,7 @@ import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc
 import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_state.dart';
 import 'package:flex_travel_sim/features/tariffs_and_countries/widgets/country_list_tile.dart';
+import 'package:flex_travel_sim/features/tariffs_and_countries/widgets/sort_selector.dart';
 import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/shared/widgets/start_registration_button.dart';
@@ -53,11 +54,11 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
     for (final operator in operators) {
       grouped.putIfAbsent(operator.countryName, () => []).add(operator);
     }
-    
-    // Sort countries by number of operators (descending)
-    final sortedEntries = grouped.entries.toList()
-      ..sort((a, b) => b.value.length.compareTo(a.value.length));
-    
+
+    final sortedEntries =
+        grouped.entries.toList()
+          ..sort((a, b) => b.value.length.compareTo(a.value.length));
+
     return Map.fromEntries(sortedEntries);
   }
 
@@ -82,8 +83,9 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
           child: Container(color: Colors.grey.shade300, height: 1),
         ),
       ),
-      bottomNavigationBar: widget.isAuthorized
-          ? Padding(
+      bottomNavigationBar:
+          widget.isAuthorized
+              ? Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20.0,
                 ).copyWith(bottom: 30, top: 12),
@@ -116,6 +118,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
               ),
             ),
             const SizedBox(height: 20),
+            const SortSelector(),
             Expanded(
               child: BlocBuilder<TariffsBloc, TariffsState>(
                 builder: (context, state) {
@@ -161,10 +164,16 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                       itemBuilder: (context, index) {
                         final country = countries[index];
                         final operators = operatorsToShow[country]!;
-                        final pricePerGB =
-                            state.pricePerGbByCountry[country] ?? 0.0;
 
-                        // Use PLMN code from first operator for more accurate country mapping
+                        final pricePerGB =
+                            state.cheapestPricesByCountryOrdered[country] ??
+                            (operators.isNotEmpty
+                                ? operators
+                                        .map((op) => op.dataRate)
+                                        .reduce((a, b) => a < b ? a : b) *
+                                    1024
+                                : 0.0);
+
                         final firstOperator = operators.first;
                         final countryCode =
                             CountryCodeUtils.getCountryCodeEnhanced(

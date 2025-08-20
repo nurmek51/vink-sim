@@ -1,57 +1,101 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/coming_soon_modal.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 
 class AutoTopUpContainer extends StatelessWidget {
   const AutoTopUpContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      height: 100,
-      decoration: BoxDecoration(
-        color: AppColors.containerGray,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () => ComingSoonModal.show(context, 'Auto Top-Up'),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.containerGray.withValues(alpha: 0.8),
+              AppColors.containerGray.withValues(alpha: 0.6),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.grey.withValues(alpha: 0.2),
+            width: 1,
+          ),
+        ),
+        child: Stack(
+          children: [
+            Row(
               children: [
-                LocalizedText(
-                  AppLocalizations.autoTopUp,
-                  style: FlexTypography.paragraph.medium.copyWith(
-                    fontWeight: FontWeight.bold,
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.flash_on,
+                    color: Colors.orange.shade600,
+                    size: 28,
                   ),
                 ),
-                const SizedBox(height: 5),
-                LocalizedText(
-                  AppLocalizations.autoTopUpDescription,
-                  style: FlexTypography.paragraph.small,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          LocalizedText(
+                            AppLocalizations.autoTopUp,
+                            style: FlexTypography.paragraph.medium.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.orange.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              'SOON',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange.shade700,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      LocalizedText(
+                        AppLocalizations.autoTopUpDescription,
+                        style: FlexTypography.paragraph.small.copyWith(
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-          BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
-            builder: (context, state) {
-              return CupertinoSwitch(
-                value: state.autoTopUpEnabled,
-                onChanged:
-                    (value) => context.read<TopUpBalanceBloc>().add(
-                      ToggleAutoTopUp(value),
-                    ),
-                activeTrackColor: CupertinoColors.systemBlue,
-              );
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

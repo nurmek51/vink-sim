@@ -1,3 +1,5 @@
+import 'package:flex_travel_sim/features/tariffs_and_countries/data/models/sort_type.dart';
+
 abstract class TariffsEvent {
   const TariffsEvent();
 }
@@ -20,4 +22,10 @@ class SearchTariffsEvent extends TariffsEvent {
   final String query;
   
   const SearchTariffsEvent(this.query);
+}
+
+class SortTariffsEvent extends TariffsEvent {
+  final CountrySortType sortType;
+  
+  const SortTariffsEvent(this.sortType);
 }

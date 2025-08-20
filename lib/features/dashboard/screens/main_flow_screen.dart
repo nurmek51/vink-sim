@@ -12,8 +12,10 @@ import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/models/imsi_model.dart';
 import 'package:flex_travel_sim/features/subscriber/services/subscriber_local_service.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:async';
 import 'package:flex_travel_sim/features/dashboard/widgets/add_esim_circle.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
+import 'package:flex_travel_sim/features/dashboard/widgets/inactive_esim_widget.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/percentage_widget.dart';
 import 'package:flex_travel_sim/features/dashboard/widgets/percentage_shimmer_widget.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
@@ -70,11 +72,14 @@ class MainFlowScreen extends StatefulWidget {
 class _MainFlowScreenState extends State<MainFlowScreen> {
   final PageController _pageController = PageController(viewportFraction: 0.9);
   bool _hasUserScrolled = false;
+  Timer? _refreshTimer;
+  String? _lastDataHash;
 
   @override
   void initState() {
     super.initState();
     _loadSubscriberDataIfNeeded();
+    _startPeriodicRefresh();
 
     context.read<MainFlowBloc>().add(PageChangedEvent(0));
     _hasUserScrolled = false;
@@ -96,9 +101,76 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     }
   }
 
+  Future<void> _onRefresh() async {
+    final authDataSource = sl.get<AuthLocalDataSource>();
+    try {
+      final token = await authDataSource.getToken();
+      if (token != null && mounted) {
+        context.read<SubscriberBloc>().add(
+          RefreshSubscriberInfoEvent(token: token),
+        );
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('MainFlowScreen: Error refreshing data: $e');
+      }
+    }
+  }
+
+  void _startPeriodicRefresh() {
+    _refreshTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      if (mounted) {
+        _periodicRefresh();
+      }
+    });
+  }
+
+  void _periodicRefresh() async {
+    final authDataSource = sl.get<AuthLocalDataSource>();
+    try {
+      final token = await authDataSource.getToken();
+      if (token != null && mounted) {
+        // Get current subscriber state to check if data has changed
+        final currentState = context.read<SubscriberBloc>().state;
+        if (currentState is SubscriberLoaded) {
+          final currentDataHash = _generateDataHash(currentState.subscriber.imsiList);
+          
+          // Only refresh if data might have changed
+          if (_lastDataHash != currentDataHash) {
+            if (kDebugMode) {
+              print('MainFlowScreen: Data changed, refreshing...');
+            }
+            context.read<SubscriberBloc>().add(
+              RefreshSubscriberInfoEvent(token: token),
+            );
+            _lastDataHash = currentDataHash;
+          }
+        } else {
+          // If not loaded, try to refresh
+          context.read<SubscriberBloc>().add(
+            RefreshSubscriberInfoEvent(token: token),
+          );
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('MainFlowScreen: Error in periodic refresh: $e');
+      }
+    }
+  }
+
+  String _generateDataHash(List<dynamic> imsiList) {
+    // Generate a simple hash based on IMSI data to detect changes
+    final dataString = imsiList.map((imsi) => 
+      '${imsi.imsi}_${imsi.balance}_${imsi.country}'
+    ).join('|');
+    return dataString.hashCode.toString();
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
+    _refreshTimer?.cancel();
     super.dispose();
   }
 
@@ -134,6 +206,8 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
             length: state.subscriber.imsiList.length,
             screenRoute: 'MainFlowScreen',
           );
+          // Update data hash for optimization
+          _lastDataHash = _generateDataHash(state.subscriber.imsiList);
         }
       },
       child: BlocBuilder<MainFlowBloc, MainFlowState>(
@@ -194,203 +268,183 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
               backgroundColor: AppColors.backgroundColorLight,
               body: SafeArea(
                 child: RefreshIndicator(
-                    onRefresh: () async {
-                      _pageController.jumpToPage(0);
-                      await _loadSubscriberDataIfNeeded();
-                      await Future.delayed(const Duration(seconds: 3));
-                    },
-                    color: Colors.blue,
-                    backgroundColor: Colors.white,
+                  onRefresh: _onRefresh,
                   child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                        bottom: 50,
-                        left: 20,
-                        right: 20,
-                      ),
-                      child: Column(
-                        children: [
-                          Header(
-                            color: AppColors.grayBlue,
-                            faqOnTap: () => openGuidePage(context),
-                            avatarOnTap: () => openMyAccountScreen(context),
-                          ),
-                          SizedBox(height: isSmallOrDesktop ? 0 : 15),
-                          SizedBox(
-                            height: isSmall ? 309 : 320,
-                            child: PageView.builder(
-                              controller: _pageController,
-                              clipBehavior: Clip.none,
-                              itemCount: itemCount,
-                              onPageChanged: (index) {
-                                if (!_hasUserScrolled) {
-                                  setState(() {
-                                    _hasUserScrolled = true;
-                                  });
-                                }
-                                context.read<MainFlowBloc>().add(
-                                  PageChangedEvent(index),
-                                );
-                              },
-                              itemBuilder: (context, index) {
-                                if (index < actualCount) {
-                                  if (isLoading && loadedImsiList.isEmpty) {
-                                    return AnimatedScale(
-                                      scale:
-                                          !_hasUserScrolled
-                                              ? 1.0
-                                              : (mainFlowState.currentPage ==
-                                                      index
-                                                  ? 1.0
-                                                  : 0.9),
-                                      duration: const Duration(milliseconds: 300),
-                                      curve: Curves.easeOut,
-                                      child: const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                        ),
-                                        child: PercentageShimmerWidget(),
-                                      ),
-                                    );
-                                  }
-                  
-                                  final imsi = displayList[index];
-                                  final availableGB = calculateAvailableGB(
-                                    imsi.balance,
-                                    imsi.rate ?? 1024.0,
-                                  );
-                                  final isYellow =
-                                      availableGB > 0 && availableGB <= 1.0;
-                  
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                      bottom: 50,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        Header(
+                          color: AppColors.grayBlue,
+                          faqOnTap: () => openGuidePage(context),
+                          avatarOnTap: () => openMyAccountScreen(context),
+                        ),
+                        SizedBox(height: isSmallOrDesktop ? 0 : 15),
+                        SizedBox(
+                          height: isSmall ? 309 : 320,
+                          child: PageView.builder(
+                            controller: _pageController,
+                            clipBehavior: Clip.none,
+                            itemCount: itemCount,
+                            onPageChanged: (index) {
+                              if (!_hasUserScrolled) {
+                                setState(() {
+                                  _hasUserScrolled = true;
+                                });
+                              }
+                              context.read<MainFlowBloc>().add(
+                                PageChangedEvent(index),
+                              );
+                            },
+                            itemBuilder: (context, index) {
+                              if (index < actualCount) {
+                                if (isLoading && loadedImsiList.isEmpty) {
                                   return AnimatedScale(
                                     scale:
                                         !_hasUserScrolled
                                             ? 1.0
-                                            : (mainFlowState.currentPage == index
+                                            : (mainFlowState.currentPage ==
+                                                    index
                                                 ? 1.0
                                                 : 0.9),
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeOut,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(
                                         horizontal: 10,
                                       ),
-                                      child: PercentageWidget(
-                                        imsi: imsi.imsi,
-                                        progressValue: availableGB,
-                                        color:
-                                            ProgressColorUtils.getProgressColor(
-                                              availableGB,
-                                            ),
-                                        isYellow: isYellow,
-                                        backgroundColor:
-                                            ProgressColorUtils.getProgressBackgroundColor(
-                                              availableGB,
-                                            ),
-                                        balance: imsi.balance,
-                                        country: imsi.country,
-                                        rate: imsi.rate,
-                                      ),
+                                      child: PercentageShimmerWidget(),
                                     ),
                                   );
-                                } else {
-                                  return AnimatedScale(
-                                      scale:
-                                          !_hasUserScrolled
-                                              ? 1.0
-                                              : (mainFlowState.currentPage ==
-                                                      index
-                                                  ? 1.0
-                                                  : 0.9),
-                                      duration: const Duration(milliseconds: 300),
-                                      curve: Curves.easeOut,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                        ),
-                                        child: AddEsimCircle(
-                                          canAdd: canAdd,
-                                          onAddButtonPressed: () {
-                                            final currentPageImsi =
-                                                mainFlowState.currentPage <
-                                                        displayList.length
-                                                    ? displayList[mainFlowState
-                                                            .currentPage]
-                                                        .imsi
-                                                    : null;
-                                            NavigationService.openTopUpBalanceScreen(
-                                              context,
-                                              imsi: currentPageImsi,
-                                              isNewEsim: true,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    );
                                 }
-                              },
+
+                                final imsi = displayList[index];
+                                final availableGB = calculateAvailableGB(
+                                  imsi.balance,
+                                  imsi.rate ?? 1024.0,
+                                );
+                                final isYellow =
+                                    availableGB > 0 && availableGB <= 1.0;
+                                final isInactive = ProgressColorUtils.isInactiveEsim(imsi.country);
+
+                                return AnimatedScale(
+                                  scale:
+                                      !_hasUserScrolled
+                                          ? 1.0
+                                          : (mainFlowState.currentPage == index
+                                              ? 1.0
+                                              : 0.9),
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeOut,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: isInactive 
+                                        ? const InactiveEsimWidget()
+                                        : PercentageWidget(
+                                            imsi: imsi.imsi,
+                                            progressValue: availableGB,
+                                            color:
+                                                ProgressColorUtils.getProgressColor(
+                                                  availableGB,
+                                                  country: imsi.country,
+                                                ),
+                                            isYellow: isYellow,
+                                            backgroundColor:
+                                                ProgressColorUtils.getProgressBackgroundColor(
+                                                  availableGB,
+                                                  country: imsi.country,
+                                                ),
+                                            balance: imsi.balance,
+                                            country: imsi.country,
+                                            rate: imsi.rate,
+                                          ),
+                                  ),
+                                );
+                              } else {
+                                return AddEsimCircle(
+                                  canAdd: canAdd,
+                                  onAddButtonPressed:
+                                      () {
+                                        final currentPageImsi = mainFlowState.currentPage < displayList.length 
+                                            ? displayList[mainFlowState.currentPage].imsi 
+                                            : null;
+                                        NavigationService.openTopUpBalanceScreen(
+                                          context,
+                                          imsi: currentPageImsi,
+                                          isNewEsim: true,
+                                        );
+                                      },
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        SizedBox(height: isSmallOrDesktop ? 2 : 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            itemCount,
+                            (index) => AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color:
+                                    mainFlowState.currentPage == index
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
                             ),
                           ),
-                          SizedBox(height: isSmallOrDesktop ? 2 : 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                              itemCount,
-                              (index) => AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                margin: const EdgeInsets.symmetric(horizontal: 4),
-                                width: 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  color:
-                                      mainFlowState.currentPage == index
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
+                        ),
+
+                        SizedBox(height: isSmallOrDesktop ? 3 : 16),
+                        Row(
+                          children: [
+                            ExpandedContainer(
+                              title: AppLocalizations.howToInstallEsim2,
+                              icon: Assets.icons.simIcon.path,
+                              onTap: () => openEsimSetupPage(context),
                             ),
-                          ),
-                  
-                          SizedBox(height: isSmallOrDesktop ? 3 : 16),
-                          Row(
-                            children: [
-                              ExpandedContainer(
-                                title: AppLocalizations.howToInstallEsim2,
-                                icon: Assets.icons.simIcon.path,
-                                onTap: () => openEsimSetupPage(context),
-                              ),
-                              const SizedBox(width: 16),
-                              ExpandedContainer(
-                                title: AppLocalizations.supportChat,
-                                icon: Assets.icons.telegramIcon.path,
-                                onTap: () => _showBottomSheet(context),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 12),
-                          Row(
-                            children: [
-                              ExpandedContainer(
-                                title: AppLocalizations.questionsAndAnswers,
-                                icon: Assets.icons.faqIconFull.path,
-                                onTap: () => openGuidePage(context),
-                              ),
-                              const SizedBox(width: 16),
-                              ExpandedContainer(
-                                title: AppLocalizations.countriesAndRates,
-                                icon: Assets.icons.globus.path,
-                                onTap: () => openTariffsAndCountriesPage(context),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            const SizedBox(width: 16),
+                            ExpandedContainer(
+                              title: AppLocalizations.supportChat,
+                              icon: Assets.icons.telegramIcon.path,
+                              onTap: () => _showBottomSheet(context),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        Row(
+                          children: [
+                            ExpandedContainer(
+                              title: AppLocalizations.questionsAndAnswers,
+                              icon: Assets.icons.faqIconFull.path,
+                              onTap: () => openGuidePage(context),
+                            ),
+                            const SizedBox(width: 16),
+                            ExpandedContainer(
+                              title: AppLocalizations.countriesAndRates,
+                              icon: Assets.icons.globus.path,
+                              onTap: () => openTariffsAndCountriesPage(context),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
+                  ),
                 ),
               );
             },
