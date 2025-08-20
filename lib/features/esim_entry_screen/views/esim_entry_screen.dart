@@ -1,11 +1,13 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/auth/presentation/widgets/auth_intro_bottomsheet_content.dart';
+import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
+import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/benefit_tile.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/country_list_button.dart';
 import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
-import 'package:flex_travel_sim/features/subscriber/services/subscriber_local_service.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -34,8 +36,6 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
       begin: 1.0,
       end: 0.8,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-
-     SubscriberLocalService.resetImsiList(screenRoute: 'Esim Entry Screen');
   }
 
   @override
@@ -62,107 +62,201 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
             child: PulsingCircle(animation: _scaleAnimation, size: _circleSize),
           ),
 
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 5, 20, 8),
-            child: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 45),
-                  Row(
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 5, 20, 8),
+                child: SafeArea(
+                  child: Column(
                     children: [
-                      Assets.icons.figma149.whiteLogo.svg(
-                        width: 39.5,
-                        height: 25.06,
+                      const SizedBox(height: 45),
+                      Row(
+                        children: [
+                          Assets.icons.figma149.whiteLogo.svg(
+                            width: 39.5,
+                            height: 25.06,
+                          ),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: () => openTariffsAndCountriesPage(context),
+                            child: Assets.icons.figma149.moneyIcon.svg(
+                              width: 28,
+                              height: 30,
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          GestureDetector(
+                            onTap: () => openMyAccountScreen(context),
+                            child: Assets.icons.figma149.profileIcon.svg(
+                              width: 28,
+                              height: 30,
+                            ),
+                          ),
+                        ],
                       ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () => openTariffsAndCountriesPage(context),
-                        child: Assets.icons.figma149.moneyIcon.svg(
-                          width: 28,
-                          height: 30,
+
+                      const SizedBox(height: 20),
+
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: HelveticaneueFont(
+                          text: AppLocalizations.frameTitle,
+                          fontSize: 28,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(width: 12),
-                      GestureDetector(
-                        onTap: () => openMyAccountScreen(context),
-                        child: Assets.icons.figma149.profileIcon.svg(
-                          width: 28,
-                          height: 30,
-                        ),
+
+                      const SizedBox(height: 30),
+
+                      BenefitTile(
+                        icon: Assets.icons.figma149.column1.path,
+                        title: AppLocalizations.countriesInOneEsim,
                       ),
+                      SizedBox(height: 12),
+                      BenefitTile(
+                        icon: Assets.icons.figma149.column2.path,
+                        title: AppLocalizations.frameCheckTitle,
+                      ),
+                      SizedBox(height: 12),
+                      BenefitTile(
+                        icon: Assets.icons.figma149.column3.path,
+                        title: AppLocalizations.infinityTitle,
+                      ),
+                      SizedBox(height: 12),
+                      BenefitTile(
+                        icon: Assets.icons.figma149.column4.path,
+                        title: AppLocalizations.highSpeedLowCost,
+                      ),
+
+                      const SizedBox(height: 15),
                     ],
                   ),
-          
-                  const SizedBox(height: 20),
-          
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: HelveticaneueFont(
-                      text: AppLocalizations.frameTitle,
-                      fontSize: 28,
+                ),
+              ),
+
+              Flexible(
+                fit: FlexFit.loose,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxHeight: 450,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24),
+                        topRight: Radius.circular(24),
+                      ),
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 5, 16, 30),
+                      child: isEsimEntryScreenScrollable(context)
+                              ? SingleChildScrollView(child: BuildContainerBody())
+                              : BuildContainerBody(),
                     ),
                   ),
-          
-                  const SizedBox(height: 30),
-          
-                  BenefitTile(
-                    icon: Assets.icons.figma149.column1.path,
-                    title: AppLocalizations.countriesInOneEsim,
-                  ),
-                  SizedBox(height: 12),
-                  BenefitTile(
-                    icon: Assets.icons.figma149.column2.path,
-                    title: AppLocalizations.frameCheckTitle,
-                  ),
-                  SizedBox(height: 12),
-                  BenefitTile(
-                    icon: Assets.icons.figma149.column3.path,
-                    title: AppLocalizations.infinityTitle,
-                  ),
-                  SizedBox(height: 12),
-                  BenefitTile(
-                    icon: Assets.icons.figma149.column4.path,
-                    title: AppLocalizations.highSpeedLowCost,
-                  ),
-          
-                  const SizedBox(height: 30),
-          
-                  WhatIsEsimButton(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) {
-                          return Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
-                            ),
-                            child: SingleChildScrollView(
-                              child: AuthIntroBottomsheetContent(
-                                onActivateTap: () {
-                                  NavigationService.openTopUpBalanceScreen(context);
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-          
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class BuildContainerBody extends StatelessWidget {
+  const BuildContainerBody({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 25),
+        Row(
+          children: [
+            ExpandedContainer(
+              title: AppLocalizations.howToInstallEsim2,
+              icon: Assets.icons.figma149.blueIcon11.path,
+              onTap: () => openEsimSetupPage(context),
+            ),
+            const SizedBox(width: 16),
+            ExpandedContainer(
+              title: AppLocalizations.supportChat,
+              icon: Assets.icons.figma149.blueIcon22.path,
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
+                  ),
+                  builder:
+                      (context) => Padding(
+                        padding: EdgeInsets.only(
+                          bottom:
+                              MediaQuery.of(
+                                context,
+                              ).viewInsets.bottom,
+                        ),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: BottomSheetContent(),
+                        ),
+                      ),
+                );
+              },
+            ),
+          ],
+        ),
+        SizedBox(height: 20),
+        Row(
+          children: [
+            ExpandedContainer(
+              title: AppLocalizations.howDoesItWork,
+              icon: Assets.icons.figma149.blueIcon33.path,
+              onTap: () => openGuidePage(context),
+            ),
+            const SizedBox(width: 16),
+            ExpandedContainer(
+              title: AppLocalizations.countriesAndRates,
+              icon: Assets.icons.figma149.blueIcon44.path,
+              onTap: () => openTariffsAndCountriesPage(context),
+            ),
+          ],
+        ),
+                      
+        isEsimEntryScreenScrollable(context)
+            ? const SizedBox(height: 20)
+            : Spacer(),
+                      
+        GestureDetector(
+          onTap: () => openTopUpBalanceScreen(context),
+          child: Container(
+            alignment: Alignment.center,
+            height: 52,
+            decoration: BoxDecoration(
+              gradient: AppColors.containerGradientPrimary,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const LocalizedText(
+              AppLocalizations.activateEsim,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+    
+      ],
     );
   }
 }

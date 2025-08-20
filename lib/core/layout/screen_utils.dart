@@ -16,3 +16,7 @@ bool isSmallScreen(BuildContext context) {
 bool isTopUpScreenScrollable(BuildContext context) {
   return screenHeight(context) < 830;
 }
+
+bool isEsimEntryScreenScrollable(BuildContext context) {
+  return screenHeight(context) < 750;
+}
