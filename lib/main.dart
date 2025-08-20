@@ -1,5 +1,6 @@
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
+import 'package:flex_travel_sim/core/services/token_manager.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -44,6 +45,19 @@ void main() async {
   Stripe.publishableKey = stripePublishableKey;
 
   await sl.init();
+
+  // Initialize token manager for automatic token refresh
+  try {
+    final tokenManager = sl.get<TokenManager>();
+    tokenManager.initialize();
+    if (kDebugMode) {
+      print('TokenManager initialized successfully');
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('TokenManager initialization failed: $e');
+    }
+  }
 
   await Future.delayed(const Duration(seconds: 2));
 
