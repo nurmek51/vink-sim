@@ -32,6 +32,7 @@ import 'package:flex_travel_sim/features/user_account/domain/use_cases/update_us
 import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/data/data_sources/subscriber_remote_data_source.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:flex_travel_sim/core/services/token_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -161,6 +162,11 @@ class ServiceLocator {
       SendPasswordResetUseCase(get<FirebaseAuthRepositoryImpl>()),
     );
 
+    // Token Manager
+    register<TokenManager>(
+      TokenManager(authLocalDataSource: get<AuthLocalDataSource>()),
+    );
+
     // Blocs
 
     register<OtpAuthBloc>(
@@ -274,6 +280,11 @@ class ServiceLocator {
 
   void dispose() {
     // Dispose any services that need cleanup
+    final tokenManager = _services[TokenManager];
+    if (tokenManager != null) {
+      (tokenManager as TokenManager).dispose();
+    }
+    
     final apiClient = _services[ApiClient];
     if (apiClient != null) {
       (apiClient as ApiClient).dispose();

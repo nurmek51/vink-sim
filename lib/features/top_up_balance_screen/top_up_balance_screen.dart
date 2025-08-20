@@ -18,6 +18,7 @@ import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/counter_widget.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/payment_type_selector.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/sim_card_selection_modal.dart';
+import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/sim_card_shimmer_widget.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
@@ -137,7 +138,10 @@ class _TopUpBalanceViewState extends State<_TopUpBalanceView> {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             sliver: SliverToBoxAdapter(
-              child: TopUpBalanceContent(imsi: widget.imsi, isNewEsim: widget.isNewEsim),
+              child: TopUpBalanceContent(
+                imsi: widget.imsi,
+                isNewEsim: widget.isNewEsim,
+              ),
             ),
           ),
         ],
@@ -197,49 +201,54 @@ class TopUpBalanceContent extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (simCards.isNotEmpty && simCards.any((card) => card.balance > 0) && !isNewEsim) ...[
-                  LocalizedText(
-                    AppLocalizations.selectSimCard,
-                    style: FlexTypography.label.medium,
-                  ),
-                  SizedBox(height: 16),
-                  GestureDetector(
-                    onTap:
-                        () => _showSimCardSelectionModal(
-                          context,
-                          simCards,
-                          selectedSimCard?.imsi ?? simCards.first.imsi,
+                if (!isNewEsim) ...[
+                  if (subscriberState is SubscriberLoading)
+                    const SimCardShimmerWidget()
+                  else if (simCards.isNotEmpty &&
+                      simCards.any((card) => card.balance > 0)) ...[
+                    LocalizedText(
+                      AppLocalizations.selectSimCard,
+                      style: FlexTypography.label.medium,
+                    ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap:
+                          () => _showSimCardSelectionModal(
+                            context,
+                            simCards,
+                            selectedSimCard?.imsi ?? simCards.first.imsi,
+                          ),
+                      child: Container(
+                        height: 52,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE7EFF7),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                    child: Container(
-                      height: 52,
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE7EFF7),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          Assets.icons.simIcon.svg(
-                            colorFilter: const ColorFilter.mode(
-                              Colors.black,
-                              BlendMode.srcIn,
+                        child: Row(
+                          children: [
+                            Assets.icons.simIcon.svg(
+                              colorFilter: const ColorFilter.mode(
+                                Colors.black,
+                                BlendMode.srcIn,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 6),
-                          Text(
-                            selectedSimCard?.country ??
-                                (simCards.isNotEmpty
-                                    ? simCards.first.country
-                                    : null) ??
-                                AppLocalizations.simCardDefault.tr(),
-                          ),
-                          Spacer(),
-                          Assets.icons.arrowDown.svg(),
-                        ],
+                            const SizedBox(width: 6),
+                            Text(
+                              selectedSimCard?.country ??
+                                  (simCards.isNotEmpty
+                                      ? simCards.first.country
+                                      : null) ??
+                                  AppLocalizations.simCardDefault.tr(),
+                            ),
+                            const Spacer(),
+                            Assets.icons.arrowDown.svg(),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 30),
+                    const SizedBox(height: 30),
+                  ],
                 ],
                 LocalizedText(
                   AppLocalizations.enterAmountTopUpDescription,
