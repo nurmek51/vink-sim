@@ -7,7 +7,8 @@ import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class BottomSetupContainer extends StatelessWidget {
-  const BottomSetupContainer({super.key});
+  final bool isActivatedEsimScreen;
+  const BottomSetupContainer({super.key, this.isActivatedEsimScreen = false});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,13 @@ class BottomSetupContainer extends StatelessWidget {
             ),
             SizedBox(height: 30),
             GestureDetector(
-              onTap: () => NavigationService.pop(context),
+              onTap: () {
+                if (isActivatedEsimScreen) {
+                  NavigationService.openMainFlowScreen(context);
+                } else {
+                  NavigationService.pop(context);
+                }
+              },
               child: BlueButton(buttonText: AppLocalizations.close),
             ),
             SizedBox(height: 30),

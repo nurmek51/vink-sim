@@ -48,9 +48,11 @@ class EsimSuccessContainer extends StatelessWidget {
 
             DownloadButton(
               text: AppLocalizations.download,
-              onTap: () => openEsimSetupPage(context),
+              onTap: () => NavigationService.openEsimSetupPage(
+                context,
+                isActivatedEsimScreen: true,
+              ),
             ),
-
           ],
         ),
       ),
