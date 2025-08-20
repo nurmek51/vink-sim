@@ -21,7 +21,6 @@ class WhatIsEsimButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        width: 227,
         height: 44,
         decoration: BoxDecoration(
           color: Colors.transparent,
@@ -29,21 +28,28 @@ class WhatIsEsimButton extends StatelessWidget {
           border: Border.all(color: AppColors.textColorLight, width: 1),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Assets.icons.simIcon.svg(),
-            SizedBox(width: 12),
-            LocalizedText(
-              buttonTitle!,
-              style: FlexTypography.paragraph.xMedium.copyWith(
-                fontWeight: FontWeight.w500,
-                color: AppColors.textColorLight,
+            const SizedBox(width: 12),
+            Flexible(
+              child: LocalizedText(
+                buttonTitle!,
+                style: FlexTypography.paragraph.xMedium.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textColorLight,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Spacer(),
+            const SizedBox(width: 12),
             SvgPicture.asset(
               Assets.icons.arrowRight.path,
-              color: AppColors.textColorLight,
+              colorFilter: ColorFilter.mode(
+                AppColors.textColorLight,
+                BlendMode.srcIn,
+              ),
             ),
           ],
         ),
