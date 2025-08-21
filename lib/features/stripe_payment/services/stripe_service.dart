@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flex_travel_sim/core/platform_device/platform_detector.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -103,6 +104,9 @@ class StripeService {
             currencyCode: 'USD',
             testEnv: true,
           ),
+          applePay: PaymentSheetApplePay(
+            merchantCountryCode: 'US',
+          ),
         ),
       );
       return await _proccessPayment();
@@ -201,6 +205,74 @@ class StripeService {
     return StripePaymentResult.failure;
   }
 }
+
+  Future<StripePaymentResult> makeApplePayPayment({
+    required int amount,
+    String currency = 'usd',
+    required StripeOperationType operationType,
+    String? imsi,
+  }) async {
+    try {
+      String? paymentIntentClientSecret = await _createPaymentIntent(
+        amount: amount, 
+        currency: currency,
+        userId: _userId,
+        operationType: operationType,
+        imsi: imsi,
+      );
+      if (paymentIntentClientSecret == null) return StripePaymentResult.failure;
+
+      if (kDebugMode) {
+        print("StripeService: Apple Pay операция ${operationType.name} успешно инициирована");
+      }
+
+      // Check if running on simulator
+      if (PlatformDetector.isSimulator) {
+        if (kDebugMode) {
+          print('Apple Pay не работает на симуляторе iOS. Требуется реальное устройство iPhone с настроенными картами в Wallet.');
+        }
+        return StripePaymentResult.failure;
+      }
+
+      final supported = await Stripe.instance.isPlatformPaySupported();
+
+      if (!supported) {
+        if (kDebugMode) {
+          print('Apple Pay не поддерживается на этом устройстве. Убедитесь что в Wallet добавлены карты и включен Touch ID/Face ID.');
+        }
+        return StripePaymentResult.failure;
+      }
+
+      await Stripe.instance.confirmPlatformPayPaymentIntent(
+        clientSecret: paymentIntentClientSecret,
+        confirmParams: PlatformPayConfirmParams.applePay(
+          applePay: ApplePayParams(
+            cartItems: [
+              ApplePayCartSummaryItem.immediate(
+                label: 'FlexTravelSIM',
+                amount: (amount * 100).toString(),
+              ),
+            ],
+            merchantCountryCode: 'US',
+            currencyCode: 'USD',
+          ),
+        ),
+      );
+
+      return StripePaymentResult.success;
+    } on StripeException catch (e) {
+      if (e.error.code == FailureCode.Canceled) {
+        if (kDebugMode) print('Apple Pay cancelled by user');
+        return StripePaymentResult.cancelled;
+      } else {
+        if (kDebugMode) print('StripeException during Apple Pay: $e');
+        return StripePaymentResult.failure;
+      }
+    } catch (e) {
+      if (kDebugMode) print('Unknown error during Apple Pay: $e');
+      return StripePaymentResult.failure;
+    }
+  }
 
   Future<String?> _createPaymentIntent({
     required int amount,

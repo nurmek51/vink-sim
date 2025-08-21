@@ -128,8 +128,16 @@ class TopUpBalanceWidget extends StatelessWidget {
         AppNotifier.info(AppLocalizations.notAvailable).showAppToast(context);
         break;
       case 'apple_pay':
+        context.read<StripeBloc>().add(
+          ApplePayPaymentRequested(
+            amount: state.amount,
+            context: context,
+            operationType: operationType,
+            imsi: isTopUp ? imsi : null,
+          ),
+        );
+        break;
       case 'google_pay':
-        // Both Apple Pay and Google Pay use the same method, which now auto-detects platform
         context.read<StripeBloc>().add(
           GooglePayPaymentRequested(
             amount: state.amount,

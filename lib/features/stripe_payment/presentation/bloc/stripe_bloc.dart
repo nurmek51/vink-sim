@@ -51,6 +51,25 @@ class GooglePayPaymentRequested extends StripeEvent {
   List<Object?> get props => [amount, currency];
 }
 
+class ApplePayPaymentRequested extends StripeEvent {
+  final int amount;
+  final String currency;
+  final BuildContext context;
+  final StripeOperationType operationType;
+  final String? imsi;
+
+  const ApplePayPaymentRequested({
+    required this.amount,
+    this.currency = 'usd',
+    required this.context,
+    required this.operationType,
+    this.imsi,
+  });
+
+  @override
+  List<Object?> get props => [amount, currency];
+}
+
 class StripeReset extends StripeEvent {
   const StripeReset();
 }
@@ -100,6 +119,7 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
   StripeBloc({required this.stripeService}) : super(StripeInitial()) {
     on<StripePaymentRequested>(_onPaymentRequested);
     on<GooglePayPaymentRequested>(_onGooglePayRequested);
+    on<ApplePayPaymentRequested>(_onApplePayRequested);
     on<WebPaymentConfirmed>(_onWebPaymentConfirmed);
     on<StripeReset>((event, emit) => emit(StripeInitial()));
   }
@@ -175,6 +195,47 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
       }
     } catch (e) {
       if (kDebugMode) print('GPay error: $e');
+      emit(StripeFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onApplePayRequested(
+    ApplePayPaymentRequested event,
+    Emitter<StripeState> emit,
+  ) async {
+    emit(StripeLoading());
+
+    try {
+      final result = await stripeService.makeApplePayPayment(
+        amount: event.amount,
+        currency: event.currency,
+        operationType: event.operationType,
+        imsi: event.imsi,
+      );
+
+      switch (result) {
+        case StripePaymentResult.success:
+          if (kDebugMode) print('Apple Pay: SUCCESS!');
+          emit(StripeSuccess());
+          break;
+        case StripePaymentResult.cancelled:
+          if (kDebugMode) print('Apple Pay: CANCELLED!');
+          emit(StripeCancelled());
+          break;
+        case StripePaymentResult.failure:
+          if (kDebugMode) print('Apple Pay: FAILURE!');
+          emit(
+            const StripeFailure(
+              'Apple Pay недоступен. Требуется реальное устройство iPhone с настроенными картами в Wallet.',
+            ),
+          );
+          break;
+        case StripePaymentResult.redirectedToWeb:
+          emit(StripeRedirected());
+          break;
+      }
+    } catch (e) {
+      if (kDebugMode) print('Apple Pay error: $e');
       emit(StripeFailure(e.toString()));
     }
   }
