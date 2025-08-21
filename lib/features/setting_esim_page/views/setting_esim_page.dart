@@ -42,7 +42,7 @@ class SettingEsimPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
             child: Center(
               child: Column(
                 children: [
@@ -51,13 +51,13 @@ class SettingEsimPage extends StatelessWidget {
                     args: ['1'],
                     description: AppLocalizations.balanceAndEsimActivation,
                   ),
-                  SizedBox(height: 7),
+                  const SizedBox(height: 12),
                   StepsContainer(
                     iconPath: Assets.icons.figma143.step2Icon.path,
                     args: ['2'],
                     description: AppLocalizations.profileSetupGuide,
                   ),
-                  SizedBox(height: 7),
+                  const SizedBox(height: 12),
                   StepsContainer(
                     iconPath: Assets.icons.figma143.step3Icon.path,
                     args: ['3'],

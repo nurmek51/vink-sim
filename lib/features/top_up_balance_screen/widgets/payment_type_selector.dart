@@ -1,5 +1,5 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/platform_device/platform_detector_mobile.dart';
+import 'package:flex_travel_sim/core/platform_device/platform_detector.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/coming_soon_modal.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
