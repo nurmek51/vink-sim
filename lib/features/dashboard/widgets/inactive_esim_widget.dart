@@ -1,10 +1,20 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 
 class InactiveEsimWidget extends StatelessWidget {
-  const InactiveEsimWidget({super.key});
+  final String? imsi;
+  final String? activationCode;
+  final VoidCallback? onActivate;
+
+  const InactiveEsimWidget({
+    super.key,
+    this.imsi,
+    this.activationCode,
+    this.onActivate,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +38,7 @@ class InactiveEsimWidget extends StatelessWidget {
         ),
         Column(
           children: [
-            const SizedBox(height: 120),
+            const SizedBox(height: 80),
             Icon(Icons.credit_card_off, size: 64, color: Colors.grey.shade400),
             const SizedBox(height: 16),
             Text(
@@ -45,6 +55,26 @@ class InactiveEsimWidget extends StatelessWidget {
                 color: Colors.grey.shade500,
               ),
             ),
+            SizedBox(height: 12),
+            if (onActivate != null && imsi != null)
+              ElevatedButton(
+                onPressed: onActivate,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.accentBlue,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Activate',
+                  style: FlexTypography.label.medium.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
           ],
         ),
       ],

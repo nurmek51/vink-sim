@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- eSIM related permissions -->
+    <uses-permission android:name="android.permission.WRITE_EMBEDDED_SUBSCRIPTIONS"/>
+    <uses-permission android:name="android.permission.READ_EMBEDDED_SUBSCRIPTIONS"/>
 
     <application
         android:label="FLEX SIM"
@@ -50,6 +55,13 @@
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="tg" />
-          </intent>        
+        </intent>
+        <!-- eSIM related intents -->
+        <intent>
+            <action android:name="android.telephony.euicc.action.PROVISION_EMBEDDED_SUBSCRIPTION"/>
+        </intent>
+        <intent>
+            <action android:name="android.settings.NETWORK_OPERATOR_SETTINGS"/>
+        </intent>
     </queries>
 </manifest>

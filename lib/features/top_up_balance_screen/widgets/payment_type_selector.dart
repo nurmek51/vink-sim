@@ -115,10 +115,7 @@ class PaymentTypeWidget extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [
-                        Colors.orange.shade400,
-                        Colors.orange.shade600,
-                      ],
+                      colors: [Colors.orange.shade400, Colors.orange.shade600],
                     ),
                     borderRadius: BorderRadius.circular(6),
                     boxShadow: [
@@ -159,7 +156,7 @@ class PaymentTypeWidget extends StatelessWidget {
                   ),
         );
       case 'google_pay_logo':
-        return Assets.icons.applePayLogo.svg(
+        return Assets.icons.googleLogo.svg(
           colorFilter:
               isSelected
                   ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)

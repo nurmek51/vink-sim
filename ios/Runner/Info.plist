@@ -48,6 +48,9 @@
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>tg</string>
+			<string>LPA</string>
+			<string>prefs</string>
+			<string>App-Prefs</string>
 		</array>
 		<key>CFBundleURLTypes</key>
 		<array>

@@ -85,7 +85,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     _hasUserScrolled = false;
   }
 
-  Future <void> _loadSubscriberDataIfNeeded() async {
+  Future<void> _loadSubscriberDataIfNeeded() async {
     final authDataSource = sl.get<AuthLocalDataSource>();
     try {
       final token = await authDataSource.getToken();
@@ -133,8 +133,10 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
         // Get current subscriber state to check if data has changed
         final currentState = context.read<SubscriberBloc>().state;
         if (currentState is SubscriberLoaded) {
-          final currentDataHash = _generateDataHash(currentState.subscriber.imsiList);
-          
+          final currentDataHash = _generateDataHash(
+            currentState.subscriber.imsiList,
+          );
+
           // Only refresh if data might have changed
           if (_lastDataHash != currentDataHash) {
             if (kDebugMode) {
@@ -161,9 +163,9 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
 
   String _generateDataHash(List<dynamic> imsiList) {
     // Generate a simple hash based on IMSI data to detect changes
-    final dataString = imsiList.map((imsi) => 
-      '${imsi.imsi}_${imsi.balance}_${imsi.country}'
-    ).join('|');
+    final dataString = imsiList
+        .map((imsi) => '${imsi.imsi}_${imsi.balance}_${imsi.country}')
+        .join('|');
     return dataString.hashCode.toString();
   }
 
@@ -219,231 +221,258 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                       ? subscriberState.subscriber.imsiList
                       : <ImsiModel>[];
 
-            final subscriberBalance =
-                subscriberState is SubscriberLoaded
-                    ? subscriberState.subscriber.balance
-                    : 0.0;
-            final isLoading =
-                subscriberState is SubscriberLoading ||
-                subscriberState is SubscriberInitial;
-            final hasError = subscriberState is SubscriberError;
-            final displayList =
-                loadedImsiList.isNotEmpty
-                    ? loadedImsiList
-                    : [
-                      ImsiModel(
-                        imsi: 'default',
-                        balance: subscriberBalance,
-                        country:
-                            isLoading
-                                ? AppLocalizations.loading
-                                : (hasError ? AppLocalizations.error : 'N/A'),
-                        rate: 1024.0,
-                      ),
-                    ];
-
-            final actualCount = displayList.length;
-            final canAdd = actualCount < MainFlowBloc.maxCircles - 1;
-            final itemCount = actualCount + 1;
-            final isSmall = isSmallScreen(context);
-            final isSmallOrDesktop =
-                isSmallScreen(context) || isDesktop(context);
-
-            double calculateAvailableGB(double balance, double rate) {
-              if (rate == 0) return 0.0;
-              final gb = balance / rate / 1024;
-              return gb;
-            }
-
-            return Scaffold(
-              bottomNavigationBar: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                ).copyWith(bottom: 30, top: 12),
-                child: BlueGradientButton(
-                  onTap: () => openTopUpBalanceScreen(context),
-                  title: AppLocalizations.topUpBalance,
-                ),
-              ),
-              backgroundColor: AppColors.backgroundColorLight,
-              body: SafeArea(
-                child: RefreshIndicator(
-                  onRefresh: _onRefresh,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 20,
-                      bottom: 50,
-                      left: 20,
-                      right: 20,
-                    ),
-                    child: Column(
-                      children: [
-                        Header(
-                          color: AppColors.grayBlue,
-                          faqOnTap: () => openGuidePage(context),
-                          avatarOnTap: () => openMyAccountScreen(context),
+              final subscriberBalance =
+                  subscriberState is SubscriberLoaded
+                      ? subscriberState.subscriber.balance
+                      : 0.0;
+              final isLoading =
+                  subscriberState is SubscriberLoading ||
+                  subscriberState is SubscriberInitial;
+              final hasError = subscriberState is SubscriberError;
+              final displayList =
+                  loadedImsiList.isNotEmpty
+                      ? loadedImsiList
+                      : [
+                        ImsiModel(
+                          imsi: 'default',
+                          balance: subscriberBalance,
+                          country:
+                              isLoading
+                                  ? AppLocalizations.loading
+                                  : (hasError ? AppLocalizations.error : 'N/A'),
+                          rate: 1024.0,
                         ),
-                        SizedBox(height: isSmallOrDesktop ? 0 : 15),
-                        SizedBox(
-                          height: isSmall ? 309 : 320,
-                          child: PageView.builder(
-                            controller: _pageController,
-                            clipBehavior: Clip.none,
-                            itemCount: itemCount,
-                            onPageChanged: (index) {
-                              if (!_hasUserScrolled) {
-                                setState(() {
-                                  _hasUserScrolled = true;
-                                });
-                              }
-                              context.read<MainFlowBloc>().add(
-                                PageChangedEvent(index),
-                              );
-                            },
-                            itemBuilder: (context, index) {
-                              if (index < actualCount) {
-                                if (isLoading && loadedImsiList.isEmpty) {
-                                  return AnimatedScale(
-                                    scale:
-                                        !_hasUserScrolled
-                                            ? 1.0
-                                            : (mainFlowState.currentPage ==
-                                                    index
-                                                ? 1.0
-                                                : 0.9),
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeOut,
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                      ),
-                                      child: PercentageShimmerWidget(),
-                                    ),
+                      ];
+
+              final actualCount = displayList.length;
+              final canAdd = actualCount < MainFlowBloc.maxCircles - 1;
+              final itemCount = actualCount + 1;
+              final isSmall = isSmallScreen(context);
+              final isSmallOrDesktop =
+                  isSmallScreen(context) || isDesktop(context);
+
+              double calculateAvailableGB(double balance, double rate) {
+                if (rate == 0) return 0.0;
+                final gb = balance / rate / 1024;
+                return gb;
+              }
+
+              return Scaffold(
+                bottomNavigationBar: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                  ).copyWith(bottom: 30, top: 12),
+                  child: BlueGradientButton(
+                    onTap: () => openTopUpBalanceScreen(context),
+                    title: AppLocalizations.topUpBalance,
+                  ),
+                ),
+                backgroundColor: AppColors.backgroundColorLight,
+                body: SafeArea(
+                  child: RefreshIndicator(
+                    onRefresh: _onRefresh,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 20,
+                          bottom: 50,
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: Column(
+                          children: [
+                            Header(
+                              color: AppColors.grayBlue,
+                              faqOnTap: () => openGuidePage(context),
+                              avatarOnTap: () => openMyAccountScreen(context),
+                            ),
+                            SizedBox(height: isSmallOrDesktop ? 0 : 15),
+                            SizedBox(
+                              height: isSmall ? 309 : 320,
+                              child: PageView.builder(
+                                controller: _pageController,
+                                clipBehavior: Clip.none,
+                                itemCount: itemCount,
+                                onPageChanged: (index) {
+                                  if (!_hasUserScrolled) {
+                                    setState(() {
+                                      _hasUserScrolled = true;
+                                    });
+                                  }
+                                  context.read<MainFlowBloc>().add(
+                                    PageChangedEvent(index),
                                   );
-                                }
-
-                                final imsi = displayList[index];
-                                final availableGB = calculateAvailableGB(
-                                  imsi.balance,
-                                  imsi.rate ?? 1024.0,
-                                );
-                                final isYellow =
-                                    availableGB > 0 && availableGB <= 1.0;
-                                final isInactive = ProgressColorUtils.isInactiveEsim(imsi.country);
-
-                                return AnimatedScale(
-                                  scale:
-                                      !_hasUserScrolled
-                                          ? 1.0
-                                          : (mainFlowState.currentPage == index
-                                              ? 1.0
-                                              : 0.9),
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeOut,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                    ),
-                                    child: isInactive 
-                                        ? const InactiveEsimWidget()
-                                        : PercentageWidget(
-                                            imsi: imsi.imsi,
-                                            progressValue: availableGB,
-                                            color:
-                                                ProgressColorUtils.getProgressColor(
-                                                  availableGB,
-                                                  country: imsi.country,
-                                                ),
-                                            isYellow: isYellow,
-                                            backgroundColor:
-                                                ProgressColorUtils.getProgressBackgroundColor(
-                                                  availableGB,
-                                                  country: imsi.country,
-                                                ),
-                                            balance: imsi.balance,
-                                            country: imsi.country,
-                                            rate: imsi.rate,
+                                },
+                                itemBuilder: (context, index) {
+                                  if (index < actualCount) {
+                                    if (isLoading && loadedImsiList.isEmpty) {
+                                      return AnimatedScale(
+                                        scale:
+                                            !_hasUserScrolled
+                                                ? 1.0
+                                                : (mainFlowState.currentPage ==
+                                                        index
+                                                    ? 1.0
+                                                    : 0.9),
+                                        duration: const Duration(
+                                          milliseconds: 300,
+                                        ),
+                                        curve: Curves.easeOut,
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10,
                                           ),
-                                  ),
-                                );
-                              } else {
-                                return AddEsimCircle(
-                                  canAdd: canAdd,
-                                  onAddButtonPressed:
-                                      () {
-                                        final currentPageImsi = mainFlowState.currentPage < displayList.length 
-                                            ? displayList[mainFlowState.currentPage].imsi 
-                                            : null;
+                                          child: PercentageShimmerWidget(),
+                                        ),
+                                      );
+                                    }
+
+                                    final imsi = displayList[index];
+                                    final availableGB = calculateAvailableGB(
+                                      imsi.balance,
+                                      imsi.rate ?? 1024.0,
+                                    );
+                                    final isYellow =
+                                        availableGB > 0 && availableGB <= 1.0;
+                                    final isInactive =
+                                        ProgressColorUtils.isInactiveEsim(
+                                          imsi.country,
+                                        );
+
+                                    return AnimatedScale(
+                                      scale:
+                                          !_hasUserScrolled
+                                              ? 1.0
+                                              : (mainFlowState.currentPage ==
+                                                      index
+                                                  ? 1.0
+                                                  : 0.9),
+                                      duration: const Duration(
+                                        milliseconds: 300,
+                                      ),
+                                      curve: Curves.easeOut,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                        ),
+                                        child:
+                                            isInactive
+                                                ? InactiveEsimWidget(
+                                                  imsi: imsi.imsi,
+                                                  activationCode:
+                                                      imsi.activationCode,
+                                                  onActivate: () {
+                                                    NavigationService.openTopUpBalanceScreen(
+                                                      context,
+                                                      imsi: imsi.imsi,
+                                                      isNewEsim: true,
+                                                    );
+                                                  },
+                                                )
+                                                : PercentageWidget(
+                                                  imsi: imsi.imsi,
+                                                  progressValue: availableGB,
+                                                  color:
+                                                      ProgressColorUtils.getProgressColor(
+                                                        availableGB,
+                                                        country: imsi.country,
+                                                      ),
+                                                  isYellow: isYellow,
+                                                  backgroundColor:
+                                                      ProgressColorUtils.getProgressBackgroundColor(
+                                                        availableGB,
+                                                        country: imsi.country,
+                                                      ),
+                                                  balance: imsi.balance,
+                                                  country: imsi.country,
+                                                  rate: imsi.rate,
+                                                ),
+                                      ),
+                                    );
+                                  } else {
+                                    return AddEsimCircle(
+                                      canAdd: canAdd,
+                                      onAddButtonPressed: () {
+                                        final currentPageImsi =
+                                            mainFlowState.currentPage <
+                                                    displayList.length
+                                                ? displayList[mainFlowState
+                                                        .currentPage]
+                                                    .imsi
+                                                : null;
                                         NavigationService.openTopUpBalanceScreen(
                                           context,
                                           imsi: currentPageImsi,
                                           isNewEsim: true,
                                         );
                                       },
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(height: isSmallOrDesktop ? 2 : 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(
-                            itemCount,
-                            (index) => AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
-                              width: 8,
-                              height: 8,
-                              decoration: BoxDecoration(
-                                color:
-                                    mainFlowState.currentPage == index
-                                        ? Colors.blue
-                                        : Colors.grey,
-                                shape: BoxShape.circle,
+                                    );
+                                  }
+                                },
                               ),
                             ),
-                          ),
-                        ),
+                            SizedBox(height: isSmallOrDesktop ? 2 : 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(
+                                itemCount,
+                                (index) => AnimatedContainer(
+                                  duration: const Duration(milliseconds: 300),
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                  ),
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        mainFlowState.currentPage == index
+                                            ? Colors.blue
+                                            : Colors.grey,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                            ),
 
-                        SizedBox(height: isSmallOrDesktop ? 3 : 16),
-                        Row(
-                          children: [
-                            ExpandedContainer(
-                              title: AppLocalizations.howToInstallEsim2,
-                              icon: Assets.icons.simIcon.path,
-                              onTap: () => openEsimSetupPage(context),
+                            SizedBox(height: isSmallOrDesktop ? 3 : 16),
+                            Row(
+                              children: [
+                                ExpandedContainer(
+                                  title: AppLocalizations.howToInstallEsim2,
+                                  icon: Assets.icons.simIcon.path,
+                                  onTap: () => openEsimSetupPage(context),
+                                ),
+                                const SizedBox(width: 16),
+                                ExpandedContainer(
+                                  title: AppLocalizations.supportChat,
+                                  icon: Assets.icons.telegramIcon.path,
+                                  onTap: () => _showBottomSheet(context),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 16),
-                            ExpandedContainer(
-                              title: AppLocalizations.supportChat,
-                              icon: Assets.icons.telegramIcon.path,
-                              onTap: () => _showBottomSheet(context),
+                            SizedBox(height: 12),
+                            Row(
+                              children: [
+                                ExpandedContainer(
+                                  title: AppLocalizations.questionsAndAnswers,
+                                  icon: Assets.icons.faqIconFull.path,
+                                  onTap: () => openGuidePage(context),
+                                ),
+                                const SizedBox(width: 16),
+                                ExpandedContainer(
+                                  title: AppLocalizations.countriesAndRates,
+                                  icon: Assets.icons.globus.path,
+                                  onTap:
+                                      () =>
+                                          openTariffsAndCountriesPage(context),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        SizedBox(height: 12),
-                        Row(
-                          children: [
-                            ExpandedContainer(
-                              title: AppLocalizations.questionsAndAnswers,
-                              icon: Assets.icons.faqIconFull.path,
-                              onTap: () => openGuidePage(context),
-                            ),
-                            const SizedBox(width: 16),
-                            ExpandedContainer(
-                              title: AppLocalizations.countriesAndRates,
-                              icon: Assets.icons.globus.path,
-                              onTap: () => openTariffsAndCountriesPage(context),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
                   ),
                 ),
               );
