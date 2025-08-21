@@ -68,7 +68,6 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final options = getRowOptions();
@@ -77,7 +76,9 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
       print(PlatformDetector.platformLog);
     }
     return BlocProvider(
-      create: (_) => EsimSetupBloc(options: options)..add(const LoadImsiListLength()),
+      create:
+          (_) =>
+              EsimSetupBloc(options: options)..add(const LoadImsiListLength()),
       child: Scaffold(
         backgroundColor: const Color(0xFFD0DEEB),
         body: CustomScrollView(
@@ -152,7 +153,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                           }
 
                           if (state is EsimSetupError) {
-                            return Text(state.message); 
+                            return Text(state.message);
                           }
 
                           if (state is EsimSetupLoaded) {
@@ -186,19 +187,32 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
 
                                     if (subscriberState is SubscriberLoading) {
                                       isLoading = true;
-                                    } else if (subscriberState is SubscriberLoaded) {
-                                      final list = subscriberState.subscriber.imsiList;
-                                      if (list.isNotEmpty && list.last.qr != null && list.last.qr!.isNotEmpty) {
+                                    } else if (subscriberState
+                                        is SubscriberLoaded) {
+                                      final list =
+                                          subscriberState.subscriber.imsiList;
+                                      
+                                      if (list.isNotEmpty &&
+                                          list.last.qr != null &&
+                                          list.last.qr!.isNotEmpty) {
                                         final lastImsiIndex = list.last;
                                         qrCode = lastImsiIndex.qr;
                                         smdpServer = lastImsiIndex.smdpServer;
-                                        activationCode = lastImsiIndex.activationCode;
+                                        activationCode =
+                                            lastImsiIndex.activationCode;
                                       } else {
-                                        errorMessage = AppLocalizations.notAvailable;
+                                        errorMessage =
+                                            AppLocalizations.notAvailable;
                                       }
-                                    } else if (subscriberState is SubscriberError) {
-                                      errorMessage = AppLocalizations.notAvailable;
-                                      if (kDebugMode) print('Subscriber Error: ${subscriberState.message}');
+                                    } else if (subscriberState
+                                        is SubscriberError) {
+                                      errorMessage =
+                                          AppLocalizations.notAvailable;
+                                      if (kDebugMode) {
+                                        print(
+                                          'Subscriber Error: ${subscriberState.message}',
+                                        );
+                                      }
                                     }
 
                                     return _buildSelectedBody(
@@ -225,7 +239,12 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
             ),
             SliverToBoxAdapter(
               child: Column(
-                children: [SizedBox(height: 16), BottomSetupContainer(isActivatedEsimScreen: widget.isActivatedEsimScreen)],
+                children: [
+                  SizedBox(height: 16),
+                  BottomSetupContainer(
+                    isActivatedEsimScreen: widget.isActivatedEsimScreen,
+                  ),
+                ],
               ),
             ),
           ],
@@ -245,7 +264,12 @@ Widget _buildSelectedBody(
 }) {
   switch (option) {
     case AppLocalizations.fastSelectedRow:
-      return const FastSelectedBody();
+      return FastSelectedBody(
+        smdpServer: smdpServer,
+        activationCode: activationCode,
+        isLoading: isLoading,
+        errorMessage: errorMessage,
+      );
     case AppLocalizations.qrCodeSelectedRow:
       return QrCodeSelectedBody(
         qrCode: qrCode,

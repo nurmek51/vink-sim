@@ -99,7 +99,7 @@ class PercentageWidget extends StatelessWidget {
           ),
         ],
       );
-    }  
+    }
 
     final double availableGB = progressValue;
     final Color circleColor = ProgressColorUtils.getProgressColor(

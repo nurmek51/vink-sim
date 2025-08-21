@@ -48,4 +48,5 @@ class SubscriberRemoteDataSourceImpl implements SubscriberRemoteDataSource {
       throw Exception('Failed to get subscriber info: $e');
     }
   }
+
 }

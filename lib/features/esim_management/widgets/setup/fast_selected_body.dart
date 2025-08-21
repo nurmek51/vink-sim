@@ -3,11 +3,40 @@ import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
 import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:flex_travel_sim/services/esim_service.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FastSelectedBody extends StatelessWidget {
-  const FastSelectedBody({super.key});
+  final String? smdpServer;
+  final String? activationCode;
+  final bool isLoading;
+  final String? errorMessage;
+
+  const FastSelectedBody({
+    super.key,
+    this.smdpServer,
+    this.activationCode,
+    this.isLoading = false,
+    this.errorMessage,
+  });
+
+  Future<void> _installEsim() async {
+    if (smdpServer == null || activationCode == null) {
+      return;
+    }
+
+    try {
+      final result = await EsimService.installEsimProfile(
+        smdpServer: smdpServer!,
+        activationCode: activationCode!,
+      );
+      debugPrint('eSIM installation result: $result');
+    } catch (e) {
+      debugPrint('Error installing eSIM profile: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +47,26 @@ class FastSelectedBody extends StatelessWidget {
           description: AppLocalizations.fastDescriptionStep1,
           child: Padding(
             padding: const EdgeInsets.only(top: 30.0),
-            child: Container(
-              alignment: Alignment.center,
-              height: 52,
-              decoration: BoxDecoration(
-                gradient: AppColors.containerGradientPrimary,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: LocalizedText(
-                AppLocalizations.download,
-                style: FlexTypography.label.medium.copyWith(color: AppColors.textColorLight),
+            child: GestureDetector(
+              onTap: () async {
+                final permission = await Permission.storage.request();
+                if (permission.isGranted) {
+                  await _installEsim();
+                }
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 52,
+                decoration: BoxDecoration(
+                  gradient: AppColors.containerGradientPrimary,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: LocalizedText(
+                  AppLocalizations.download,
+                  style: FlexTypography.label.medium.copyWith(
+                    color: AppColors.textColorLight,
+                  ),
+                ),
               ),
             ),
           ),

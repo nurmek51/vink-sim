@@ -18,7 +18,7 @@ class StripePaymentRequested extends StripeEvent {
   final String currency;
   final BuildContext context;
   final StripeOperationType operationType;
-  final String? imsi;  
+  final String? imsi;
 
   const StripePaymentRequested({
     required this.amount,
@@ -37,7 +37,7 @@ class GooglePayPaymentRequested extends StripeEvent {
   final String currency;
   final BuildContext context;
   final StripeOperationType operationType;
-  final String? imsi;  
+  final String? imsi;
 
   const GooglePayPaymentRequested({
     required this.amount,
@@ -133,15 +133,15 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
           emit(const StripeFailure('Payment failed'));
           break;
         case StripePaymentResult.redirectedToWeb:
-          emit(StripeRedirected()); 
-          break;          
+          emit(StripeRedirected());
+          break;
       }
     } catch (e) {
       if (kDebugMode) print('StripeBloc error: $e');
       emit(StripeFailure(e.toString()));
     }
   }
-  
+
   Future<void> _onGooglePayRequested(
     GooglePayPaymentRequested event,
     Emitter<StripeState> emit,
@@ -151,7 +151,7 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
     try {
       final result = await stripeService.makeGooglePayOnlyPayment(
         amount: event.amount,
-        currency: event.currency, 
+        currency: event.currency,
         operationType: event.operationType,
         imsi: event.imsi,
       );
@@ -170,16 +170,15 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
           emit(const StripeFailure('Google Pay оплата не удалась'));
           break;
         case StripePaymentResult.redirectedToWeb:
-          emit(StripeRedirected()); 
+          emit(StripeRedirected());
           break;
-          
       }
     } catch (e) {
       if (kDebugMode) print('GPay error: $e');
       emit(StripeFailure(e.toString()));
     }
   }
-  
+
   Future<void> _onWebPaymentConfirmed(
     WebPaymentConfirmed event,
     Emitter<StripeState> emit,
@@ -200,6 +199,4 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
         emit(const StripeFailure('Ошибка веб‑оплаты'));
     }
   }
-
-
 }

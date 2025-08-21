@@ -1,6 +1,10 @@
+import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
+import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
 import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
 import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
@@ -32,7 +36,11 @@ class TopUpBalanceWidget extends StatelessWidget {
 
   void _handleStripeStateChange(BuildContext context, StripeState state) {
     if (state is StripeSuccess) {
-      if (kDebugMode) print('StripeService: StripeSuccess - ОПЛАТА ПРОШЛА УСПЕШНО !');
+      if (kDebugMode) {
+        print('StripeService: StripeSuccess - ОПЛАТА ПРОШЛА УСПЕШНО !');
+      }
+
+      _refreshSubscriberData(context);
 
       if (imsi != null) {
         NavigationService.goToMainFlow(context);
@@ -41,6 +49,27 @@ class TopUpBalanceWidget extends StatelessWidget {
       }
     } else if (state is StripeFailure) {
       AppNotifier.error(AppLocalizations.paymentFail).showAppToast(context);
+    }
+  }
+
+  void _refreshSubscriberData(BuildContext context) async {
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+
+      final authDataSource = sl.get<AuthLocalDataSource>();
+      final token = await authDataSource.getToken();
+
+      if (token != null && context.mounted) {
+        context.read<SubscriberBloc>().add(
+          LoadSubscriberInfoEvent(token: token),
+        );
+
+        if (kDebugMode) {
+          print('Subscriber data refresh triggered after payment');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) print('Error refreshing subscriber data: $e');
     }
   }
 
@@ -59,12 +88,14 @@ class TopUpBalanceWidget extends StatelessWidget {
     }
 
     final isTopUp = (imsi?.isNotEmpty ?? false);
-    
+
     if (!isTopUp && state.amount < 5) {
-      AppNotifier.info("Minimum amount for new eSIM is \$5").showAppToast(context);
+      AppNotifier.info(
+        "Minimum amount for new eSIM is \$5",
+      ).showAppToast(context);
       return false;
     }
-    
+
     if (isTopUp && state.amount < 1) {
       AppNotifier.info("Minimum top-up amount is \$1").showAppToast(context);
       return false;
@@ -81,9 +112,7 @@ class TopUpBalanceWidget extends StatelessWidget {
   void _processPayment(BuildContext context, TopUpBalanceState state) {
     final isTopUp = (imsi?.isNotEmpty ?? false);
     final operationType =
-        isTopUp
-            ? StripeOperationType.addFunds
-            : StripeOperationType.newImsi;    
+        isTopUp ? StripeOperationType.addFunds : StripeOperationType.newImsi;
     switch (state.selectedPaymentMethod) {
       case 'credit_card':
         context.read<StripeBloc>().add(
@@ -100,6 +129,7 @@ class TopUpBalanceWidget extends StatelessWidget {
         break;
       case 'apple_pay':
       case 'google_pay':
+        // Both Apple Pay and Google Pay use the same method, which now auto-detects platform
         context.read<StripeBloc>().add(
           GooglePayPaymentRequested(
             amount: state.amount,
@@ -111,6 +141,6 @@ class TopUpBalanceWidget extends StatelessWidget {
         break;
       default:
         AppNotifier.info("Неизвестный способ оплаты").showAppToast(context);
-    }    
+    }
   }
 }
