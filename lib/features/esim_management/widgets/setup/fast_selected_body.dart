@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
@@ -7,6 +8,7 @@ import 'package:flex_travel_sim/services/esim_service.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FastSelectedBody extends StatelessWidget {
   final String? smdpServer;
@@ -28,13 +30,42 @@ class FastSelectedBody extends StatelessWidget {
     }
 
     try {
-      final result = await EsimService.installEsimProfile(
-        smdpServer: smdpServer!,
-        activationCode: activationCode!,
-      );
-      debugPrint('eSIM installation result: $result');
+      if (Platform.isIOS) {
+        // Use Apple's native eSIM URL scheme for iOS 17.5+
+        final lpaData = '$smdpServer:$activationCode';
+        final esimUrl = Uri.parse(
+          'https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:$lpaData',
+        );
+
+        if (await canLaunchUrl(esimUrl)) {
+          final launched = await launchUrl(
+            esimUrl,
+            mode: LaunchMode.externalApplication,
+          );
+
+          if (launched) {
+            debugPrint(
+              'Successfully launched iOS eSIM setup with LPA: $lpaData',
+            );
+          } else {
+            debugPrint('Failed to launch iOS eSIM setup URL');
+            throw Exception('Could not open iOS eSIM setup');
+          }
+        } else {
+          debugPrint('Cannot launch iOS eSIM setup URL');
+          throw Exception('iOS eSIM setup URL not supported on this device');
+        }
+      } else {
+        // Fallback to existing service for Android
+        final result = await EsimService.installEsimProfile(
+          smdpServer: smdpServer!,
+          activationCode: activationCode!,
+        );
+        debugPrint('eSIM installation result: $result');
+      }
     } catch (e) {
       debugPrint('Error installing eSIM profile: $e');
+      rethrow;
     }
   }
 
@@ -48,25 +79,94 @@ class FastSelectedBody extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 30.0),
             child: GestureDetector(
-              onTap: () async {
-                final permission = await Permission.storage.request();
-                if (permission.isGranted) {
-                  await _installEsim();
-                }
-              },
+              onTap:
+                  isLoading
+                      ? null
+                      : () async {
+                        debugPrint('Button tapped! isLoading: $isLoading');
+                        debugPrint(
+                          'smdpServer: $smdpServer, activationCode: $activationCode',
+                        );
+
+                        if (smdpServer == null || activationCode == null) {
+                          debugPrint(
+                            'Missing required data - smdpServer or activationCode is null',
+                          );
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Missing eSIM configuration data',
+                                ),
+                                backgroundColor: Colors.orange,
+                              ),
+                            );
+                          }
+                          return;
+                        }
+
+                        try {
+                          if (Platform.isIOS) {
+                            debugPrint('iOS detected - launching eSIM setup');
+                            await _installEsim();
+                          } else {
+                            debugPrint(
+                              'Android detected - requesting storage permission',
+                            );
+                            final permission =
+                                await Permission.storage.request();
+                            if (permission.isGranted) {
+                              await _installEsim();
+                            } else {
+                              debugPrint(
+                                'Storage permission denied for Android eSIM setup',
+                              );
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Storage permission is required for eSIM setup',
+                                    ),
+                                  ),
+                                );
+                              }
+                            }
+                          }
+                        } catch (e) {
+                          debugPrint('Error during eSIM setup: $e');
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Failed to setup eSIM: $e'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        }
+                      },
               child: Container(
                 alignment: Alignment.center,
                 height: 52,
                 decoration: BoxDecoration(
-                  gradient: AppColors.containerGradientPrimary,
+                  gradient:
+                      isLoading
+                          ? LinearGradient(colors: [Colors.grey, Colors.grey])
+                          : AppColors.containerGradientPrimary,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: LocalizedText(
-                  AppLocalizations.download,
-                  style: FlexTypography.label.medium.copyWith(
-                    color: AppColors.textColorLight,
-                  ),
-                ),
+                child:
+                    isLoading
+                        ? const CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        )
+                        : LocalizedText(
+                          AppLocalizations.download,
+                          style: FlexTypography.label.medium.copyWith(
+                            color: AppColors.textColorLight,
+                          ),
+                        ),
               ),
             ),
           ),
