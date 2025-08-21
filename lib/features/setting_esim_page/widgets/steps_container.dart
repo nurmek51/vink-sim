@@ -22,22 +22,27 @@ class StepsContainer extends StatelessWidget {
         color: Color(0xFFF2F2F2),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Center(
-        child: ListTile(
-          leading: SvgPicture.asset(iconPath, width: 50, height: 50),
-          title: HelveticaneueFont(
-            text: AppLocalizations.stepNumber,
-            args: args,
-            fontSize: 15,
-            height: 1.3,
-            color: Color(0xFF363C45),
-            fontWeight: FontWeight.bold,
-          ),
-          subtitle: HelveticaneueFont(
-            text: description,
-            fontSize: 15,
-            height: 1.3,
-            color: Color(0xFF363C45),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+        ),
+        child: Center(
+          child: ListTile(
+            leading: SvgPicture.asset(iconPath, width: 50, height: 50),
+            title: HelveticaneueFont(
+              text: AppLocalizations.stepNumber,
+              args: args,
+              fontSize: 15,
+              height: 1.3,
+              color: Color(0xFF363C45),
+              fontWeight: FontWeight.bold,
+            ),
+            subtitle: HelveticaneueFont(
+              text: description,
+              fontSize: 15,
+              height: 1.3,
+              color: Color(0xFF363C45),
+            ),
           ),
         ),
       ),
