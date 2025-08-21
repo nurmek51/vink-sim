@@ -43,6 +43,7 @@ void main() async {
   }
 
   Stripe.publishableKey = stripePublishableKey;
+  Stripe.merchantIdentifier = 'merchant.com.flextravelsim.app';
 
   await sl.init();
 
