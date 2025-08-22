@@ -35,12 +35,12 @@ class TravelSimApiService {
       print('TravelSimAPI: Verifying OTP');
       print('Phone: $phone');
       print('Code: $code');
-      print('URL: ${_apiClient.baseUrl}/dev/otp/verify');
+      print('URL: ${_apiClient.baseUrl}${kDebugMode ? '/dev/otp/verify' : '/otp/verify'}');
     }
     
     try {
       final response = await _apiClient.post(
-        '/dev/otp/verify',
+        kDebugMode ? '/dev/otp/verify' : '/otp/verify',
         body: {
           'phone': phone,
           'code': code,
