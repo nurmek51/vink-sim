@@ -141,9 +141,7 @@ class _OtpTileState extends State<OtpTile> {
                         );
                       }
 
-                      _subscriberBloc.add(
-                        LoadSubscriberInfoEvent(token: idToken),
-                      );
+                      _subscriberBloc.add(const LoadSubscriberInfoEvent());
 
                       if (kDebugMode) {
                         print('OTP_TILE: ID token sent to SubscriberBloc');
@@ -155,12 +153,6 @@ class _OtpTileState extends State<OtpTile> {
                         if (context.mounted) {
                           context.go(AppRoutes.initial);
                         }
-
-                        // Future.microtask(() {
-                        //   if (context.mounted) {
-                        //     context.go(AppRoutes.initial);
-                        //   }
-                        // });
                       }
                     }
                   } catch (e) {

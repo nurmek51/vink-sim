@@ -11,6 +11,7 @@ import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_us
 import 'package:flex_travel_sim/features/auth/domain/use_cases/send_password_reset_use_case.dart';
 import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
 import 'package:flex_travel_sim/core/network/api_client.dart';
+import 'package:flex_travel_sim/core/network/auth_interceptor.dart';
 import 'package:flex_travel_sim/core/network/travel_sim_api_service.dart';
 import 'package:flex_travel_sim/core/storage/local_storage.dart';
 import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_local_data_source.dart';
@@ -87,15 +88,35 @@ class ServiceLocator {
     // HTTP Client
     register<http.Client>(http.Client());
 
-    // Travel SIM API Client (primary API)
+    // Local Storage (needed for TokenManager)
+    register<LocalStorage>(SharedPreferencesStorage());
+
+    // Auth Local Data Source (needed for TokenManager)
+    register<AuthLocalDataSource>(
+      AuthLocalDataSourceImpl(localStorage: get<LocalStorage>()),
+    );
+
+    // Token Manager
+    register<TokenManager>(
+      TokenManager(authLocalDataSource: get<AuthLocalDataSource>()),
+    );
+
+    // Auth Interceptor
+    register<AuthInterceptor>(
+      AuthInterceptor(tokenManager: get<TokenManager>()),
+    );
+
+    // Travel SIM API Client (primary API) with auth interceptor
     final travelSimApiClient = ApiClient(
       baseUrl: dotenv.env['API_URL']!,
+      authInterceptor: get<AuthInterceptor>(),
       client: get<http.Client>(),
     );
     if (kDebugMode) {
       print('Travel SIM API URL: ${dotenv.env['API_URL']}');
     }
 
+    // Legacy API Client without auth interceptor (for non-authenticated endpoints)
     final legacyApiClient = ApiClient(
       baseUrl: dotenv.env['API_URL']!,
       client: get<http.Client>(),
@@ -107,20 +128,13 @@ class ServiceLocator {
     register<TravelSimApiService>(
       TravelSimApiService(apiClient: travelSimApiClient),
     );
-
-    // Local Storage
-    register<LocalStorage>(SharedPreferencesStorage());
   }
 
   Future<void> _initAuth() async {
-    // DataSources
+    // DataSources (AuthLocalDataSource and TokenManager are already registered in _initCore)
 
     register<AuthRemoteDataSource>(
       AuthRemoteDataSourceImpl(apiClient: get<ApiClient>()),
-    );
-
-    register<AuthLocalDataSource>(
-      AuthLocalDataSourceImpl(localStorage: get<LocalStorage>()),
     );
 
     register<ConfirmRemoteDataSource>(
@@ -160,11 +174,6 @@ class ServiceLocator {
 
     register<SendPasswordResetUseCase>(
       SendPasswordResetUseCase(get<FirebaseAuthRepositoryImpl>()),
-    );
-
-    // Token Manager
-    register<TokenManager>(
-      TokenManager(authLocalDataSource: get<AuthLocalDataSource>()),
     );
 
     // Blocs
@@ -283,6 +292,11 @@ class ServiceLocator {
     final tokenManager = _services[TokenManager];
     if (tokenManager != null) {
       (tokenManager as TokenManager).dispose();
+    }
+
+    final authInterceptor = _services[AuthInterceptor];
+    if (authInterceptor != null) {
+      (authInterceptor as AuthInterceptor).dispose();
     }
     
     final apiClient = _services[ApiClient];

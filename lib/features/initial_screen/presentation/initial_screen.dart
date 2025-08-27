@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:flex_travel_sim/core/services/token_manager.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
@@ -37,14 +37,15 @@ class _InitialScreenState extends State<InitialScreen> {
   }
 
   Future<void> _bootstrap() async {
-    final authLocal = sl.get<AuthLocalDataSource>();
-    final token = await authLocal.getToken();
-    debugPrint('Initial: Fetched token - $token');
+    final tokenManager = sl.get<TokenManager>();
+    final isAuthenticated = await tokenManager.isTokenValid();
+    
+    if (kDebugMode) print('Initial: User authenticated: $isAuthenticated');
 
     if (!mounted) return;
 
-    if (token == null || token.isEmpty) {
-      if (kDebugMode) print('Initial: Token empty → go(welcome)');
+    if (!isAuthenticated) {
+      if (kDebugMode) print('Initial: User not authenticated → go(welcome)');
       _safeGo(AppRoutes.welcome);
       return;
     }
@@ -71,7 +72,7 @@ class _InitialScreenState extends State<InitialScreen> {
 
     if (subscriberBloc.state is SubscriberInitial ||
         subscriberBloc.state is SubscriberError) {
-      subscriberBloc.add(LoadSubscriberInfoEvent(token: token));
+      subscriberBloc.add(const LoadSubscriberInfoEvent());
     } else {
       if (kDebugMode)
         print(

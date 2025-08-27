@@ -1,9 +1,7 @@
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/layout/screen_utils.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
 import 'package:flex_travel_sim/core/platform_device/platform_detector.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:flex_travel_sim/features/esim_management/bloc/esim_setup_bloc.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/another_device_selected_body.dart';
 import 'package:flex_travel_sim/features/esim_management/widgets/setup/bottom_setup_container.dart';
@@ -51,14 +49,10 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
   }
 
   void _loadSubscriberData() async {
-    final authDataSource = sl.get<AuthLocalDataSource>();
     final subscriberBloc = context.read<SubscriberBloc>();
     try {
-      final token = await authDataSource.getToken();
-      if (token != null && mounted) {
-        subscriberBloc.add(LoadSubscriberInfoEvent(token: token));
-      } else {
-        subscriberBloc.add(const ResetSubscriberStateEvent());
+      if (mounted) {
+        subscriberBloc.add(const LoadSubscriberInfoEvent());
       }
     } catch (e) {
       if (kDebugMode) {

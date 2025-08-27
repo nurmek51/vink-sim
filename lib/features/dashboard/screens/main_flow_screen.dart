@@ -7,10 +7,10 @@ import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
-import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/models/imsi_model.dart';
 import 'package:flex_travel_sim/features/subscriber/services/subscriber_local_service.dart';
+import 'package:flex_travel_sim/core/services/token_manager.dart';
+import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flex_travel_sim/features/dashboard/widgets/add_esim_circle.dart';
@@ -86,29 +86,36 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
   }
 
   Future<void> _loadSubscriberDataIfNeeded() async {
-    final authDataSource = sl.get<AuthLocalDataSource>();
     try {
-      final token = await authDataSource.getToken();
-      if (token != null && mounted) {
-        context.read<SubscriberBloc>().add(
-          LoadSubscriberInfoEvent(token: token),
-        );
+      // Проверяем, что пользователь аутентифицирован перед загрузкой данных
+      final tokenManager = sl.get<TokenManager>();
+      final isAuthenticated = await tokenManager.isTokenValid();
+      
+      if (isAuthenticated && mounted) {
+        context.read<SubscriberBloc>().add(const LoadSubscriberInfoEvent());
+      } else {
+        if (kDebugMode) {
+          print('MainFlowScreen: User not authenticated, skipping subscriber data load');
+        }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('MainFlowScreen: Error loading token: $e');
+        print('MainFlowScreen: Error loading subscriber data: $e');
       }
     }
   }
 
   Future<void> _onRefresh() async {
-    final authDataSource = sl.get<AuthLocalDataSource>();
     try {
-      final token = await authDataSource.getToken();
-      if (token != null && mounted) {
-        context.read<SubscriberBloc>().add(
-          RefreshSubscriberInfoEvent(token: token),
-        );
+      final tokenManager = sl.get<TokenManager>();
+      final isAuthenticated = await tokenManager.isTokenValid();
+      
+      if (isAuthenticated && mounted) {
+        context.read<SubscriberBloc>().add(const RefreshSubscriberInfoEvent());
+      } else {
+        if (kDebugMode) {
+          print('MainFlowScreen: User not authenticated, skipping refresh');
+        }
       }
     } catch (e) {
       if (kDebugMode) {
@@ -126,10 +133,11 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
   }
 
   void _periodicRefresh() async {
-    final authDataSource = sl.get<AuthLocalDataSource>();
     try {
-      final token = await authDataSource.getToken();
-      if (token != null && mounted) {
+      final tokenManager = sl.get<TokenManager>();
+      final isAuthenticated = await tokenManager.isTokenValid();
+      
+      if (isAuthenticated && mounted) {
         // Get current subscriber state to check if data has changed
         final currentState = context.read<SubscriberBloc>().state;
         if (currentState is SubscriberLoaded) {
@@ -142,16 +150,16 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
             if (kDebugMode) {
               print('MainFlowScreen: Data changed, refreshing...');
             }
-            context.read<SubscriberBloc>().add(
-              RefreshSubscriberInfoEvent(token: token),
-            );
+            context.read<SubscriberBloc>().add(const RefreshSubscriberInfoEvent());
             _lastDataHash = currentDataHash;
           }
         } else {
           // If not loaded, try to refresh
-          context.read<SubscriberBloc>().add(
-            RefreshSubscriberInfoEvent(token: token),
-          );
+          context.read<SubscriberBloc>().add(const RefreshSubscriberInfoEvent());
+        }
+      } else {
+        if (kDebugMode) {
+          print('MainFlowScreen: User not authenticated, skipping periodic refresh');
         }
       }
     } catch (e) {
@@ -195,7 +203,9 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
             ),
           ),
     ).then((_) {
-      context.read<MainFlowBloc>().add(HideBottomSheetEvent());
+      if (mounted) {
+        context.read<MainFlowBloc>().add(HideBottomSheetEvent());
+      }
     });
   }
 

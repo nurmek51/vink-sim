@@ -2,16 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flex_travel_sim/core/error/exceptions.dart';
+import 'package:flex_travel_sim/core/network/auth_interceptor.dart';
 import 'package:flutter/foundation.dart';
 
 class ApiClient {
+  final AuthInterceptor? _authInterceptor;
   final http.Client _client;
   final String baseUrl;
   
   ApiClient({
     required this.baseUrl,
+    AuthInterceptor? authInterceptor,
     http.Client? client,
-  }) : _client = client ?? http.Client();
+  }) : _authInterceptor = authInterceptor,
+       _client = client ?? http.Client();
 
   Future<Map<String, dynamic>> get(
     String endpoint, {
@@ -21,10 +25,18 @@ class ApiClient {
     final uri = _buildUri(endpoint, queryParameters);
     
     try {
-      final response = await _client.get(
-        uri,
-        headers: _buildHeaders(headers),
-      );
+      http.Response response;
+      
+      if (_authInterceptor != null) {
+        final request = http.Request('GET', uri);
+        request.headers.addAll(_buildHeaders(headers));
+        response = await _authInterceptor.send(request);
+      } else {
+        response = await _client.get(
+          uri,
+          headers: _buildHeaders(headers),
+        );
+      }
       
       return _handleResponse(response);
     } on SocketException {
@@ -53,11 +65,22 @@ class ApiClient {
     }
     
     try {
-      final response = await _client.post(
-        uri,
-        headers: requestHeaders,
-        body: requestBody,
-      );
+      http.Response response;
+      
+      if (_authInterceptor != null) {
+        final request = http.Request('POST', uri);
+        request.headers.addAll(requestHeaders);
+        if (requestBody != null) {
+          request.body = requestBody;
+        }
+        response = await _authInterceptor.send(request);
+      } else {
+        response = await _client.post(
+          uri,
+          headers: requestHeaders,
+          body: requestBody,
+        );
+      }
       
       if (kDebugMode) {
         print('API Response: ${response.statusCode}');
@@ -85,13 +108,26 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     final uri = _buildUri(endpoint, queryParameters);
+    final requestHeaders = _buildHeaders(headers);
+    final requestBody = body != null ? jsonEncode(body) : null;
     
     try {
-      final response = await _client.put(
-        uri,
-        headers: _buildHeaders(headers),
-        body: body != null ? jsonEncode(body) : null,
-      );
+      http.Response response;
+      
+      if (_authInterceptor != null) {
+        final request = http.Request('PUT', uri);
+        request.headers.addAll(requestHeaders);
+        if (requestBody != null) {
+          request.body = requestBody;
+        }
+        response = await _authInterceptor.send(request);
+      } else {
+        response = await _client.put(
+          uri,
+          headers: requestHeaders,
+          body: requestBody,
+        );
+      }
       
       return _handleResponse(response);
     } on SocketException {
@@ -109,12 +145,21 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     final uri = _buildUri(endpoint, queryParameters);
+    final requestHeaders = _buildHeaders(headers);
     
     try {
-      final response = await _client.delete(
-        uri,
-        headers: _buildHeaders(headers),
-      );
+      http.Response response;
+      
+      if (_authInterceptor != null) {
+        final request = http.Request('DELETE', uri);
+        request.headers.addAll(requestHeaders);
+        response = await _authInterceptor.send(request);
+      } else {
+        response = await _client.delete(
+          uri,
+          headers: requestHeaders,
+        );
+      }
       
       return _handleResponse(response);
     } on SocketException {
@@ -189,6 +234,7 @@ class ApiClient {
   }
 
   void dispose() {
+    _authInterceptor?.dispose();
     _client.close();
   }
 }
