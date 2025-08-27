@@ -61,7 +61,7 @@ class TopUpBalanceWidget extends StatelessWidget {
 
       if (token != null && context.mounted) {
         context.read<SubscriberBloc>().add(
-          LoadSubscriberInfoEvent(token: token),
+          const LoadSubscriberInfoEvent(),
         );
 
         if (kDebugMode) {

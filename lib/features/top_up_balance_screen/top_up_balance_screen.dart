@@ -84,7 +84,7 @@ class _TopUpBalanceViewState extends State<_TopUpBalanceView> {
       final token = await authDataSource.getToken();
       if (token != null && mounted) {
         context.read<SubscriberBloc>().add(
-          LoadSubscriberInfoEvent(token: token),
+          const LoadSubscriberInfoEvent(),
         );
       }
     } catch (e) {}

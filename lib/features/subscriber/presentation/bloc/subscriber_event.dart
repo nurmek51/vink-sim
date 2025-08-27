@@ -8,21 +8,11 @@ abstract class SubscriberEvent extends Equatable {
 }
 
 class LoadSubscriberInfoEvent extends SubscriberEvent {
-  final String token;
-
-  const LoadSubscriberInfoEvent({required this.token});
-
-  @override
-  List<Object> get props => [token];
+  const LoadSubscriberInfoEvent();
 }
 
 class RefreshSubscriberInfoEvent extends SubscriberEvent {
-  final String token;
-
-  const RefreshSubscriberInfoEvent({required this.token});
-
-  @override
-  List<Object> get props => [token];
+  const RefreshSubscriberInfoEvent();
 }
 
 class ResetSubscriberStateEvent extends SubscriberEvent {

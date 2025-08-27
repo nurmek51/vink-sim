@@ -21,17 +21,13 @@ class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
     Emitter<SubscriberState> emit,
   ) async {
     if (kDebugMode) {
-      print(
-        'SubscriberBloc: Loading subscriber info with token: ${event.token.substring(0, 20)}...',
-      );
+      print('SubscriberBloc: Loading subscriber info');
     }
 
     emit(const SubscriberLoading());
 
     try {
-      final subscriber = await _subscriberRemoteDataSource.getSubscriberInfo(
-        event.token,
-      );
+      final subscriber = await _subscriberRemoteDataSource.getSubscriberInfo();
 
       if (kDebugMode) {
         print('SubscriberBloc: Successfully loaded subscriber info');
@@ -55,9 +51,7 @@ class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
     Emitter<SubscriberState> emit,
   ) async {
     try {
-      final subscriber = await _subscriberRemoteDataSource.getSubscriberInfo(
-        event.token,
-      );
+      final subscriber = await _subscriberRemoteDataSource.getSubscriberInfo();
       emit(SubscriberLoaded(subscriber: subscriber));
     } catch (e) {
       emit(SubscriberError(message: e.toString()));

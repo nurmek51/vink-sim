@@ -3,7 +3,7 @@ import 'package:flex_travel_sim/core/models/subscriber_model.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class SubscriberRemoteDataSource {
-  Future<SubscriberModel> getSubscriberInfo(String token);
+  Future<SubscriberModel> getSubscriberInfo();
 }
 
 class SubscriberRemoteDataSourceImpl implements SubscriberRemoteDataSource {
@@ -14,13 +14,13 @@ class SubscriberRemoteDataSourceImpl implements SubscriberRemoteDataSource {
   }) : _travelSimApiService = travelSimApiService;
 
   @override
-  Future<SubscriberModel> getSubscriberInfo(String token) async {
+  Future<SubscriberModel> getSubscriberInfo() async {
     try {
       if (kDebugMode) {
         print('Subscriber: Getting subscriber info');
       }
 
-      final response = await _travelSimApiService.getSubscriberInfo(token);
+      final response = await _travelSimApiService.getSubscriberInfo();
       
       if (kDebugMode) {
         print('Subscriber: Raw API response: $response');
