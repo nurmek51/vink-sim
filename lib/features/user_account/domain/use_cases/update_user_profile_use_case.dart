@@ -1,5 +1,4 @@
-import 'package:flex_travel_sim/core/error/failures.dart';
-import 'package:flex_travel_sim/features/esim_management/domain/repositories/esim_repository.dart';
+import 'package:flex_travel_sim/core/utils/result.dart';
 import 'package:flex_travel_sim/features/user_account/domain/entities/user.dart';
 import 'package:flex_travel_sim/features/user_account/domain/repositories/user_repository.dart';
 
@@ -8,10 +7,10 @@ class UpdateUserProfileUseCase {
 
   UpdateUserProfileUseCase(this.repository);
 
-  Future<Either<Failure, User>> call(Map<String, dynamic> userData) async {
+  Future<Result<User>> call(Map<String, dynamic> userData) async {
     final validationResult = _validateUserData(userData);
     if (validationResult != null) {
-      return Left(ValidationFailure(validationResult));
+      return Failure(validationResult);
     }
 
     return await repository.updateUserProfile(userData);
