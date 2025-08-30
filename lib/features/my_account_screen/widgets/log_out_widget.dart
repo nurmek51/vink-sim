@@ -1,13 +1,18 @@
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/storage/local_storage.dart';
+import 'package:flex_travel_sim/core/services/auth_service.dart';
 import 'package:flex_travel_sim/core/styles/flex_typography.dart';
 import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flutter/material.dart';
 
 class LogOutWidget extends StatelessWidget {
-  const LogOutWidget({super.key});
+  final AuthService? authService;
+  
+  const LogOutWidget({
+    super.key,
+    this.authService,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,7 @@ class LogOutWidget extends StatelessWidget {
     );
   }
 
-  static Future<void> showLogoutDialog(BuildContext context) async {
+  Future<void> showLogoutDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -97,7 +102,7 @@ class LogOutWidget extends StatelessWidget {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(dialogContext).pop();
-                          logout(dialogContext);
+                          _logout(dialogContext);
                         },
                         child: Container(
                           height: 52,
@@ -126,9 +131,11 @@ class LogOutWidget extends StatelessWidget {
     );
   }
 
-  static Future<void> logout(BuildContext context) async {
-    final storage = SharedPreferencesStorage();
-    await storage.clear();
-    NavigationService.goToWelcome(context);
+  Future<void> _logout(BuildContext context) async {
+    final authService = this.authService ?? sl<AuthService>();
+    await authService.logout();
+    if (context.mounted) {
+      NavigationService.goToWelcome(context);
+    }
   }
 }
