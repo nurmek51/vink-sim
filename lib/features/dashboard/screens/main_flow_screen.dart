@@ -90,12 +90,14 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
       // Проверяем, что пользователь аутентифицирован перед загрузкой данных
       final tokenManager = sl.get<TokenManager>();
       final isAuthenticated = await tokenManager.isTokenValid();
-      
+
       if (isAuthenticated && mounted) {
         context.read<SubscriberBloc>().add(const LoadSubscriberInfoEvent());
       } else {
         if (kDebugMode) {
-          print('MainFlowScreen: User not authenticated, skipping subscriber data load');
+          print(
+            'MainFlowScreen: User not authenticated, skipping subscriber data load',
+          );
         }
       }
     } catch (e) {
@@ -109,7 +111,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     try {
       final tokenManager = sl.get<TokenManager>();
       final isAuthenticated = await tokenManager.isTokenValid();
-      
+
       if (isAuthenticated && mounted) {
         context.read<SubscriberBloc>().add(const RefreshSubscriberInfoEvent());
       } else {
@@ -136,7 +138,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
     try {
       final tokenManager = sl.get<TokenManager>();
       final isAuthenticated = await tokenManager.isTokenValid();
-      
+
       if (isAuthenticated && mounted) {
         // Get current subscriber state to check if data has changed
         final currentState = context.read<SubscriberBloc>().state;
@@ -150,16 +152,22 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
             if (kDebugMode) {
               print('MainFlowScreen: Data changed, refreshing...');
             }
-            context.read<SubscriberBloc>().add(const RefreshSubscriberInfoEvent());
+            context.read<SubscriberBloc>().add(
+              const RefreshSubscriberInfoEvent(),
+            );
             _lastDataHash = currentDataHash;
           }
         } else {
           // If not loaded, try to refresh
-          context.read<SubscriberBloc>().add(const RefreshSubscriberInfoEvent());
+          context.read<SubscriberBloc>().add(
+            const RefreshSubscriberInfoEvent(),
+          );
         }
       } else {
         if (kDebugMode) {
-          print('MainFlowScreen: User not authenticated, skipping periodic refresh');
+          print(
+            'MainFlowScreen: User not authenticated, skipping periodic refresh',
+          );
         }
       }
     } catch (e) {
