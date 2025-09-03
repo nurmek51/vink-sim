@@ -1,6 +1,7 @@
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flex_travel_sim/core/services/token_manager.dart';
+import 'package:flex_travel_sim/core/services/configuration_service.dart';
 import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -36,20 +37,15 @@ void main() async {
     }
   }
 
-  final String? stripePublishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY'];
+  await DependencyInjection.init();
 
-  if (stripePublishableKey == null || stripePublishableKey.isEmpty) {
-    throw Exception('STRIPE_PUBLISHABLE_KEY not found in .env');
-  }
-
-  Stripe.publishableKey = stripePublishableKey;
-  Stripe.merchantIdentifier = 'merchant.com.flextravelsim.app';
-
-  await sl.init();
+  final configService = sl<ConfigurationService>();
+  Stripe.publishableKey = configService.stripePublishableKey;
+  Stripe.merchantIdentifier = configService.stripeMerchantIdentifier;
 
   // Initialize token manager for automatic token refresh
   try {
-    final tokenManager = sl.get<TokenManager>();
+    final tokenManager = sl<TokenManager>();
     tokenManager.initialize();
     if (kDebugMode) {
       print('TokenManager initialized successfully');
@@ -80,9 +76,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => MainFlowBloc()),
-        BlocProvider(create: (_) => sl.get<WelcomeBloc>()),
-        BlocProvider(create: (_) => sl.get<StripeBloc>()),
-        BlocProvider(create: (_) => sl.get<SubscriberBloc>()),
+        BlocProvider(create: (_) => sl<WelcomeBloc>()),
+        BlocProvider(create: (_) => sl<StripeBloc>()),
+        BlocProvider(create: (_) => sl<SubscriberBloc>()),
       ],
       child: MaterialApp.router(
         title: 'FlexTravelSIM',

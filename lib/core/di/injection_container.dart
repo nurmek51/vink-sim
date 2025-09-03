@@ -1,3 +1,6 @@
+import 'package:get_it/get_it.dart';
+import 'package:flex_travel_sim/core/services/configuration_service.dart';
+import 'package:flex_travel_sim/core/services/auth_service.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/confirm_remote_data_source.dart';
@@ -34,284 +37,247 @@ import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/data/data_sources/subscriber_remote_data_source.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:flex_travel_sim/core/services/token_manager.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/foundation.dart';
 
-class ServiceLocator {
-  static final ServiceLocator _instance = ServiceLocator._internal();
-  factory ServiceLocator() => _instance;
-  ServiceLocator._internal();
+final GetIt sl = GetIt.instance;
 
-  final Map<Type, dynamic> _services = {};
-  bool _isInitialized = false;
-
-  T get<T>() {
-    final service = _services[T];
-    if (service == null) {
-      throw Exception('Service of type $T is not registered');
-    }
-    return service as T;
-  }
-
-  void register<T>(T service) {
-    _services[T] = service;
-  }
-
-  void registerLazySingleton<T>(T Function() factory) {
-    _services[T] = factory;
-  }
-
-  void registerFactory<T>(T Function() factory) {
-    _services[T] = factory;
-  }
-
-  Future<void> init() async {
-    if (_isInitialized) return;
-
-    // Core dependencies
+class DependencyInjection {
+  static Future<void> init() async {
     await _initCore();
-
-    // Feature dependencies
+    await _initAuth();
     await _initEsimManagement();
     await _initUserAccount();
-    await _initAuth();
-    await _initTariffsAndCountries();
-    await _initOnboarding();
     await _initSubscriber();
     await _initStripeService();
-
-    _isInitialized = true;
+    await _initOnboarding();
   }
 
-  Future<void> _initCore() async {
+  static Future<void> _initCore() async {
+    // Configuration Service
+    sl.registerSingleton<ConfigurationService>(
+      EnvironmentConfigurationService(),
+    );
+
     // HTTP Client
-    register<http.Client>(http.Client());
+    sl.registerSingleton<http.Client>(http.Client());
 
-    // Local Storage (needed for TokenManager)
-    register<LocalStorage>(SharedPreferencesStorage());
+    // Local Storage
+    sl.registerSingleton<LocalStorage>(SharedPreferencesStorage());
 
-    // Auth Local Data Source (needed for TokenManager)
-    register<AuthLocalDataSource>(
-      AuthLocalDataSourceImpl(localStorage: get<LocalStorage>()),
+    // Auth Service
+    sl.registerLazySingleton<AuthService>(
+      () => AuthServiceImpl(localStorage: sl<LocalStorage>()),
+    );
+
+    // Auth Local Data Source
+    sl.registerLazySingleton<AuthLocalDataSource>(
+      () => AuthLocalDataSourceImpl(localStorage: sl<LocalStorage>()),
     );
 
     // Token Manager
-    register<TokenManager>(
-      TokenManager(authLocalDataSource: get<AuthLocalDataSource>()),
+    sl.registerLazySingleton<TokenManager>(
+      () => TokenManager(authLocalDataSource: sl<AuthLocalDataSource>()),
     );
 
     // Auth Interceptor
-    register<AuthInterceptor>(
-      AuthInterceptor(tokenManager: get<TokenManager>()),
+    sl.registerLazySingleton<AuthInterceptor>(
+      () => AuthInterceptor(tokenManager: sl<TokenManager>()),
     );
 
-    // Travel SIM API Client (primary API) with auth interceptor
-    final travelSimApiClient = ApiClient(
-      baseUrl: dotenv.env['API_URL']!,
-      authInterceptor: get<AuthInterceptor>(),
-      client: get<http.Client>(),
-    );
-    if (kDebugMode) {
-      print('Travel SIM API URL: ${dotenv.env['API_URL']}');
-    }
-
-    // Legacy API Client without auth interceptor (for non-authenticated endpoints)
-    final legacyApiClient = ApiClient(
-      baseUrl: dotenv.env['API_URL']!,
-      client: get<http.Client>(),
+    // API Clients
+    sl.registerLazySingleton<ApiClient>(
+      () => ApiClient(
+        baseUrl: sl<ConfigurationService>().apiUrl,
+        client: sl<http.Client>(),
+      ),
     );
 
-    register<ApiClient>(legacyApiClient);
-
-    // Travel SIM API Service
-    register<TravelSimApiService>(
-      TravelSimApiService(apiClient: travelSimApiClient),
-    );
+    // Travel SIM API Service with auth interceptor
+    sl.registerLazySingleton<TravelSimApiService>(() {
+      final apiClient = ApiClient(
+        baseUrl: sl<ConfigurationService>().apiUrl,
+        authInterceptor: sl<AuthInterceptor>(),
+        client: sl<http.Client>(),
+      );
+      return TravelSimApiService(apiClient: apiClient);
+    });
   }
 
-  Future<void> _initAuth() async {
-    // DataSources (AuthLocalDataSource and TokenManager are already registered in _initCore)
-
-    register<AuthRemoteDataSource>(
-      AuthRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+  static Future<void> _initAuth() async {
+    // Data Sources
+    sl.registerLazySingleton<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(apiClient: sl<ApiClient>()),
     );
 
-    register<ConfirmRemoteDataSource>(
-      ConfirmRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    sl.registerLazySingleton<ConfirmRemoteDataSource>(
+      () => ConfirmRemoteDataSourceImpl(apiClient: sl<ApiClient>()),
     );
 
-    register<FirebaseAuthDataSource>(FirebaseAuthDataSourceImpl());
+    sl.registerLazySingleton<FirebaseAuthDataSource>(
+      () => FirebaseAuthDataSourceImpl(),
+    );
 
-    register<OtpAuthDataSource>(
-      OtpAuthDataSourceImpl(travelSimApiService: get<TravelSimApiService>()),
+    sl.registerLazySingleton<OtpAuthDataSource>(
+      () =>
+          OtpAuthDataSourceImpl(travelSimApiService: sl<TravelSimApiService>()),
     );
 
     // Repositories
-
-    register<AuthRepository>(
-      AuthRepositoryImpl(
-        remoteDataSource: get<AuthRemoteDataSource>(),
-        localDataSource: get<AuthLocalDataSource>(),
-        confirmRemoteDataSource: get<ConfirmRemoteDataSource>(),
+    sl.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(
+        remoteDataSource: sl<AuthRemoteDataSource>(),
+        localDataSource: sl<AuthLocalDataSource>(),
+        confirmRemoteDataSource: sl<ConfirmRemoteDataSource>(),
       ),
     );
 
-    register<FirebaseAuthRepositoryImpl>(
-      FirebaseAuthRepositoryImpl(
-        firebaseDataSource: get<FirebaseAuthDataSource>(),
-        localDataSource: get<AuthLocalDataSource>(),
+    sl.registerLazySingleton<FirebaseAuthRepositoryImpl>(
+      () => FirebaseAuthRepositoryImpl(
+        firebaseDataSource: sl<FirebaseAuthDataSource>(),
+        localDataSource: sl<AuthLocalDataSource>(),
       ),
     );
 
     // Use Cases
-
-    register<ConfirmUseCase>(ConfirmUseCase(repository: get<AuthRepository>()));
-
-    register<FirebaseLoginUseCase>(
-      FirebaseLoginUseCase(repository: get<FirebaseAuthRepositoryImpl>()),
+    sl.registerLazySingleton<ConfirmUseCase>(
+      () => ConfirmUseCase(repository: sl<AuthRepository>()),
     );
 
-    register<SendPasswordResetUseCase>(
-      SendPasswordResetUseCase(get<FirebaseAuthRepositoryImpl>()),
+    sl.registerLazySingleton<FirebaseLoginUseCase>(
+      () => FirebaseLoginUseCase(repository: sl<FirebaseAuthRepositoryImpl>()),
+    );
+
+    sl.registerLazySingleton<SendPasswordResetUseCase>(
+      () => SendPasswordResetUseCase(sl<FirebaseAuthRepositoryImpl>()),
     );
 
     // Blocs
-
-    register<OtpAuthBloc>(
-      OtpAuthBloc(
-        otpAuthDataSource: get<OtpAuthDataSource>(),
-        firebaseLoginUseCase: get<FirebaseLoginUseCase>(),
+    sl.registerFactory<OtpAuthBloc>(
+      () => OtpAuthBloc(
+        otpAuthDataSource: sl<OtpAuthDataSource>(),
+        firebaseLoginUseCase: sl<FirebaseLoginUseCase>(),
       ),
     );
   }
 
-  Future<void> _initEsimManagement() async {
+  static Future<void> _initEsimManagement() async {
     // Data Sources
-    register<EsimRemoteDataSource>(
-      EsimRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    sl.registerLazySingleton<EsimRemoteDataSource>(
+      () => EsimRemoteDataSourceImpl(apiClient: sl<ApiClient>()),
     );
 
-    register<EsimLocalDataSource>(
-      EsimLocalDataSourceImpl(localStorage: get<LocalStorage>()),
+    sl.registerLazySingleton<EsimLocalDataSource>(
+      () => EsimLocalDataSourceImpl(localStorage: sl<LocalStorage>()),
     );
 
     // Repository
-    register<EsimRepository>(
-      EsimRepositoryImpl(
-        remoteDataSource: get<EsimRemoteDataSource>(),
-        localDataSource: get<EsimLocalDataSource>(),
+    sl.registerLazySingleton<EsimRepository>(
+      () => EsimRepositoryImpl(
+        remoteDataSource: sl<EsimRemoteDataSource>(),
+        localDataSource: sl<EsimLocalDataSource>(),
       ),
     );
 
     // Use Cases
-    register<GetEsimsUseCase>(GetEsimsUseCase(get<EsimRepository>()));
-
-    register<ActivateEsimUseCase>(ActivateEsimUseCase(get<EsimRepository>()));
-
-    register<PurchaseEsimUseCase>(PurchaseEsimUseCase(get<EsimRepository>()));
-  }
-
-  Future<void> _initUserAccount() async {
-    // Data Sources
-    register<UserRemoteDataSource>(
-      UserRemoteDataSourceImpl(apiClient: get<ApiClient>()),
+    sl.registerLazySingleton<GetEsimsUseCase>(
+      () => GetEsimsUseCase(sl<EsimRepository>()),
     );
 
-    register<UserLocalDataSource>(
-      UserLocalDataSourceImpl(localStorage: get<LocalStorage>()),
+    sl.registerLazySingleton<ActivateEsimUseCase>(
+      () => ActivateEsimUseCase(sl<EsimRepository>()),
+    );
+
+    sl.registerLazySingleton<PurchaseEsimUseCase>(
+      () => PurchaseEsimUseCase(sl<EsimRepository>()),
+    );
+  }
+
+  static Future<void> _initUserAccount() async {
+    // Data Sources
+    sl.registerLazySingleton<UserRemoteDataSource>(
+      () => UserRemoteDataSourceImpl(apiClient: sl<ApiClient>()),
+    );
+
+    sl.registerLazySingleton<UserLocalDataSource>(
+      () => UserLocalDataSourceImpl(localStorage: sl<LocalStorage>()),
     );
 
     // Repository
-    register<UserRepository>(
-      UserRepositoryImpl(
-        remoteDataSource: get<UserRemoteDataSource>(),
-        localDataSource: get<UserLocalDataSource>(),
+    sl.registerLazySingleton<UserRepository>(
+      () => UserRepositoryImpl(
+        remoteDataSource: sl<UserRemoteDataSource>(),
+        localDataSource: sl<UserLocalDataSource>(),
       ),
     );
 
     // Use Cases
-    register<GetCurrentUserUseCase>(
-      GetCurrentUserUseCase(get<UserRepository>()),
+    sl.registerLazySingleton<GetCurrentUserUseCase>(
+      () => GetCurrentUserUseCase(sl<UserRepository>()),
     );
 
-    register<UpdateUserProfileUseCase>(
-      UpdateUserProfileUseCase(get<UserRepository>()),
+    sl.registerLazySingleton<UpdateUserProfileUseCase>(
+      () => UpdateUserProfileUseCase(sl<UserRepository>()),
     );
   }
 
-  Future<void> _initTariffsAndCountries() async {
-    // TODO: Implement tariffs and countries dependencies
-  }
 
-  Future<void> _initOnboarding() async {
+  static Future<void> _initOnboarding() async {
     // Onboarding Bloc
-    register<WelcomeBloc>(WelcomeBloc());
+    sl.registerFactory<WelcomeBloc>(() => WelcomeBloc());
   }
 
-  Future<void> _initSubscriber() async {
+  static Future<void> _initSubscriber() async {
     // Data Sources
-    register<SubscriberRemoteDataSource>(
-      SubscriberRemoteDataSourceImpl(
-        travelSimApiService: get<TravelSimApiService>(),
+    sl.registerLazySingleton<SubscriberRemoteDataSource>(
+      () => SubscriberRemoteDataSourceImpl(
+        travelSimApiService: sl<TravelSimApiService>(),
       ),
     );
 
-    register<SubscriberLocalDataSource>(
-      SubscriberLocalDataSourceImpl(localStorage: get<LocalStorage>()),
-    );    
+    sl.registerLazySingleton<SubscriberLocalDataSource>(
+      () => SubscriberLocalDataSourceImpl(localStorage: sl<LocalStorage>()),
+    );
 
     // Blocs
-    register<SubscriberBloc>(
-      SubscriberBloc(
-        subscriberRemoteDataSource: get<SubscriberRemoteDataSource>(),
-      ),
-    );
-  }
-  
-  Future<void> _initStripeService() async {
-    register<StripeService>(
-      StripeService(
-        get<FirebaseLoginUseCase>(),
-      )
-    );
-    register<StripeBloc>(
-      StripeBloc(
-        stripeService: get<StripeService>(),
+    sl.registerFactory<SubscriberBloc>(
+      () => SubscriberBloc(
+        subscriberRemoteDataSource: sl<SubscriberRemoteDataSource>(),
       ),
     );
   }
 
-  void reset() {
-    _services.clear();
-    _isInitialized = false;
+  static Future<void> _initStripeService() async {
+    sl.registerLazySingleton<StripeService>(
+      () => StripeService(sl<FirebaseLoginUseCase>()),
+    );
+
+    sl.registerFactory<StripeBloc>(
+      () => StripeBloc(stripeService: sl<StripeService>()),
+    );
   }
 
-  void dispose() {
+  static Future<void> reset() async {
+    await sl.reset();
+  }
+
+  static Future<void> dispose() async {
     // Dispose any services that need cleanup
-    final tokenManager = _services[TokenManager];
-    if (tokenManager != null) {
-      (tokenManager as TokenManager).dispose();
+    if (sl.isRegistered<TokenManager>()) {
+      sl<TokenManager>().dispose();
     }
 
-    final authInterceptor = _services[AuthInterceptor];
-    if (authInterceptor != null) {
-      (authInterceptor as AuthInterceptor).dispose();
-    }
-    
-    final apiClient = _services[ApiClient];
-    if (apiClient != null) {
-      (apiClient as ApiClient).dispose();
+    if (sl.isRegistered<AuthInterceptor>()) {
+      sl<AuthInterceptor>().dispose();
     }
 
-    final httpClient = _services[http.Client];
-    if (httpClient != null) {
-      (httpClient as http.Client).close();
+    if (sl.isRegistered<ApiClient>()) {
+      sl<ApiClient>().dispose();
     }
 
-    reset();
+    if (sl.isRegistered<http.Client>()) {
+      sl<http.Client>().close();
+    }
+
+    await reset();
   }
 }
-
-// Global service locator instance
-final sl = ServiceLocator();
