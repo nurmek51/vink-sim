@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "187355017492",
-    "project_id": "travel-sim-test-aa",
-    "storage_bucket": "travel-sim-test-aa.firebasestorage.app"
+    "project_number": "334257707708",
+    "project_id": "flex-travel-sim-aa",
+    "storage_bucket": "flex-travel-sim-aa.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:187355017492:android:7567755ad8d2a559881201",
+        "mobilesdk_app_id": "1:334257707708:android:1a2c9ac7e4b40006500eb9",
         "android_client_info": {
           "package_name": "com.example.flex_travel_sim"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCu0S4CkqLfkZbaQ3FQxq2POcDGhTKtJWU"
+          "current_key": "AIzaSyAIJEFWh9t2ajz3xHlfPQfGkhLjWdIgYTE"
         }
       ],
       "services": {

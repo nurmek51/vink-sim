@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBoWhrh61b4YT9aT3_qN0HhSlJ1Zg4CWQY</string>
+	<string>AIzaSyBKiuGv5V6rIjn7DyOudLZLJVbx1mYfIRg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>187355017492</string>
+	<string>334257707708</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.flexunion.FlexSim</string>
 	<key>PROJECT_ID</key>
-	<string>travel-sim-test-aa</string>
+	<string>flex-travel-sim-aa</string>
 	<key>STORAGE_BUCKET</key>
-	<string>travel-sim-test-aa.firebasestorage.app</string>
+	<string>flex-travel-sim-aa.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:187355017492:ios:98f52273d244095e881201</string>
+	<string>1:334257707708:ios:b83fac8d3ef998ac500eb9</string>
 </dict>
 </plist>

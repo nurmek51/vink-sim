@@ -49,7 +49,12 @@ app.*.map.json
 .env.local
 .env.*.local
 
-# Keep environment templates but ignore files with real secrets
-# .env.development  # Contains test keys - safe to commit
-# .env.staging      # Template only - safe to commit  
-# .env.production   # Template only - safe to commit
+# Environment-specific files (with real keys)
+.env.development
+.env.production
+.env.staging
+
+# Template files (safe to commit)
+.env.development.template
+.env.production.template
+.env.staging.template
