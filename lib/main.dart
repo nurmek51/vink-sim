@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/core/config/environment.dart';
 import 'package:flex_travel_sim/core/di/injection_container.dart';
 import 'package:flex_travel_sim/core/router/app_router.dart';
 import 'package:flex_travel_sim/core/services/token_manager.dart';
@@ -11,7 +12,6 @@ import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
 import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_travel_sim/firebase_options.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
@@ -21,8 +21,8 @@ void main() async {
   // Initialize EasyLocalization
   await EasyLocalization.ensureInitialized();
 
-  // Load environment variables
-  await dotenv.load(fileName: ".env");
+  // Load environment variables based on build mode
+  await Environment.load();
 
   try {
     await Firebase.initializeApp(

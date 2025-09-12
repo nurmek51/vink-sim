@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 class TravelSimApiService {
   final ApiClient _apiClient;
-  
+
   TravelSimApiService({required ApiClient apiClient}) : _apiClient = apiClient;
 
   Future<Map<String, dynamic>> sendOtpSms(String phone) async {
@@ -12,7 +12,7 @@ class TravelSimApiService {
       print('Phone: $phone');
       print('URL: ${_apiClient.baseUrl}/otp/whatsapp');
     }
-    
+
     try {
       final response = await _apiClient.post(
         '/otp/whatsapp',
@@ -35,16 +35,13 @@ class TravelSimApiService {
       print('TravelSimAPI: Verifying OTP');
       print('Phone: $phone');
       print('Code: $code');
-      print('URL: ${_apiClient.baseUrl}${kDebugMode ? '/dev/otp/verify' : '/otp/verify'}');
+      print('URL: ${_apiClient.baseUrl}/otp/verify');
     }
-    
+
     try {
       final response = await _apiClient.post(
-        kDebugMode ? '/dev/otp/verify' : '/otp/verify',
-        body: {
-          'phone': phone,
-          'code': code,
-        },
+        '/otp/verify',
+        body: {'phone': phone, 'code': code},
       );
       if (kDebugMode) {
         print('TravelSimAPI: OTP verification successful');
@@ -63,15 +60,15 @@ class TravelSimApiService {
       print('TravelSimAPI: Getting subscriber info');
       print('URL: ${_apiClient.baseUrl}/subscriber');
     }
-    
+
     try {
       final response = await _apiClient.get('/subscriber');
-      
+
       if (kDebugMode) {
         print('TravelSimAPI: Subscriber info retrieved successfully');
         print('Response keys: ${response.keys}');
       }
-      
+
       return response;
     } catch (e) {
       if (kDebugMode) {
@@ -80,5 +77,4 @@ class TravelSimApiService {
       rethrow;
     }
   }
-
 }

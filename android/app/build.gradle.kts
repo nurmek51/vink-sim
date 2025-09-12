@@ -32,11 +32,24 @@ android {
         multiDexEnabled = true
     }
 
+    signingConfigs {
+        create("release") {
+            // TODO: Configure release signing
+            // You need to create a keystore and configure these values:
+            // keyAlias = "your-key-alias"
+            // keyPassword = "your-key-password"
+            // storeFile = file("path/to/your/keystore.jks")
+            // storePassword = "your-store-password"
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // TODO: Uncomment when release keystore is configured
+            // signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("debug") // Remove this line when release signing is ready
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 }

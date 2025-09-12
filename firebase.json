@@ -21,26 +21,26 @@
     "platforms": {
       "android": {
         "default": {
-          "projectId": "travel-sim-test-aa",
-          "appId": "1:187355017492:android:7567755ad8d2a559881201",
+          "projectId": "flex-travel-sim-aa",
+          "appId": "1:334257707708:android:1a2c9ac7e4b40006500eb9",
           "fileOutput": "android/app/google-services.json"
         }
       },
       "ios": {
         "default": {
-          "projectId": "travel-sim-test-aa",
-          "appId": "1:187355017492:ios:98f52273d244095e881201",
+          "projectId": "flex-travel-sim-aa",
+          "appId": "1:334257707708:ios:b83fac8d3ef998ac500eb9",
           "uploadDebugSymbols": false,
           "fileOutput": "ios/Runner/GoogleService-Info.plist"
         }
       },
       "dart": {
         "lib/firebase_options.dart": {
-          "projectId": "travel-sim-test-aa",
+          "projectId": "flex-travel-sim-aa",
           "configurations": {
-            "android": "1:187355017492:android:7567755ad8d2a559881201",
-            "ios": "1:187355017492:ios:98f52273d244095e881201",
-            "web": "1:187355017492:web:7a10d21c634105ca881201"
+            "android": "1:334257707708:android:1a2c9ac7e4b40006500eb9",
+            "ios": "1:334257707708:ios:b83fac8d3ef998ac500eb9",
+            "web": "1:334257707708:web:2556c473cd55b681500eb9"
           }
         }
       }
