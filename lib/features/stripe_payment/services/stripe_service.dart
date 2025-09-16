@@ -1,3 +1,4 @@
+import 'package:flex_travel_sim/core/config/environment.dart';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/core/platform_device/platform_detector.dart';
 import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
@@ -75,7 +76,7 @@ class StripeService {
           googlePay: PaymentSheetGooglePay(
             merchantCountryCode: 'US',
             currencyCode: 'USD',
-            testEnv: true,
+            testEnv: Environment.isDevelopment,
           ),
           applePay: PaymentSheetApplePay(merchantCountryCode: 'US'),
         ),
@@ -132,8 +133,8 @@ class StripeService {
       }
 
       final supported = await Stripe.instance.isPlatformPaySupported(
-        googlePay: const IsGooglePaySupportedParams(
-          testEnv: true,
+        googlePay: IsGooglePaySupportedParams(
+          testEnv: Environment.isDevelopment,
           existingPaymentMethodRequired: false,
         ),
       );
@@ -152,7 +153,7 @@ class StripeService {
             merchantName: 'FlexTravelSim',
             merchantCountryCode: 'US',
             currencyCode: 'USD',
-            testEnv: true,
+            testEnv: Environment.isDevelopment,
           ),
         ),
       );
