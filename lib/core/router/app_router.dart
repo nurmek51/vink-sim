@@ -228,11 +228,10 @@ class AppRouter {
               final clientSecret = extra?['clientSecret'] as String?;
               final amount = extra?['amount'] as int?;
               final operationType = extra?['operationType'] as StripeOperationType?;
-              final userId = extra?['userId'] as String?;
               final imsi = extra?['imsi'] as String?;              
 
 
-              if (clientSecret == null || amount == null || operationType == null || userId == null) {
+              if (clientSecret == null || amount == null || operationType == null) {
                 return AppRouter._buildPageWithSlideTransition(
                   context,
                   state,
@@ -250,7 +249,6 @@ class AppRouter {
                   amount: amount,
                   imsi: imsi,
                   operationType: operationType,
-                  userId: userId,
 
                 ),
               );

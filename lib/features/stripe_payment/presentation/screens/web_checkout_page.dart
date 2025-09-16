@@ -13,7 +13,6 @@ class StripeWebCheckout extends StatelessWidget {
   final String clientSecret;
   final int amount;
   final StripeOperationType operationType;
-  final String userId;
   final String? imsi;
 
   const StripeWebCheckout({
@@ -21,13 +20,11 @@ class StripeWebCheckout extends StatelessWidget {
     required this.clientSecret,
     required this.amount,
     required this.operationType,
-    required this.userId,
     this.imsi,
   });
 
   @override
   Widget build(BuildContext context) {
-    print('123 $imsi');
     return Scaffold(
       backgroundColor: AppColors.backgroundColorLight,
       appBar: AppBar(

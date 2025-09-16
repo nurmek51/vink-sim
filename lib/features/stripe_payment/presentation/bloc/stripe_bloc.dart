@@ -15,59 +15,53 @@ abstract class StripeEvent extends Equatable {
 
 class StripePaymentRequested extends StripeEvent {
   final int amount;
-  final String currency;
   final BuildContext context;
   final StripeOperationType operationType;
   final String? imsi;
 
   const StripePaymentRequested({
     required this.amount,
-    this.currency = 'usd',
     required this.context,
     required this.operationType,
     this.imsi,
   });
 
   @override
-  List<Object?> get props => [amount, currency];
+  List<Object?> get props => [amount];
 }
 
 class GooglePayPaymentRequested extends StripeEvent {
   final int amount;
-  final String currency;
   final BuildContext context;
   final StripeOperationType operationType;
   final String? imsi;
 
   const GooglePayPaymentRequested({
     required this.amount,
-    this.currency = 'usd',
     required this.context,
     required this.operationType,
     this.imsi,
   });
 
   @override
-  List<Object?> get props => [amount, currency];
+  List<Object?> get props => [amount];
 }
 
 class ApplePayPaymentRequested extends StripeEvent {
   final int amount;
-  final String currency;
   final BuildContext context;
   final StripeOperationType operationType;
   final String? imsi;
 
   const ApplePayPaymentRequested({
     required this.amount,
-    this.currency = 'usd',
     required this.context,
     required this.operationType,
     this.imsi,
   });
 
   @override
-  List<Object?> get props => [amount, currency];
+  List<Object?> get props => [amount];
 }
 
 class StripeReset extends StripeEvent {
@@ -133,7 +127,7 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
     try {
       final result = await stripeService.makePayment(
         amount: event.amount,
-        currency: event.currency,
+        // currency: event.currency,
         context: event.context,
         operationType: event.operationType,
         imsi: event.imsi,
@@ -171,7 +165,6 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
     try {
       final result = await stripeService.makeGooglePayOnlyPayment(
         amount: event.amount,
-        currency: event.currency,
         operationType: event.operationType,
         imsi: event.imsi,
       );
@@ -208,7 +201,6 @@ class StripeBloc extends Bloc<StripeEvent, StripeState> {
     try {
       final result = await stripeService.makeApplePayPayment(
         amount: event.amount,
-        currency: event.currency,
         operationType: event.operationType,
         imsi: event.imsi,
       );
