@@ -248,7 +248,11 @@ class DependencyInjection {
 
   static Future<void> _initStripeService() async {
     sl.registerLazySingleton<StripeService>(
-      () => StripeService(sl<FirebaseLoginUseCase>()),
+      () => StripeService(
+        firebaseLoginUseCase: sl<FirebaseLoginUseCase>(),
+        apiClient: sl<ApiClient>(),
+        localDataSource: sl<AuthLocalDataSource>(),
+      ),
     );
 
     sl.registerFactory<StripeBloc>(

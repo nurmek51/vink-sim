@@ -24,4 +24,6 @@ class PlatformDetector {
     return "PlatformDetector: Web Desktop - $userAgent";
   }
 
+  static bool get isSimulator => false;
+
 }

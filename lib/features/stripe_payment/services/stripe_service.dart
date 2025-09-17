@@ -1,13 +1,12 @@
-import 'dart:convert';
-
+import 'package:flex_travel_sim/core/config/environment.dart';
+import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/core/platform_device/platform_detector.dart';
+import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:http/http.dart' as http;
 import 'package:flex_travel_sim/features/stripe_payment/utils/stripe_web.dart';
 
 enum StripePaymentResult { success, cancelled, failure, redirectedToWeb }
@@ -25,38 +24,21 @@ enum StripeOperationType {
     }
   }
 
-  Map<String, String> buildMetadata({required String userId, String? imsi}) {
-    switch (this) {
-      case StripeOperationType.addFunds:
-        if (imsi == null) {
-          throw ArgumentError(
-            'StripeService: IMSI is required for add_funds operation',
-          );
-        }
-        return {
-          'metadata[operation]': operationType,
-          'metadata[userId]': userId,
-          'metadata[imsi]': imsi,
-        };
-      case StripeOperationType.newImsi:
-        return {
-          'metadata[operation]': operationType,
-          'metadata[userId]': userId,
-        };
-    }
-  }
 }
 
 class StripeService {
-  final FirebaseLoginUseCase _firebaseLoginUseCase;
+  final FirebaseLoginUseCase firebaseLoginUseCase;
+  final ApiClient apiClient;
+  final AuthLocalDataSource localDataSource;
 
-  StripeService(this._firebaseLoginUseCase);
-
-  String get _userId => _firebaseLoginUseCase.getCurrentUserId() ?? '';
+  StripeService({
+    required this.firebaseLoginUseCase,
+    required this.apiClient,
+    required this.localDataSource,
+  });
 
   Future<StripePaymentResult> makePayment({
     required int amount,
-    String currency = 'usd',
     required BuildContext context,
     required StripeOperationType operationType,
     String? imsi,
@@ -64,8 +46,6 @@ class StripeService {
     try {
       String? paymentIntentClientSecret = await _createPaymentIntent(
         amount: amount,
-        currency: currency,
-        userId: _userId,
         operationType: operationType,
         imsi: imsi,
       );
@@ -84,7 +64,6 @@ class StripeService {
           amount: amount,
           imsi: imsi,
           operationType: operationType,
-          userId: _userId,
         );
 
         return StripePaymentResult.redirectedToWeb;
@@ -97,7 +76,7 @@ class StripeService {
           googlePay: PaymentSheetGooglePay(
             merchantCountryCode: 'US',
             currencyCode: 'USD',
-            testEnv: true,
+            testEnv: Environment.isDevelopment,
           ),
           applePay: PaymentSheetApplePay(merchantCountryCode: 'US'),
         ),
@@ -136,15 +115,12 @@ class StripeService {
 
   Future<StripePaymentResult> makeGooglePayOnlyPayment({
     required int amount,
-    String currency = 'usd',
     required StripeOperationType operationType,
     String? imsi,
   }) async {
     try {
       String? paymentIntentClientSecret = await _createPaymentIntent(
         amount: amount,
-        currency: currency,
-        userId: _userId,
         operationType: operationType,
         imsi: imsi,
       );
@@ -157,8 +133,8 @@ class StripeService {
       }
 
       final supported = await Stripe.instance.isPlatformPaySupported(
-        googlePay: const IsGooglePaySupportedParams(
-          testEnv: true,
+        googlePay: IsGooglePaySupportedParams(
+          testEnv: Environment.isDevelopment,
           existingPaymentMethodRequired: false,
         ),
       );
@@ -177,7 +153,7 @@ class StripeService {
             merchantName: 'FlexTravelSim',
             merchantCountryCode: 'US',
             currencyCode: 'USD',
-            testEnv: true,
+            testEnv: Environment.isDevelopment,
           ),
         ),
       );
@@ -199,15 +175,12 @@ class StripeService {
 
   Future<StripePaymentResult> makeApplePayPayment({
     required int amount,
-    String currency = 'usd',
     required StripeOperationType operationType,
     String? imsi,
   }) async {
     try {
       String? paymentIntentClientSecret = await _createPaymentIntent(
         amount: amount,
-        currency: currency,
-        userId: _userId,
         operationType: operationType,
         imsi: imsi,
       );
@@ -294,52 +267,45 @@ class StripeService {
 
   Future<String?> _createPaymentIntent({
     required int amount,
-    required String currency,
-    required String userId,
     required StripeOperationType operationType,
     String? imsi,
   }) async {
-    final String? stripeSecretKey = dotenv.env['STRIPE_SECRET_KEY'];
-    final metadata = operationType.buildMetadata(userId: userId, imsi: imsi);
+    final token = await localDataSource.getToken();
     if (kDebugMode) {
       print('StripeService: starting ${operationType.name} payment...');
-      print('StripeService: Metadata - $metadata');
     }
 
     try {
       Map<String, dynamic>? paymentInfo = {
-        "amount": _calculateAmount(amount),
-        "currency": currency,
-        ...metadata,
+        "operation": operationType.operationType,
+        "amount": amount
       };
 
-      final response = await http.post(
-        Uri.parse("https://api.stripe.com/v1/payment_intents"),
+      if (operationType == StripeOperationType.addFunds) {
+        if (imsi == null) {
+          throw ArgumentError(
+            "StripeService: IMSI is required for add_funds operation",
+          );
+        }
+        paymentInfo["imsi"] = imsi;
+      }
+
+      final response = await apiClient.post(
+        "/stripe/payment",
         body: paymentInfo,
         headers: {
-          "Authorization": "Bearer $stripeSecretKey",
-          "Content-Type": "application/x-www-form-urlencoded",
+          if (token != null) "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
         },
       );
 
+      final String? clientSecret = response['client_secret'];
+
       if (kDebugMode) {
-        print("Stripe response status: ${response.statusCode}");
-        print("response from API ${response.body}");
+        print("Stripe (/stripe/payment) response from API $response");
       }
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data != null && data["client_secret"] != null) {
-          return data["client_secret"];
-        } else {
-          return null;
-        }
-      } else {
-        if (kDebugMode) {
-          print("Stripe error: ${response.statusCode} - ${response.body}");
-        }
-        return null;
-      }
+      return clientSecret;
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -366,8 +332,4 @@ class StripeService {
     }
   }
 
-  String _calculateAmount(int amount) {
-    final calculatedAmount = amount * 100;
-    return calculatedAmount.toString();
-  }
 }

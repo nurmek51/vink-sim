@@ -69,7 +69,6 @@ class NavigationService {
     required String clientSecret,
     required int amount,
     required StripeOperationType operationType,
-    required String userId,
     String? imsi,
   }) {
     context.push(
@@ -79,7 +78,6 @@ class NavigationService {
         'amount': amount,
         'imsi': imsi,
         'operationType': operationType,
-        'userId': userId,
       },
     );
   }
