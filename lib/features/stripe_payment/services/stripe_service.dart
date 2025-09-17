@@ -1,7 +1,7 @@
 import 'package:flex_travel_sim/core/config/environment.dart';
 import 'package:flex_travel_sim/core/network/api_client.dart';
 import 'package:flex_travel_sim/core/platform_device/platform_detector.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:flex_travel_sim/core/services/token_manager.dart';
 import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -29,12 +29,12 @@ enum StripeOperationType {
 class StripeService {
   final FirebaseLoginUseCase firebaseLoginUseCase;
   final ApiClient apiClient;
-  final AuthLocalDataSource localDataSource;
+  final TokenManager tokenManager;
 
   StripeService({
     required this.firebaseLoginUseCase,
     required this.apiClient,
-    required this.localDataSource,
+    required this.tokenManager,
   });
 
   Future<StripePaymentResult> makePayment({
@@ -270,7 +270,7 @@ class StripeService {
     required StripeOperationType operationType,
     String? imsi,
   }) async {
-    final token = await localDataSource.getToken();
+    final token = await tokenManager.getCurrentIdToken();
     if (kDebugMode) {
       print('StripeService: starting ${operationType.name} payment...');
     }
