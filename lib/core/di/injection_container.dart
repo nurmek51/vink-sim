@@ -251,7 +251,7 @@ class DependencyInjection {
       () => StripeService(
         firebaseLoginUseCase: sl<FirebaseLoginUseCase>(),
         apiClient: sl<ApiClient>(),
-        localDataSource: sl<AuthLocalDataSource>(),
+        tokenManager: sl<TokenManager>(),
       ),
     );
 
