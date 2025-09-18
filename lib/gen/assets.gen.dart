@@ -264,9 +264,17 @@ class $AssetsIconsFigma112Gen {
   AssetGenImage get activationCode =>
       const AssetGenImage('assets/icons/figma112/activation_code.png');
 
+  /// File path: assets/icons/figma112/activation_code_eng.jpg
+  AssetGenImage get activationCodeEng =>
+      const AssetGenImage('assets/icons/figma112/activation_code_eng.jpg');      
+
   /// File path: assets/icons/figma112/add_esim.png
   AssetGenImage get addEsim =>
       const AssetGenImage('assets/icons/figma112/add_esim.png');
+
+  /// File path: assets/icons/figma112/add_esim_eng.jpg
+  AssetGenImage get addEsimEng =>
+      const AssetGenImage('assets/icons/figma112/add_esim_eng.jpg');      
 
   /// File path: assets/icons/figma112/another_step1_1.jpg
   AssetGenImage get anotherStep11 =>
@@ -304,25 +312,49 @@ class $AssetsIconsFigma112Gen {
   AssetGenImage get chooseMobileData =>
       const AssetGenImage('assets/icons/figma112/choose_mobile_data.png');
 
+  /// File path: assets/icons/figma112/choose_mobile_data_eng.jpg
+  AssetGenImage get chooseMobileDataEng =>
+      const AssetGenImage('assets/icons/figma112/choose_mobile_data_eng.jpg');      
+
   /// File path: assets/icons/figma112/data_rouming.png
   AssetGenImage get dataRouming =>
       const AssetGenImage('assets/icons/figma112/data_rouming.png');
+
+  /// File path: assets/icons/figma112/data_rouming_eng.jpg
+  AssetGenImage get dataRoumingEng =>
+      const AssetGenImage('assets/icons/figma112/data_rouming_eng.jpg');      
 
   /// File path: assets/icons/figma112/default_number.png
   AssetGenImage get defaultNumber =>
       const AssetGenImage('assets/icons/figma112/default_number.png');
 
+  /// File path: assets/icons/figma112/default_number_eng.jpg
+  AssetGenImage get defaultNumberEng =>
+      const AssetGenImage('assets/icons/figma112/default_number_eng.jpg');      
+
   /// File path: assets/icons/figma112/facetime_imessage.png
   AssetGenImage get facetimeImessage =>
       const AssetGenImage('assets/icons/figma112/facetime_imessage.png');
+
+  /// File path: assets/icons/figma112/facetime_imessage_eng.jpg
+  AssetGenImage get facetimeImessageEng =>
+      const AssetGenImage('assets/icons/figma112/facetime_imessage_eng.jpg');      
 
   /// File path: assets/icons/figma112/flex_plan.png
   AssetGenImage get flexPlan =>
       const AssetGenImage('assets/icons/figma112/flex_plan.png');
 
+  /// File path: assets/icons/figma112/flex_plan_eng.jpg
+  AssetGenImage get flexPlanEng =>
+      const AssetGenImage('assets/icons/figma112/flex_plan_eng.jpg');
+
   /// File path: assets/icons/figma112/for_travels.png
   AssetGenImage get forTravels =>
       const AssetGenImage('assets/icons/figma112/for_travels.png');
+
+  /// File path: assets/icons/figma112/for_travels_eng.jpg
+  AssetGenImage get forTravelsEng =>
+      const AssetGenImage('assets/icons/figma112/for_travels_eng.jpg');      
 
   /// File path: assets/icons/figma112/important_step.jpg
   AssetGenImage get importantStep =>
@@ -331,6 +363,10 @@ class $AssetsIconsFigma112Gen {
   /// File path: assets/icons/figma112/important_step_todo.png
   AssetGenImage get importantStepTodo =>
       const AssetGenImage('assets/icons/figma112/important_step_todo.png');
+
+  /// File path: assets/icons/figma112/important_step_todo_eng.jpg
+  AssetGenImage get importantStepTodoEng =>
+      const AssetGenImage('assets/icons/figma112/important_step_todo_eng.jpg');      
 
   /// File path: assets/icons/figma112/manual_step1_4.jpg
   AssetGenImage get manualStep14 =>
@@ -344,6 +380,10 @@ class $AssetsIconsFigma112Gen {
   AssetGenImage get mobileCommunication =>
       const AssetGenImage('assets/icons/figma112/mobile_communication.png');
 
+  /// File path: assets/icons/figma112/mobile_communication_en.jpg
+  AssetGenImage get mobileCommunicationEng =>
+      const AssetGenImage('assets/icons/figma112/mobile_communication_eng.jpg');         
+
   /// File path: assets/icons/figma112/qr_manual.png
   AssetGenImage get qrManual =>
       const AssetGenImage('assets/icons/figma112/qr_manual.png');
@@ -352,13 +392,25 @@ class $AssetsIconsFigma112Gen {
   AssetGenImage get qrMobileTariff =>
       const AssetGenImage('assets/icons/figma112/qr_mobile_tariff.png');
 
+  /// File path: assets/icons/figma112/qr_mobile_tariff_eng.jpg
+  AssetGenImage get qrMobileTariffEng =>
+      const AssetGenImage('assets/icons/figma112/qr_mobile_tariff_eng.jpg');      
+
   /// File path: assets/icons/figma112/scan_qr.png
   AssetGenImage get scanQr =>
       const AssetGenImage('assets/icons/figma112/scan_qr.png');
 
+  /// File path: assets/icons/figma112/scan_qr_eng.jpg
+  AssetGenImage get scanQrEng =>
+      const AssetGenImage('assets/icons/figma112/scan_qr_eng.jpg');      
+
   /// File path: assets/icons/figma112/settings_by_qr.png
   AssetGenImage get settingsByQr =>
       const AssetGenImage('assets/icons/figma112/settings_by_qr.png');
+
+  /// File path: assets/icons/figma112/settings_by_qr_eng.jpg
+  AssetGenImage get settingsByQrEng =>
+      const AssetGenImage('assets/icons/figma112/settings_by_qr_eng.jpg');      
 
   /// File path: assets/icons/figma112/step2_112_1.jpg
   AssetGenImage get step21121 =>
@@ -411,7 +463,20 @@ class $AssetsIconsFigma112Gen {
         step21122,
         step3Jpg112,
         step4Jpg112,
-        successIcon
+        successIcon,
+        mobileCommunicationEng,
+        addEsimEng,
+        settingsByQrEng,
+        qrMobileTariffEng,
+        flexPlanEng,
+        forTravels,
+        defaultNumberEng,
+        facetimeImessageEng,
+        chooseMobileDataEng,
+        dataRoumingEng,
+        importantStepTodoEng,
+        scanQrEng,
+        activationCodeEng
       ];
 }
 
