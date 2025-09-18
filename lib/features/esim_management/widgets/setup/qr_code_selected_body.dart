@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flex_travel_sim/constants/app_colors.dart';
 import 'package:flex_travel_sim/core/localization/app_localizations.dart';
@@ -44,6 +45,39 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
     if (kDebugMode) {
       print('QR Code: ${widget.qrCode}');
     }
+
+    final String currentLanguange = context.locale.languageCode;
+    
+    final mobileCommunication = currentLanguange == 'en'
+        ? Assets.icons.figma112.mobileCommunicationEng
+        : Assets.icons.figma112.mobileCommunication;    
+    final addEsim = currentLanguange == 'en'
+        ? Assets.icons.figma112.addEsimEng
+        : Assets.icons.figma112.addEsim;  
+    final settingsByQr = currentLanguange == 'en'
+        ? Assets.icons.figma112.settingsByQrEng
+        : Assets.icons.figma112.settingsByQr; 
+    final qrMobileTariff = currentLanguange == 'en'
+        ? Assets.icons.figma112.qrMobileTariffEng
+        : Assets.icons.figma112.qrMobileTariff;    
+    final forTravels = currentLanguange == 'en'
+        ? Assets.icons.figma112.forTravelsEng
+        : Assets.icons.figma112.forTravels;  
+    final flexPlan = currentLanguange == 'en'
+        ? Assets.icons.figma112.flexPlanEng
+        : Assets.icons.figma112.flexPlan; 
+    final defaultNumber = currentLanguange == 'en'
+        ? Assets.icons.figma112.defaultNumberEng
+        : Assets.icons.figma112.defaultNumber; 
+    final dataRouming = currentLanguange == 'en'
+        ? Assets.icons.figma112.dataRoumingEng
+        : Assets.icons.figma112.dataRouming;    
+    final importantStepTodo = currentLanguange == 'en'
+        ? Assets.icons.figma112.importantStepTodoEng
+        : Assets.icons.figma112.importantStepTodo;
+    final facetimeImessage = currentLanguange == 'en'
+        ? Assets.icons.figma112.facetimeImessageEng
+        : Assets.icons.figma112.facetimeImessage;             
 
     return Column(
       children: [
@@ -196,7 +230,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.mobileCommunication.image(
+                      child: mobileCommunication.image(
                         width: 271.59,
                         height: 287.61,
                         fit: BoxFit.contain,
@@ -206,7 +240,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                     SizedBox(width: 10),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.addEsim.image(
+                      child: addEsim.image(
                         width: 271.59,
                         height: 287.61,
                         fit: BoxFit.contain,
@@ -216,7 +250,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                     SizedBox(width: 10),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.settingsByQr.image(
+                      child: settingsByQr.image(
                         width: 271.59,
                         height: 287.61,
                         fit: BoxFit.contain,
@@ -226,7 +260,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                     SizedBox(width: 10),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.qrMobileTariff.image(
+                      child: qrMobileTariff.image(
                         width: 271.59,
                         height: 287.61,
                         fit: BoxFit.contain,
@@ -254,7 +288,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.forTravels.image(
+                      child: forTravels.image(
                         width: 271.59,
                         height: 287.61,
                         fit: BoxFit.contain,
@@ -264,7 +298,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                     SizedBox(width: 10),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.flexPlan.image(
+                      child: flexPlan.image(
                         width: 271.59,
                         height: 287.61,
                         fit: BoxFit.contain,
@@ -292,7 +326,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.defaultNumber.image(
+                      child: defaultNumber.image(
                         width: 271.59,
                         height: 287.61,
                         fit: BoxFit.contain,
@@ -302,8 +336,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                     SizedBox(width: 10),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Assets.icons.figma112.
-                      facetimeImessage.image(
+                      child: facetimeImessage.image(
                         width: 271.59,
                         height: 287.61,
                         fit: BoxFit.contain,
@@ -327,7 +360,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
             child: Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Assets.icons.figma112.mobileCommunication.image(
+                child: mobileCommunication.image(
                   width: 313,
                   height: 292,
                   fit: BoxFit.contain,
@@ -348,7 +381,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
             child: Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Assets.icons.figma112.dataRouming.image(
+                child: dataRouming.image(
                   width: 313,
                   height: 292,
                   fit: BoxFit.contain,
@@ -369,7 +402,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
             child: Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Assets.icons.figma112.importantStepTodo.image(
+                child: importantStepTodo.image(
                   width: 313,
                   height: 240,
                   fit: BoxFit.contain,
