@@ -36,6 +36,9 @@ EOF
 # Also generate .env for the Flutter app (used in firebase_options.dart)
 echo "📝 Generating .env file for Flutter..."
 cat > .env << EOF
+API_URL=${API_URL}
+API_URL_DEVELOPMENT=${API_URL_DEVELOPMENT}
+
 FIREBASE_API_KEY_WEB=${FIREBASE_API_KEY_WEB}
 FIREBASE_APP_ID_WEB=${FIREBASE_APP_ID_WEB}
 FIREBASE_MESSAGING_SENDER_ID=${FIREBASE_MESSAGING_SENDER_ID}
@@ -53,8 +56,8 @@ FIREBASE_IOS_BUNDLE_ID=${FIREBASE_IOS_BUNDLE_ID}
 EOF
 
 # Build Flutter web
-echo "🚀 Building Flutter web application in release mode..."
-flutter build web --release --base-href /
+echo "🚀 Building Flutter web application in release mode (using HTML renderer for flag support)..."
+flutter build web --release --base-href / --web-renderer html
 
 echo "✅ Web build completed successfully!"
 echo "📁 Output directory: build/web"
