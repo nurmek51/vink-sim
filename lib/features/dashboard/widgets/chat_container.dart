@@ -1,5 +1,6 @@
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -37,9 +38,10 @@ class ChatContainer extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: SvgPicture.asset(
                 icon,
+                package: AssetUtils.package,
                 width: 25,
                 height: 25,
-                color: titleColor,
+                colorFilter: ColorFilter.mode(titleColor, BlendMode.srcIn),
               ),
             ),
             Center(

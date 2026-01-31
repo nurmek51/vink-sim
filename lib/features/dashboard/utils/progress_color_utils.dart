@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:vink_sim/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ProgressColorUtils {

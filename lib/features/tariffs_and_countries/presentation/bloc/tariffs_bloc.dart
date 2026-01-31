@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/data/data_sources/tariffs_remote_data_source.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/data/models/network_operator_model.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/data/models/sort_type.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_state.dart';
+import 'package:vink_sim/features/tariffs_and_countries/data/data_sources/tariffs_remote_data_source.dart';
+import 'package:vink_sim/features/tariffs_and_countries/domain/entities/tariff.dart';
+import 'package:vink_sim/features/tariffs_and_countries/data/models/sort_type.dart';
+import 'package:vink_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
+import 'package:vink_sim/features/tariffs_and_countries/presentation/bloc/tariffs_state.dart';
 import 'package:flutter/foundation.dart';
 
 class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
@@ -40,13 +40,13 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
         print('TariffsBloc: Loading network operators');
       }
 
-      final operators = await _dataSource.getNetworkOperators();
+      final operators = await _dataSource.getTariffs();
 
       if (kDebugMode) {
         print('TariffsBloc: Loaded ${operators.length} operators');
       }
 
-      final operatorsByCountry = <String, List<NetworkOperatorModel>>{};
+      final operatorsByCountry = <String, List<Tariff>>{};
       for (final operator in operators) {
         operatorsByCountry
             .putIfAbsent(operator.countryName, () => [])
@@ -144,7 +144,7 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
   }
 
   Map<String, double> _getCheapestPricesByCountryOrdered(
-    List<NetworkOperatorModel> operators,
+    List<Tariff> operators,
   ) {
     final countryOrder = [
       'Turkey',
@@ -181,7 +181,7 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
   void _onSortTariffs(SortTariffsEvent event, Emitter<TariffsState> emit) {
     if (state is TariffsLoaded) {
       final currentState = state as TariffsLoaded;
-      
+
       final sortedOperatorsByCountry = _sortOperatorsByCountry(
         currentState.operatorsByCountry,
         event.sortType,
@@ -197,8 +197,8 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
     }
   }
 
-  Map<String, List<NetworkOperatorModel>> _sortOperatorsByCountry(
-    Map<String, List<NetworkOperatorModel>> operatorsByCountry,
+  Map<String, List<Tariff>> _sortOperatorsByCountry(
+    Map<String, List<Tariff>> operatorsByCountry,
     CountrySortType sortType,
     Map<String, double> cheapestPrices,
   ) {
@@ -206,14 +206,17 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
 
     switch (sortType) {
       case CountrySortType.byOperatorCount:
-        countries.sort((a, b) => 
-          operatorsByCountry[b]!.length.compareTo(operatorsByCountry[a]!.length));
+        countries.sort(
+          (a, b) => operatorsByCountry[b]!.length.compareTo(
+            operatorsByCountry[a]!.length,
+          ),
+        );
         break;
 
       case CountrySortType.byPopularity:
         final popularOrder = [
           'Turkey',
-          'United Arab Emirates', 
+          'United Arab Emirates',
           'France',
           'Armenia',
           'Thailand',
@@ -223,13 +226,15 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
           'Kazakhstan',
           'Cyprus',
         ];
-        
+
         countries.sort((a, b) {
           final indexA = popularOrder.indexOf(a);
           final indexB = popularOrder.indexOf(b);
-          
+
           if (indexA == -1 && indexB == -1) {
-            return operatorsByCountry[b]!.length.compareTo(operatorsByCountry[a]!.length);
+            return operatorsByCountry[b]!.length.compareTo(
+              operatorsByCountry[a]!.length,
+            );
           }
           if (indexA == -1) return 1;
           if (indexB == -1) return -1;
@@ -250,7 +255,7 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
         break;
     }
 
-    final sortedMap = <String, List<NetworkOperatorModel>>{};
+    final sortedMap = <String, List<Tariff>>{};
     for (final country in countries) {
       sortedMap[country] = operatorsByCountry[country]!;
     }

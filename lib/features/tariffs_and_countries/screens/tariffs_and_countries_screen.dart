@@ -1,17 +1,19 @@
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/core/utils/country_code_utils.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/data/data_sources/tariffs_remote_data_source.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_bloc.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_state.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/widgets/country_list_tile.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/widgets/sort_selector.dart';
-import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/shared/widgets/start_registration_button.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/core/utils/country_code_utils.dart';
+import 'package:vink_sim/features/tariffs_and_countries/data/data_sources/tariffs_remote_data_source.dart';
+import 'package:vink_sim/features/tariffs_and_countries/presentation/bloc/tariffs_bloc.dart';
+import 'package:vink_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
+import 'package:vink_sim/features/tariffs_and_countries/presentation/bloc/tariffs_state.dart';
+import 'package:vink_sim/features/tariffs_and_countries/widgets/country_list_tile.dart';
+import 'package:vink_sim/features/tariffs_and_countries/widgets/sort_selector.dart';
+import 'package:vink_sim/shared/widgets/app_notifier.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/shared/widgets/start_registration_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/core/network/api_client.dart';
 
 class TariffsAndCountriesScreen extends StatelessWidget {
   final bool isAuthorized;
@@ -23,7 +25,7 @@ class TariffsAndCountriesScreen extends StatelessWidget {
     return BlocProvider(
       create:
           (context) =>
-              TariffsBloc(dataSource: TariffsRemoteDataSourceImpl())
+              TariffsBloc(dataSource: TariffsRemoteDataSourceImpl(apiClient: sl<ApiClient>()))
                 ..add(const LoadTariffsEvent()),
       child: _TariffsAndCountriesView(isAuthorized: isAuthorized),
     );
@@ -74,7 +76,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
         elevation: 0,
         scrolledUnderElevation: 0,
         title: LocalizedText(
-          AppLocalizations.tariffsAndCountries,
+          SimLocalizations.of(context)!.tariffs_and_countries,
           style: FlexTypography.label.medium,
         ),
         centerTitle: true,
@@ -136,7 +138,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                   if (state is TariffsError) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       AppNotifier.error(
-                        AppLocalizations.error,
+                        SimLocalizations.of(context)!.error,
                       ).showAppToast(context);
                     });
                     return Center(

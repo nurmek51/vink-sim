@@ -1,6 +1,6 @@
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class PurchaseScreen extends StatelessWidget {
@@ -16,7 +16,7 @@ class PurchaseScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: LocalizedText(
-          AppLocalizations.purchaseHistory,
+          SimLocalizations.of(context)!.purchase_history,
           style: FlexTypography.headline.small.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -45,14 +45,14 @@ class PurchaseScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     LocalizedText(
-                      AppLocalizations.balanceRefill,
+                      SimLocalizations.of(context)!.balance_refill,
                       style: FlexTypography.label.medium.copyWith(
                         color: Colors.black,
                       ),
                     ),
                     const Spacer(),
                     LocalizedText(
-                      AppLocalizations.april2023,
+                      SimLocalizations.of(context)!.april_2023,
                       style: FlexTypography.label.medium.copyWith(
                         color: Colors.black26,
                       ),

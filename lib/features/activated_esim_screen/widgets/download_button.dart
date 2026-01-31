@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class DownloadButton extends StatelessWidget {

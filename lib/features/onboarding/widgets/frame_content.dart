@@ -1,11 +1,11 @@
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
-import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/animated_page_stack.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/auth_intro.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/otp_tile.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/whatsapp_tile.dart';
-import 'package:flex_travel_sim/features/auth/domain/entities/country.dart';
+import 'package:vink_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/features/onboarding/models/confirm_method.dart';
+import 'package:vink_sim/features/onboarding/widgets/animated_page_stack.dart';
+import 'package:vink_sim/features/onboarding/widgets/auth_intro.dart';
+import 'package:vink_sim/features/onboarding/widgets/otp_tile.dart';
+import 'package:vink_sim/features/onboarding/widgets/pulsing_circle.dart';
+import 'package:vink_sim/features/onboarding/widgets/whatsapp_tile.dart';
+import 'package:vink_sim/features/auth/domain/entities/country.dart';
 import 'package:flutter/material.dart';
 
 class FrameContent extends StatefulWidget {

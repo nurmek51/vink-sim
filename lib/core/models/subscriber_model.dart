@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flex_travel_sim/core/models/imsi_model.dart';
+import 'package:vink_sim/core/models/imsi_model.dart';
 
 class SubscriberModel extends Equatable {
   final double balance;

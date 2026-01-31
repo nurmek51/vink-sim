@@ -1,27 +1,28 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
-import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
-import 'package:flex_travel_sim/core/models/imsi_model.dart';
-import 'package:flex_travel_sim/features/subscriber/services/subscriber_local_service.dart';
-import 'package:flex_travel_sim/core/services/token_manager.dart';
-import 'package:flex_travel_sim/core/di/injection_container.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/config/feature_config.dart';
+import 'package:vink_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/features/dashboard/bloc/main_flow_bloc.dart';
+import 'package:vink_sim/features/dashboard/utils/progress_color_utils.dart';
+import 'package:vink_sim/features/dashboard/widgets/bottom_sheet_content.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
+import 'package:vink_sim/core/models/imsi_model.dart';
+import 'package:vink_sim/features/subscriber/services/subscriber_local_service.dart';
+import 'package:vink_sim/core/services/token_manager.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
-import 'package:flex_travel_sim/features/dashboard/widgets/add_esim_circle.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/inactive_esim_widget.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/percentage_widget.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/percentage_shimmer_widget.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
-import 'package:flex_travel_sim/shared/widgets/header.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/features/dashboard/widgets/add_esim_circle.dart';
+import 'package:vink_sim/features/dashboard/widgets/expanded_container.dart';
+import 'package:vink_sim/features/dashboard/widgets/inactive_esim_widget.dart';
+import 'package:vink_sim/features/dashboard/widgets/percentage_widget.dart';
+import 'package:vink_sim/features/dashboard/widgets/percentage_shimmer_widget.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/shared/widgets/blue_gradient_button.dart';
+import 'package:vink_sim/shared/widgets/header.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +33,10 @@ class MainFlowDataProcessor {
     return gb;
   }
 
-  static List<ImsiModel> processImsiList(SubscriberState state) {
+  static List<ImsiModel> processImsiList(
+    SubscriberState state,
+    SimLocalizations localizations,
+  ) {
     final loadedImsiList =
         state is SubscriberLoaded ? state.subscriber.imsiList : <ImsiModel>[];
 
@@ -50,8 +54,8 @@ class MainFlowDataProcessor {
             balance: subscriberBalance,
             country:
                 isLoading
-                    ? AppLocalizations.loading
-                    : (hasError ? AppLocalizations.error : 'N/A'),
+                    ? localizations.loading
+                    : (hasError ? localizations.error : 'N/A'),
             rate: 1024.0,
           ),
         ];
@@ -212,6 +216,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
           ),
     ).then((_) {
       if (mounted) {
+        // ignore: use_build_context_synchronously
         context.read<MainFlowBloc>().add(HideBottomSheetEvent());
       }
     });
@@ -243,6 +248,11 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                   subscriberState is SubscriberLoaded
                       ? subscriberState.subscriber.balance
                       : 0.0;
+              final rate =
+                  subscriberState is SubscriberLoaded &&
+                          loadedImsiList.isNotEmpty
+                      ? loadedImsiList[0].rate ?? 1024.0
+                      : 1024.0;
               final isLoading =
                   subscriberState is SubscriberLoading ||
                   subscriberState is SubscriberInitial;
@@ -256,9 +266,11 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                           balance: subscriberBalance,
                           country:
                               isLoading
-                                  ? AppLocalizations.loading
-                                  : (hasError ? AppLocalizations.error : 'N/A'),
-                          rate: 1024.0,
+                                  ? SimLocalizations.of(context)!.loading
+                                  : (hasError
+                                      ? SimLocalizations.of(context)!.error
+                                      : 'N/A'),
+                          rate: rate,
                         ),
                       ];
 
@@ -281,8 +293,14 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                     horizontal: 20.0,
                   ).copyWith(bottom: 30, top: 12),
                   child: BlueGradientButton(
-                    onTap: () => openTopUpBalanceScreen(context),
-                    title: AppLocalizations.topUpBalance,
+                    onTap: () {
+                      final subscriber =
+                          subscriberState is SubscriberLoaded
+                              ? subscriberState.subscriber
+                              : null;
+                      openTopUpBalanceScreen(context, subscriber: subscriber);
+                    },
+                    title: SimLocalizations.of(context)!.top_up_balance,
                   ),
                 ),
                 backgroundColor: AppColors.backgroundColorLight,
@@ -304,6 +322,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                               color: AppColors.grayBlue,
                               faqOnTap: () => openGuidePage(context),
                               avatarOnTap: () => openMyAccountScreen(context),
+                              onBack: sl<FeatureConfig>().onExit,
                             ),
                             SizedBox(height: isSmallOrDesktop ? 0 : 15),
                             SizedBox(
@@ -378,18 +397,27 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                             isInactive
                                                 ? InactiveEsimWidget(
                                                   imsi: imsi.imsi,
+                                                  iccid: imsi.iccid,
                                                   activationCode:
                                                       imsi.activationCode,
                                                   onActivate: () {
+                                                    final subscriber =
+                                                        subscriberState
+                                                                is SubscriberLoaded
+                                                            ? subscriberState
+                                                                .subscriber
+                                                            : null;
                                                     NavigationService.openTopUpBalanceScreen(
                                                       context,
                                                       imsi: imsi.imsi,
                                                       isNewEsim: true,
+                                                      subscriber: subscriber,
                                                     );
                                                   },
                                                 )
                                                 : PercentageWidget(
                                                   imsi: imsi.imsi,
+                                                  iccid: imsi.iccid,
                                                   progressValue: availableGB,
                                                   color:
                                                       ProgressColorUtils.getProgressColor(
@@ -419,10 +447,15 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                                                         .currentPage]
                                                     .imsi
                                                 : null;
+                                        final subscriber =
+                                            subscriberState is SubscriberLoaded
+                                                ? subscriberState.subscriber
+                                                : null;
                                         NavigationService.openTopUpBalanceScreen(
                                           context,
                                           imsi: currentPageImsi,
                                           isNewEsim: true,
+                                          subscriber: subscriber,
                                         );
                                       },
                                     );
@@ -457,13 +490,19 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             Row(
                               children: [
                                 ExpandedContainer(
-                                  title: AppLocalizations.howToInstallEsim2,
+                                  title:
+                                      SimLocalizations.of(
+                                        context,
+                                      )!.how_to_install_esim2,
                                   icon: Assets.icons.simIcon.path,
                                   onTap: () => openEsimSetupPage(context),
                                 ),
                                 const SizedBox(width: 16),
                                 ExpandedContainer(
-                                  title: AppLocalizations.supportChat,
+                                  title:
+                                      SimLocalizations.of(
+                                        context,
+                                      )!.support_chat,
                                   icon: Assets.icons.telegramIcon.path,
                                   onTap: () => _showBottomSheet(context),
                                 ),
@@ -473,13 +512,19 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                             Row(
                               children: [
                                 ExpandedContainer(
-                                  title: AppLocalizations.questionsAndAnswers,
+                                  title:
+                                      SimLocalizations.of(
+                                        context,
+                                      )!.questions_and_answers,
                                   icon: Assets.icons.faqIconFull.path,
                                   onTap: () => openGuidePage(context),
                                 ),
                                 const SizedBox(width: 16),
                                 ExpandedContainer(
-                                  title: AppLocalizations.countriesAndRates,
+                                  title:
+                                      SimLocalizations.of(
+                                        context,
+                                      )!.countries_and_rates,
                                   icon: Assets.icons.globus.path,
                                   onTap:
                                       () =>

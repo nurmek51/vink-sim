@@ -30,17 +30,11 @@ class _AnimatedPageStackState extends State<AnimatedPageStack>
   int _currentIndex = 0;
   bool _isAnimating = false;
 
-  final Map<int, Widget> _cachedPages = {};
+
 
   Widget _getPage(int index) {
-    if (index == 1 || index == 2) {
-      return widget.pageBuilders[index](context);
-    }
-    
-    if (!_cachedPages.containsKey(index)) {
-      _cachedPages[index] = widget.pageBuilders[index](context);
-    }
-    return _cachedPages[index]!;
+    // Always rebuild pages to ensure context (like Localization) is fresh
+    return widget.pageBuilders[index](context);
   }
 
   @override

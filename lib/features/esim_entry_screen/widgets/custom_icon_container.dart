@@ -1,4 +1,5 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -32,6 +33,7 @@ class CustomIconContainer extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 blueIconPath,
+                package: AssetUtils.package,
                 height: 37,
                 width: 37,
               ),

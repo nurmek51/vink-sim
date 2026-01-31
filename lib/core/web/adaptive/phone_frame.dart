@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/core/layout/screen_utils.dart';
 import 'package:flutter/material.dart';
 import 'web_scaffold_config.dart';
 

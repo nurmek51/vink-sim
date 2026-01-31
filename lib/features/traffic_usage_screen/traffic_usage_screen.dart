@@ -1,6 +1,6 @@
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class TrafficUsageScreen extends StatelessWidget {
@@ -16,7 +16,7 @@ class TrafficUsageScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: LocalizedText(
-          AppLocalizations.trafficUsage,
+          SimLocalizations.of(context)!.traffic_usage,
           style: FlexTypography.headline.small.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -52,7 +52,7 @@ class TrafficUsageScreen extends StatelessWidget {
                     ),
                     const Spacer(),
                     LocalizedText(
-                      AppLocalizations.april2023,
+                      SimLocalizations.of(context)!.april_2023,
                       style: FlexTypography.label.medium.copyWith(
                         color: Colors.black26,
                       ),

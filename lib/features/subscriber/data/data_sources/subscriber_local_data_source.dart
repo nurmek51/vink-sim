@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/core/storage/local_storage.dart';
+import 'package:vink_sim/core/storage/local_storage.dart';
 
 abstract class SubscriberLocalDataSource {
   Future<void> saveImsiListLength(int imsiListLength);

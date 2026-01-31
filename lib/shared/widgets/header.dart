@@ -1,4 +1,5 @@
-import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -7,6 +8,7 @@ class Header extends StatelessWidget {
   final bool profileIconVisibility;
   final VoidCallback? faqOnTap;
   final Color color;
+  final VoidCallback? onBack;
 
   const Header({
     super.key,
@@ -14,20 +16,36 @@ class Header extends StatelessWidget {
     this.avatarOnTap,
     this.faqOnTap,
     this.profileIconVisibility = true,
-    
+    this.onBack,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SvgPicture.asset(Assets.icons.mainIcon.path, color: color),
+        if (onBack != null) ...[
+          GestureDetector(
+            onTap: onBack,
+            child: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: color,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
+        SvgPicture.asset(
+          Assets.icons.mainIcon.path,
+          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+          package: AssetUtils.package,
+        ),
         Spacer(),
         GestureDetector(
           onTap: faqOnTap,
           child: SvgPicture.asset(
-            Assets.icons.faqIcon.path, 
-            color: color,
+            Assets.icons.faqIcon.path,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+            package: AssetUtils.package,
           ),
         ),
         profileIconVisibility ? SizedBox(width: 18) : SizedBox.shrink(),
@@ -36,8 +54,9 @@ class Header extends StatelessWidget {
           child: GestureDetector(
             onTap: avatarOnTap,
             child: SvgPicture.asset(
-              Assets.icons.avatarIcon.path, 
-              color: color,
+              Assets.icons.avatarIcon.path,
+              colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+              package: AssetUtils.package,
             ),
           ),
         ),

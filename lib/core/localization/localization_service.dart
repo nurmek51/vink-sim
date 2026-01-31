@@ -1,20 +1,16 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class LocalizationService {
   static void changeLanguage(BuildContext context, String languageCode) {
-    context.setLocale(Locale(languageCode));
+    // context.setLocale(Locale(languageCode));
   }
 
   static String getCurrentLanguage(BuildContext context) {
-    return context.locale.languageCode;
+    return Localizations.localeOf(context).languageCode;
   }
 
   static List<Locale> getSupportedLocales() {
-    return [
-      const Locale('en'),
-      const Locale('ru'),
-    ];
+    return [const Locale('en'), const Locale('ru')];
   }
 
   static String getLanguageName(String languageCode) {

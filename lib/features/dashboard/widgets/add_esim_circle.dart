@@ -1,9 +1,9 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/core/layout/screen_utils.dart';
 
 class AddEsimCircle extends StatelessWidget {
   final bool canAdd;
@@ -18,7 +18,7 @@ class AddEsimCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSmallSize = isSmallScreen(context);
-    final double circleSize = isSmallSize ? 281 : 292;    
+    final double circleSize = isSmallSize ? 281 : 292;
     return Container(
       width: circleSize,
       height: circleSize,
@@ -32,7 +32,7 @@ class AddEsimCircle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           LocalizedText(
-            AppLocalizations.addEsim,
+            SimLocalizations.of(context)!.add_esim,
             style: FlexTypography.headline.medium.copyWith(
               color: AppColors.grayBlue,
               letterSpacing: -0.17,
@@ -42,7 +42,7 @@ class AddEsimCircle extends StatelessWidget {
 
           const SizedBox(height: 12),
           LocalizedText(
-            AppLocalizations.manageMoreEsims,
+            SimLocalizations.of(context)!.manage_more_esims,
             style: FlexTypography.paragraph.medium.copyWith(
               color: AppColors.grayBlue,
               letterSpacing: -0.15,
@@ -56,7 +56,7 @@ class AddEsimCircle extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 gradient: canAdd ? AppColors.containerGradientPrimary : null,
-                color: canAdd ? null : AppColors.containerGray, 
+                color: canAdd ? null : AppColors.containerGray,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(
@@ -67,7 +67,7 @@ class AddEsimCircle extends StatelessWidget {
                   right: 10,
                 ),
                 child: LocalizedText(
-                  AppLocalizations.toAdd,
+                  SimLocalizations.of(context)!.to_add,
                   style: FlexTypography.headline.xSmall.copyWith(
                     color: AppColors.textColorLight,
                     letterSpacing: -0.15,

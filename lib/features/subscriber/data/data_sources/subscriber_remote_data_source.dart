@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/core/network/travel_sim_api_service.dart';
-import 'package:flex_travel_sim/core/models/subscriber_model.dart';
+import 'package:vink_sim/core/network/travel_sim_api_service.dart';
+import 'package:vink_sim/core/models/subscriber_model.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class SubscriberRemoteDataSource {
@@ -21,13 +21,13 @@ class SubscriberRemoteDataSourceImpl implements SubscriberRemoteDataSource {
       }
 
       final response = await _travelSimApiService.getSubscriberInfo();
-      
+
       if (kDebugMode) {
         print('Subscriber: Raw API response: $response');
         print('Subscriber: Response type: ${response.runtimeType}');
         print('Subscriber: Response keys: ${response.keys}');
       }
-      
+
       final subscriber = SubscriberModel.fromJson(response);
 
       if (kDebugMode) {
@@ -36,7 +36,9 @@ class SubscriberRemoteDataSourceImpl implements SubscriberRemoteDataSource {
         print('IMSI Count: ${subscriber.imsiList.length}');
         for (int i = 0; i < subscriber.imsiList.length; i++) {
           final imsi = subscriber.imsiList[i];
-          print('IMSI $i: ${imsi.imsi}, Balance: ${imsi.balance}, Rate: ${imsi.rate}, Country: ${imsi.country}');
+          print(
+            'IMSI $i: ${imsi.imsi}, Balance: ${imsi.balance}, Rate: ${imsi.rate}, Country: ${imsi.country}',
+          );
         }
       }
 
@@ -45,8 +47,8 @@ class SubscriberRemoteDataSourceImpl implements SubscriberRemoteDataSource {
       if (kDebugMode) {
         print('Subscriber: Failed to get info - $e');
       }
-      throw Exception('Failed to get subscriber info: $e');
+      // Rethrow to allow BLoC to handle errors correctly (e.g. show Error state)
+      rethrow;
     }
   }
-
 }

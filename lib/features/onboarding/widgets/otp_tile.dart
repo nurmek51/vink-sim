@@ -1,24 +1,24 @@
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/router/app_router.dart';
-import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
-import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/router/app_router.dart';
+import 'package:vink_sim/features/auth/domain/repo/auth_repository.dart';
+import 'package:vink_sim/shared/widgets/app_notifier.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_event.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_state.dart';
-import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
-import 'package:flex_travel_sim/core/di/injection_container.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
+import 'package:vink_sim/features/auth/presentation/bloc/otp_auth_event.dart';
+import 'package:vink_sim/features/auth/presentation/bloc/otp_auth_state.dart';
+import 'package:vink_sim/features/auth/presentation/widgets/registration_container.dart';
+import 'package:vink_sim/config/feature_config.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
 
 class OtpTile extends StatefulWidget {
   final String phoneNumber;
@@ -53,7 +53,9 @@ class _OtpTileState extends State<OtpTile> {
       fontWeight: FontWeight.w600,
     ),
     decoration: BoxDecoration(
-      border: Border.all(color: AppColors.textColorLight.withOpacity(0.3)),
+      border: Border.all(
+        color: AppColors.textColorLight.withValues(alpha: 0.3),
+      ),
       borderRadius: BorderRadius.circular(12),
       color: Colors.transparent,
     ),
@@ -85,10 +87,7 @@ class _OtpTileState extends State<OtpTile> {
 
     return BlocProvider(
       create: (context) {
-        _otpAuthBloc = OtpAuthBloc(
-          otpAuthDataSource: sl.get<OtpAuthDataSource>(),
-          firebaseLoginUseCase: sl.get<FirebaseLoginUseCase>(),
-        );
+        _otpAuthBloc = OtpAuthBloc(authRepository: sl.get<AuthRepository>());
         return _otpAuthBloc;
       },
       child: Scaffold(
@@ -112,64 +111,48 @@ class _OtpTileState extends State<OtpTile> {
               listener: (context, state) async {
                 if (state is OtpVerificationSuccess) {
                   AppNotifier.success(
-                    AppLocalizations.otpSuccess,
+                    SimLocalizations.of(context)!.otp_success,
                   ).showAppToast(context);
 
-                  if (kDebugMode) {
-                    print('OTP_TILE: OTP verification successful!');
-                    print(
-                      'OTP_TILE: Custom token received: ${state.token.substring(0, 20)}...',
-                    );
-                    print(
-                      'OTP_TILE: Custom token length: ${state.token.length}',
-                    );
-                  }
-
-                  final firebaseLoginUseCase = sl.get<FirebaseLoginUseCase>();
                   final authLocalDataSource = sl.get<AuthLocalDataSource>();
 
                   try {
-                    final idToken = await firebaseLoginUseCase
-                        .signInWithCustomToken(state.token);
+                    await authLocalDataSource.saveAuthToken(state.token);
 
-                    if (idToken != null) {
-                      await authLocalDataSource.saveAuthToken(idToken);
+                    if (sl.isRegistered<FeatureConfig>()) {
+                      final config = sl.get<FeatureConfig>();
+                      config.onAuthSuccess?.call(
+                        state.token,
+                        604800,
+                      ); // 1 week default
+                    }
 
-                      if (kDebugMode) {
-                        print(
-                          'OTP_TILE: Firebase ID token saved: ${idToken.substring(0, 20)}...',
-                        );
-                      }
+                    if (kDebugMode) {
+                      print('OTP_TILE: Token saved.');
+                    }
 
-                      _subscriberBloc.add(const LoadSubscriberInfoEvent());
+                    _subscriberBloc.add(const LoadSubscriberInfoEvent());
 
-                      if (kDebugMode) {
-                        print('OTP_TILE: ID token sent to SubscriberBloc');
-                      }
-
-                      if (widget.onSuccess != null) {
-                        widget.onSuccess!();
-                      } else {
-                        if (context.mounted) {
-                          context.go(AppRoutes.initial);
-                        }
+                    if (widget.onSuccess != null) {
+                      widget.onSuccess!();
+                    } else {
+                      if (context.mounted) {
+                        context.go(AppRoutes.initial);
                       }
                     }
                   } catch (e) {
                     if (kDebugMode) {
-                      print(
-                        'OTP_TILE: Ошибка при входе через кастомный токен: $e',
-                      );
+                      print('OTP_TILE: Error saving token: $e');
                     }
                   }
                 } else if (state is OtpAuthError) {
                   AppNotifier.error(
-                    AppLocalizations.otpFail,
+                    SimLocalizations.of(context)!.otp_fail,
                   ).showAppToast(context);
                   if (kDebugMode) print(state.message);
                 } else if (state is OtpSmsSent) {
                   AppNotifier.info(
-                    AppLocalizations.otpResent,
+                    SimLocalizations.of(context)!.otp_resent,
                   ).showAppToast(context);
                 }
               },
@@ -177,11 +160,15 @@ class _OtpTileState extends State<OtpTile> {
             BlocListener<SubscriberBloc, SubscriberState>(
               listener: (context, state) {
                 if (state is SubscriberLoaded) {
-                  print(
-                    'User info loaded! Balance: ${state.subscriber.balance}',
-                  );
+                  if (kDebugMode) {
+                    print(
+                      'User info loaded! Balance: ${state.subscriber.balance}',
+                    );
+                  }
                 } else if (state is SubscriberError) {
-                  print('Failed to load user info: ${state.message}');
+                  if (kDebugMode) {
+                    print('Failed to load user info: ${state.message}');
+                  }
                 }
               },
             ),
@@ -215,8 +202,8 @@ class _OtpTileState extends State<OtpTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 30),
-          const LocalizedText(
-            AppLocalizations.enterVerificationCode,
+          LocalizedText(
+            SimLocalizations.of(context)!.enter_verification_code,
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w700,
@@ -225,8 +212,9 @@ class _OtpTileState extends State<OtpTile> {
           ),
           const SizedBox(height: 16),
           LocalizedText(
-            AppLocalizations.sendedSixDigitCode,
-            namedArgs: {'phone': widget.phoneNumber},
+            SimLocalizations.of(
+              context,
+            )!.sended_six_digit_code(widget.phoneNumber),
             style: const TextStyle(
               fontSize: 16,
               color: AppColors.textColorLight,
@@ -246,7 +234,7 @@ class _OtpTileState extends State<OtpTile> {
               submittedPinTheme: defaultPinTheme.copyWith(
                 decoration: defaultPinTheme.decoration!.copyWith(
                   border: Border.all(color: AppColors.accentBlue),
-                  color: AppColors.accentBlue.withOpacity(0.1),
+                  color: AppColors.accentBlue.withValues(alpha: 0.1),
                 ),
               ),
               onChanged: (value) {
@@ -270,8 +258,8 @@ class _OtpTileState extends State<OtpTile> {
             onTap: _isValidCode && !isLoading ? _verifyOtp : null,
             buttonText:
                 isLoading
-                    ? AppLocalizations.loading
-                    : AppLocalizations.confirmCode,
+                    ? SimLocalizations.of(context)!.loading
+                    : SimLocalizations.of(context)!.confirm_code,
             buttonTextColor:
                 _isValidCode && !isLoading
                     ? AppColors.textColorDark
@@ -285,18 +273,18 @@ class _OtpTileState extends State<OtpTile> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const LocalizedText(
-                AppLocalizations.didNotReceiveTheCode,
+              LocalizedText(
+                SimLocalizations.of(context)!.did_not_receive_the_code,
                 style: TextStyle(color: AppColors.textColorLight, fontSize: 16),
               ),
               TextButton(
                 onPressed: otpState is OtpSmsLoading ? null : _resendOtp,
                 child: LocalizedText(
-                  AppLocalizations.sendAgain,
+                  SimLocalizations.of(context)!.send_again,
                   style: TextStyle(
                     color:
                         otpState is OtpSmsLoading
-                            ? AppColors.textColorLight.withOpacity(0.5)
+                            ? AppColors.textColorLight.withValues(alpha: 0.5)
                             : AppColors.accentBlue,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -311,15 +299,15 @@ class _OtpTileState extends State<OtpTile> {
               height: 40,
               width: 231,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(100),
               ),
               padding: const EdgeInsets.symmetric(vertical: 10),
               alignment: Alignment.center,
               child: GestureDetector(
                 onTap: widget.onTap,
-                child: const LocalizedText(
-                  AppLocalizations.loginAnotherWay,
+                child: LocalizedText(
+                  SimLocalizations.of(context)!.login_another_way,
                   style: TextStyle(
                     fontSize: 14,
                     color: AppColors.textColorLight,

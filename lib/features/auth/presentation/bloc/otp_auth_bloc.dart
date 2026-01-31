@@ -1,17 +1,14 @@
-import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_event.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_state.dart';
+import 'package:vink_sim/features/auth/domain/repo/auth_repository.dart';
+import 'package:vink_sim/features/auth/presentation/bloc/otp_auth_event.dart';
+import 'package:vink_sim/features/auth/presentation/bloc/otp_auth_state.dart';
 
 class OtpAuthBloc extends Bloc<OtpAuthEvent, OtpAuthState> {
-  final OtpAuthDataSource _otpAuthDataSource;
+  final AuthRepository _authRepository;
 
-  OtpAuthBloc({
-    required OtpAuthDataSource otpAuthDataSource,
-    required FirebaseLoginUseCase firebaseLoginUseCase,
-  })  : _otpAuthDataSource = otpAuthDataSource,
-        super(const OtpAuthInitial()) {
+  OtpAuthBloc({required AuthRepository authRepository})
+    : _authRepository = authRepository,
+      super(const OtpAuthInitial()) {
     on<SendOtpSmsEvent>(_onSendOtpSms);
     on<VerifyOtpEvent>(_onVerifyOtp);
     on<ResetOtpStateEvent>(_onResetOtpState);
@@ -23,12 +20,12 @@ class OtpAuthBloc extends Bloc<OtpAuthEvent, OtpAuthState> {
   ) async {
     emit(const OtpSmsLoading());
 
-    try {
-      await _otpAuthDataSource.sendOtpSms(event.phone);
-      emit(OtpSmsSent(phone: event.phone));
-    } catch (e) {
-      emit(OtpAuthError(message: e.toString()));
-    }
+    final result = await _authRepository.requestOtp(event.phone);
+
+    result.fold(
+      (error) => emit(OtpAuthError(message: error.toString())),
+      (_) => emit(OtpSmsSent(phone: event.phone)),
+    );
   }
 
   Future<void> _onVerifyOtp(
@@ -37,26 +34,17 @@ class OtpAuthBloc extends Bloc<OtpAuthEvent, OtpAuthState> {
   ) async {
     emit(const OtpVerificationLoading());
 
-    try {
-      final response = await _otpAuthDataSource.verifyOtp(
-        event.phone,
-        event.code,
-      );
+    final result = await _authRepository.verifyOtp(event.phone, event.code);
 
-      emit(OtpVerificationSuccess(
-        token: response.token,
-        phone: event.phone,
-      ));
-    } catch (e) {
-      emit(OtpAuthError(message: e.toString()));
-    }
+    result.fold(
+      (error) => emit(OtpAuthError(message: error.toString())),
+      (authToken) => emit(
+        OtpVerificationSuccess(token: authToken.token, phone: event.phone),
+      ),
+    );
   }
 
-  void _onResetOtpState(
-    ResetOtpStateEvent event,
-    Emitter<OtpAuthState> emit,
-  ) {
+  void _onResetOtpState(ResetOtpStateEvent event, Emitter<OtpAuthState> emit) {
     emit(const OtpAuthInitial());
   }
-
 }

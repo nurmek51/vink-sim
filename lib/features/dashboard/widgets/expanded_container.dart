@@ -1,6 +1,7 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -52,7 +53,7 @@ class _ExpandedContainerState extends State<ExpandedContainer> {
         isSelected ? AppColors.textColorLight : AppColors.textColorDark;
     final iconColor =
         isSelected ? AppColors.splashColor : AppColors.textColorLight;
-    final isResponsive = isDesktop(context) || isSmallScreen(context);    
+    final isResponsive = isDesktop(context) || isSmallScreen(context);
 
     return Expanded(
       child: Material(
@@ -71,7 +72,7 @@ class _ExpandedContainerState extends State<ExpandedContainer> {
               children: [
                 Container(
                   width: isResponsive ? 28 : 37,
-                  height:  isResponsive ? 28 : 37,
+                  height: isResponsive ? 28 : 37,
                   decoration: BoxDecoration(
                     gradient: gradientColors,
                     shape: BoxShape.circle,
@@ -79,9 +80,10 @@ class _ExpandedContainerState extends State<ExpandedContainer> {
                   child: Center(
                     child: SvgPicture.asset(
                       widget.icon,
-                      width:  isResponsive ? 16 : 18,
+                      package: AssetUtils.package,
+                      width: isResponsive ? 16 : 18,
                       height: isResponsive ? 16 : 18,
-                      color: iconColor,
+                      colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
                     ),
                   ),
                 ),

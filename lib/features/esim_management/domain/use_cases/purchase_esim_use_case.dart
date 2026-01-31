@@ -1,6 +1,6 @@
-import 'package:flex_travel_sim/core/utils/result.dart';
-import 'package:flex_travel_sim/features/esim_management/domain/entities/esim.dart';
-import 'package:flex_travel_sim/features/esim_management/domain/repositories/esim_repository.dart';
+import 'package:vink_sim/core/utils/result.dart';
+import 'package:vink_sim/features/esim_management/domain/entities/esim.dart';
+import 'package:vink_sim/features/esim_management/domain/repositories/esim_repository.dart';
 
 class PurchaseEsimUseCase {
   final EsimRepository repository;

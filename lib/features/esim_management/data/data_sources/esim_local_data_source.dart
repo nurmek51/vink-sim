@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/core/storage/local_storage.dart';
-import 'package:flex_travel_sim/features/esim_management/data/models/esim_model.dart';
+import 'package:vink_sim/core/storage/local_storage.dart';
+import 'package:vink_sim/features/esim_management/data/models/esim_model.dart';
 
 abstract class EsimLocalDataSource {
   Future<List<EsimModel>> getCachedEsims();

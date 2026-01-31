@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/features/auth/domain/entities/country.dart';
-import 'package:flex_travel_sim/features/auth/data/country_data.dart';
+import 'package:vink_sim/features/auth/domain/entities/country.dart';
+import 'package:vink_sim/features/auth/data/country_data.dart';
 
 class PhoneUtils {
   static String normalizePhoneNumber(String phone) {

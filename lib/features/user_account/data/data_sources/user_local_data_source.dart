@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/core/storage/local_storage.dart';
-import 'package:flex_travel_sim/features/user_account/data/models/user_model.dart';
+import 'package:vink_sim/core/storage/local_storage.dart';
+import 'package:vink_sim/features/user_account/data/models/user_model.dart';
 
 abstract class UserLocalDataSource {
   Future<UserModel?> getCachedUser();

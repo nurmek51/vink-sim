@@ -1,18 +1,18 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/platform_device/platform_detector.dart';
-import 'package:flex_travel_sim/features/esim_management/bloc/esim_setup_bloc.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/another_device_selected_body.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/bottom_setup_container.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/lazy_row.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/fast_selected_body.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/manual_selected_body.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/qr_code_selected_body.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/platform_device/platform_detector.dart';
+import 'package:vink_sim/features/esim_management/bloc/esim_setup_bloc.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/another_device_selected_body.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/bottom_setup_container.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/lazy_row.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/fast_selected_body.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/manual_selected_body.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/qr_code_selected_body.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,19 +26,22 @@ class EsimSetupPage extends StatefulWidget {
 }
 
 class _EsimSetupPageState extends State<EsimSetupPage> {
+  static const String _baseActivationPrefix = "LPA:1\$smdp.io\$";
+
   List<String> getRowOptions() {
-    if (PlatformDetector.isIos) {
+    // Show Fast option for both iOS and Android
+    if (PlatformDetector.isIos || PlatformDetector.isAndroid) {
       return [
-        AppLocalizations.fastSelectedRow,
-        AppLocalizations.qrCodeSelectedRow,
-        AppLocalizations.manualSelectedRow,
-        AppLocalizations.toAnotherDeviceSelectedRow,
+        SimLocalizations.of(context)!.fast_selected_row,
+        SimLocalizations.of(context)!.qr_code_selected_row,
+        SimLocalizations.of(context)!.manual_selected_row,
+        SimLocalizations.of(context)!.to_another_device_selected_row,
       ];
     }
     return [
-      AppLocalizations.qrCodeSelectedRow,
-      AppLocalizations.manualSelectedRow,
-      AppLocalizations.toAnotherDeviceSelectedRow,
+      SimLocalizations.of(context)!.qr_code_selected_row,
+      SimLocalizations.of(context)!.manual_selected_row,
+      SimLocalizations.of(context)!.to_another_device_selected_row,
     ];
   }
 
@@ -100,7 +103,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                 titlePadding: const EdgeInsets.only(bottom: 16),
                 expandedTitleScale: 1.4,
                 title: HelveticaneueFont(
-                  text: AppLocalizations.installEsim,
+                  text: SimLocalizations.of(context)!.install_esim,
                   fontSize: 20,
                   letterSpacing: -0.5,
                   height: 1.1,
@@ -185,23 +188,32 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                                         is SubscriberLoaded) {
                                       final list =
                                           subscriberState.subscriber.imsiList;
-                                      
+
                                       if (list.isNotEmpty &&
-                                          list.last.qr != null &&
-                                          list.last.qr!.isNotEmpty) {
+                                          list.last.activationCode != null &&
+                                          list
+                                              .last
+                                              .activationCode!
+                                              .isNotEmpty) {
                                         final lastImsiIndex = list.last;
-                                        qrCode = lastImsiIndex.qr;
-                                        smdpServer = lastImsiIndex.smdpServer;
                                         activationCode =
                                             lastImsiIndex.activationCode;
+                                        qrCode =
+                                            _baseActivationPrefix +
+                                            activationCode!;
+                                        smdpServer = "smdp.io";
                                       } else {
                                         errorMessage =
-                                            AppLocalizations.notAvailable;
+                                            SimLocalizations.of(
+                                              context,
+                                            )!.not_available;
                                       }
                                     } else if (subscriberState
                                         is SubscriberError) {
                                       errorMessage =
-                                          AppLocalizations.notAvailable;
+                                          SimLocalizations.of(
+                                            context,
+                                          )!.not_available;
                                       if (kDebugMode) {
                                         print(
                                           'Subscriber Error: ${subscriberState.message}',
@@ -210,6 +222,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
                                     }
 
                                     return _buildSelectedBody(
+                                      context,
                                       options[state.selectedIndex],
                                       qrCode: qrCode,
                                       smdpServer: smdpServer,
@@ -249,6 +262,7 @@ class _EsimSetupPageState extends State<EsimSetupPage> {
 }
 
 Widget _buildSelectedBody(
+  BuildContext context,
   String option, {
   String? qrCode,
   String? smdpServer,
@@ -256,34 +270,35 @@ Widget _buildSelectedBody(
   bool isLoading = false,
   String? errorMessage,
 }) {
-  switch (option) {
-    case AppLocalizations.fastSelectedRow:
-      return FastSelectedBody(
-        smdpServer: smdpServer,
-        activationCode: activationCode,
-        isLoading: isLoading,
-        errorMessage: errorMessage,
-      );
-    case AppLocalizations.qrCodeSelectedRow:
-      return QrCodeSelectedBody(
-        qrCode: qrCode,
-        isLoading: isLoading,
-        errorMessage: errorMessage,
-      );
-    case AppLocalizations.manualSelectedRow:
-      return ManualSelectedBody(
-        smdpServer: smdpServer,
-        activationCode: activationCode,
-        isLoading: isLoading,
-        errorMessage: errorMessage,
-      );
-    case AppLocalizations.toAnotherDeviceSelectedRow:
-      return AnotherDeviceSelectedBody(
-        qrCode: qrCode,
-        isLoading: isLoading,
-        errorMessage: errorMessage,
-      );
-    default:
-      return const SizedBox.shrink();
+  if (option == SimLocalizations.of(context)!.fast_selected_row) {
+    return FastSelectedBody(
+      smdpServer: smdpServer,
+      activationCode: activationCode,
+      fullActivationString: qrCode,
+      isLoading: isLoading,
+      errorMessage: errorMessage,
+    );
+  } else if (option == SimLocalizations.of(context)!.qr_code_selected_row) {
+    return QrCodeSelectedBody(
+      qrCode: qrCode,
+      isLoading: isLoading,
+      errorMessage: errorMessage,
+    );
+  } else if (option == SimLocalizations.of(context)!.manual_selected_row) {
+    return ManualSelectedBody(
+      smdpServer: smdpServer,
+      activationCode: activationCode,
+      isLoading: isLoading,
+      errorMessage: errorMessage,
+    );
+  } else if (option ==
+      SimLocalizations.of(context)!.to_another_device_selected_row) {
+    return AnotherDeviceSelectedBody(
+      qrCode: qrCode,
+      isLoading: isLoading,
+      errorMessage: errorMessage,
+    );
+  } else {
+    return const SizedBox.shrink();
   }
 }

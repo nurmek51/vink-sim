@@ -1,7 +1,8 @@
+import 'package:vink_sim/core/models/subscriber_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flex_travel_sim/features/subscriber/data/data_sources/subscriber_remote_data_source.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:vink_sim/features/subscriber/data/data_sources/subscriber_remote_data_source.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
 import 'package:flutter/foundation.dart';
 
 class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
@@ -14,6 +15,16 @@ class SubscriberBloc extends Bloc<SubscriberEvent, SubscriberState> {
     on<LoadSubscriberInfoEvent>(_onLoadSubscriberInfo);
     on<RefreshSubscriberInfoEvent>(_onRefreshSubscriberInfo);
     on<ResetSubscriberStateEvent>(_onResetSubscriberState);
+    on<SetSubscriberDataEvent>(_onSetSubscriberData);
+  }
+
+  void _onSetSubscriberData(
+    SetSubscriberDataEvent event,
+    Emitter<SubscriberState> emit,
+  ) {
+    if (event.subscriber is SubscriberModel) {
+      emit(SubscriberLoaded(subscriber: event.subscriber as SubscriberModel));
+    }
   }
 
   Future<void> _onLoadSubscriberInfo(

@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/features/tariffs_and_countries/data/models/sort_type.dart';
+import 'package:vink_sim/features/tariffs_and_countries/data/models/sort_type.dart';
 
 abstract class TariffsEvent {
   const TariffsEvent();

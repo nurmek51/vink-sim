@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/core/utils/result.dart';
+import 'package:vink_sim/core/utils/result.dart';
 
 abstract class NetworkService {
   Future<Result<T>> get<T>(

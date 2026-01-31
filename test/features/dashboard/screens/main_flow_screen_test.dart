@@ -1,13 +1,14 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flex_travel_sim/core/models/imsi_model.dart';
-import 'package:flex_travel_sim/core/models/subscriber_model.dart';
-import 'package:flex_travel_sim/features/dashboard/screens/main_flow_screen.dart';
-import 'package:flex_travel_sim/features/dashboard/bloc/main_flow_bloc.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:vink_sim/core/models/imsi_model.dart';
+import 'package:vink_sim/core/models/subscriber_model.dart';
+import 'package:vink_sim/features/dashboard/screens/main_flow_screen.dart';
+import 'package:vink_sim/features/dashboard/bloc/main_flow_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
 
 class MockMainFlowBloc extends MockBloc<MainFlowEvent, MainFlowState>
     implements MainFlowBloc {}
@@ -18,6 +19,13 @@ class MockSubscriberBloc extends MockBloc<SubscriberEvent, SubscriberState>
 class FakeMainFlowEvent extends Fake implements MainFlowEvent {}
 
 class FakeSubscriberEvent extends Fake implements SubscriberEvent {}
+
+class FakeSimLocalizations extends Fake implements SimLocalizations {
+  @override
+  String get loading => 'loading';
+  @override
+  String get error => 'error';
+}
 
 void main() {
   group('GIVEN $MainFlowScreen', () {
@@ -113,7 +121,10 @@ void main() {
         final state = SubscriberLoaded(
           subscriber: const SubscriberModel(balance: 150.0, imsiList: imsiList),
         );
-        final result = MainFlowDataProcessor.processImsiList(state);
+        final result = MainFlowDataProcessor.processImsiList(
+          state,
+          FakeSimLocalizations(),
+        );
 
         await tester.pumpWidget(tester.buildImsiListWidget(result));
 
@@ -126,7 +137,10 @@ void main() {
         final state = SubscriberLoaded(
           subscriber: const SubscriberModel(balance: 100.0, imsiList: []),
         );
-        final result = MainFlowDataProcessor.processImsiList(state);
+        final result = MainFlowDataProcessor.processImsiList(
+          state,
+          FakeSimLocalizations(),
+        );
 
         await tester.pumpWidget(tester.buildSingleImsiWidget(result.first));
 
@@ -138,7 +152,10 @@ void main() {
       testWidgets('WHEN loading state '
           'THEN displays loading country', (tester) async {
         final state = SubscriberLoading();
-        final result = MainFlowDataProcessor.processImsiList(state);
+        final result = MainFlowDataProcessor.processImsiList(
+          state,
+          FakeSimLocalizations(),
+        );
 
         await tester.pumpWidget(tester.buildSingleImsiWidget(result.first));
 
@@ -149,7 +166,10 @@ void main() {
       testWidgets('WHEN error state '
           'THEN displays error country', (tester) async {
         final state = SubscriberError(message: 'Test error');
-        final result = MainFlowDataProcessor.processImsiList(state);
+        final result = MainFlowDataProcessor.processImsiList(
+          state,
+          FakeSimLocalizations(),
+        );
 
         await tester.pumpWidget(tester.buildSingleImsiWidget(result.first));
 
@@ -160,7 +180,10 @@ void main() {
       testWidgets('WHEN initial state '
           'THEN displays N/A country', (tester) async {
         final state = SubscriberInitial();
-        final result = MainFlowDataProcessor.processImsiList(state);
+        final result = MainFlowDataProcessor.processImsiList(
+          state,
+          FakeSimLocalizations(),
+        );
 
         await tester.pumpWidget(tester.buildSingleImsiWidget(result.first));
 

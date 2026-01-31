@@ -1,8 +1,8 @@
-import 'package:flex_travel_sim/core/utils/result.dart';
-import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_local_data_source.dart';
-import 'package:flex_travel_sim/features/esim_management/data/data_sources/esim_remote_data_source.dart';
-import 'package:flex_travel_sim/features/esim_management/domain/entities/esim.dart';
-import 'package:flex_travel_sim/features/esim_management/domain/repositories/esim_repository.dart';
+import 'package:vink_sim/core/utils/result.dart';
+import 'package:vink_sim/features/esim_management/data/data_sources/esim_local_data_source.dart';
+import 'package:vink_sim/features/esim_management/data/data_sources/esim_remote_data_source.dart';
+import 'package:vink_sim/features/esim_management/domain/entities/esim.dart';
+import 'package:vink_sim/features/esim_management/domain/repositories/esim_repository.dart';
 
 class EsimRepositoryImpl implements EsimRepository {
   final EsimRemoteDataSource _remoteDataSource;
@@ -72,14 +72,8 @@ class EsimRepositoryImpl implements EsimRepository {
     String id,
     String activationCode,
   ) async {
-    return ResultHelper.safeCall(() async {
-      final esimModel = await _remoteDataSource.activateEsim(
-        id,
-        activationCode,
-      );
-      await _localDataSource.cacheEsim(esimModel);
-      return esimModel.toEntity();
-    });
+    // Backend reference implementation does not support activation yet
+    return const Failure('Activation not supported by backend yet');
   }
 
   @override
@@ -88,9 +82,10 @@ class EsimRepositoryImpl implements EsimRepository {
     Map<String, dynamic> paymentData,
   ) async {
     return ResultHelper.safeCall(() async {
+      // paymentData is ignored as the backend only requires tariffId
+      // and assumes payment is handled or pre-authorized
       final esimModel = await _remoteDataSource.purchaseEsim(
         tariffId,
-        paymentData,
       );
       await _localDataSource.cacheEsim(esimModel);
       return esimModel.toEntity();
@@ -99,10 +94,8 @@ class EsimRepositoryImpl implements EsimRepository {
 
   @override
   Future<Result<void>> deactivateEsim(String id) async {
-    return ResultHelper.safeCall(() async {
-      await _remoteDataSource.deactivateEsim(id);
-      await _localDataSource.removeCachedEsim(id);
-    });
+    // Backend reference implementation does not support deactivation yet
+    return const Failure('Deactivation not supported by backend yet');
   }
 
   @override
@@ -110,22 +103,15 @@ class EsimRepositoryImpl implements EsimRepository {
     String id,
     Map<String, dynamic> settings,
   ) async {
-    return ResultHelper.safeCall(() async {
-      final esimModel = await _remoteDataSource.updateEsimSettings(
-        id,
-        settings,
-      );
-      await _localDataSource.cacheEsim(esimModel);
-      return esimModel.toEntity();
-    });
+    // Backend reference implementation does not support settings update yet
+    return const Failure('Settings update not supported by backend yet');
   }
 
   @override
   Future<Result<Map<String, dynamic>>> getEsimUsageData(
     String id,
   ) async {
-    return ResultHelper.safeCall(() async {
-      return await _remoteDataSource.getEsimUsageData(id);
-    });
+    // Backend reference implementation does not support usage data yet
+    return const Failure('Usage data not supported by backend yet');
   }
 }

@@ -1,10 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/build_qr_code.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/features/esim_management/widgets/build_qr_code.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/body_container.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class AnotherDeviceSelectedBody extends StatelessWidget {
@@ -21,41 +20,53 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String currentLanguange = context.locale.languageCode;
-    
-    final mobileCommunication = currentLanguange == 'en'
-        ? Assets.icons.figma112.mobileCommunicationEng
-        : Assets.icons.figma112.mobileCommunication;
-    final addEsim = currentLanguange == 'en'
-        ? Assets.icons.figma112.addEsimEng
-        : Assets.icons.figma112.addEsim;  
-    final settingsByQr = currentLanguange == 'en'
-        ? Assets.icons.figma112.settingsByQrEng
-        : Assets.icons.figma112.settingsByQr; 
-    final qrMobileTariff = currentLanguange == 'en'
-        ? Assets.icons.figma112.qrMobileTariffEng
-        : Assets.icons.figma112.qrMobileTariff;    
-    final forTravels = currentLanguange == 'en'
-        ? Assets.icons.figma112.forTravelsEng
-        : Assets.icons.figma112.forTravels;  
-    final flexPlan = currentLanguange == 'en'
-        ? Assets.icons.figma112.flexPlanEng
-        : Assets.icons.figma112.flexPlan; 
-    final defaultNumber = currentLanguange == 'en'
-        ? Assets.icons.figma112.defaultNumberEng
-        : Assets.icons.figma112.defaultNumber; 
-    final facetimeImessage = currentLanguange == 'en'
-        ? Assets.icons.figma112.facetimeImessageEng
-        : Assets.icons.figma112.facetimeImessage;   
-    final chooseMobileData = currentLanguange == 'en'
-        ? Assets.icons.figma112.chooseMobileDataEng
-        : Assets.icons.figma112.chooseMobileData;
-    final dataRouming = currentLanguange == 'en'
-        ? Assets.icons.figma112.dataRoumingEng
-        : Assets.icons.figma112.dataRouming;    
-    final importantStepTodo = currentLanguange == 'en'
-        ? Assets.icons.figma112.importantStepTodoEng
-        : Assets.icons.figma112.importantStepTodo;                                                                  
+    final String currentLanguange =
+        Localizations.localeOf(context).languageCode;
+
+    final mobileCommunication =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.mobileCommunicationEng
+            : Assets.icons.figma112.mobileCommunication;
+    final addEsim =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.addEsimEng
+            : Assets.icons.figma112.addEsim;
+    final settingsByQr =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.settingsByQrEng
+            : Assets.icons.figma112.settingsByQr;
+    final qrMobileTariff =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.qrMobileTariffEng
+            : Assets.icons.figma112.qrMobileTariff;
+    final forTravels =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.forTravelsEng
+            : Assets.icons.figma112.forTravels;
+    final flexPlan =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.flexPlanEng
+            : Assets.icons.figma112.flexPlan;
+    final defaultNumber =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.defaultNumberEng
+            : Assets.icons.figma112.defaultNumber;
+    final facetimeImessage =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.facetimeImessageEng
+            : Assets.icons.figma112.facetimeImessage;
+    final chooseMobileData =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.chooseMobileDataEng
+            : Assets.icons.figma112.chooseMobileData;
+    final dataRouming =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.dataRoumingEng
+            : Assets.icons.figma112.dataRouming;
+    final importantStepTodo =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.importantStepTodoEng
+            : Assets.icons.figma112.importantStepTodo;
 
     return Column(
       children: [
@@ -78,14 +89,17 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 HelveticaneueFont(
-                  text: AppLocalizations.attention,
+                  text: SimLocalizations.of(context)!.attention,
                   fontSize: 18,
                   color: AppColors.textColorDark,
                   fontWeight: FontWeight.bold,
                 ),
                 SizedBox(height: 10),
                 HelveticaneueFont(
-                  text: AppLocalizations.anotherDeviceDescriptionWarning,
+                  text:
+                      SimLocalizations.of(
+                        context,
+                      )!.another_device_description_warning,
                   fontSize: 16,
                   color: AppColors.textColorDark,
                   textAlign: TextAlign.center,
@@ -99,7 +113,8 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['1'],
-          description: AppLocalizations.anotherDeviceDescription1,
+          description:
+              SimLocalizations.of(context)!.another_device_description1,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -157,7 +172,8 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['2'],
-          description: AppLocalizations.anotherDeviceDescription2,
+          description:
+              SimLocalizations.of(context)!.another_device_description2,
           child: Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Container(
@@ -186,7 +202,8 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['3'],
-          description: AppLocalizations.anotherDeviceDescription3,
+          description:
+              SimLocalizations.of(context)!.another_device_description3,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -224,7 +241,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['4'],
-          description: AppLocalizations.fastDescriptionStep2,
+          description: SimLocalizations.of(context)!.fast_description_step2,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -262,7 +279,8 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['5'],
-          description: AppLocalizations.anotherDeviceDescription5,
+          description:
+              SimLocalizations.of(context)!.another_device_description5,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -283,7 +301,7 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['6'],
-          description: AppLocalizations.fastDescriptionStep4,
+          description: SimLocalizations.of(context)!.fast_description_step4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -303,8 +321,11 @@ class AnotherDeviceSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepTitle: AppLocalizations.important,
-          description: AppLocalizations.anotherDeviceDescriptionImportant,
+          stepTitle: SimLocalizations.of(context)!.important,
+          description:
+              SimLocalizations.of(
+                context,
+              )!.another_device_description_important,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(

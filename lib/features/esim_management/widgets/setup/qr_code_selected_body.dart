@@ -1,14 +1,13 @@
 import 'dart:ui';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/build_qr_code.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/share_qr/qr_service.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/features/esim_management/widgets/build_qr_code.dart';
+import 'package:vink_sim/features/esim_management/widgets/share_qr/qr_service.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/body_container.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -46,44 +45,55 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
       print('QR Code: ${widget.qrCode}');
     }
 
-    final String currentLanguange = context.locale.languageCode;
-    
-    final mobileCommunication = currentLanguange == 'en'
-        ? Assets.icons.figma112.mobileCommunicationEng
-        : Assets.icons.figma112.mobileCommunication;    
-    final addEsim = currentLanguange == 'en'
-        ? Assets.icons.figma112.addEsimEng
-        : Assets.icons.figma112.addEsim;  
-    final settingsByQr = currentLanguange == 'en'
-        ? Assets.icons.figma112.settingsByQrEng
-        : Assets.icons.figma112.settingsByQr; 
-    final qrMobileTariff = currentLanguange == 'en'
-        ? Assets.icons.figma112.qrMobileTariffEng
-        : Assets.icons.figma112.qrMobileTariff;    
-    final forTravels = currentLanguange == 'en'
-        ? Assets.icons.figma112.forTravelsEng
-        : Assets.icons.figma112.forTravels;  
-    final flexPlan = currentLanguange == 'en'
-        ? Assets.icons.figma112.flexPlanEng
-        : Assets.icons.figma112.flexPlan; 
-    final defaultNumber = currentLanguange == 'en'
-        ? Assets.icons.figma112.defaultNumberEng
-        : Assets.icons.figma112.defaultNumber; 
-    final dataRouming = currentLanguange == 'en'
-        ? Assets.icons.figma112.dataRoumingEng
-        : Assets.icons.figma112.dataRouming;    
-    final importantStepTodo = currentLanguange == 'en'
-        ? Assets.icons.figma112.importantStepTodoEng
-        : Assets.icons.figma112.importantStepTodo;
-    final facetimeImessage = currentLanguange == 'en'
-        ? Assets.icons.figma112.facetimeImessageEng
-        : Assets.icons.figma112.facetimeImessage;             
+    final String currentLanguange =
+        Localizations.localeOf(context).languageCode;
+
+    final mobileCommunication =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.mobileCommunicationEng
+            : Assets.icons.figma112.mobileCommunication;
+    final addEsim =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.addEsimEng
+            : Assets.icons.figma112.addEsim;
+    final settingsByQr =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.settingsByQrEng
+            : Assets.icons.figma112.settingsByQr;
+    final qrMobileTariff =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.qrMobileTariffEng
+            : Assets.icons.figma112.qrMobileTariff;
+    final forTravels =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.forTravelsEng
+            : Assets.icons.figma112.forTravels;
+    final flexPlan =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.flexPlanEng
+            : Assets.icons.figma112.flexPlan;
+    final defaultNumber =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.defaultNumberEng
+            : Assets.icons.figma112.defaultNumber;
+    final dataRouming =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.dataRoumingEng
+            : Assets.icons.figma112.dataRouming;
+    final importantStepTodo =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.importantStepTodoEng
+            : Assets.icons.figma112.importantStepTodo;
+    final facetimeImessage =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.facetimeImessageEng
+            : Assets.icons.figma112.facetimeImessage;
 
     return Column(
       children: [
         BodyContainer(
           args: ['1'],
-          description: AppLocalizations.qrCodeDescription,
+          description: SimLocalizations.of(context)!.qr_code_description,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 8.0),
@@ -147,7 +157,10 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                                         ),
 
                                         HelveticaneueFont(
-                                          text: AppLocalizations.attention,
+                                          text:
+                                              SimLocalizations.of(
+                                                context,
+                                              )!.attention,
                                           fontSize: 16,
                                           color: AppColors.textColorDark,
                                           fontWeight: FontWeight.bold,
@@ -157,8 +170,9 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
 
                                         HelveticaneueFont(
                                           text:
-                                              AppLocalizations
-                                                  .youCanActivateEsimOnlyOnce,
+                                              SimLocalizations.of(
+                                                context,
+                                              )!.you_can_activate_esim_only_once,
                                           fontSize: 16,
                                           color: AppColors.textColorDark,
                                           textAlign: TextAlign.center,
@@ -185,7 +199,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                       } else {
                         _toggleQrVisibility();
                       }
-                    },                    
+                    },
                     child: Container(
                       alignment: Alignment.center,
                       height: 52,
@@ -199,8 +213,8 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
                       ),
                       child: LocalizedText(
                         _isQrVisible
-                            ? AppLocalizations.sendQr
-                            : AppLocalizations.showQr,
+                            ? SimLocalizations.of(context)!.send_qr
+                            : SimLocalizations.of(context)!.show_qr,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -220,7 +234,8 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
 
         BodyContainer(
           args: ['2'],
-          description: AppLocalizations.anotherDeviceDescription1,
+          description:
+              SimLocalizations.of(context)!.another_device_description1,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -278,7 +293,8 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
 
         BodyContainer(
           args: ['3'],
-          description: AppLocalizations.anotherDeviceDescription3,
+          description:
+              SimLocalizations.of(context)!.another_device_description3,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -316,7 +332,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
 
         BodyContainer(
           args: ['4'],
-          description: AppLocalizations.fastDescriptionStep2,
+          description: SimLocalizations.of(context)!.fast_description_step2,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -354,7 +370,8 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
 
         BodyContainer(
           args: ['5'],
-          description: AppLocalizations.anotherDeviceDescription5,
+          description:
+              SimLocalizations.of(context)!.another_device_description5,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -375,7 +392,7 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
 
         BodyContainer(
           args: ['6'],
-          description: AppLocalizations.fastDescriptionStep4,
+          description: SimLocalizations.of(context)!.fast_description_step4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -395,8 +412,11 @@ class _QrCodeSelectedBodyState extends State<QrCodeSelectedBody> {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepTitle: AppLocalizations.important,
-          description: AppLocalizations.anotherDeviceDescriptionImportant,
+          stepTitle: SimLocalizations.of(context)!.important,
+          description:
+              SimLocalizations.of(
+                context,
+              )!.another_device_description_important,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(

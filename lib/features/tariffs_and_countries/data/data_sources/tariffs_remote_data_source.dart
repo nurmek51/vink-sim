@@ -1,55 +1,49 @@
-import 'dart:convert';
-import 'package:flex_travel_sim/features/tariffs_and_countries/data/models/network_operator_model.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
+import 'package:vink_sim/core/network/api_client.dart';
+import 'package:vink_sim/features/tariffs_and_countries/data/models/tariff_model.dart';
 
 abstract class TariffsRemoteDataSource {
-  Future<List<NetworkOperatorModel>> getNetworkOperators();
+  Future<List<TariffModel>> getTariffs();
 }
 
 class TariffsRemoteDataSourceImpl implements TariffsRemoteDataSource {
-  final http.Client _client;
-  static const String _baseUrl = 'https://imsimarket.com/js/data/alternative.rates.json';
+  final ApiClient _apiClient;
 
-  TariffsRemoteDataSourceImpl({http.Client? client})
-      : _client = client ?? http.Client();
+  TariffsRemoteDataSourceImpl({required ApiClient apiClient})
+    : _apiClient = apiClient;
 
   @override
-  Future<List<NetworkOperatorModel>> getNetworkOperators() async {
+  Future<List<TariffModel>> getTariffs() async {
     try {
       if (kDebugMode) {
-        print('TariffsRemoteDataSource: Fetching network operators from $_baseUrl');
+        print('TariffsRemoteDataSource: Fetching tariffs from /tariffs');
       }
 
-      final response = await _client.get(Uri.parse(_baseUrl));
+      final response = await _apiClient.get('/tariffs');
 
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonList = json.decode(response.body);
-        
-        if (kDebugMode) {
-          print('TariffsRemoteDataSource: Successfully fetched ${jsonList.length} operators');
-        }
-
-        final operators = jsonList
-            .map((json) => NetworkOperatorModel.fromJson(json))
-            .toList();
-
-        return operators;
+      final List<dynamic> jsonList;
+      if (response is List) {
+        jsonList = response;
+      } else if (response is Map && response.containsKey('data')) {
+        jsonList = response['data'] as List<dynamic>;
       } else {
-        if (kDebugMode) {
-          print('TariffsRemoteDataSource: HTTP Error ${response.statusCode}: ${response.body}');
-        }
-        throw Exception('Failed to load network operators: ${response.statusCode}');
+        throw Exception('Unexpected response format: $response');
       }
+
+      if (kDebugMode) {
+        print(
+          'TariffsRemoteDataSource: Successfully fetched ${jsonList.length} tariffs',
+        );
+      }
+
+      return jsonList
+          .map((json) => TariffModel.fromJson(json as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       if (kDebugMode) {
-        print('TariffsRemoteDataSource: Error fetching operators - $e');
+        print('TariffsRemoteDataSource: Error fetching tariffs - $e');
       }
-      throw Exception('Failed to fetch network operators: $e');
+      rethrow;
     }
-  }
-
-  void dispose() {
-    _client.close();
   }
 }

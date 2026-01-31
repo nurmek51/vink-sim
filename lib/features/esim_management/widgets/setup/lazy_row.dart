@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/custom_container.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/custom_container.dart';
 import 'package:flutter/material.dart';
 
 class LazyRow extends StatefulWidget {

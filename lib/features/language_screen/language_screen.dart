@@ -1,9 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/config/feature_config.dart';
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({super.key});
@@ -13,7 +15,7 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
-  String get currentLanguage => context.locale.languageCode;
+  String get currentLanguage => Localizations.localeOf(context).languageCode;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          AppLocalizations.language.tr(), 
+          SimLocalizations.of(context)!.language,
           style: FlexTypography.headline.small.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -35,26 +37,23 @@ class _LanguageScreenState extends State<LanguageScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          top: 15,
-          left: 16.0,
-        ),
+        padding: const EdgeInsets.only(top: 15, left: 16.0),
         child: Column(
           children: [
             const SizedBox(height: 20),
             LanguageButton(
               icon: Assets.icons.usaFlag.path,
-              language: AppLocalizations.appLanguageEn.tr(),
+              language: SimLocalizations.of(context)!.app_language_en,
               isSelected: currentLanguage == 'en',
               onTap: () => _changeLanguage('en'),
             ),
             const SizedBox(height: 12),
             LanguageButton(
               icon: Assets.icons.russianFlag.path,
-              language: AppLocalizations.russian.tr(),
+              language: SimLocalizations.of(context)!.russian,
               isSelected: currentLanguage == 'ru',
               onTap: () => _changeLanguage('ru'),
-            ),              
+            ),
           ],
         ),
       ),
@@ -62,8 +61,13 @@ class _LanguageScreenState extends State<LanguageScreen> {
   }
 
   void _changeLanguage(String languageCode) async {
-    await context.setLocale(Locale(languageCode));
-    setState(() {});
+    debugPrint('Language change requested: $languageCode');
+    if (sl.isRegistered<FeatureConfig>()) {
+      final config = sl<FeatureConfig>();
+      config.onLocaleChanged?.call(Locale(languageCode));
+    } else {
+      debugPrint('FeatureConfig not registered');
+    }
   }
 }
 
@@ -88,12 +92,13 @@ class LanguageButton extends StatelessWidget {
         onTap: onTap,
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,        
+        hoverColor: Colors.transparent,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SvgPicture.asset(
               icon,
+              package: AssetUtils.package,
               width: 32,
               height: 32,
             ),
@@ -104,22 +109,18 @@ class LanguageButton extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        language, 
+                        language,
                         style: FlexTypography.paragraph.large.copyWith(
                           color: isSelected ? Colors.blue : Colors.black,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
                       const Spacer(),
                       if (isSelected)
                         Padding(
-                          padding: const EdgeInsets.only(
-                            right: 10,
-                          ),
-                          child: const Icon(
-                            Icons.check,
-                            color: Colors.blue,
-                          ),
+                          padding: const EdgeInsets.only(right: 10),
+                          child: const Icon(Icons.check, color: Colors.blue),
                         ),
                     ],
                   ),

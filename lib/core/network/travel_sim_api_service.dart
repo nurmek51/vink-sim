@@ -1,5 +1,4 @@
-import 'package:flex_travel_sim/core/network/api_client.dart';
-import 'package:flutter/foundation.dart';
+import 'package:vink_sim/core/network/api_client.dart';
 
 class TravelSimApiService {
   final ApiClient _apiClient;
@@ -7,74 +6,43 @@ class TravelSimApiService {
   TravelSimApiService({required ApiClient apiClient}) : _apiClient = apiClient;
 
   Future<Map<String, dynamic>> sendOtpSms(String phone) async {
-    if (kDebugMode) {
-      print('TravelSimAPI: Sending OTP SMS request');
-      print('Phone: $phone');
-      print('URL: ${_apiClient.baseUrl}/otp/whatsapp');
-    }
-
-    try {
-      final response = await _apiClient.post(
-        '/otp/whatsapp',
-        body: {'phone': phone},
-      );
-      if (kDebugMode) {
-        print('TravelSimAPI: SMS sent successfully');
-      }
-      return response;
-    } catch (e) {
-      if (kDebugMode) {
-        print('TravelSimAPI: Failed to send SMS - $e');
-      }
-      rethrow;
-    }
+    return await _apiClient.post(
+      '/otp/whatsapp',
+      body: {'phone_number': phone},
+    );
   }
 
   Future<Map<String, dynamic>> verifyOtp(String phone, String code) async {
-    if (kDebugMode) {
-      print('TravelSimAPI: Verifying OTP');
-      print('Phone: $phone');
-      print('Code: $code');
-      print('URL: ${_apiClient.baseUrl}/otp/verify');
-    }
-
-    try {
-      final response = await _apiClient.post(
-        '/otp/verify',
-        body: {'phone': phone, 'code': code},
-      );
-      if (kDebugMode) {
-        print('TravelSimAPI: OTP verification successful');
-      }
-      return response;
-    } catch (e) {
-      if (kDebugMode) {
-        print('TravelSimAPI: Failed to verify OTP - $e');
-      }
-      rethrow;
-    }
+    return await _apiClient.post(
+      '/otp/verify',
+      body: {'phone_number': phone, 'otp_code': code},
+    );
   }
 
   Future<Map<String, dynamic>> getSubscriberInfo() async {
-    if (kDebugMode) {
-      print('TravelSimAPI: Getting subscriber info');
-      print('URL: ${_apiClient.baseUrl}/subscriber');
-    }
+    return await _apiClient.get('/subscriber');
+  }
 
-    try {
-      final response = await _apiClient.get('/subscriber');
+  Future<Map<String, dynamic>> topUpBalance({
+    required int amount,
+    required String imsi,
+  }) async {
+    return await _apiClient.post(
+      '/user/balance/top-up',
+      body: {'amount': amount, 'imsi': imsi},
+    );
+  }
 
-      if (kDebugMode) {
-        print('TravelSimAPI: Subscriber info retrieved successfully');
-        print('Response keys: ${response.keys}');
-      }
-
-      return response;
-    } catch (e) {
-      if (kDebugMode) {
-        print('TravelSimAPI: Failed to get subscriber info - $e');
-      }
-      rethrow;
-    }
+  Future<Map<String, dynamic>> purchaseEsim({
+    String? tariffId,
+    int? amount,
+  }) async {
+    return await _apiClient.post(
+      '/esims/purchase',
+      body: {
+        if (tariffId != null) 'tariff_id': tariffId,
+        if (amount != null) 'amount': amount,
+      },
+    );
   }
 }

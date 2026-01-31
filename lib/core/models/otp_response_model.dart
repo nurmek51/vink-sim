@@ -6,8 +6,9 @@ class OtpResponseModel extends Equatable {
   const OtpResponseModel({required this.token});
 
   factory OtpResponseModel.fromJson(Map<String, dynamic> json) {
+    final data = json['data'] is Map<String, dynamic> ? json['data'] : json;
     return OtpResponseModel(
-      token: json['token'] as String,
+      token: data['access_token'] ?? data['token'] ?? '',
     );
   }
 

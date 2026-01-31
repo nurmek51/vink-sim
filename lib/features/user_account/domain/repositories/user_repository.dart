@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/core/utils/result.dart';
-import 'package:flex_travel_sim/features/user_account/domain/entities/user.dart';
+import 'package:vink_sim/core/utils/result.dart';
+import 'package:vink_sim/features/user_account/domain/entities/user.dart';
 
 abstract class UserRepository {
   Future<Result<User>> getCurrentUser({bool forceRefresh = false});

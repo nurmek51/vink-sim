@@ -1,24 +1,24 @@
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
-import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_event.dart';
-import 'package:flex_travel_sim/features/auth/presentation/bloc/otp_auth_state.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
-import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/core/di/injection_container.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/features/onboarding/models/confirm_method.dart';
+import 'package:vink_sim/features/auth/domain/repo/auth_repository.dart';
+import 'package:vink_sim/features/auth/presentation/bloc/otp_auth_bloc.dart';
+import 'package:vink_sim/features/auth/presentation/bloc/otp_auth_event.dart';
+import 'package:vink_sim/features/auth/presentation/bloc/otp_auth_state.dart';
+import 'package:vink_sim/shared/widgets/app_notifier.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/features/auth/presentation/widgets/mobile_number_field.dart';
-import 'package:flex_travel_sim/features/auth/presentation/widgets/registration_container.dart';
-import 'package:flex_travel_sim/features/auth/domain/entities/country.dart';
-import 'package:flex_travel_sim/features/auth/data/country_data.dart';
-import 'package:flex_travel_sim/features/auth/utils/phone_utils.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/features/auth/presentation/widgets/mobile_number_field.dart';
+import 'package:vink_sim/features/auth/presentation/widgets/registration_container.dart';
+import 'package:vink_sim/features/auth/domain/entities/country.dart';
+import 'package:vink_sim/features/auth/data/country_data.dart';
+import 'package:vink_sim/features/auth/utils/phone_utils.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
 import 'package:flutter_svg/svg.dart';
 
 class WhatsappTile extends StatefulWidget {
@@ -99,10 +99,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
       ),
       body: BlocProvider<OtpAuthBloc>(
         create:
-            (context) => OtpAuthBloc(
-              otpAuthDataSource: sl.get<OtpAuthDataSource>(),
-              firebaseLoginUseCase: sl.get<FirebaseLoginUseCase>(),
-            ),
+            (context) => OtpAuthBloc(authRepository: sl.get<AuthRepository>()),
         child: BlocConsumer<OtpAuthBloc, OtpAuthState>(
           listener: (context, state) {
             if (state is OtpSmsSent) {
@@ -114,7 +111,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
               );
             } else if (state is OtpAuthError) {
               AppNotifier.error(
-                AppLocalizations.sendError,
+                SimLocalizations.of(context)!.send_error,
               ).showAppToast(context);
               if (kDebugMode) print(state.message);
             }
@@ -134,7 +131,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
                 children: [
                   const SizedBox(height: 30),
                   LocalizedText(
-                    AppLocalizations.authWithTheHelpOf,
+                    SimLocalizations.of(context)!.auth_with_the_help_of,
                     style: FlexTypography.headline.large.copyWith(
                       color: AppColors.backgroundColorLight,
                     ),
@@ -142,7 +139,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
                   Row(
                     children: [
                       LocalizedText(
-                        AppLocalizations.whatsApp,
+                        SimLocalizations.of(context)!.whats_app,
 
                         style: FlexTypography.headline.large.copyWith(
                           color: AppColors.whatsAppColor,
@@ -152,6 +149,7 @@ class _WhatsappTileState extends State<WhatsappTile> {
                       const SizedBox(width: 10),
                       SvgPicture.asset(
                         Assets.icons.whatsappIcon.path,
+                        package: AssetUtils.package,
                         colorFilter: const ColorFilter.mode(
                           AppColors.whatsAppColor,
                           BlendMode.srcIn,
@@ -160,8 +158,10 @@ class _WhatsappTileState extends State<WhatsappTile> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const LocalizedText(
-                    AppLocalizations.mobileNumWhatsAppDescription,
+                  LocalizedText(
+                    SimLocalizations.of(
+                      context,
+                    )!.mobile_num_whats_app_description,
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.backgroundColorLight,
@@ -190,7 +190,8 @@ class _WhatsappTileState extends State<WhatsappTile> {
                         SendOtpSmsEvent(phone: internationalNumber),
                       );
                     },
-                    buttonText: AppLocalizations.authAndRegistration,
+                    buttonText:
+                        SimLocalizations.of(context)!.auth_and_registration,
                     buttonTextColor:
                         _isValidPhone
                             ? AppColors.backgroundColorLight

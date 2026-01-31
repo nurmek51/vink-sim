@@ -1,10 +1,10 @@
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/my_account_screen/widgets/account_widget.dart';
-import 'package:flex_travel_sim/features/my_account_screen/widgets/log_out_widget.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/features/my_account_screen/widgets/account_widget.dart';
+import 'package:vink_sim/features/my_account_screen/widgets/log_out_widget.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountScreen extends StatelessWidget {
@@ -25,7 +25,7 @@ class MyAccountScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               LocalizedText(
-                AppLocalizations.myAccount,
+                SimLocalizations.of(context)!.my_account,
                 style: FlexTypography.headline.large.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -46,7 +46,7 @@ class MyAccountScreen extends StatelessWidget {
               // ),
               // const SizedBox(height: 12),
               AccountWidget(
-                title: AppLocalizations.appLanguage,
+                title: SimLocalizations.of(context)!.app_language,
                 icon: Assets.icons.globusWithBackground.path,
                 onTap: () => NavigationService.openLanguageScreen(context),
               ),

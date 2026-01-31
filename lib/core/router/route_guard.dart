@@ -1,6 +1,6 @@
-import 'package:flex_travel_sim/core/router/app_router.dart';
-import 'package:flex_travel_sim/core/di/injection_container.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:vink_sim/core/router/app_router.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/core/services/token_manager.dart';
 import 'package:go_router/go_router.dart';
 
 /// Route guard for handling authentication and navigation permissions
@@ -8,9 +8,8 @@ class RouteGuard {
   /// Check if user is authenticated
   static Future<bool> get isAuthenticated async {
     try {
-      final authLocalDataSource = sl.get<AuthLocalDataSource>();
-      final token = await authLocalDataSource.getToken();
-      return token != null && token.isNotEmpty;
+      final tokenManager = sl.get<TokenManager>();
+      return await tokenManager.isTokenValid();
     } catch (e) {
       return false;
     }

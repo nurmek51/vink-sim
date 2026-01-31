@@ -1,26 +1,26 @@
-import 'package:flex_travel_sim/core/web/adaptive/phone_frame.dart';
-import 'package:flex_travel_sim/core/web/adaptive/web_scaffold_config.dart';
-import 'package:flex_travel_sim/core/web/adaptive/welcome_desktop_circles.dart';
-import 'package:flex_travel_sim/features/auth/presentation/screens/auth_screen.dart';
-import 'package:flex_travel_sim/features/initial_screen/presentation/initial_screen.dart';
-import 'package:flex_travel_sim/features/language_screen/language_screen.dart';
-import 'package:flex_travel_sim/features/dashboard/screens/main_flow_screen.dart';
-import 'package:flex_travel_sim/features/my_account_screen/my_account_screen.dart';
-import 'package:flex_travel_sim/features/settings/screens/purchase_history_screen.dart';
-import 'package:flex_travel_sim/features/settings/screens/settings_screen.dart';
-import 'package:flex_travel_sim/features/esim_management/screens/esim_setup_page.dart';
-import 'package:flex_travel_sim/features/guide_page/views/guide_page.dart';
-import 'package:flex_travel_sim/features/setting_esim_page/views/setting_esim_page.dart';
-import 'package:flex_travel_sim/features/activated_esim_screen/views/activated_esim_screen.dart';
-import 'package:flex_travel_sim/features/esim_entry_screen/views/esim_entry_screen.dart';
-import 'package:flex_travel_sim/features/stripe_payment/presentation/screens/web_checkout_page.dart';
-import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
-import 'package:flex_travel_sim/features/top_up_balance_screen/top_up_balance_screen.dart';
-import 'package:flex_travel_sim/features/traffic_usage_screen/traffic_usage_screen.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/screens/tariffs_and_countries_screen.dart';
-import 'package:flex_travel_sim/features/onboarding/screens/welcome_screen.dart';
-import 'package:flex_travel_sim/core/router/route_guard.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
+import 'package:vink_sim/core/web/adaptive/phone_frame.dart';
+import 'package:vink_sim/core/web/adaptive/web_scaffold_config.dart';
+import 'package:vink_sim/core/web/adaptive/welcome_desktop_circles.dart';
+import 'package:vink_sim/features/auth/presentation/screens/auth_screen.dart';
+import 'package:vink_sim/features/initial_screen/presentation/initial_screen.dart';
+import 'package:vink_sim/features/language_screen/language_screen.dart';
+import 'package:vink_sim/features/dashboard/screens/main_flow_screen.dart';
+import 'package:vink_sim/features/my_account_screen/my_account_screen.dart';
+import 'package:vink_sim/features/settings/screens/purchase_history_screen.dart';
+import 'package:vink_sim/features/settings/screens/settings_screen.dart';
+import 'package:vink_sim/features/esim_management/screens/esim_setup_page.dart';
+import 'package:vink_sim/features/guide_page/views/guide_page.dart';
+import 'package:vink_sim/features/setting_esim_page/views/setting_esim_page.dart';
+import 'package:vink_sim/features/activated_esim_screen/views/activated_esim_screen.dart';
+import 'package:vink_sim/features/esim_entry_screen/views/esim_entry_screen.dart';
+import 'package:vink_sim/features/top_up_balance_screen/top_up_balance_screen.dart';
+import 'package:vink_sim/core/models/subscriber_model.dart';
+import 'package:vink_sim/features/traffic_usage_screen/traffic_usage_screen.dart';
+import 'package:vink_sim/features/tariffs_and_countries/screens/tariffs_and_countries_screen.dart';
+import 'package:vink_sim/features/onboarding/screens/welcome_screen.dart';
+import 'package:vink_sim/core/router/route_guard.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
@@ -44,12 +44,14 @@ class AppRouter {
                     backgroundColor: Colors.black,
                     leftSide: SvgPicture.asset(
                       Assets.icons.leftVector.path,
+                      package: AssetUtils.package,
                       width: 650,
                       height: 550,
                       fit: BoxFit.contain,
                     ),
                     rightSide: SvgPicture.asset(
                       Assets.icons.rightVector.path,
+                      package: AssetUtils.package,
                       width: 650,
                       height: 550,
                       fit: BoxFit.contain,
@@ -148,10 +150,15 @@ class AppRouter {
               final data = state.extra as Map<String, dynamic>?;
               final imsi = data?['imsi'] as String?;
               final isNewEsim = data?['isNewEsim'] as bool? ?? false;
+              final subscriber = data?['subscriber'] as SubscriberModel?;
               return _buildPageWithNoTransition(
                 context,
                 state,
-                TopUpBalanceScreen(imsi: imsi, isNewEsim: isNewEsim),
+                TopUpBalanceScreen(
+                  imsi: imsi,
+                  isNewEsim: isNewEsim,
+                  subscriber: subscriber,
+                ),
               );
             },
           ),
@@ -221,41 +228,6 @@ class AppRouter {
           ),
 
           GoRoute(
-            path: AppRoutes.stripeWebCheckout,
-            name: AppRoutes.stripeWebCheckoutName,
-            pageBuilder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>?;
-              final clientSecret = extra?['clientSecret'] as String?;
-              final amount = extra?['amount'] as int?;
-              final operationType = extra?['operationType'] as StripeOperationType?;
-              final imsi = extra?['imsi'] as String?;              
-
-
-              if (clientSecret == null || amount == null || operationType == null) {
-                return AppRouter._buildPageWithSlideTransition(
-                  context,
-                  state,
-                  const Scaffold(
-                    body: Center(child: Text("Invalid Stripe Payment")),
-                  ),
-                );
-              }
-
-              return AppRouter._buildPageWithSlideTransition(
-                context,
-                state,
-                StripeWebCheckout(
-                  clientSecret: clientSecret,
-                  amount: amount,
-                  imsi: imsi,
-                  operationType: operationType,
-
-                ),
-              );
-            },
-          ), 
-
-          GoRoute(
             path: AppRoutes.language,
             name: AppRoutes.languageName,
             pageBuilder:
@@ -275,7 +247,7 @@ class AppRouter {
                   state,
                   const InitialScreen(),
                 ),
-          ),          
+          ),
         ],
       ),
     ],
@@ -349,9 +321,7 @@ class AppRoutes {
   static const String purchaseHistory = '/purchase-history';
   static const String trafficUsage = '/traffic-usage';
   static const String language = '/language';
-  static const String stripeWebCheckout = '/stripe-web-checkout';
-  static const String esimEntry = '/esim-entry';  
-
+  static const String esimEntry = '/esim-entry';
 
   // Route names
   static const String welcomeName = 'welcome';
@@ -369,6 +339,5 @@ class AppRoutes {
   static const String purchaseHistoryName = 'purchaseHistory';
   static const String trafficUsageName = 'trafficUsage';
   static const String languageName = 'language';
-  static const String stripeWebCheckoutName = 'stripeWebCheckout';
-  static const String esimEntryName = 'esimEntry';  
+  static const String esimEntryName = 'esimEntry';
 }

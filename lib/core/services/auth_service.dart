@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/core/storage/local_storage.dart';
+import 'package:vink_sim/core/storage/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,9 +1,9 @@
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/core/di/injection_container.dart';
-import 'package:flex_travel_sim/features/auth/domain/use_cases/firebase_login_use_case.dart';
-import 'package:flex_travel_sim/core/router/app_router.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/features/auth/domain/repo/auth_repository.dart';
+import 'package:vink_sim/core/router/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
@@ -15,8 +15,8 @@ class SettingsScreen extends StatelessWidget {
     if (!shouldLogout) return;
 
     try {
-      final firebaseLoginUseCase = sl.get<FirebaseLoginUseCase>();
-      await firebaseLoginUseCase.signOut();
+      final authRepository = sl.get<AuthRepository>();
+      await authRepository.logout();
 
       if (context.mounted) {
         context.go(AppRoutes.welcome);
@@ -42,20 +42,20 @@ class SettingsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               title: LocalizedText(
-                AppLocalizations.logoutConfirmationTitle,
+                SimLocalizations.of(context)!.logout_confirmation_title,
                 style: FlexTypography.headline.small.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               content: LocalizedText(
-                AppLocalizations.logoutConfirmationMessage,
+                SimLocalizations.of(context)!.logout_confirmation_message,
                 style: FlexTypography.label.medium,
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
                   child: LocalizedText(
-                    AppLocalizations.cancel,
+                    SimLocalizations.of(context)!.cancel,
                     style: FlexTypography.label.medium.copyWith(
                       color: Colors.grey.shade600,
                     ),
@@ -70,7 +70,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   child: LocalizedText(
-                    AppLocalizations.logout,
+                    SimLocalizations.of(context)!.logout,
                     style: FlexTypography.label.medium.copyWith(
                       color: Colors.red,
                     ),
@@ -93,7 +93,7 @@ class SettingsScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: LocalizedText(
-          AppLocalizations.accountSettings,
+          SimLocalizations.of(context)!.account_settings,
           style: FlexTypography.headline.small.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -127,7 +127,7 @@ class SettingsScreen extends StatelessWidget {
                       Icon(Icons.logout, color: Colors.red.shade700, size: 20),
                       const SizedBox(width: 12),
                       LocalizedText(
-                        AppLocalizations.logout,
+                        SimLocalizations.of(context)!.logout,
                         style: FlexTypography.label.medium.copyWith(
                           color: Colors.red.shade700,
                         ),

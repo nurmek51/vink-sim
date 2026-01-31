@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flex_travel_sim/core/models/imsi_model.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/models/imsi_model.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/shared/widgets/blue_gradient_button.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class SimCardSelectionModal extends StatefulWidget {
@@ -54,8 +53,8 @@ class _SimCardSelectionModalState extends State<SimCardSelectionModal> {
             padding: const EdgeInsets.all(20),
             child: Row(
               children: [
-                const LocalizedText(
-                  AppLocalizations.selectSimCard,
+                Text(
+                  SimLocalizations.of(context)!.select_sim_card,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -117,7 +116,7 @@ class _SimCardSelectionModalState extends State<SimCardSelectionModal> {
                             children: [
                               Text(
                                 simCard.country ??
-                                    '${AppLocalizations.simCardFallback.tr()} ${index + 1}',
+                                    '${SimLocalizations.of(context)!.sim_card_fallback} ${index + 1}',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -125,6 +124,16 @@ class _SimCardSelectionModalState extends State<SimCardSelectionModal> {
                                 ),
                               ),
                               const SizedBox(height: 4),
+                              Text(
+                                simCard.iccid != null &&
+                                        simCard.iccid!.length > 4
+                                    ? '**** ${simCard.iccid!.substring(simCard.iccid!.length - 4)}'
+                                    : '****',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -138,8 +147,8 @@ class _SimCardSelectionModalState extends State<SimCardSelectionModal> {
                                 color: Colors.black,
                               ),
                             ),
-                            const LocalizedText(
-                              AppLocalizations.onBalance,
+                            LocalizedText(
+                              SimLocalizations.of(context)!.on_balance,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,
@@ -158,7 +167,7 @@ class _SimCardSelectionModalState extends State<SimCardSelectionModal> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: BlueGradientButton(
-              title: AppLocalizations.selectForTopUp.tr(),
+              title: SimLocalizations.of(context)!.select_for_top_up,
               onTap: () {
                 final selectedSimCard = widget.simCards.firstWhere(
                   (simCard) => simCard.imsi == selectedImsi,

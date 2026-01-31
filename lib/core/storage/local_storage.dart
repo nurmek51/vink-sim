@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flex_travel_sim/core/error/exceptions.dart';
+import 'package:vink_sim/core/error/exceptions.dart';
 
 abstract class LocalStorage {
   Future<void> setString(String key, String value);

@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
+import 'package:vink_sim/features/onboarding/widgets/pulsing_circle.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeCircles extends StatefulWidget {

@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:flex_travel_sim/core/di/injection_container.dart';
-import 'package:flex_travel_sim/core/router/app_router.dart';
-import 'package:flex_travel_sim/core/services/token_manager.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/core/router/app_router.dart';
+import 'package:vink_sim/core/services/token_manager.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,16 +74,18 @@ class _InitialScreenState extends State<InitialScreen> {
         subscriberBloc.state is SubscriberError) {
       subscriberBloc.add(const LoadSubscriberInfoEvent());
     } else {
-      if (kDebugMode)
+      if (kDebugMode) {
         print(
           'Initial: Skip dispatch, current state: ${subscriberBloc.state.runtimeType}',
         );
+      }
     }
 
     _timeout = Timer(const Duration(seconds: 20), () {
       if (_navigated || !mounted) return;
-      if (kDebugMode)
+      if (kDebugMode) {
         print('Initial: Waiting for subscriber too long → go(welcome)');
+      }
       _safeGo(AppRoutes.welcome);
     });
   }
@@ -91,8 +93,9 @@ class _InitialScreenState extends State<InitialScreen> {
   void _decideAndNavigate(SubscriberLoaded loaded) {
     final imsiList = loaded.subscriber.imsiList;
     if (kDebugMode) print('Initial: IMSI list len: ${imsiList.length}');
-    if (kDebugMode)
+    if (kDebugMode) {
       print('Initial: IMSI values: ${imsiList.map((e) => e.imsi).toList()}');
+    }
 
     final hasRealImsi = imsiList.isNotEmpty;
     final route = hasRealImsi ? AppRoutes.mainFlow : AppRoutes.esimEntry;

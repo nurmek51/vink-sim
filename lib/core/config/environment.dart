@@ -15,12 +15,7 @@ class Environment {
   }
 
   static String get envFileName {
-    switch (current) {
-      case EnvironmentType.development:
-        return '.env.development';
-      case EnvironmentType.production:
-        return '.env.production';
-    }
+    return '.env';
   }
 
   static Future<void> load() async {
@@ -54,9 +49,27 @@ class Environment {
   static bool get isProduction => current == EnvironmentType.production;
 
   // Configuration getters
-  static String get apiUrl => dotenv.env['API_URL'] ?? '';
+  static String _overrideApiUrl = '';
+  static String get apiUrl {
+    final baseUrl = _overrideApiUrl.isNotEmpty ? _overrideApiUrl : (dotenv.env['API_URL'] ?? '');
+    if (baseUrl.isEmpty) return '';
+    
+    // Ensure API version path is included
+    if (!baseUrl.contains('/api/v1') && !baseUrl.endsWith('/api/v1')) {
+      final cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
+      // Check if it already has /api but not version
+      if (cleanBaseUrl.endsWith('/api')) {
+         return '$cleanBaseUrl/v1';
+      }
+      return '$cleanBaseUrl/api/v1';
+    }
+    return baseUrl;
+  }
+  
+  static void setApiUrl(String url) {
+    _overrideApiUrl = url;
+  }
+
   static String get firebaseProjectId =>
       dotenv.env['FIREBASE_PROJECT_ID'] ?? '';
-  static String get stripePublishableKey =>
-      dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? '';
 }

@@ -2,12 +2,25 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
+import 'package:vink_sim/core/services/firebase_helper.dart';
 
 class FirebaseEmailLinkService {
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseAuth? get _auth => FirebaseHelper.authInstance;
   static const String _emailKey = 'pending_email_link_auth';
 
+  static bool get isAvailable => FirebaseHelper.isAvailable;
+
+  static void _checkAvailability() {
+    if (!isAvailable) {
+      throw Exception(
+        'Firebase is not available. Please configure Firebase credentials.',
+      );
+    }
+  }
+
   static Future<void> sendSignInLinkToEmail(String email) async {
+    _checkAvailability();
+
     try {
       if (kDebugMode) {
         print('Sending email link to: $email');
@@ -23,7 +36,7 @@ class FirebaseEmailLinkService {
         androidMinimumVersion: '12',
       );
 
-      await _auth.sendSignInLinkToEmail(
+      await _auth!.sendSignInLinkToEmail(
         email: email,
         actionCodeSettings: actionCodeSettings,
       );
@@ -45,13 +58,16 @@ class FirebaseEmailLinkService {
   }
 
   static bool isSignInWithEmailLink(String emailLink) {
-    return _auth.isSignInWithEmailLink(emailLink);
+    if (!isAvailable) return false;
+    return _auth!.isSignInWithEmailLink(emailLink);
   }
 
   static Future<UserCredential> signInWithEmailLink({
     required String email,
     required String emailLink,
   }) async {
+    _checkAvailability();
+
     try {
       if (kDebugMode) {
         print('Completing authentication for: $email');
@@ -62,7 +78,7 @@ class FirebaseEmailLinkService {
         throw Exception('Invalid authentication link');
       }
 
-      final userCredential = await _auth.signInWithEmailLink(
+      final userCredential = await _auth!.signInWithEmailLink(
         email: email,
         emailLink: emailLink,
       );
@@ -146,11 +162,11 @@ class FirebaseEmailLinkService {
   }
 
   static User? getCurrentUser() {
-    return _auth.currentUser;
+    return _auth?.currentUser;
   }
 
   static Future<bool> isUserAuthenticated() async {
-    final user = _auth.currentUser;
+    final user = _auth?.currentUser;
     if (user == null) return false;
 
     final prefs = await SharedPreferences.getInstance();
@@ -160,7 +176,7 @@ class FirebaseEmailLinkService {
   }
 
   static Future<String?> getCurrentUserEmail() async {
-    final user = _auth.currentUser;
+    final user = _auth?.currentUser;
     if (user?.email != null) {
       return user!.email;
     }
@@ -170,8 +186,10 @@ class FirebaseEmailLinkService {
   }
 
   static Future<void> signOut() async {
+    if (!isAvailable) return;
+
     try {
-      await _auth.signOut();
+      await _auth!.signOut();
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('auth_token');

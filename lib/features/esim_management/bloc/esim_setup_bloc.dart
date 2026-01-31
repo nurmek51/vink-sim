@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/core/di/injection_container.dart';
-import 'package:flex_travel_sim/features/subscriber/data/data_sources/subscriber_local_data_source.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/features/subscriber/data/data_sources/subscriber_local_data_source.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 

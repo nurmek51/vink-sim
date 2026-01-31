@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flex_travel_sim/core/models/imsi_model.dart';
+import 'package:vink_sim/core/models/imsi_model.dart';
 
 // Events
 abstract class TopUpBalanceEvent extends Equatable {
@@ -12,9 +12,9 @@ abstract class TopUpBalanceEvent extends Equatable {
 
 class SetAmount extends TopUpBalanceEvent {
   final int amount;
-  
+
   const SetAmount(this.amount);
-  
+
   @override
   List<Object?> get props => [amount];
 }
@@ -29,18 +29,18 @@ class DecrementAmount extends TopUpBalanceEvent {
 
 class ToggleAutoTopUp extends TopUpBalanceEvent {
   final bool enabled;
-  
+
   const ToggleAutoTopUp(this.enabled);
-  
+
   @override
   List<Object?> get props => [enabled];
 }
 
 class SelectPaymentMethod extends TopUpBalanceEvent {
   final String method;
-  
+
   const SelectPaymentMethod(this.method);
-  
+
   @override
   List<Object?> get props => [method];
 }
@@ -51,9 +51,9 @@ class ResetState extends TopUpBalanceEvent {
 
 class SelectSimCard extends TopUpBalanceEvent {
   final ImsiModel simCard;
-  
+
   const SelectSimCard(this.simCard);
-  
+
   @override
   List<Object?> get props => [simCard];
 }
@@ -61,9 +61,9 @@ class SelectSimCard extends TopUpBalanceEvent {
 class InitializeWithImsi extends TopUpBalanceEvent {
   final String? imsi;
   final List<ImsiModel> simCards;
-  
+
   const InitializeWithImsi(this.imsi, this.simCards);
-  
+
   @override
   List<Object?> get props => [imsi, simCards];
 }
@@ -76,7 +76,7 @@ class TopUpBalanceState extends Equatable {
   final ImsiModel? selectedSimCard;
 
   const TopUpBalanceState({
-    this.amount = 0,
+    this.amount = 15,
     this.autoTopUpEnabled = false,
     this.selectedPaymentMethod = 'apple_pay',
     this.selectedSimCard,
@@ -91,13 +91,19 @@ class TopUpBalanceState extends Equatable {
     return TopUpBalanceState(
       amount: amount ?? this.amount,
       autoTopUpEnabled: autoTopUpEnabled ?? this.autoTopUpEnabled,
-      selectedPaymentMethod: selectedPaymentMethod ?? this.selectedPaymentMethod,
+      selectedPaymentMethod:
+          selectedPaymentMethod ?? this.selectedPaymentMethod,
       selectedSimCard: selectedSimCard ?? this.selectedSimCard,
     );
   }
 
   @override
-  List<Object?> get props => [amount, autoTopUpEnabled, selectedPaymentMethod, selectedSimCard];
+  List<Object?> get props => [
+    amount,
+    autoTopUpEnabled,
+    selectedPaymentMethod,
+    selectedSimCard,
+  ];
 }
 
 // Bloc
@@ -117,21 +123,33 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
     emit(state.copyWith(amount: event.amount));
   }
 
-  void _onIncrementAmount(IncrementAmount event, Emitter<TopUpBalanceState> emit) {
+  void _onIncrementAmount(
+    IncrementAmount event,
+    Emitter<TopUpBalanceState> emit,
+  ) {
     emit(state.copyWith(amount: state.amount + 1));
   }
 
-  void _onDecrementAmount(DecrementAmount event, Emitter<TopUpBalanceState> emit) {
+  void _onDecrementAmount(
+    DecrementAmount event,
+    Emitter<TopUpBalanceState> emit,
+  ) {
     if (state.amount > 0) {
       emit(state.copyWith(amount: state.amount - 1));
     }
   }
 
-  void _onToggleAutoTopUp(ToggleAutoTopUp event, Emitter<TopUpBalanceState> emit) {
+  void _onToggleAutoTopUp(
+    ToggleAutoTopUp event,
+    Emitter<TopUpBalanceState> emit,
+  ) {
     emit(state.copyWith(autoTopUpEnabled: event.enabled));
   }
 
-  void _onSelectPaymentMethod(SelectPaymentMethod event, Emitter<TopUpBalanceState> emit) {
+  void _onSelectPaymentMethod(
+    SelectPaymentMethod event,
+    Emitter<TopUpBalanceState> emit,
+  ) {
     emit(state.copyWith(selectedPaymentMethod: event.method));
   }
 
@@ -143,7 +161,10 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
     emit(const TopUpBalanceState());
   }
 
-  void _onInitializeWithImsi(InitializeWithImsi event, Emitter<TopUpBalanceState> emit) {
+  void _onInitializeWithImsi(
+    InitializeWithImsi event,
+    Emitter<TopUpBalanceState> emit,
+  ) {
     if (event.imsi != null && event.simCards.isNotEmpty) {
       final simCard = event.simCards.firstWhere(
         (sim) => sim.imsi == event.imsi,

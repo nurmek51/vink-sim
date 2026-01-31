@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
-import 'package:flex_travel_sim/core/services/token_manager.dart';
+import 'package:vink_sim/core/services/token_manager.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:convert';
 
 class AuthInterceptor {
   final TokenManager _tokenManager;
@@ -27,22 +28,38 @@ class AuthInterceptor {
         request.headers['Authorization'] = 'Bearer $token';
 
         if (kDebugMode) {
+          // Show only first 10 chars of token for security/readability
+          final shortToken =
+              token.length > 10 ? '${token.substring(0, 10)}...' : token;
           print(
-            'AuthInterceptor: Added token to protected endpoint: ${request.url.path}',
+            '│ 🔐 Auth: Added Bearer token for ${request.url.path} ($shortToken)',
           );
-          print('AuthInterceptor: Token: ${token.substring(0, 20)}...');
+
+          try {
+            // Decode and log token payload to verify user context
+            final parts = token.split('.');
+            if (parts.length == 3) {
+              final payload = parts[1];
+              String normalized = base64Url.normalize(payload);
+              final String decoded = utf8.decode(base64Url.decode(normalized));
+              final Map<String, dynamic> claims = json.decode(decoded);
+              print('│    Phone: ${claims['phone']}');
+            }
+          } catch (e) {
+            print('│ ⚠️ Could not decode token for logging: $e');
+          }
         }
       } else {
         if (kDebugMode) {
           print(
-            'AuthInterceptor: No token available for protected endpoint: ${request.url.path}',
+            '│ ⚠️ Auth: No token available for protected endpoint: ${request.url.path}',
           );
         }
       }
     } else {
       if (kDebugMode) {
         print(
-          'AuthInterceptor: Skipping token for public endpoint: ${request.url.path}',
+          '│ 🔓 Auth: Public endpoint (skipping token): ${request.url.path}',
         );
       }
     }

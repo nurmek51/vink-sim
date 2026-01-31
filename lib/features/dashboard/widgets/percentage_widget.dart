@@ -1,13 +1,14 @@
 import 'dart:math';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/dashboard/utils/progress_color_utils.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/features/dashboard/utils/progress_color_utils.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PercentageWidget extends StatelessWidget {
   const PercentageWidget({
@@ -17,6 +18,7 @@ class PercentageWidget extends StatelessWidget {
     required this.imsi,
     required this.backgroundColor,
     required this.balance,
+    this.iccid,
     this.country,
     this.rate,
     this.isYellow = false,
@@ -26,6 +28,7 @@ class PercentageWidget extends StatelessWidget {
   final Color color;
   final Color backgroundColor;
   final double balance;
+  final String? iccid;
   final String? country;
   final double? rate;
   final bool isYellow;
@@ -89,8 +92,8 @@ class PercentageWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              LocalizedText(
-                AppLocalizations.esimIsActivating,
+              Text(
+                SimLocalizations.of(context)!.esim_is_activating,
                 style: FlexTypography.label.medium.copyWith(
                   color: AppColors.grayBlue,
                 ),
@@ -147,7 +150,7 @@ class PercentageWidget extends StatelessWidget {
                       vertical: 4,
                     ),
                     child: Text(
-                      country ?? AppLocalizations.notAvailable.tr(),
+                      country ?? SimLocalizations.of(context)!.not_available,
                       style: FlexTypography.paragraph.medium.copyWith(
                         fontWeight: FontWeight.bold,
                         color:
@@ -162,7 +165,7 @@ class PercentageWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  '${_formatGB(availableGB)} ${AppLocalizations.gigabytes.tr()}',
+                  '${_formatGB(availableGB)} ${SimLocalizations.of(context)!.gigabytes}',
                   style: FlexTypography.label.xLarge.copyWith(
                     fontSize: 60,
                     color: AppColors.grayBlue,
@@ -171,23 +174,44 @@ class PercentageWidget extends StatelessWidget {
                 const SizedBox(height: 4),
 
                 Text(
-                  '\$${_formatBalance(balance)} ${AppLocalizations.balancePrefix.tr()} ',
+                  '\$${_formatBalance(balance)} ${SimLocalizations.of(context)!.balance_prefix} ',
                   style: FlexTypography.label.small.copyWith(
-                    color: AppColors.grayBlue.withOpacity(0.5),
+                    color: AppColors.grayBlue.withValues(alpha: 0.5),
                   ),
                 ),
+
+                if (iccid != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    'IMSI: $imsi',
+                    style: FlexTypography.label.small.copyWith(
+                      color: AppColors.grayBlue.withValues(alpha: 0.3),
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
 
                 const SizedBox(height: 13),
 
                 !isBlueCircle
                     ? GestureDetector(
-                      onTap:
-                          () => NavigationService.openTopUpBalanceScreen(
-                            context,
-                            imsi: imsi,
-                          ),
-                      child: LocalizedText(
-                        AppLocalizations.topUp,
+                      onTap: () {
+                        // Pass subscriber data to TopUp screen to avoid re-fetching
+                        final subscriberState =
+                            context.read<SubscriberBloc>().state;
+                        final subscriber =
+                            subscriberState is SubscriberLoaded
+                                ? subscriberState.subscriber
+                                : null;
+
+                        NavigationService.openTopUpBalanceScreen(
+                          context,
+                          imsi: imsi,
+                          subscriber: subscriber,
+                        );
+                      },
+                      child: Text(
+                        SimLocalizations.of(context)!.top_up,
                         textAlign: TextAlign.center,
                         style: FlexTypography.label.medium.copyWith(
                           color: AppColors.accentBlue,

@@ -1,6 +1,6 @@
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart' show LocalizedText;
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart' show LocalizedText;
 import 'package:flutter/material.dart';
 
 class AuthButton extends StatelessWidget {
@@ -22,11 +22,9 @@ class AuthButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             LocalizedText(
-              AppLocalizations.start,
-              style: FlexTypography.label.medium.copyWith(
-                color: Colors.white,
-              ),
-            ), 
+              SimLocalizations.of(context)!.start,
+              style: FlexTypography.label.medium.copyWith(color: Colors.white),
+            ),
             const Icon(Icons.arrow_forward, color: Colors.white),
           ],
         ),

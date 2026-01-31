@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/constants/app_colors.dart';
 
 class ComingSoonModal extends StatelessWidget {
   final String feature;
 
-  const ComingSoonModal({
-    super.key,
-    required this.feature,
-  });
+  const ComingSoonModal({super.key, required this.feature});
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +35,11 @@ class ComingSoonModal extends StatelessWidget {
               color: AppColors.containerGray.withValues(alpha: 0.5),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.access_time,
-              size: 40,
-              color: AppColors.grayBlue,
-            ),
+            child: Icon(Icons.access_time, size: 40, color: AppColors.grayBlue),
           ),
           const SizedBox(height: 20),
           LocalizedText(
-            AppLocalizations.comingSoon,
+            SimLocalizations.of(context)!.coming_soon,
             style: FlexTypography.headline.large.copyWith(
               fontWeight: FontWeight.bold,
             ),

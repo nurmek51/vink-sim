@@ -1,13 +1,13 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/benefit_tile.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/auth_button.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/country_list_button.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/shared/widgets/header.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/features/onboarding/widgets/benefit_tile.dart';
+import 'package:vink_sim/features/onboarding/widgets/auth_button.dart';
+import 'package:vink_sim/features/onboarding/widgets/country_list_button.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/shared/widgets/header.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class AuthIntro extends StatelessWidget {
@@ -36,7 +36,7 @@ class AuthIntro extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             LocalizedText(
-              AppLocalizations.frameTitle,
+              SimLocalizations.of(context)!.frame_title,
               style: FlexTypography.headline.large.copyWith(
                 color: AppColors.backgroundColorLight,
               ),
@@ -45,27 +45,31 @@ class AuthIntro extends StatelessWidget {
             const SizedBox(height: 30),
             BenefitTile(
               icon: Assets.icons.globus.path,
-              title: AppLocalizations.frameGlobusTitle,
+              title: SimLocalizations.of(context)!.frame_globus_title,
             ),
             const SizedBox(height: 12),
             BenefitTile(
               icon: Assets.icons.check.path,
-              title: AppLocalizations.frameCheckTitle,
+              title: SimLocalizations.of(context)!.frame_check_title,
             ),
             const SizedBox(height: 12),
             BenefitTile(
               icon: Assets.icons.infinity.path,
-              title: AppLocalizations.infinityTitle,
+              title: SimLocalizations.of(context)!.infinity_title,
             ),
             const SizedBox(height: 12),
             BenefitTile(
               icon: Assets.icons.card.path,
-              title: AppLocalizations.packagesFrom1Dollar,
+              title: SimLocalizations.of(context)!.packages_from_1_dollar,
             ),
             const SizedBox(height: 30),
             WhatIsEsimButton(
-              buttonTitle: AppLocalizations.tariffsAndCountries,
-              onTap:() => NavigationService.openTariffsAndCountriesPage(context, isAuthorized: true),              
+              buttonTitle: SimLocalizations.of(context)!.tariffs_and_countries,
+              onTap:
+                  () => NavigationService.openTariffsAndCountriesPage(
+                    context,
+                    isAuthorized: true,
+                  ),
             ),
             const Spacer(),
             AuthButton(onTap: onAuthTap),

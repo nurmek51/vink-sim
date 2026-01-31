@@ -1,32 +1,39 @@
-import 'package:flex_travel_sim/core/utils/result.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/auth_remote_data_source.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/confirm_remote_data_source.dart';
-import 'package:flex_travel_sim/features/auth/domain/entities/auth_token.dart';
-import 'package:flex_travel_sim/features/auth/domain/entities/confirm_method.dart';
-import 'package:flex_travel_sim/features/auth/domain/entities/credentials.dart';
-import 'package:flex_travel_sim/features/auth/domain/repo/auth_repository.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:vink_sim/core/utils/result.dart';
+import 'package:vink_sim/features/auth/domain/entities/auth_token.dart';
+import 'package:vink_sim/features/auth/domain/repo/auth_repository.dart';
+import 'package:vink_sim/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:vink_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/config/feature_config.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDataSource remoteDataSource;
+  final OtpAuthDataSource otpDataSource;
   final AuthLocalDataSource localDataSource;
-  final ConfirmRemoteDataSource confirmRemoteDataSource;
 
   AuthRepositoryImpl({
-    required this.remoteDataSource,
+    required this.otpDataSource,
     required this.localDataSource,
-    required this.confirmRemoteDataSource,
   });
 
   @override
-  Future<Result<AuthToken>> login(Credentials credentials) async {
+  Future<Result<void>> requestOtp(String phone) async {
     return ResultHelper.safeCall(() async {
-      final rawToken = await remoteDataSource.login(credentials);
-      if (rawToken != null) {
-        await localDataSource.saveToken(rawToken);
-        return AuthToken(rawToken);
+      await otpDataSource.sendOtpSms(phone);
+    });
+  }
+
+  @override
+  Future<Result<AuthToken>> verifyOtp(String phone, String otp) async {
+    return ResultHelper.safeCall(() async {
+      final response = await otpDataSource.verifyOtp(phone, otp);
+      await localDataSource.saveToken(response.token);
+
+      // Notify host app via FeatureConfig if available
+      if (sl.isRegistered<FeatureConfig>()) {
+        sl.get<FeatureConfig>().onAuthSuccess?.call(response.token, 604800);
       }
-      throw Exception('Login failed: No token received');
+
+      return AuthToken(response.token);
     });
   }
 
@@ -34,21 +41,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Result<void>> logout() async {
     return ResultHelper.safeCall(() async {
       await localDataSource.removeToken();
-    });
-  }
 
-  @override
-  Future<Result<void>> confirm({
-    required ConfirmMethod method,
-    required String token,
-    required String ticketCode,
-  }) {
-    return ResultHelper.safeCall(() async {
-      await confirmRemoteDataSource.confirm(
-        endpoint: method.path,
-        token: token,
-        ticketCode: ticketCode,
-      );
+      // Notify host app via FeatureConfig if available
+      if (sl.isRegistered<FeatureConfig>()) {
+        sl.get<FeatureConfig>().onLogout?.call();
+      }
     });
   }
 

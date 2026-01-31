@@ -1,71 +1,88 @@
-import 'package:flex_travel_sim/core/di/injection_container.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/auth/data/data_sources/auth_local_data_source.dart';
-import 'package:flex_travel_sim/features/stripe_payment/presentation/bloc/stripe_bloc.dart';
-import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
-import 'package:flex_travel_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
-import 'package:flex_travel_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
-import 'package:flex_travel_sim/shared/widgets/app_notifier.dart';
-import 'package:flex_travel_sim/shared/widgets/blue_gradient_button.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/core/services/token_manager.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/features/payment/presentation/bloc/payment_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
+import 'package:vink_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
+import 'package:vink_sim/shared/widgets/app_notifier.dart';
+import 'package:vink_sim/shared/widgets/blue_gradient_button.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TopUpBalanceWidget extends StatelessWidget {
   final String? imsi;
-  const TopUpBalanceWidget({super.key, this.imsi});
+  final bool isNewEsim;
+  const TopUpBalanceWidget({super.key, this.imsi, this.isNewEsim = false});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<StripeBloc, StripeState>(
-      listener: _handleStripeStateChange,
-      builder: (context, stripeState) {
-        final isLoading = stripeState is StripeLoading;
+    return BlocConsumer<PaymentBloc, PaymentState>(
+      listener: _handlePaymentStateChange,
+      builder: (context, paymentState) {
+        final isLoading = paymentState is PaymentLoading;
         return BlueGradientButton(
           title:
               isLoading
-                  ? AppLocalizations.loading
-                  : AppLocalizations.topUpBalance,
+                  ? SimLocalizations.of(context)!.loading
+                  : SimLocalizations.of(context)!.top_up_balance,
           onTap: isLoading ? null : () => _handleTopUpTap(context),
         );
       },
     );
   }
 
-  void _handleStripeStateChange(BuildContext context, StripeState state) {
-    if (state is StripeSuccess) {
+  void _handlePaymentStateChange(BuildContext context, PaymentState state) {
+    if (state is PaymentSuccess) {
       if (kDebugMode) {
-        print('StripeService: StripeSuccess - ОПЛАТА ПРОШЛА УСПЕШНО !');
+        print('PaymentBloc: PaymentSuccess - Payment completed!');
       }
 
-      _refreshSubscriberData(context);
+      // Show success message
+      AppNotifier.info(
+        SimLocalizations.of(context)!.success_message,
+      ).showAppToast(context);
 
-      if (imsi != null) {
-        NavigationService.goToMainFlow(context);
-      } else {
-        NavigationService.openActivatedEsimScreen(context);
-      }
-    } else if (state is StripeFailure) {
-      AppNotifier.error(AppLocalizations.paymentFail).showAppToast(context);
+      // Trigger refresh
+      _refreshSubscriberData();
+
+      // Small delay before navigating to let the user see the success message
+      // and allow the refresh event to be processed by the bloc
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (context.mounted) {
+          if (imsi != null) {
+            NavigationService.goToMainFlow(context);
+          } else {
+            NavigationService.openActivatedEsimScreen(context);
+          }
+        }
+      });
+    } else if (state is PaymentFailure) {
+      AppNotifier.error(
+        SimLocalizations.of(context)!.payment_fail,
+      ).showAppToast(context);
+    } else if (state is PaymentNotImplemented) {
+      AppNotifier.info(state.message).showAppToast(context);
     }
   }
 
-  void _refreshSubscriberData(BuildContext context) async {
+  void _refreshSubscriberData() async {
     try {
-      await Future.delayed(const Duration(seconds: 2));
+      // Use TokenManager which works in both shell and standalone modes
+      final tokenManager = sl.get<TokenManager>();
+      final isAuthenticated = await tokenManager.isTokenValid();
 
-      final authDataSource = sl.get<AuthLocalDataSource>();
-      final token = await authDataSource.getToken();
-
-      if (token != null && context.mounted) {
-        context.read<SubscriberBloc>().add(
-          const LoadSubscriberInfoEvent(),
-        );
+      if (isAuthenticated) {
+        // Use LoadSubscriberInfoEvent which emits Loading state to ensure UI updates
+        // and we use sl.get to be independent of BuildContext during navigation
+        sl.get<SubscriberBloc>().add(const LoadSubscriberInfoEvent());
 
         if (kDebugMode) {
-          print('Subscriber data refresh triggered after payment');
+          print(
+            'TopUpBalanceWidget: Subscriber info reload triggered after payment',
+          );
         }
       }
     } catch (e) {
@@ -83,11 +100,13 @@ class TopUpBalanceWidget extends StatelessWidget {
 
   bool _validateTopUpForm(BuildContext context, TopUpBalanceState state) {
     if (state.amount <= 0) {
-      AppNotifier.info(AppLocalizations.enterTopUpAmount).showAppToast(context);
+      AppNotifier.info(
+        SimLocalizations.of(context)!.enter_top_up_amount,
+      ).showAppToast(context);
       return false;
     }
 
-    final isTopUp = (imsi?.isNotEmpty ?? false);
+    final bool isTopUp = !isNewEsim;
 
     if (!isTopUp && state.amount < 5) {
       AppNotifier.info(
@@ -102,7 +121,7 @@ class TopUpBalanceWidget extends StatelessWidget {
     }
 
     if (state.selectedPaymentMethod.isEmpty) {
-      AppNotifier.info("Выберите способ оплаты!").showAppToast(context);
+      AppNotifier.info("Please select a payment method").showAppToast(context);
       return false;
     }
 
@@ -110,45 +129,50 @@ class TopUpBalanceWidget extends StatelessWidget {
   }
 
   void _processPayment(BuildContext context, TopUpBalanceState state) {
-    final isTopUp = (imsi?.isNotEmpty ?? false);
+    final bool isTopUp = !isNewEsim;
+    final String? selectedImsi = state.selectedSimCard?.imsi ?? imsi;
+
     final operationType =
-        isTopUp ? StripeOperationType.addFunds : StripeOperationType.newImsi;
+        isTopUp ? PaymentOperationType.addFunds : PaymentOperationType.newImsi;
+
     switch (state.selectedPaymentMethod) {
       case 'credit_card':
-        context.read<StripeBloc>().add(
-          StripePaymentRequested(
+        context.read<PaymentBloc>().add(
+          PaymentRequested(
             amount: state.amount,
             context: context,
             operationType: operationType,
-            imsi: isTopUp ? imsi : null,
+            imsi: isTopUp ? selectedImsi : null,
           ),
         );
         break;
       case 'crypto':
-        AppNotifier.info(AppLocalizations.notAvailable).showAppToast(context);
+        AppNotifier.info(
+          SimLocalizations.of(context)!.not_available,
+        ).showAppToast(context);
         break;
       case 'apple_pay':
-        context.read<StripeBloc>().add(
-          ApplePayPaymentRequested(
+        context.read<PaymentBloc>().add(
+          ApplePayRequested(
             amount: state.amount,
             context: context,
             operationType: operationType,
-            imsi: isTopUp ? imsi : null,
+            imsi: isTopUp ? selectedImsi : null,
           ),
         );
         break;
       case 'google_pay':
-        context.read<StripeBloc>().add(
-          GooglePayPaymentRequested(
+        context.read<PaymentBloc>().add(
+          GooglePayRequested(
             amount: state.amount,
             context: context,
             operationType: operationType,
-            imsi: isTopUp ? imsi : null,
+            imsi: isTopUp ? selectedImsi : null,
           ),
         );
         break;
       default:
-        AppNotifier.info("Неизвестный способ оплаты").showAppToast(context);
+        AppNotifier.info("Unknown payment method").showAppToast(context);
     }
   }
 }

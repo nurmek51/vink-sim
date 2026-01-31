@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flex_travel_sim/features/auth/domain/entities/country.dart';
-import 'package:flex_travel_sim/features/auth/data/country_data.dart';
-import 'package:flex_travel_sim/features/auth/presentation/widgets/country_picker_bottom_sheet.dart';
+import 'package:vink_sim/features/auth/domain/entities/country.dart';
+import 'package:vink_sim/features/auth/data/country_data.dart';
+import 'package:vink_sim/features/auth/presentation/widgets/country_picker_bottom_sheet.dart';
 
 class MobileNumberField extends StatefulWidget {
   final void Function(String digits, String formatted)? onChanged;
@@ -121,7 +121,7 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
   String _formatRussianNumber(String digits) {
     final buffer = StringBuffer();
 
-    if (digits.length >= 1) {
+    if (digits.isNotEmpty) {
       buffer.write('(');
       final operatorCodeEnd = digits.length >= 3 ? 3 : digits.length;
       buffer.write(digits.substring(0, operatorCodeEnd));
@@ -153,7 +153,7 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
   String _formatUSNumber(String digits) {
     final buffer = StringBuffer();
 
-    if (digits.length >= 1) {
+    if (digits.isNotEmpty) {
       buffer.write('(');
       final areaCodeEnd = digits.length >= 3 ? 3 : digits.length;
       buffer.write(digits.substring(0, areaCodeEnd));
@@ -214,7 +214,7 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.black.withOpacity(0.8),
+      backgroundColor: Colors.black.withValues(alpha: 0.8),
       builder:
           (context) => CountryPickerBottomSheet(
             selectedCountry: _selectedCountry,

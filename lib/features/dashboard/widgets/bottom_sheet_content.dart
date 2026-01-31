@@ -1,8 +1,8 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/services/tech_support_launcher.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/chat_container.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/services/tech_support_launcher.dart';
+import 'package:vink_sim/features/dashboard/widgets/chat_container.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class BottomSheetContent extends StatelessWidget {
@@ -23,7 +23,7 @@ class BottomSheetContent extends StatelessWidget {
               ChatContainer(
                 onTap: () => TechSupportLauncher.openTelegram(tegreamContact),
                 color: const Color.fromARGB(255, 56, 163, 212),
-                title: AppLocalizations.telegramSupport,
+                title: SimLocalizations.of(context)!.telegram_support,
 
                 icon: Assets.icons.telegramLogo.path,
               ),
@@ -31,7 +31,7 @@ class BottomSheetContent extends StatelessWidget {
               ChatContainer(
                 onTap: () => TechSupportLauncher.openWhatsApp(whatsappContact),
                 color: AppColors.whatsAppColor,
-                title: AppLocalizations.whatsappSupport,
+                title: SimLocalizations.of(context)!.whatsapp_support,
                 icon: Assets.icons.whatsappIcon.path,
               ),
               SizedBox(height: 20),

@@ -1,19 +1,16 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/shared/widgets/icon_container.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/features/dashboard/widgets/bottom_sheet_content.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/shared/widgets/icon_container.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class AuthIntroBottomsheetContent extends StatelessWidget {
   final VoidCallback? onActivateTap;
 
-  const AuthIntroBottomsheetContent({
-    super.key,
-    this.onActivateTap,
-  });
+  const AuthIntroBottomsheetContent({super.key, this.onActivateTap});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +22,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
             children: [
               Expanded(
                 child: IconContainer(
-                  text: AppLocalizations.howToInstallEsim2,
+                  text: SimLocalizations.of(context)!.how_to_install_esim2,
                   iconPath: Assets.icons.figma149.blueIcon11.path,
                   onTap: () => openEsimSetupPage(context),
                 ),
@@ -33,7 +30,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
               const SizedBox(width: 16),
               Expanded(
                 child: IconContainer(
-                  text: AppLocalizations.supportChat,
+                  text: SimLocalizations.of(context)!.support_chat,
                   iconPath: Assets.icons.figma149.blueIcon22.path,
                   onTap: () {
                     showModalBottomSheet(
@@ -65,7 +62,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
             children: [
               Expanded(
                 child: IconContainer(
-                  text: AppLocalizations.howDoesItWork,
+                  text: SimLocalizations.of(context)!.how_does_it_work,
                   iconPath: Assets.icons.figma149.blueIcon33.path,
                   onTap:
                       () => NavigationService.openGuidePage(
@@ -77,7 +74,7 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
               const SizedBox(width: 16),
               Expanded(
                 child: IconContainer(
-                  text: AppLocalizations.countriesAndRates,
+                  text: SimLocalizations.of(context)!.countries_and_rates,
                   iconPath: Assets.icons.figma149.blueIcon44.path,
                   onTap:
                       () => NavigationService.openTariffsAndCountriesPage(
@@ -98,8 +95,8 @@ class AuthIntroBottomsheetContent extends StatelessWidget {
                 gradient: AppColors.containerGradientPrimary,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const LocalizedText(
-                AppLocalizations.activateEsim,
+              child: LocalizedText(
+                SimLocalizations.of(context)!.activate_esim,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,

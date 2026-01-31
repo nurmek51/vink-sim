@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flex_travel_sim/features/user_account/domain/entities/user.dart';
+import 'package:vink_sim/features/user_account/domain/entities/user.dart';
 
 class UserModel extends Equatable {
   final String id;
@@ -38,21 +38,21 @@ class UserModel extends Equatable {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as String,
-      email: json['email'] as String,
+      id: json['id'] as String? ?? '',
+      email: json['email'] as String? ?? '',
       firstName: json['first_name'] as String?,
       lastName: json['last_name'] as String?,
       phoneNumber: json['phone_number'] as String?,
       avatarUrl: json['avatar_url'] as String?,
-      balance: (json['balance'] as num).toDouble(),
-      currency: json['currency'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
-      isEmailVerified: json['is_email_verified'] as bool,
-      isPhoneVerified: json['is_phone_verified'] as bool,
-      preferredLanguage: json['preferred_language'] as String,
-      preferredCurrency: json['preferred_currency'] as String,
-      favoriteCountries: List<String>.from(json['favorite_countries'] as List),
+      balance: (json['balance'] as num?)?.toDouble() ?? 0.0,
+      currency: json['currency'] as String? ?? 'USD',
+      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'] as String) : DateTime.now(),
+      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at'] as String) : DateTime.now(),
+      isEmailVerified: json['is_email_verified'] as bool? ?? false,
+      isPhoneVerified: json['is_phone_verified'] as bool? ?? true,
+      preferredLanguage: json['preferred_language'] as String? ?? 'en',
+      preferredCurrency: json['preferred_currency'] as String? ?? 'USD',
+      favoriteCountries: (json['favorite_countries'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
     );
   }
 

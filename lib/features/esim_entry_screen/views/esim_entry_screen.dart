@@ -1,15 +1,19 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/expanded_container.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/benefit_tile.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/pulsing_circle.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/features/dashboard/widgets/bottom_sheet_content.dart';
+import 'package:vink_sim/features/dashboard/widgets/expanded_container.dart';
+import 'package:vink_sim/features/onboarding/widgets/benefit_tile.dart';
+import 'package:vink_sim/features/onboarding/widgets/pulsing_circle.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
+import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
 
 class EsimEntryScreen extends StatefulWidget {
   const EsimEntryScreen({super.key});
@@ -29,6 +33,12 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
   @override
   void initState() {
     super.initState();
+    // Load subscriber info to determine if the user needs to purchase or top-up
+    final subscriberBloc = context.read<SubscriberBloc>();
+    if (subscriberBloc.state is SubscriberInitial) {
+      subscriberBloc.add(const LoadSubscriberInfoEvent());
+    }
+
     _controller = AnimationController(vsync: this, duration: _animationDuration)
       ..repeat(reverse: true);
 
@@ -100,7 +110,7 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
                       Align(
                         alignment: Alignment.topLeft,
                         child: HelveticaneueFont(
-                          text: AppLocalizations.frameTitle,
+                          text: SimLocalizations.of(context)!.frame_title,
                           fontSize: 28,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -111,22 +121,24 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
 
                       BenefitTile(
                         icon: Assets.icons.figma149.column1.path,
-                        title: AppLocalizations.countriesInOneEsim,
+                        title:
+                            SimLocalizations.of(context)!.countries_in_one_esim,
                       ),
                       SizedBox(height: 12),
                       BenefitTile(
                         icon: Assets.icons.figma149.column2.path,
-                        title: AppLocalizations.frameCheckTitle,
+                        title: SimLocalizations.of(context)!.frame_check_title,
                       ),
                       SizedBox(height: 12),
                       BenefitTile(
                         icon: Assets.icons.figma149.column3.path,
-                        title: AppLocalizations.infinityTitle,
+                        title: SimLocalizations.of(context)!.infinity_title,
                       ),
                       SizedBox(height: 12),
                       BenefitTile(
                         icon: Assets.icons.figma149.column4.path,
-                        title: AppLocalizations.highSpeedLowCost,
+                        title:
+                            SimLocalizations.of(context)!.high_speed_low_cost,
                       ),
 
                       const SizedBox(height: 15),
@@ -140,9 +152,7 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    constraints: BoxConstraints(
-                      maxHeight: 450,
-                    ),
+                    constraints: BoxConstraints(maxHeight: 450),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(24),
@@ -152,8 +162,11 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
                     ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 5, 16, 30),
-                      child: isEsimEntryScreenScrollable(context)
-                              ? SingleChildScrollView(child: BuildContainerBody())
+                      child:
+                          isEsimEntryScreenScrollable(context)
+                              ? SingleChildScrollView(
+                                child: BuildContainerBody(),
+                              )
                               : BuildContainerBody(),
                     ),
                   ),
@@ -168,9 +181,7 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
 }
 
 class BuildContainerBody extends StatelessWidget {
-  const BuildContainerBody({
-    super.key,
-  });
+  const BuildContainerBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -180,13 +191,13 @@ class BuildContainerBody extends StatelessWidget {
         Row(
           children: [
             ExpandedContainer(
-              title: AppLocalizations.howToInstallEsim2,
+              title: SimLocalizations.of(context)!.how_to_install_esim2,
               icon: Assets.icons.figma149.blueIcon11.path,
               onTap: () => openEsimSetupPage(context),
             ),
             const SizedBox(width: 16),
             ExpandedContainer(
-              title: AppLocalizations.supportChat,
+              title: SimLocalizations.of(context)!.support_chat,
               icon: Assets.icons.figma149.blueIcon22.path,
               onTap: () {
                 showModalBottomSheet(
@@ -200,10 +211,7 @@ class BuildContainerBody extends StatelessWidget {
                   builder:
                       (context) => Padding(
                         padding: EdgeInsets.only(
-                          bottom:
-                              MediaQuery.of(
-                                context,
-                              ).viewInsets.bottom,
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
                         ),
                         child: SizedBox(
                           width: double.infinity,
@@ -219,25 +227,40 @@ class BuildContainerBody extends StatelessWidget {
         Row(
           children: [
             ExpandedContainer(
-              title: AppLocalizations.howDoesItWork,
+              title: SimLocalizations.of(context)!.how_does_it_work,
               icon: Assets.icons.figma149.blueIcon33.path,
               onTap: () => openGuidePage(context),
             ),
             const SizedBox(width: 16),
             ExpandedContainer(
-              title: AppLocalizations.countriesAndRates,
+              title: SimLocalizations.of(context)!.countries_and_rates,
               icon: Assets.icons.figma149.blueIcon44.path,
               onTap: () => openTariffsAndCountriesPage(context),
             ),
           ],
         ),
-                      
+
         isEsimEntryScreenScrollable(context)
             ? const SizedBox(height: 20)
             : Spacer(),
-                      
+
         GestureDetector(
-          onTap: () => openTopUpBalanceScreen(context),
+          onTap: () {
+            final subscriberState = context.read<SubscriberBloc>().state;
+            final bool hasEsim =
+                subscriberState is SubscriberLoaded &&
+                subscriberState.subscriber.imsiList.isNotEmpty;
+
+            if (hasEsim) {
+              // If user has eSIM, go to top-up with existing IMSI
+              final firstImsi = subscriberState.subscriber.imsiList.first.imsi;
+              openTopUpBalanceScreen(context, imsi: firstImsi);
+            } else {
+              // If user hasn't eSIM, go to top-up screen in "New eSIM" mode
+              // which will trigger the /purchase API instead of /top-up
+              openTopUpBalanceScreen(context, isNewEsim: true);
+            }
+          },
           child: Container(
             alignment: Alignment.center,
             height: 52,
@@ -245,8 +268,8 @@ class BuildContainerBody extends StatelessWidget {
               gradient: AppColors.containerGradientPrimary,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const LocalizedText(
-              AppLocalizations.activateEsim,
+            child: LocalizedText(
+              SimLocalizations.of(context)!.activate_esim,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -255,7 +278,6 @@ class BuildContainerBody extends StatelessWidget {
             ),
           ),
         ),
-    
       ],
     );
   }

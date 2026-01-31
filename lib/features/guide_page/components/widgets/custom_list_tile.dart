@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class CustomListTile extends StatelessWidget {

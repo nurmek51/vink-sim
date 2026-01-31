@@ -821,11 +821,13 @@ class CountryCodeUtils {
 
     // Simple contains match for common variations
     if (lowerCountryName.contains('united states') ||
-        lowerCountryName.contains('usa'))
+        lowerCountryName.contains('usa')) {
       return 'US';
+    }
     if (lowerCountryName.contains('united kingdom') ||
-        lowerCountryName.contains('britain'))
+        lowerCountryName.contains('britain')) {
       return 'GB';
+    }
     if (lowerCountryName.contains('germany')) return 'DE';
     if (lowerCountryName.contains('france')) return 'FR';
     if (lowerCountryName.contains('china')) return 'CN';

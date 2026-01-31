@@ -1,17 +1,19 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/layout/screen_utils.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
 
 class InactiveEsimWidget extends StatelessWidget {
   final String? imsi;
+  final String? iccid;
   final String? activationCode;
   final VoidCallback? onActivate;
 
   const InactiveEsimWidget({
     super.key,
     this.imsi,
+    this.iccid,
     this.activationCode,
     this.onActivate,
   });
@@ -55,6 +57,16 @@ class InactiveEsimWidget extends StatelessWidget {
                 color: Colors.grey.shade500,
               ),
             ),
+            if (iccid != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                'IMSI: $imsi',
+                style: FlexTypography.label.small.copyWith(
+                  color: Colors.grey.shade400,
+                  fontSize: 10,
+                ),
+              ),
+            ],
             SizedBox(height: 12),
             if (onActivate != null && imsi != null)
               ElevatedButton(

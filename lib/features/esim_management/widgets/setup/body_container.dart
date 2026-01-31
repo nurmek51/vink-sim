@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class BodyContainer extends StatelessWidget {
@@ -22,7 +22,8 @@ class BodyContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String headerText = stepTitle ?? AppLocalizations.stepNumber;
+    final String headerText =
+        stepTitle ?? SimLocalizations.of(context)!.step_number(args![0]);
     return Container(
       width: widgth,
       height: height,
@@ -41,10 +42,7 @@ class BodyContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 3,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: const Color(0xFF363C45),
@@ -65,9 +63,9 @@ class BodyContainer extends StatelessWidget {
                 fontSize: 16,
                 color: const Color(0xFF363C45),
               ),
-            ),  
-          
-            if (child != null) Center(child: child!),           
+            ),
+
+            if (child != null) Center(child: child!),
           ],
         ),
       ),

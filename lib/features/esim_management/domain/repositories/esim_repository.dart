@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/core/utils/result.dart';
-import 'package:flex_travel_sim/features/esim_management/domain/entities/esim.dart';
+import 'package:vink_sim/core/utils/result.dart';
+import 'package:vink_sim/features/esim_management/domain/entities/esim.dart';
 
 abstract class EsimRepository {
   Future<Result<List<Esim>>> getEsims({bool forceRefresh = false});

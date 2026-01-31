@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/data/models/sort_type.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_bloc.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
-import 'package:flex_travel_sim/features/tariffs_and_countries/presentation/bloc/tariffs_state.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/features/tariffs_and_countries/data/models/sort_type.dart';
+import 'package:vink_sim/features/tariffs_and_countries/presentation/bloc/tariffs_bloc.dart';
+import 'package:vink_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
+import 'package:vink_sim/features/tariffs_and_countries/presentation/bloc/tariffs_state.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
 
 class SortSelector extends StatelessWidget {
   const SortSelector({super.key});

@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart' as _svg;
 import 'package:vector_graphics/vector_graphics.dart' as _vg;
+import 'package:vink_sim/core/utils/asset_utils.dart';
 
 class $AssetsIconsGen {
   const $AssetsIconsGen();
@@ -196,52 +197,52 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
-        telegramLogo,
-        accountSettings,
-        appLanguage,
-        appleLogo,
-        applePayLogo,
-        arrowComeback,
-        arrowDown,
-        arrowRight,
-        attentionCircle,
-        avatarIcon,
-        card,
-        check,
-        checkbox,
-        chinaFlag,
-        credCard,
-        crypto,
-        emailLogo,
-        englandFlag,
-        faqIcon,
-        faqIconFull,
-        globus,
-        globusIcon,
-        globusWithBackground,
-        googleLogo,
-        greenWhatsappIcon,
-        guideTableView1,
-        guideTableView2,
-        guideTableView3,
-        guideTableView4,
-        infinity,
-        infoQrCircle,
-        leftVector,
-        mailIcon,
-        mainIcon,
-        purchaseHistory,
-        qrCodeImage,
-        rightVector,
-        russianFlag,
-        selectedCardIcon,
-        simContainer,
-        simIcon,
-        telegramIcon,
-        trafficUsage,
-        usaFlag,
-        whatsappIcon
-      ];
+    telegramLogo,
+    accountSettings,
+    appLanguage,
+    appleLogo,
+    applePayLogo,
+    arrowComeback,
+    arrowDown,
+    arrowRight,
+    attentionCircle,
+    avatarIcon,
+    card,
+    check,
+    checkbox,
+    chinaFlag,
+    credCard,
+    crypto,
+    emailLogo,
+    englandFlag,
+    faqIcon,
+    faqIconFull,
+    globus,
+    globusIcon,
+    globusWithBackground,
+    googleLogo,
+    greenWhatsappIcon,
+    guideTableView1,
+    guideTableView2,
+    guideTableView3,
+    guideTableView4,
+    infinity,
+    infoQrCircle,
+    leftVector,
+    mailIcon,
+    mainIcon,
+    purchaseHistory,
+    qrCodeImage,
+    rightVector,
+    russianFlag,
+    selectedCardIcon,
+    simContainer,
+    simIcon,
+    telegramIcon,
+    trafficUsage,
+    usaFlag,
+    whatsappIcon,
+  ];
 }
 
 class $AssetsTranslationsGen {
@@ -266,7 +267,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/activation_code_eng.jpg
   AssetGenImage get activationCodeEng =>
-      const AssetGenImage('assets/icons/figma112/activation_code_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/activation_code_eng.jpg');
 
   /// File path: assets/icons/figma112/add_esim.png
   AssetGenImage get addEsim =>
@@ -274,7 +275,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/add_esim_eng.jpg
   AssetGenImage get addEsimEng =>
-      const AssetGenImage('assets/icons/figma112/add_esim_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/add_esim_eng.jpg');
 
   /// File path: assets/icons/figma112/another_step1_1.jpg
   AssetGenImage get anotherStep11 =>
@@ -314,7 +315,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/choose_mobile_data_eng.jpg
   AssetGenImage get chooseMobileDataEng =>
-      const AssetGenImage('assets/icons/figma112/choose_mobile_data_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/choose_mobile_data_eng.jpg');
 
   /// File path: assets/icons/figma112/data_rouming.png
   AssetGenImage get dataRouming =>
@@ -322,7 +323,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/data_rouming_eng.jpg
   AssetGenImage get dataRoumingEng =>
-      const AssetGenImage('assets/icons/figma112/data_rouming_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/data_rouming_eng.jpg');
 
   /// File path: assets/icons/figma112/default_number.png
   AssetGenImage get defaultNumber =>
@@ -330,7 +331,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/default_number_eng.jpg
   AssetGenImage get defaultNumberEng =>
-      const AssetGenImage('assets/icons/figma112/default_number_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/default_number_eng.jpg');
 
   /// File path: assets/icons/figma112/facetime_imessage.png
   AssetGenImage get facetimeImessage =>
@@ -338,7 +339,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/facetime_imessage_eng.jpg
   AssetGenImage get facetimeImessageEng =>
-      const AssetGenImage('assets/icons/figma112/facetime_imessage_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/facetime_imessage_eng.jpg');
 
   /// File path: assets/icons/figma112/flex_plan.png
   AssetGenImage get flexPlan =>
@@ -354,7 +355,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/for_travels_eng.jpg
   AssetGenImage get forTravelsEng =>
-      const AssetGenImage('assets/icons/figma112/for_travels_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/for_travels_eng.jpg');
 
   /// File path: assets/icons/figma112/important_step.jpg
   AssetGenImage get importantStep =>
@@ -366,7 +367,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/important_step_todo_eng.jpg
   AssetGenImage get importantStepTodoEng =>
-      const AssetGenImage('assets/icons/figma112/important_step_todo_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/important_step_todo_eng.jpg');
 
   /// File path: assets/icons/figma112/manual_step1_4.jpg
   AssetGenImage get manualStep14 =>
@@ -382,7 +383,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/mobile_communication_en.jpg
   AssetGenImage get mobileCommunicationEng =>
-      const AssetGenImage('assets/icons/figma112/mobile_communication_eng.jpg');         
+      const AssetGenImage('assets/icons/figma112/mobile_communication_eng.jpg');
 
   /// File path: assets/icons/figma112/qr_manual.png
   AssetGenImage get qrManual =>
@@ -394,7 +395,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/qr_mobile_tariff_eng.jpg
   AssetGenImage get qrMobileTariffEng =>
-      const AssetGenImage('assets/icons/figma112/qr_mobile_tariff_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/qr_mobile_tariff_eng.jpg');
 
   /// File path: assets/icons/figma112/scan_qr.png
   AssetGenImage get scanQr =>
@@ -402,7 +403,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/scan_qr_eng.jpg
   AssetGenImage get scanQrEng =>
-      const AssetGenImage('assets/icons/figma112/scan_qr_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/scan_qr_eng.jpg');
 
   /// File path: assets/icons/figma112/settings_by_qr.png
   AssetGenImage get settingsByQr =>
@@ -410,7 +411,7 @@ class $AssetsIconsFigma112Gen {
 
   /// File path: assets/icons/figma112/settings_by_qr_eng.jpg
   AssetGenImage get settingsByQrEng =>
-      const AssetGenImage('assets/icons/figma112/settings_by_qr_eng.jpg');      
+      const AssetGenImage('assets/icons/figma112/settings_by_qr_eng.jpg');
 
   /// File path: assets/icons/figma112/step2_112_1.jpg
   AssetGenImage get step21121 =>
@@ -434,50 +435,50 @@ class $AssetsIconsFigma112Gen {
 
   /// List of all assets
   List<dynamic> get values => [
-        activationCode,
-        addEsim,
-        anotherStep11,
-        anotherStep12,
-        anotherStep13,
-        anotherStep14,
-        anotherStep31,
-        anotherStep32,
-        anotherStep2,
-        anotherStep5,
-        chooseMobileData,
-        dataRouming,
-        defaultNumber,
-        facetimeImessage,
-        flexPlan,
-        forTravels,
-        importantStep,
-        importantStepTodo,
-        manualStep14,
-        manualStep15,
-        mobileCommunication,
-        qrManual,
-        qrMobileTariff,
-        scanQr,
-        settingsByQr,
-        step21121,
-        step21122,
-        step3Jpg112,
-        step4Jpg112,
-        successIcon,
-        mobileCommunicationEng,
-        addEsimEng,
-        settingsByQrEng,
-        qrMobileTariffEng,
-        flexPlanEng,
-        forTravels,
-        defaultNumberEng,
-        facetimeImessageEng,
-        chooseMobileDataEng,
-        dataRoumingEng,
-        importantStepTodoEng,
-        scanQrEng,
-        activationCodeEng
-      ];
+    activationCode,
+    addEsim,
+    anotherStep11,
+    anotherStep12,
+    anotherStep13,
+    anotherStep14,
+    anotherStep31,
+    anotherStep32,
+    anotherStep2,
+    anotherStep5,
+    chooseMobileData,
+    dataRouming,
+    defaultNumber,
+    facetimeImessage,
+    flexPlan,
+    forTravels,
+    importantStep,
+    importantStepTodo,
+    manualStep14,
+    manualStep15,
+    mobileCommunication,
+    qrManual,
+    qrMobileTariff,
+    scanQr,
+    settingsByQr,
+    step21121,
+    step21122,
+    step3Jpg112,
+    step4Jpg112,
+    successIcon,
+    mobileCommunicationEng,
+    addEsimEng,
+    settingsByQrEng,
+    qrMobileTariffEng,
+    flexPlanEng,
+    forTravels,
+    defaultNumberEng,
+    facetimeImessageEng,
+    chooseMobileDataEng,
+    dataRoumingEng,
+    importantStepTodoEng,
+    scanQrEng,
+    activationCodeEng,
+  ];
 }
 
 class $AssetsIconsFigma141Gen {
@@ -585,22 +586,22 @@ class $AssetsIconsFigma149Gen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
-        blueIcon1,
-        blueIcon11,
-        blueIcon2,
-        blueIcon22,
-        blueIcon3,
-        blueIcon33,
-        blueIcon4,
-        blueIcon44,
-        column1,
-        column2,
-        column3,
-        column4,
-        moneyIcon,
-        profileIcon,
-        whiteLogo
-      ];
+    blueIcon1,
+    blueIcon11,
+    blueIcon2,
+    blueIcon22,
+    blueIcon3,
+    blueIcon33,
+    blueIcon4,
+    blueIcon44,
+    column1,
+    column2,
+    column3,
+    column4,
+    moneyIcon,
+    profileIcon,
+    whiteLogo,
+  ];
 }
 
 class Assets {
@@ -615,11 +616,7 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  });
+  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
 
@@ -672,21 +669,18 @@ class AssetGenImage {
       matchTextDirection: matchTextDirection,
       gaplessPlayback: gaplessPlayback,
       isAntiAlias: isAntiAlias,
-      package: package,
+      package: package ?? AssetUtils.package,
       filterQuality: filterQuality,
       cacheWidth: cacheWidth,
       cacheHeight: cacheHeight,
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
     return AssetImage(
       _assetName,
       bundle: bundle,
-      package: package,
+      package: package ?? AssetUtils.package,
     );
   }
 
@@ -696,17 +690,11 @@ class AssetGenImage {
 }
 
 class SvgGenImage {
-  const SvgGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = false;
+  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = false;
 
-  const SvgGenImage.vec(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = true;
+  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -717,7 +705,7 @@ class SvgGenImage {
     Key? key,
     bool matchTextDirection = false,
     AssetBundle? bundle,
-    String? package,
+    String? package, // Removed default here
     double? width,
     double? height,
     BoxFit fit = BoxFit.contain,
@@ -734,17 +722,18 @@ class SvgGenImage {
     @deprecated bool cacheColorFilter = false,
   }) {
     final _svg.BytesLoader loader;
+    final String? effectivePackage = package ?? AssetUtils.package;
     if (_isVecFormat) {
       loader = _vg.AssetBytesLoader(
         _assetName,
         assetBundle: bundle,
-        packageName: package,
+        packageName: effectivePackage,
       );
     } else {
       loader = _svg.SvgAssetLoader(
         _assetName,
         assetBundle: bundle,
-        packageName: package,
+        packageName: effectivePackage,
         theme: theme,
       );
     }
@@ -760,7 +749,8 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter: colorFilter ??
+      colorFilter:
+          colorFilter ??
           (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,

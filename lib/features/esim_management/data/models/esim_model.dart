@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flex_travel_sim/features/esim_management/domain/entities/esim.dart';
+import 'package:vink_sim/features/esim_management/domain/entities/esim.dart';
 
 class EsimModel extends Equatable {
   final String id;

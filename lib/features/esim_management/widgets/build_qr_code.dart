@@ -1,7 +1,7 @@
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
 
 class BuildQrCode extends StatelessWidget {
   final String? qrCode;
@@ -26,8 +26,8 @@ class BuildQrCode extends StatelessWidget {
     }
 
     if (qrCode == null || qrCode!.isEmpty) {
-      return const Center(
-        child: LocalizedText(AppLocalizations.notAvailable),
+      return Center(
+        child: LocalizedText(SimLocalizations.of(context)!.not_available),
       );
     }
 

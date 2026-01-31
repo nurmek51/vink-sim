@@ -1,4 +1,5 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -49,30 +50,30 @@ class CommonListTile extends StatelessWidget {
       splashColor: Colors.transparent,
       hoverColor: Colors.transparent,
       focusColor: Colors.transparent,
-      leading: imagePath != null
-          ? _buildLeadingIcon()
-          : null,
+      leading: imagePath != null ? _buildLeadingIcon() : null,
       title: HelveticaneueFont(
         text: title,
         fontSize: titleFontSize,
         color: titleColor,
       ),
-      subtitle: subtitle != null
-          ? HelveticaneueFont(
-              text: subtitle!,
-              fontSize: subtitleFontSize ?? 15,
-              color: subtitleColor ?? Colors.grey,
-            )
-          : null,
+      subtitle:
+          subtitle != null
+              ? HelveticaneueFont(
+                text: subtitle!,
+                fontSize: subtitleFontSize ?? 15,
+                color: subtitleColor ?? Colors.grey,
+              )
+              : null,
       trailing: _buildTrailing(),
     );
   }
 
   Widget? _buildLeadingIcon() {
     if (imagePath == null) return null;
-    
+
     return SvgPicture.asset(
       imagePath!,
+      package: AssetUtils.package,
       width: imageWidth,
       height: imageHeight,
       fit: BoxFit.contain,

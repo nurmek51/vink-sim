@@ -25,7 +25,7 @@ android {
         applicationId = "com.example.flex_travel_sim"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23 // Firebase requires minimum SDK 23
+        minSdk = flutter.minSdkVersion // Firebase requires minimum SDK 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -48,7 +48,7 @@ android {
             // TODO: Uncomment when release keystore is configured
             // signingConfig = signingConfigs.getByName("release")
             signingConfig = signingConfigs.getByName("debug") // Remove this line when release signing is ready
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

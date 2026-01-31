@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/core/network/travel_sim_api_service.dart';
-import 'package:flex_travel_sim/core/models/otp_response_model.dart';
+import 'package:vink_sim/core/network/travel_sim_api_service.dart';
+import 'package:vink_sim/core/models/otp_response_model.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class OtpAuthDataSource {
@@ -10,9 +10,8 @@ abstract class OtpAuthDataSource {
 class OtpAuthDataSourceImpl implements OtpAuthDataSource {
   final TravelSimApiService _travelSimApiService;
 
-  OtpAuthDataSourceImpl({
-    required TravelSimApiService travelSimApiService,
-  }) : _travelSimApiService = travelSimApiService;
+  OtpAuthDataSourceImpl({required TravelSimApiService travelSimApiService})
+    : _travelSimApiService = travelSimApiService;
 
   @override
   Future<void> sendOtpSms(String phone) async {
@@ -46,7 +45,6 @@ class OtpAuthDataSourceImpl implements OtpAuthDataSource {
 
       if (kDebugMode) {
         print('OTP: Verification successful');
-        print('Token received: ${otpResponse.token.substring(0, 20)}...');
       }
 
       return otpResponse;

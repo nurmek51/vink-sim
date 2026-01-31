@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/core/router/app_router.dart';
-import 'package:flex_travel_sim/features/stripe_payment/services/stripe_service.dart';
+import 'package:vink_sim/core/router/app_router.dart';
+import 'package:vink_sim/core/models/subscriber_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
@@ -29,10 +29,18 @@ class NavigationService {
       AppRoutes.esimSetup,
       extra: {'isActivatedEsimScreen': isActivatedEsimScreen},
     );
-}
+  }
 
-  static void openTopUpBalanceScreen(BuildContext context, {String? imsi, bool isNewEsim = false}) {
-    context.push(AppRoutes.topUpBalance, extra: {'imsi': imsi, 'isNewEsim': isNewEsim});
+  static void openTopUpBalanceScreen(
+    BuildContext context, {
+    String? imsi,
+    bool isNewEsim = false,
+    SubscriberModel? subscriber,
+  }) {
+    context.push(
+      AppRoutes.topUpBalance,
+      extra: {'imsi': imsi, 'isNewEsim': isNewEsim, 'subscriber': subscriber},
+    );
   }
 
   static void openAuthScreen(BuildContext context) {
@@ -62,24 +70,6 @@ class NavigationService {
 
   static void openLanguageScreen(BuildContext context) {
     context.push(AppRoutes.language);
-  }
-
-  static void openStripeWebCheckoutPage(
-    BuildContext context, {
-    required String clientSecret,
-    required int amount,
-    required StripeOperationType operationType,
-    String? imsi,
-  }) {
-    context.push(
-      AppRoutes.stripeWebCheckout,
-      extra: {
-        'clientSecret': clientSecret,
-        'amount': amount,
-        'imsi': imsi,
-        'operationType': operationType,
-      },
-    );
   }
 
   static void openUserProfileScreen(BuildContext context) {
@@ -146,8 +136,17 @@ void openEsimSetupPage(BuildContext context) =>
     NavigationService.openEsimSetupPage(context);
 void openInitialPage(BuildContext context) =>
     NavigationService.openInitialPage(context);
-void openTopUpBalanceScreen(BuildContext context) =>
-    NavigationService.openTopUpBalanceScreen(context);
+void openTopUpBalanceScreen(
+  BuildContext context, {
+  String? imsi,
+  bool isNewEsim = false,
+  SubscriberModel? subscriber,
+}) => NavigationService.openTopUpBalanceScreen(
+  context,
+  imsi: imsi,
+  isNewEsim: isNewEsim,
+  subscriber: subscriber,
+);
 void openMainFlowScreen(BuildContext context) =>
     NavigationService.openMainFlowScreen(context);
 void openAuthScreen(BuildContext context) =>

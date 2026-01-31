@@ -10,6 +10,7 @@ class ImsiModel extends Equatable {
   final String? qr;
   final String? smdpServer;
   final String? activationCode;
+  final String? iccid;
 
   const ImsiModel({
     required this.imsi,
@@ -21,6 +22,7 @@ class ImsiModel extends Equatable {
     this.qr,
     this.smdpServer,
     this.activationCode,
+    this.iccid,
   });
 
   factory ImsiModel.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class ImsiModel extends Equatable {
       qr: json['qr'] as String?,
       smdpServer: json['smdpServer'] as String?,
       activationCode: json['activationCode'] as String?,
+      iccid: json['iccid'] as String?,
     );
   }
 
@@ -48,9 +51,21 @@ class ImsiModel extends Equatable {
       if (qr != null) 'qr': qr,
       if (smdpServer != null) 'smdpServer': smdpServer,
       if (activationCode != null) 'activationCode': activationCode,
+      if (iccid != null) 'iccid': iccid,
     };
   }
 
   @override
-  List<Object?> get props => [imsi, balance, country, iso, brand, rate, qr, smdpServer, activationCode];
+  List<Object?> get props => [
+    imsi,
+    balance,
+    country,
+    iso,
+    brand,
+    rate,
+    qr,
+    smdpServer,
+    activationCode,
+    iccid,
+  ];
 }

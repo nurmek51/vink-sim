@@ -1,18 +1,15 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/services/auth_service.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
-import 'package:flex_travel_sim/core/di/injection_container.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/services/auth_service.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:flutter/material.dart';
 
 class LogOutWidget extends StatelessWidget {
   final AuthService? authService;
-  
-  const LogOutWidget({
-    super.key,
-    this.authService,
-  });
+
+  const LogOutWidget({super.key, this.authService});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +27,7 @@ class LogOutWidget extends StatelessWidget {
           ),
           child: Center(
             child: LocalizedText(
-              AppLocalizations.logout,
+              SimLocalizations.of(context)!.logout,
               style: FlexTypography.paragraph.xMedium.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
@@ -62,7 +59,7 @@ class LogOutWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 LocalizedText(
-                  AppLocalizations.logoutConfirmationTitle,
+                  SimLocalizations.of(context)!.logout_confirmation_title,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -70,7 +67,7 @@ class LogOutWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 LocalizedText(
-                  AppLocalizations.logoutConfirmationMessage,
+                  SimLocalizations.of(context)!.logout_confirmation_message,
 
                   style: FlexTypography.label.medium,
                 ),
@@ -92,7 +89,7 @@ class LogOutWidget extends StatelessWidget {
                           ),
                           alignment: Alignment.center,
                           child: LocalizedText(
-                            AppLocalizations.cancel,
+                            SimLocalizations.of(context)!.cancel,
                             style: FlexTypography.headline.medium,
                           ),
                         ),
@@ -113,7 +110,7 @@ class LogOutWidget extends StatelessWidget {
                           ),
                           alignment: Alignment.center,
                           child: LocalizedText(
-                            AppLocalizations.logout,
+                            SimLocalizations.of(context)!.logout,
                             style: FlexTypography.headline.medium.copyWith(
                               color: Colors.white,
                             ),

@@ -1,5 +1,5 @@
 import 'dart:ui' as ui;
-import 'package:flex_travel_sim/features/esim_management/widgets/share_qr/qr_share_export.dart';
+import 'package:vink_sim/features/esim_management/widgets/share_qr/qr_share_export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

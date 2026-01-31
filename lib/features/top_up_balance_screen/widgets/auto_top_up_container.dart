@@ -1,8 +1,8 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/top_up_balance_screen/widgets/coming_soon_modal.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/features/top_up_balance_screen/widgets/coming_soon_modal.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 
 class AutoTopUpContainer extends StatelessWidget {
@@ -54,7 +54,7 @@ class AutoTopUpContainer extends StatelessWidget {
                       Row(
                         children: [
                           LocalizedText(
-                            AppLocalizations.autoTopUp,
+                            SimLocalizations.of(context)!.auto_top_up,
                             style: FlexTypography.paragraph.medium.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
@@ -84,7 +84,7 @@ class AutoTopUpContainer extends StatelessWidget {
                       ),
                       const SizedBox(height: 6),
                       LocalizedText(
-                        AppLocalizations.autoTopUpDescription,
+                        SimLocalizations.of(context)!.auto_top_up_description,
                         style: FlexTypography.paragraph.small.copyWith(
                           color: Colors.grey.shade600,
                         ),

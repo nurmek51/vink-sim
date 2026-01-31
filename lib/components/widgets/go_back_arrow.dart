@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class GoBackArrow extends StatelessWidget {

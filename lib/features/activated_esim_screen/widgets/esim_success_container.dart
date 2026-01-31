@@ -1,9 +1,9 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/activated_esim_screen/widgets/download_button.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/features/activated_esim_screen/widgets/download_button.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class EsimSuccessContainer extends StatelessWidget {
@@ -23,14 +23,11 @@ class EsimSuccessContainer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Assets.icons.figma112.successIcon.svg(
-              height: 35,
-              width: 35,
-            ),
+            Assets.icons.figma112.successIcon.svg(height: 35, width: 35),
             const SizedBox(height: 10),
 
             HelveticaneueFont(
-              text: AppLocalizations.esimIsActivated,
+              text: SimLocalizations.of(context)!.esim_is_activated,
               fontSize: 20,
               color: AppColors.grayBlue,
               fontWeight: FontWeight.bold,
@@ -39,7 +36,7 @@ class EsimSuccessContainer extends StatelessWidget {
             const SizedBox(height: 10),
 
             HelveticaneueFont(
-              text: AppLocalizations.nowYouNeedToInstallEsim,
+              text: SimLocalizations.of(context)!.now_you_need_to_install_esim,
               fontSize: 17,
               color: AppColors.grayBlue,
             ),
@@ -47,11 +44,12 @@ class EsimSuccessContainer extends StatelessWidget {
             const SizedBox(height: 20),
 
             DownloadButton(
-              text: AppLocalizations.download,
-              onTap: () => NavigationService.openEsimSetupPage(
-                context,
-                isActivatedEsimScreen: true,
-              ),
+              text: SimLocalizations.of(context)!.download,
+              onTap:
+                  () => NavigationService.openEsimSetupPage(
+                    context,
+                    isActivatedEsimScreen: true,
+                  ),
             ),
           ],
         ),

@@ -1,12 +1,11 @@
 import 'dart:io';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/services/esim_service.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/body_container.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/services/esim_service.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 class FastSelectedBody extends StatelessWidget {
   final String? smdpServer;
   final String? activationCode;
+  final String? fullActivationString;
   final bool isLoading;
   final String? errorMessage;
 
@@ -21,49 +21,53 @@ class FastSelectedBody extends StatelessWidget {
     super.key,
     this.smdpServer,
     this.activationCode,
+    this.fullActivationString,
     this.isLoading = false,
     this.errorMessage,
   });
 
   Future<void> _installEsim() async {
-    if (smdpServer == null || activationCode == null) {
+    final String activationString =
+        fullActivationString ??
+        (smdpServer != null && activationCode != null
+            ? "LPA:1\$$smdpServer\$$activationCode"
+            : "");
+    if (activationString.isEmpty) {
       return;
     }
 
     try {
-      if (Platform.isIOS) {
-        // Use Apple's native eSIM URL scheme for iOS 17.5+
-        final lpaData = '$smdpServer:$activationCode';
-        final esimUrl = Uri.parse(
-          'https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:$lpaData',
-        );
+      Uri? esimUrl;
 
+      if (Platform.isIOS) {
+        esimUrl = Uri.parse(
+          'https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=$activationString',
+        );
+      } else if (Platform.isAndroid) {
+        esimUrl = Uri.parse(
+          'https://esimsetup.android.com/esim_qrcode_provisioning?carddata=$activationString',
+        );
+      }
+
+      if (esimUrl != null) {
         if (await canLaunchUrl(esimUrl)) {
           final launched = await launchUrl(
             esimUrl,
             mode: LaunchMode.externalApplication,
           );
-
           if (launched) {
-            debugPrint(
-              'Successfully launched iOS eSIM setup with LPA: $lpaData',
-            );
-          } else {
-            debugPrint('Failed to launch iOS eSIM setup URL');
-            throw Exception('Could not open iOS eSIM setup');
+            debugPrint('Successfully launched eSIM setup: $esimUrl');
+            return;
           }
-        } else {
-          debugPrint('Cannot launch iOS eSIM setup URL');
-          throw Exception('iOS eSIM setup URL not supported on this device');
         }
-      } else {
-        // Fallback to existing service for Android
-        final result = await EsimService.installEsimProfile(
-          smdpServer: smdpServer!,
-          activationCode: activationCode!,
-        );
-        debugPrint('eSIM installation result: $result');
       }
+
+      // Output debug info if launch failed or not supported
+      debugPrint(
+        'Could not launch eSIM setup URL or platform not supported for link.',
+      );
+
+      // Fallback or legacy handling if needed, but per requirements we strictly use links.
     } catch (e) {
       debugPrint('Error installing eSIM profile: $e');
       rethrow;
@@ -72,29 +76,35 @@ class FastSelectedBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String currentLanguange = context.locale.languageCode;
-    
-    final defaultNumber = currentLanguange == 'en'
-        ? Assets.icons.figma112.defaultNumberEng
-        : Assets.icons.figma112.defaultNumber; 
-    final facetimeImessage = currentLanguange == 'en'
-        ? Assets.icons.figma112.facetimeImessageEng
-        : Assets.icons.figma112.facetimeImessage;   
-    final chooseMobileData = currentLanguange == 'en'
-        ? Assets.icons.figma112.chooseMobileDataEng
-        : Assets.icons.figma112.chooseMobileData;
-    final dataRouming = currentLanguange == 'en'
-        ? Assets.icons.figma112.dataRoumingEng
-        : Assets.icons.figma112.dataRouming;    
-    final importantStepTodo = currentLanguange == 'en'
-        ? Assets.icons.figma112.importantStepTodoEng
-        : Assets.icons.figma112.importantStepTodo;   
+    final String currentLanguange =
+        Localizations.localeOf(context).languageCode;
+
+    final defaultNumber =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.defaultNumberEng
+            : Assets.icons.figma112.defaultNumber;
+    final facetimeImessage =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.facetimeImessageEng
+            : Assets.icons.figma112.facetimeImessage;
+    final chooseMobileData =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.chooseMobileDataEng
+            : Assets.icons.figma112.chooseMobileData;
+    final dataRouming =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.dataRoumingEng
+            : Assets.icons.figma112.dataRouming;
+    final importantStepTodo =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.importantStepTodoEng
+            : Assets.icons.figma112.importantStepTodo;
 
     return Column(
       children: [
         BodyContainer(
           args: ['1'],
-          description: AppLocalizations.fastDescriptionStep1,
+          description: SimLocalizations.of(context)!.fast_description_step1,
           child: Padding(
             padding: const EdgeInsets.only(top: 30.0),
             child: GestureDetector(
@@ -181,7 +191,7 @@ class FastSelectedBody extends StatelessWidget {
                           ),
                         )
                         : LocalizedText(
-                          AppLocalizations.download,
+                          SimLocalizations.of(context)!.download,
                           style: FlexTypography.label.medium.copyWith(
                             color: AppColors.textColorLight,
                           ),
@@ -195,7 +205,7 @@ class FastSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['2'],
-          description: AppLocalizations.fastDescriptionStep2,
+          description: SimLocalizations.of(context)!.fast_description_step2,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -233,7 +243,7 @@ class FastSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['3'],
-          description: AppLocalizations.fastDescriptionStep3,
+          description: SimLocalizations.of(context)!.fast_description_step3,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -254,7 +264,7 @@ class FastSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['4'],
-          description: AppLocalizations.fastDescriptionStep4,
+          description: SimLocalizations.of(context)!.fast_description_step4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -274,8 +284,11 @@ class FastSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepTitle: AppLocalizations.important,
-          description: AppLocalizations.anotherDeviceDescriptionImportant,
+          stepTitle: SimLocalizations.of(context)!.important,
+          description:
+              SimLocalizations.of(
+                context,
+              )!.another_device_description_important,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(

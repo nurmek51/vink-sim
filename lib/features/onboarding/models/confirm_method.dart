@@ -1,0 +1,1 @@
+enum ConfirmMethod { byPhone, byWhatsapp }

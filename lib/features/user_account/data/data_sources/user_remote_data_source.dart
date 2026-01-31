@@ -1,5 +1,6 @@
-import 'package:flex_travel_sim/core/network/api_client.dart';
-import 'package:flex_travel_sim/features/user_account/data/models/user_model.dart';
+import 'package:vink_sim/core/network/api_client.dart';
+import 'package:vink_sim/features/user_account/data/models/user_model.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class UserRemoteDataSource {
   Future<UserModel> getCurrentUser();
@@ -21,66 +22,52 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<UserModel> getCurrentUser() async {
-    final response = await _apiClient.get('/user/profile');
-
-    return UserModel.fromJson(response['data'] as Map<String, dynamic>);
+    try {
+      final response = await _apiClient.get('/subscriber');
+      return UserModel.fromJson(response['data'] as Map<String, dynamic>);
+    } catch (e) {
+      if (kDebugMode) print('UserRemoteDataSource: Error - $e');
+      rethrow;
+    }
   }
 
   @override
   Future<UserModel> updateUserProfile(Map<String, dynamic> userData) async {
-    final response = await _apiClient.put('/user/profile', body: userData);
-
-    return UserModel.fromJson(response['data'] as Map<String, dynamic>);
+    throw UnimplementedError('updateUserProfile not supported by backend');
   }
 
   @override
   Future<void> updateBalance(double amount) async {
-    await _apiClient.post('/user/balance/top-up', body: {'amount': amount});
+    throw UnimplementedError('updateBalance not supported by backend');
   }
 
   @override
   Future<Map<String, dynamic>> getBalanceHistory() async {
-    final response = await _apiClient.get('/user/balance/history');
-
-    return response['data'] as Map<String, dynamic>;
+    throw UnimplementedError('getBalanceHistory not supported by backend');
   }
 
   @override
   Future<void> deleteUser() async {
-    await _apiClient.delete('/user/profile');
+    throw UnimplementedError('deleteUser not supported by backend');
   }
 
   @override
   Future<UserModel> uploadAvatar(String filePath) async {
-    final response = await _apiClient.post(
-      '/user/avatar',
-      body: {'avatar_path': filePath},
-    );
-
-    return UserModel.fromJson(response['data'] as Map<String, dynamic>);
+    throw UnimplementedError('uploadAvatar not supported by backend');
   }
 
   @override
   Future<void> changePassword(String oldPassword, String newPassword) async {
-    await _apiClient.post(
-      '/user/change-password',
-      body: {'old_password': oldPassword, 'new_password': newPassword},
-    );
+    throw UnimplementedError('changePassword not supported by backend');
   }
 
   @override
   Future<void> verifyEmail(String verificationCode) async {
-    await _apiClient.post(
-      '/user/verify-email',
-      body: {'verification_code': verificationCode},
-    );
+    throw UnimplementedError('verifyEmail not supported by backend');
   }
 
   @override
   Future<void> verifyPhone(String verificationCode) async {
-    await _apiClient.post(
-      '/user/verify-phone',
-      body: {'verification_code': verificationCode},
-    );
+    throw UnimplementedError('verifyPhone not supported by backend');
   }
 }

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flex_travel_sim/core/models/subscriber_model.dart';
+import 'package:vink_sim/core/models/subscriber_model.dart';
 
 abstract class SubscriberState extends Equatable {
   const SubscriberState();

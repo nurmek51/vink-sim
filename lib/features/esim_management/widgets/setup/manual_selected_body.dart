@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/esim_management/widgets/setup/body_container.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/features/esim_management/widgets/setup/body_container.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +10,7 @@ class ManualSelectedBody extends StatelessWidget {
   final String? smdpServer;
   final String? activationCode;
   final bool isLoading;
-  final String? errorMessage; 
+  final String? errorMessage;
 
   const ManualSelectedBody({
     super.key,
@@ -25,7 +24,7 @@ class ManualSelectedBody extends StatelessWidget {
   Widget build(BuildContext context) {
     String resolveText(String? value) {
       if (isLoading) {
-        return AppLocalizations.loading;
+        return SimLocalizations.of(context)!.loading;
       }
       if (errorMessage != null && errorMessage!.isNotEmpty) {
         return errorMessage!;
@@ -33,60 +32,73 @@ class ManualSelectedBody extends StatelessWidget {
       if (value != null && value.isNotEmpty) {
         return value;
       }
-      return AppLocalizations.notAvailable;
+      return SimLocalizations.of(context)!.not_available;
     }
 
     final smdpServerText = resolveText(smdpServer);
     final activationCodeText = resolveText(activationCode);
 
-    if(kDebugMode) {
+    if (kDebugMode) {
       print('smdpServer: $smdpServer - activationCode: $activationCode');
     }
 
-    final String currentLanguange = context.locale.languageCode;
-    
-    final mobileCommunication = currentLanguange == 'en'
-        ? Assets.icons.figma112.mobileCommunicationEng
-        : Assets.icons.figma112.mobileCommunication;
-    final addEsim = currentLanguange == 'en'
-        ? Assets.icons.figma112.addEsimEng
-        : Assets.icons.figma112.addEsim;  
-    final settingsByQr = currentLanguange == 'en'
-        ? Assets.icons.figma112.settingsByQrEng
-        : Assets.icons.figma112.settingsByQr;    
-    final forTravels = currentLanguange == 'en'
-        ? Assets.icons.figma112.forTravelsEng
-        : Assets.icons.figma112.forTravels;  
-    final flexPlan = currentLanguange == 'en'
-        ? Assets.icons.figma112.flexPlanEng
-        : Assets.icons.figma112.flexPlan; 
-    final defaultNumber = currentLanguange == 'en'
-        ? Assets.icons.figma112.defaultNumberEng
-        : Assets.icons.figma112.defaultNumber; 
-    final facetimeImessage = currentLanguange == 'en'
-        ? Assets.icons.figma112.facetimeImessageEng
-        : Assets.icons.figma112.facetimeImessage;   
-    final chooseMobileData = currentLanguange == 'en'
-        ? Assets.icons.figma112.chooseMobileDataEng
-        : Assets.icons.figma112.chooseMobileData;
-    final dataRouming = currentLanguange == 'en'
-        ? Assets.icons.figma112.dataRoumingEng
-        : Assets.icons.figma112.dataRouming;    
-    final importantStepTodo = currentLanguange == 'en'
-        ? Assets.icons.figma112.importantStepTodoEng
-        : Assets.icons.figma112.importantStepTodo;   
-    final scanQr = currentLanguange == 'en'
-        ? Assets.icons.figma112.scanQrEng
-        : Assets.icons.figma112.scanQr; 
-    final enterActivationCode = currentLanguange == 'en'
-        ? Assets.icons.figma112.activationCodeEng
-        : Assets.icons.figma112.activationCode;                 
+    final String currentLanguange =
+        Localizations.localeOf(context).languageCode;
+
+    final mobileCommunication =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.mobileCommunicationEng
+            : Assets.icons.figma112.mobileCommunication;
+    final addEsim =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.addEsimEng
+            : Assets.icons.figma112.addEsim;
+    final settingsByQr =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.settingsByQrEng
+            : Assets.icons.figma112.settingsByQr;
+    final forTravels =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.forTravelsEng
+            : Assets.icons.figma112.forTravels;
+    final flexPlan =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.flexPlanEng
+            : Assets.icons.figma112.flexPlan;
+    final defaultNumber =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.defaultNumberEng
+            : Assets.icons.figma112.defaultNumber;
+    final facetimeImessage =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.facetimeImessageEng
+            : Assets.icons.figma112.facetimeImessage;
+    final chooseMobileData =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.chooseMobileDataEng
+            : Assets.icons.figma112.chooseMobileData;
+    final dataRouming =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.dataRoumingEng
+            : Assets.icons.figma112.dataRouming;
+    final importantStepTodo =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.importantStepTodoEng
+            : Assets.icons.figma112.importantStepTodo;
+    final scanQr =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.scanQrEng
+            : Assets.icons.figma112.scanQr;
+    final enterActivationCode =
+        currentLanguange == 'en'
+            ? Assets.icons.figma112.activationCodeEng
+            : Assets.icons.figma112.activationCode;
 
     return Column(
       children: [
         BodyContainer(
           args: ['1'],
-          description: AppLocalizations.manualDescription1,
+          description: SimLocalizations.of(context)!.manual_description1,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 8.0),
@@ -110,7 +122,7 @@ class ManualSelectedBody extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           HelveticaneueFont(
-                            text: AppLocalizations.adressSmDp,
+                            text: SimLocalizations.of(context)!.adress_sm_dp,
                             fontSize: 14,
                             color: Colors.grey,
                           ),
@@ -142,7 +154,7 @@ class ManualSelectedBody extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           HelveticaneueFont(
-                            text: AppLocalizations.activationCode,
+                            text: SimLocalizations.of(context)!.activation_code,
                             fontSize: 14,
                             color: Colors.grey,
                           ),
@@ -165,13 +177,12 @@ class ManualSelectedBody extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: mobileCommunication
-                              .image(
-                                width: 271.59,
-                                height: 287.61,
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.high,
-                              ),
+                          child: mobileCommunication.image(
+                            width: 271.59,
+                            height: 287.61,
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.high,
+                          ),
                         ),
                         const SizedBox(width: 10),
                         ClipRRect(
@@ -226,7 +237,8 @@ class ManualSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['2'],
-          description: AppLocalizations.anotherDeviceDescription3,
+          description:
+              SimLocalizations.of(context)!.another_device_description3,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -264,7 +276,7 @@ class ManualSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['3'],
-          description: AppLocalizations.fastDescriptionStep2,
+          description: SimLocalizations.of(context)!.fast_description_step2,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -302,7 +314,8 @@ class ManualSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['4'],
-          description: AppLocalizations.anotherDeviceDescription5,
+          description:
+              SimLocalizations.of(context)!.another_device_description5,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -323,7 +336,7 @@ class ManualSelectedBody extends StatelessWidget {
 
         BodyContainer(
           args: ['5'],
-          description: AppLocalizations.fastDescriptionStep4,
+          description: SimLocalizations.of(context)!.fast_description_step4,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(
@@ -343,8 +356,11 @@ class ManualSelectedBody extends StatelessWidget {
         SizedBox(height: 15),
 
         BodyContainer(
-          stepTitle: AppLocalizations.important,
-          description: AppLocalizations.anotherDeviceDescriptionImportant,
+          stepTitle: SimLocalizations.of(context)!.important,
+          description:
+              SimLocalizations.of(
+                context,
+              )!.another_device_description_important,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(

@@ -1,6 +1,6 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,8 +18,8 @@ class StartRegistrationButton extends StatelessWidget {
           gradient: AppColors.containerGradientPrimary,
           borderRadius: BorderRadius.circular(16),
         ),
-        child: const LocalizedText(
-          AppLocalizations.startRegistration,
+        child: LocalizedText(
+          SimLocalizations.of(context)!.start_registration,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,

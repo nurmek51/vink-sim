@@ -1,6 +1,6 @@
-import 'package:flex_travel_sim/features/onboarding/bloc/welcome_bloc.dart';
-import 'package:flex_travel_sim/features/onboarding/widgets/frame_content.dart';
-import 'package:flex_travel_sim/features/subscriber/services/subscriber_local_service.dart';
+import 'package:vink_sim/features/onboarding/bloc/welcome_bloc.dart';
+import 'package:vink_sim/features/onboarding/widgets/frame_content.dart';
+import 'package:vink_sim/features/subscriber/services/subscriber_local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

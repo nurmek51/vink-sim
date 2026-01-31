@@ -1,5 +1,6 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/constants/app_colors.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -54,7 +55,12 @@ class IconContainer extends StatelessWidget {
                   gradient: AppColors.containerGradientPrimary,
                   shape: BoxShape.circle,
                 ),
-                child: Center(child: SvgPicture.asset(iconPath)),
+                child: Center(
+                  child: SvgPicture.asset(
+                    iconPath,
+                    package: AssetUtils.package,
+                  ),
+                ),
               ),
 
               const SizedBox(height: 7),

@@ -1,4 +1,4 @@
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:flutter/material.dart';
 
 class CustomContainer extends StatelessWidget {

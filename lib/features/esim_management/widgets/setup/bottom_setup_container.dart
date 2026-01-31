@@ -1,9 +1,9 @@
-import 'package:flex_travel_sim/components/widgets/blue_button.dart';
-import 'package:flex_travel_sim/components/widgets/helvetica_neue_font.dart';
-import 'package:flex_travel_sim/core/localization/app_localizations.dart';
-import 'package:flex_travel_sim/features/dashboard/widgets/bottom_sheet_content.dart';
-import 'package:flex_travel_sim/gen/assets.gen.dart';
-import 'package:flex_travel_sim/utils/navigation_utils.dart';
+import 'package:vink_sim/components/widgets/blue_button.dart';
+import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/features/dashboard/widgets/bottom_sheet_content.dart';
+import 'package:vink_sim/gen/assets.gen.dart';
+import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
 class BottomSetupContainer extends StatelessWidget {
@@ -28,21 +28,21 @@ class BottomSetupContainer extends StatelessWidget {
             Assets.icons.figma112.successIcon.svg(width: 45, height: 52),
             SizedBox(height: 15),
             HelveticaneueFont(
-              text: AppLocalizations.successMessage,
+              text: SimLocalizations.of(context)!.success_message,
               fontSize: 18,
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
             SizedBox(height: 20),
             HelveticaneueFont(
-              text: AppLocalizations.connectionWaitMessage,
+              text: SimLocalizations.of(context)!.connection_wait_message,
               fontSize: 16,
               color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
             SizedBox(height: 20),
             HelveticaneueFont(
-              text: AppLocalizations.connectionRetryInstruction,
+              text: SimLocalizations.of(context)!.connection_retry_instruction,
               textAlign: TextAlign.center,
               fontSize: 16,
               color: Color(0xFF7D7D7D),
@@ -57,7 +57,9 @@ class BottomSetupContainer extends StatelessWidget {
                   NavigationService.pop(context);
                 }
               },
-              child: BlueButton(buttonText: AppLocalizations.close),
+              child: BlueButton(
+                buttonText: SimLocalizations.of(context)!.close,
+              ),
             ),
             SizedBox(height: 30),
             GestureDetector(
@@ -91,7 +93,7 @@ class BottomSetupContainer extends StatelessWidget {
                 ),
                 child: Center(
                   child: HelveticaneueFont(
-                    text: AppLocalizations.supportChat2,
+                    text: SimLocalizations.of(context)!.support_chat2,
                     fontSize: 14,
                     color: Color(0xFF1F6FFF),
                   ),

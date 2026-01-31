@@ -1,5 +1,5 @@
-import 'package:flex_travel_sim/constants/app_colors.dart';
-import 'package:flex_travel_sim/core/styles/flex_typography.dart';
+import 'package:vink_sim/constants/app_colors.dart';
+import 'package:vink_sim/core/styles/flex_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; 
 
