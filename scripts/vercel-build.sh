@@ -6,7 +6,7 @@
 set -e
 
 # Define Flutter version
-FLUTTER_VERSION="3.24.0" # You can update this to match your local version
+FLUTTER_VERSION="3.27.4" # Updated to match required Dart SDK version
 
 echo "🟢 Starting Vercel Build Process..."
 
