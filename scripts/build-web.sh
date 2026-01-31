@@ -11,11 +11,10 @@ echo "🔧 Building Flutter web with Firebase configuration..."
 if [ -f .env ]; then
     echo "📋 Loading environment variables from .env"
     export $(grep -v '^#' .env | xargs)
-elif [ -n "$FIREBASE_API_KEY_WEB" ]; then
-    echo "🌐 Using environment variables from system/CI"
+elif [ -n "$VERCEL" ]; then
+    echo "🌐 Detected Vercel environment. Using Dashboard Environment Variables."
 else
-    echo "❌ Error: .env file not found and no environment variables detected"
-    exit 1
+    echo "⚠️ Warning: .env file not found. Build will proceed using existing environment variables."
 fi
 
 # Create firebase-config.js with actual values

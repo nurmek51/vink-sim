@@ -21,6 +21,9 @@ fi
 # 2. Add Flutter to PATH
 export PATH="$PATH:`pwd`/flutter/bin"
 
+# 2.5 Fix Git ownership issue for Flutter SDK
+git config --global --add safe.directory `pwd`/flutter
+
 # 3. Verify Flutter installation
 echo "🔍 Verifying Flutter installation..."
 flutter --version
