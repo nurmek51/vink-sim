@@ -26,10 +26,10 @@ dependencies:
   # easy_localization: ^3.0.7+1
   url_launcher: ^6.3.2
   fluttertoast: ^8.2.12
-  country_flags: ^3.3.0
-  web: ^1.1.1
+  country_flags: ^3.2.0
+  web: ^1.0.0
   qr_flutter: ^4.1.0
-  share_plus: ^11.1.0
+  share_plus: ^10.1.0
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
   get_it: ^7.6.4
