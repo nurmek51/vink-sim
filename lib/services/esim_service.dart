@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:vink_sim/core/platform_device/platform_detector.dart';
 import 'package:flutter/services.dart';
 
 class EsimService {
@@ -18,9 +18,9 @@ class EsimService {
       // Handle different error codes
       switch (e.code) {
         case 'UNSUPPORTED_VERSION':
-          if (Platform.isIOS) {
+          if (PlatformDetector.isIos) {
             throw Exception('eSIM requires iOS 12.0 or later');
-          } else if (Platform.isAndroid) {
+          } else if (PlatformDetector.isAndroid) {
             throw Exception('eSIM requires Android 9.0 (API 28) or later');
           }
           break;
@@ -42,10 +42,10 @@ class EsimService {
 
   static Future<bool> isEsimSupported() async {
     try {
-      if (Platform.isIOS && !_isIOS12OrLater()) {
+      if (PlatformDetector.isIos && !_isIOS12OrLater()) {
         return false;
       }
-      if (Platform.isAndroid && !_isAndroid9OrLater()) {
+      if (PlatformDetector.isAndroid && !_isAndroid9OrLater()) {
         return false;
       }
       return true;

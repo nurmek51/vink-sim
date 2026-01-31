@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:vink_sim/core/platform_device/platform_detector.dart';
 import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:vink_sim/constants/app_colors.dart';
 import 'package:vink_sim/core/styles/flex_typography.dart';
@@ -39,11 +39,11 @@ class FastSelectedBody extends StatelessWidget {
     try {
       Uri? esimUrl;
 
-      if (Platform.isIOS) {
+      if (PlatformDetector.isIos) {
         esimUrl = Uri.parse(
           'https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=$activationString',
         );
-      } else if (Platform.isAndroid) {
+      } else if (PlatformDetector.isAndroid) {
         esimUrl = Uri.parse(
           'https://esimsetup.android.com/esim_qrcode_provisioning?carddata=$activationString',
         );
@@ -135,10 +135,10 @@ class FastSelectedBody extends StatelessWidget {
                         }
 
                         try {
-                          if (Platform.isIOS) {
+                          if (PlatformDetector.isIos) {
                             debugPrint('iOS detected - launching eSIM setup');
                             await _installEsim();
-                          } else {
+                          } else if (PlatformDetector.isAndroid) {
                             debugPrint(
                               'Android detected - requesting storage permission',
                             );
@@ -160,6 +160,8 @@ class FastSelectedBody extends StatelessWidget {
                                 );
                               }
                             }
+                          } else if (PlatformDetector.isWeb) {
+                            debugPrint('Web detected - eSIM setup via link not fully supported');
                           }
                         } catch (e) {
                           debugPrint('Error during eSIM setup: $e');

@@ -36,8 +36,11 @@ flutter --version
 echo "🔨 Running project build script..."
 if [ -f "scripts/build-web.sh" ]; then
     chmod +x scripts/build-web.sh
-    # We pass 'no-env-file' or similar if we want to skip the .env check 
-    # and use real environment variables provided by Vercel.
+    
+    # Pre-build cleanup and setup
+    flutter clean
+    flutter pub get
+    
     ./scripts/build-web.sh
 else
     echo "❌ Error: scripts/build-web.sh not found."

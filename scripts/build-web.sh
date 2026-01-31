@@ -34,8 +34,8 @@ window.firebaseConfig = {
 EOF
 
 # Build Flutter web
-echo "🚀 Building Flutter web application..."
-flutter build web
+echo "🚀 Building Flutter web application in release mode..."
+flutter build web --release --base-href /
 
 echo "✅ Web build completed successfully!"
 echo "📁 Output directory: build/web"

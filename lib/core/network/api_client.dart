@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:vink_sim/core/error/exceptions.dart';
 import 'package:vink_sim/core/network/auth_interceptor.dart';
@@ -40,13 +39,15 @@ class ApiClient {
 
       _logResponse(response);
       return _handleResponse(response);
-    } on SocketException {
-      if (kDebugMode) print('❌ No internet connection');
-      throw const NetworkException('No internet connection');
-    } on http.ClientException catch (e) {
-      if (kDebugMode) print('❌ Network error: ${e.message}');
-      throw NetworkException('Network error: ${e.message}');
     } catch (e) {
+      if (e.toString().contains('SocketException')) {
+        if (kDebugMode) print('❌ No internet connection');
+        throw const NetworkException('No internet connection');
+      }
+      if (e is http.ClientException) {
+        if (kDebugMode) print('❌ Network error: ${e.message}');
+        throw NetworkException('Network error: ${e.message}');
+      }
       if (kDebugMode) print('❌ Unexpected error: $e');
       throw NetworkException('Unexpected error: $e');
     }
@@ -84,13 +85,15 @@ class ApiClient {
 
       _logResponse(response);
       return _handleResponse(response);
-    } on SocketException {
-      if (kDebugMode) print('❌ No internet connection');
-      throw const NetworkException('No internet connection');
-    } on http.ClientException catch (e) {
-      if (kDebugMode) print('❌ Network error: ${e.message}');
-      throw NetworkException('Network error: ${e.message}');
     } catch (e) {
+      if (e.toString().contains('SocketException')) {
+        if (kDebugMode) print('❌ No internet connection');
+        throw const NetworkException('No internet connection');
+      }
+      if (e is http.ClientException) {
+        if (kDebugMode) print('❌ Network error: ${e.message}');
+        throw NetworkException('Network error: ${e.message}');
+      }
       if (kDebugMode) print('❌ Unexpected error: $e');
       throw NetworkException('Unexpected error: $e');
     }
@@ -128,13 +131,15 @@ class ApiClient {
 
       _logResponse(response);
       return _handleResponse(response);
-    } on SocketException {
-      if (kDebugMode) print('❌ No internet connection');
-      throw const NetworkException('No internet connection');
-    } on http.ClientException catch (e) {
-      if (kDebugMode) print('❌ Network error: ${e.message}');
-      throw NetworkException('Network error: ${e.message}');
     } catch (e) {
+      if (e.toString().contains('SocketException')) {
+        if (kDebugMode) print('❌ No internet connection');
+        throw const NetworkException('No internet connection');
+      }
+      if (e is http.ClientException) {
+        if (kDebugMode) print('❌ Network error: ${e.message}');
+        throw NetworkException('Network error: ${e.message}');
+      }
       if (kDebugMode) print('❌ Unexpected error: $e');
       throw NetworkException('Unexpected error: $e');
     }
@@ -163,13 +168,15 @@ class ApiClient {
 
       _logResponse(response);
       return _handleResponse(response);
-    } on SocketException {
-      if (kDebugMode) print('❌ No internet connection');
-      throw const NetworkException('No internet connection');
-    } on http.ClientException catch (e) {
-      if (kDebugMode) print('❌ Network error: ${e.message}');
-      throw NetworkException('Network error: ${e.message}');
     } catch (e) {
+      if (e.toString().contains('SocketException')) {
+        if (kDebugMode) print('❌ No internet connection');
+        throw const NetworkException('No internet connection');
+      }
+      if (e is http.ClientException) {
+        if (kDebugMode) print('❌ Network error: ${e.message}');
+        throw NetworkException('Network error: ${e.message}');
+      }
       if (kDebugMode) print('❌ Unexpected error: $e');
       throw NetworkException('Unexpected error: $e');
     }
