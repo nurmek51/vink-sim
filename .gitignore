@@ -8,6 +8,7 @@
 .pub-cache/
 .pub/
 build/
+/flutter/
 
 # Android build artifacts
 android/app/debug/

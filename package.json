@@ -1,0 +1,8 @@
+{
+  "name": "vink-sim",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "sh scripts/vercel-build.sh"
+  },
+  "dependencies": {}
+}

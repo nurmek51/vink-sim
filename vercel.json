@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "public": true,
+  "name": "vink-sim",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "cleanUrls": true,
+  "framework": null,
+  "buildCommand": "sh scripts/vercel-build.sh",
+  "outputDirectory": "build/web"
+}

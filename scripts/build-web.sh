@@ -11,8 +11,10 @@ echo "🔧 Building Flutter web with Firebase configuration..."
 if [ -f .env ]; then
     echo "📋 Loading environment variables from .env"
     export $(grep -v '^#' .env | xargs)
+elif [ -n "$FIREBASE_API_KEY_WEB" ]; then
+    echo "🌐 Using environment variables from system/CI"
 else
-    echo "❌ Error: .env file not found"
+    echo "❌ Error: .env file not found and no environment variables detected"
     exit 1
 fi
 
