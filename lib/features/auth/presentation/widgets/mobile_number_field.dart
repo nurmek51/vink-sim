@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:country_flags/country_flags.dart';
 import 'package:vink_sim/features/auth/domain/entities/country.dart';
 import 'package:vink_sim/features/auth/data/country_data.dart';
 import 'package:vink_sim/features/auth/presentation/widgets/country_picker_bottom_sheet.dart';
@@ -258,9 +259,13 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    _selectedCountry.flag,
-                    style: const TextStyle(fontSize: 20),
+                  SizedBox(
+                    width: 24,
+                    height: 18,
+                    child: CountryFlag.fromCountryCode(
+                      _selectedCountry.code,
+                      shape: const RoundedRectangle(2),
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Text(

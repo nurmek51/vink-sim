@@ -1,6 +1,7 @@
 import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:flutter/material.dart';
+import 'package:country_flags/country_flags.dart';
 import 'package:vink_sim/constants/app_colors.dart';
 import 'package:vink_sim/features/auth/domain/entities/country.dart';
 import 'package:vink_sim/features/auth/data/country_data.dart';
@@ -85,7 +86,6 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
               ],
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Container(
@@ -123,9 +123,13 @@ class _CountryPickerBottomSheetState extends State<CountryPickerBottomSheet> {
                 final isSelected = country == widget.selectedCountry;
 
                 return ListTile(
-                  leading: LocalizedText(
-                    country.flag,
-                    style: const TextStyle(fontSize: 24),
+                  leading: SizedBox(
+                    width: 32,
+                    height: 24,
+                    child: CountryFlag.fromCountryCode(
+                      country.code,
+                      shape: const RoundedRectangle(4),
+                    ),
                   ),
                   title: LocalizedText(
                     country.name,
