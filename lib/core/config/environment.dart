@@ -51,6 +51,9 @@ class Environment {
   // Configuration getters
   static String _overrideApiUrl = '';
   static String get apiUrl {
+    if (kDebugMode) {
+       print('Debug: Getting API URL. Override: $_overrideApiUrl, Env: ${dotenv.env['API_URL']}');
+    }
     final baseUrl = _overrideApiUrl.isNotEmpty ? _overrideApiUrl : (dotenv.env['API_URL'] ?? '');
     if (baseUrl.isEmpty) return '';
     
