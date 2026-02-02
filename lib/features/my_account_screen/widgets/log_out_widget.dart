@@ -1,15 +1,16 @@
 import 'package:vink_sim/constants/app_colors.dart';
 import 'package:vink_sim/l10n/app_localizations.dart';
-import 'package:vink_sim/core/services/auth_service.dart';
+import 'package:vink_sim/features/auth/domain/repo/auth_repository.dart';
+import 'package:vink_sim/config/feature_config.dart';
+import 'package:vink_sim/core/router/app_router.dart';
 import 'package:vink_sim/core/styles/flex_typography.dart';
 import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LogOutWidget extends StatelessWidget {
-  final AuthService? authService;
-
-  const LogOutWidget({super.key, this.authService});
+  const LogOutWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,6 @@ class LogOutWidget extends StatelessWidget {
                 const SizedBox(height: 16),
                 LocalizedText(
                   SimLocalizations.of(context)!.logout_confirmation_message,
-
                   style: FlexTypography.label.medium,
                 ),
                 const SizedBox(height: 24),
@@ -129,10 +129,34 @@ class LogOutWidget extends StatelessWidget {
   }
 
   Future<void> _logout(BuildContext context) async {
-    final authService = this.authService ?? sl<AuthService>();
-    await authService.logout();
-    if (context.mounted) {
-      NavigationService.goToWelcome(context);
+    try {
+      final authRepository = sl.get<AuthRepository>();
+      final config =
+          sl.isRegistered<FeatureConfig>() ? sl.get<FeatureConfig>() : null;
+
+      // Perform logout (clears token and calls onLogout if in shell mode)
+      await authRepository.logout();
+
+      if (context.mounted) {
+        if (config?.isShellMode == true) {
+          // If in shell mode, the shell app's onLogout callback handles global state
+          // and should handle navigation.
+          debugPrint('LogOutWidget: Shell mode logout triggered');
+        } else {
+          // Standalone mode: Force redirect within vink_sim
+          GoRouter.of(context).go(AppRoutes.welcome);
+        }
+      }
+    } catch (e) {
+      debugPrint('LogOutWidget: Logout error: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Log Out Error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }

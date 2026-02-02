@@ -1,6 +1,5 @@
 import 'package:vink_sim/config/feature_config.dart';
 import 'package:get_it/get_it.dart';
-import 'package:vink_sim/core/services/auth_service.dart';
 import 'package:vink_sim/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:vink_sim/features/auth/data/data_sources/otp_auth_data_source.dart';
 import 'package:vink_sim/features/auth/data/repo/auth_repository_impl.dart';
@@ -80,11 +79,6 @@ class DependencyInjection {
 
     // Local Storage
     sl.registerSingleton<LocalStorage>(SharedPreferencesStorage());
-
-    // Auth Service
-    sl.registerLazySingleton<AuthService>(
-      () => AuthServiceImpl(localStorage: sl<LocalStorage>()),
-    );
 
     // Auth Local Data Source
     sl.registerLazySingleton<AuthLocalDataSource>(
