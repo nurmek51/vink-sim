@@ -14,6 +14,8 @@ class LogOutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = SimLocalizations.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 20.0,
@@ -28,7 +30,7 @@ class LogOutWidget extends StatelessWidget {
           ),
           child: Center(
             child: LocalizedText(
-              SimLocalizations.of(context)!.logout,
+              l10n?.logout ?? 'Log Out',
               style: FlexTypography.paragraph.xMedium.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
@@ -41,10 +43,14 @@ class LogOutWidget extends StatelessWidget {
   }
 
   Future<void> showLogoutDialog(BuildContext context) async {
+    final parentL10n = SimLocalizations.of(context);
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
+        final l10n = SimLocalizations.of(dialogContext) ?? parentL10n;
+
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
@@ -60,7 +66,7 @@ class LogOutWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 LocalizedText(
-                  SimLocalizations.of(context)!.logout_confirmation_title,
+                  l10n?.logout_confirmation_title ?? 'Log Out',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -68,7 +74,7 @@ class LogOutWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 LocalizedText(
-                  SimLocalizations.of(context)!.logout_confirmation_message,
+                  l10n?.logout_confirmation_message ?? 'Are you sure?',
                   style: FlexTypography.label.medium,
                 ),
                 const SizedBox(height: 24),
@@ -89,7 +95,7 @@ class LogOutWidget extends StatelessWidget {
                           ),
                           alignment: Alignment.center,
                           child: LocalizedText(
-                            SimLocalizations.of(context)!.cancel,
+                            l10n?.cancel ?? 'Cancel',
                             style: FlexTypography.headline.medium,
                           ),
                         ),
@@ -99,7 +105,7 @@ class LogOutWidget extends StatelessWidget {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(dialogContext).pop();
-                          _logout(dialogContext);
+                          _logout(context); // Use parent context
                         },
                         child: Container(
                           height: 52,
@@ -110,7 +116,7 @@ class LogOutWidget extends StatelessWidget {
                           ),
                           alignment: Alignment.center,
                           child: LocalizedText(
-                            SimLocalizations.of(context)!.logout,
+                            l10n?.logout ?? 'Log Out',
                             style: FlexTypography.headline.medium.copyWith(
                               color: Colors.white,
                             ),
@@ -127,9 +133,23 @@ class LogOutWidget extends StatelessWidget {
       },
     );
   }
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   Future<void> _logout(BuildContext context) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final localizations = SimLocalizations.of(context);
+    
     try {
+      if (kDebugMode) debugPrint('LogOutWidget: Starting logout process');
+      
       final authRepository = sl.get<AuthRepository>();
       final config =
           sl.isRegistered<FeatureConfig>() ? sl.get<FeatureConfig>() : null;
@@ -137,26 +157,29 @@ class LogOutWidget extends StatelessWidget {
       // Perform logout (clears token and calls onLogout if in shell mode)
       await authRepository.logout();
 
+      if (kDebugMode) debugPrint('LogOutWidget: Repository logout completed');
+
       if (context.mounted) {
         if (config?.isShellMode == true) {
           // If in shell mode, the shell app's onLogout callback handles global state
-          // and should handle navigation.
-          debugPrint('LogOutWidget: Shell mode logout triggered');
+          if (kDebugMode) debugPrint('LogOutWidget: Shell mode logout triggered');
         } else {
           // Standalone mode: Force redirect within vink_sim
+          if (kDebugMode) debugPrint('LogOutWidget: Standalone mode logout redirecting to welcome');
           GoRouter.of(context).go(AppRoutes.welcome);
         }
       }
     } catch (e) {
       debugPrint('LogOutWidget: Logout error: $e');
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Log Out Error: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      
+      final errorMessage = localizations?.logout_fail ?? 'Log Out Error';
+      
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text('$errorMessage: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 }

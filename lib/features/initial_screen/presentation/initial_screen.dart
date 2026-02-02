@@ -52,23 +52,12 @@ class _InitialScreenState extends State<InitialScreen> {
 
     final subscriberBloc = context.read<SubscriberBloc>();
 
-    if (!_subscribed) {
-      _subscribed = true;
-      _subscriberSub = subscriberBloc.stream.listen((state) {
-        if (_navigated) return;
-
-        if (state is SubscriberLoaded) {
-          _decideAndNavigate(state);
-        } else if (state is SubscriberError) {
-          _safeGo(AppRoutes.welcome);
-        }
-      });
-    }
-
     if (subscriberBloc.state is SubscriberLoaded) {
       _decideAndNavigate(subscriberBloc.state as SubscriberLoaded);
       return;
     }
+
+    if (!_subscribed) {
 
     if (subscriberBloc.state is SubscriberInitial ||
         subscriberBloc.state is SubscriberError) {

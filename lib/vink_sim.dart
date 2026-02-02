@@ -8,3 +8,9 @@ export 'ui/feature_root.dart';
 
 Future<void> initVinkSim(FeatureConfig config) =>
     DependencyInjection.initForFeature(config);
+
+Future<void> resetVinkSim() async {
+  if (sl.isRegistered<SubscriberBloc>()) {
+    sl<SubscriberBloc>().add(const ResetSubscriberStateEvent());
+  }
+}
