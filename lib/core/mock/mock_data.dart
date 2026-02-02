@@ -39,7 +39,6 @@ class MockUserData {
   static const String mockUserId = 'mock_user_001';
   static const String mockEmail = 'test@flextravelsim.com';
   static const String mockPhone = '+1234567890';
-  static const String mockFirebaseUid = 'firebase_mock_uid_001';
 
   static UserModel get currentUser => UserModel(
     id: mockUserId,
@@ -281,8 +280,6 @@ class MockAuthData {
   static Map<String, dynamic> get otpVerifyResponse => {
     'token': MockUserData.generateMockToken(),
     'user_id': MockUserData.mockUserId,
-    'firebase_custom_token':
-        'mock_firebase_custom_token_${DateTime.now().millisecondsSinceEpoch}',
   };
 
   /// Login response

@@ -1,8 +1,6 @@
 import 'package:vink_sim/core/config/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:vink_sim/firebase_options.dart';
 import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vink_sim/vink_sim.dart';
@@ -12,19 +10,6 @@ void main() async {
 
   // Load environment variables based on build mode
   await Environment.load();
-
-  try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    if (kDebugMode) {
-      print('Firebase successfully initialized');
-    }
-  } catch (e) {
-    if (kDebugMode) {
-      print('Firebase initialization error: $e');
-    }
-  }
 
   runApp(const MyApp());
 }

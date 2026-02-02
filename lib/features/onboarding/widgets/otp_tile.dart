@@ -117,7 +117,7 @@ class _OtpTileState extends State<OtpTile> {
                   final authLocalDataSource = sl.get<AuthLocalDataSource>();
 
                   try {
-                    await authLocalDataSource.saveAuthToken(state.token);
+                    await authLocalDataSource.saveToken(state.token);
 
                     if (sl.isRegistered<FeatureConfig>()) {
                       final config = sl.get<FeatureConfig>();

@@ -4,35 +4,21 @@ abstract class AuthLocalDataSource {
   Future<void> saveToken(String token);
   Future<String?> getToken();
   Future<void> removeToken();
-  
-  // Firebase-specific methods
-  Future<void> saveAuthToken(String token);
-  Future<void> clearAuthToken();
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   final LocalStorage localStorage;
   static const _tokenKey = 'auth_token';
 
-  AuthLocalDataSourceImpl({ required this.localStorage });
+  AuthLocalDataSourceImpl({required this.localStorage});
 
   @override
   Future<void> saveToken(String token) =>
-    localStorage.setString(_tokenKey, token);
+      localStorage.setString(_tokenKey, token);
 
   @override
-  Future<String?> getToken() =>
-    localStorage.getString(_tokenKey);
+  Future<String?> getToken() => localStorage.getString(_tokenKey);
 
   @override
-  Future<void> removeToken() =>
-    localStorage.remove(_tokenKey);
-    
-  @override
-  Future<void> saveAuthToken(String token) =>
-    localStorage.setString(_tokenKey, token);
-    
-  @override
-  Future<void> clearAuthToken() =>
-    localStorage.remove(_tokenKey);
+  Future<void> removeToken() => localStorage.remove(_tokenKey);
 }

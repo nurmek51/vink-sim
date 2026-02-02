@@ -32,7 +32,6 @@ class Environment {
       if (kDebugMode) {
         print('Environment: Successfully loaded $fileName');
         print('API_URL: ${dotenv.env['API_URL']}');
-        print('Firebase Project: ${dotenv.env['FIREBASE_PROJECT_ID']}');
       }
     } catch (e) {
       if (kDebugMode) {
@@ -85,7 +84,4 @@ class Environment {
   static void setApiUrl(String url) {
     _overrideApiUrl = url;
   }
-
-  static String get firebaseProjectId =>
-      dotenv.env['FIREBASE_PROJECT_ID'] ?? '';
 }

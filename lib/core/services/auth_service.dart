@@ -22,7 +22,7 @@ class AuthServiceImpl implements AuthService {
 
   @override
   Future<bool> isAuthenticated() async {
-    final token = await localStorage.getString('access_token');
+    final token = await localStorage.getString('auth_token');
     return token != null && token.isNotEmpty;
   }
 
