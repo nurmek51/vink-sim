@@ -13,8 +13,8 @@ class ApiClient {
     required this.baseUrl,
     AuthInterceptor? authInterceptor,
     http.Client? client,
-  }) : _authInterceptor = authInterceptor,
-       _client = client ?? http.Client();
+  })  : _authInterceptor = authInterceptor,
+        _client = client ?? http.Client();
 
   Future<dynamic> get(
     String endpoint, {
@@ -184,10 +184,9 @@ class ApiClient {
 
   Uri _buildUri(String endpoint, Map<String, dynamic>? queryParameters) {
     // Remove trailing slash from baseUrl if present to avoid double slashes
-    final cleanBaseUrl =
-        baseUrl.endsWith('/')
-            ? baseUrl.substring(0, baseUrl.length - 1)
-            : baseUrl;
+    final cleanBaseUrl = baseUrl.endsWith('/')
+        ? baseUrl.substring(0, baseUrl.length - 1)
+        : baseUrl;
     // Ensure endpoint starts with slash
     final cleanEndpoint = endpoint.startsWith('/') ? endpoint : '/$endpoint';
 
@@ -238,10 +237,9 @@ class ApiClient {
       final errorJson = jsonDecode(response.body) as Map<String, dynamic>;
       errorMessage = errorJson['message'] ?? 'Unknown server error';
     } catch (e) {
-      errorMessage =
-          response.body.isNotEmpty
-              ? response.body
-              : 'Server error: ${response.reasonPhrase}';
+      errorMessage = response.body.isNotEmpty
+          ? response.body
+          : 'Server error: ${response.reasonPhrase}';
     }
 
     switch (statusCode) {

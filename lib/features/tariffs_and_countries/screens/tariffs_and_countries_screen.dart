@@ -23,10 +23,9 @@ class TariffsAndCountriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create:
-          (context) =>
-              TariffsBloc(dataSource: TariffsRemoteDataSourceImpl(apiClient: sl<ApiClient>()))
-                ..add(const LoadTariffsEvent()),
+      create: (context) => TariffsBloc(
+          dataSource: TariffsRemoteDataSourceImpl(apiClient: sl<ApiClient>()))
+        ..add(const LoadTariffsEvent()),
       child: _TariffsAndCountriesView(isAuthorized: isAuthorized),
     );
   }
@@ -51,19 +50,6 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
     super.dispose();
   }
 
-  Map<String, List<dynamic>> _groupOperatorsByCountry(List<dynamic> operators) {
-    final Map<String, List<dynamic>> grouped = {};
-    for (final operator in operators) {
-      grouped.putIfAbsent(operator.countryName, () => []).add(operator);
-    }
-
-    final sortedEntries =
-        grouped.entries.toList()
-          ..sort((a, b) => b.value.length.compareTo(a.value.length));
-
-    return Map.fromEntries(sortedEntries);
-  }
-
   @override
   Widget build(BuildContext context) {
     const paddingSettings = EdgeInsets.only(left: 20, right: 20);
@@ -85,15 +71,14 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
           child: Container(color: Colors.grey.shade300, height: 1),
         ),
       ),
-      bottomNavigationBar:
-          widget.isAuthorized
-              ? Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                ).copyWith(bottom: 30, top: 12),
-                child: StartRegistrationButton(),
-              )
-              : null,
+      bottomNavigationBar: widget.isAuthorized
+          ? Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+              ).copyWith(bottom: 30, top: 12),
+              child: StartRegistrationButton(),
+            )
+          : null,
       body: Padding(
         padding: paddingSettings,
         child: Column(
@@ -145,8 +130,8 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                       child: ElevatedButton(
                         onPressed: () {
                           context.read<TariffsBloc>().add(
-                            const RefreshTariffsEvent(),
-                          );
+                                const RefreshTariffsEvent(),
+                              );
                         },
                         child: const Text('Retry'),
                       ),
@@ -154,10 +139,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
                   }
 
                   if (state is TariffsLoaded) {
-                    final operatorsToShow =
-                        state.searchQuery?.isNotEmpty == true
-                            ? _groupOperatorsByCountry(state.filteredOperators)
-                            : state.operatorsByCountry;
+                    final operatorsToShow = state.operatorsByCountry;
 
                     final countries = operatorsToShow.keys.toList();
 
@@ -169,19 +151,19 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
 
                         final pricePerGB =
                             state.cheapestPricesByCountryOrdered[country] ??
-                            (operators.isNotEmpty
-                                ? operators
-                                        .map((op) => op.dataRate)
-                                        .reduce((a, b) => a < b ? a : b) *
-                                    1024
-                                : 0.0);
+                                (operators.isNotEmpty
+                                    ? operators
+                                            .map((op) => op.dataRate)
+                                            .reduce((a, b) => a < b ? a : b) *
+                                        1024
+                                    : 0.0);
 
                         final firstOperator = operators.first;
                         final countryCode =
                             CountryCodeUtils.getCountryCodeEnhanced(
-                              country,
-                              plmnCode: firstOperator.plmn,
-                            );
+                          country,
+                          plmnCode: firstOperator.plmn,
+                        );
 
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 12),

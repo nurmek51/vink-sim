@@ -32,22 +32,23 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
   void initState() {
     super.initState();
     _selectedCountry = widget.initialCountry ?? CountryData.defaultCountry;
-    
+
     if (widget.initialPhone != null && widget.initialPhone!.isNotEmpty) {
       String phoneWithoutDialCode = widget.initialPhone!;
       if (phoneWithoutDialCode.startsWith(_selectedCountry.dialCode)) {
-        phoneWithoutDialCode = phoneWithoutDialCode.substring(_selectedCountry.dialCode.length);
+        phoneWithoutDialCode =
+            phoneWithoutDialCode.substring(_selectedCountry.dialCode.length);
       }
       final formatted = _formatPhoneNumber(phoneWithoutDialCode);
       _controller.text = formatted;
       _lastFormatted = formatted;
-      
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final fullNumber = _selectedCountry.dialCode + phoneWithoutDialCode;
         widget.onChanged?.call(fullNumber, formatted);
       });
     }
-    
+
     _controller.addListener(_onTextChanged);
   }
 
@@ -215,18 +216,17 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.black.withValues(alpha: 0.8),
-      builder:
-          (context) => CountryPickerBottomSheet(
-            selectedCountry: _selectedCountry,
-            onCountrySelected: (country) {
-              setState(() {
-                _selectedCountry = country;
-              });
-              _controller.clear();
-              widget.onChanged?.call('', '');
-              widget.onCountryChanged?.call(country);
-            },
-          ),
+      builder: (context) => CountryPickerBottomSheet(
+        selectedCountry: _selectedCountry,
+        onCountrySelected: (country) {
+          setState(() {
+            _selectedCountry = country;
+          });
+          _controller.clear();
+          widget.onChanged?.call('', '');
+          widget.onCountryChanged?.call(country);
+        },
+      ),
     );
   }
 
@@ -238,10 +238,9 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
         borderRadius: BorderRadius.circular(12),
         color: const Color(0x1AFFFFFF),
         border: Border.all(
-          color:
-              _isValidPhoneNumber
-                  ? const Color(0xFF4CAF50)
-                  : const Color(0x66FFFFFF),
+          color: _isValidPhoneNumber
+              ? const Color(0xFF4CAF50)
+              : const Color(0x66FFFFFF),
           width: _isValidPhoneNumber ? 2 : 1,
         ),
       ),
@@ -282,7 +281,6 @@ class _MobileNumberFieldState extends State<MobileNumberField> {
               ),
             ),
           ),
-
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),

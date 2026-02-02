@@ -27,8 +27,7 @@ class FastSelectedBody extends StatelessWidget {
   });
 
   Future<void> _installEsim() async {
-    final String activationString =
-        fullActivationString ??
+    final String activationString = fullActivationString ??
         (smdpServer != null && activationCode != null
             ? "LPA:1\$$smdpServer\$$activationCode"
             : "");
@@ -79,26 +78,21 @@ class FastSelectedBody extends StatelessWidget {
     final String currentLanguange =
         Localizations.localeOf(context).languageCode;
 
-    final defaultNumber =
-        currentLanguange == 'en'
-            ? Assets.icons.figma112.defaultNumberEng
-            : Assets.icons.figma112.defaultNumber;
-    final facetimeImessage =
-        currentLanguange == 'en'
-            ? Assets.icons.figma112.facetimeImessageEng
-            : Assets.icons.figma112.facetimeImessage;
-    final chooseMobileData =
-        currentLanguange == 'en'
-            ? Assets.icons.figma112.chooseMobileDataEng
-            : Assets.icons.figma112.chooseMobileData;
-    final dataRouming =
-        currentLanguange == 'en'
-            ? Assets.icons.figma112.dataRoumingEng
-            : Assets.icons.figma112.dataRouming;
-    final importantStepTodo =
-        currentLanguange == 'en'
-            ? Assets.icons.figma112.importantStepTodoEng
-            : Assets.icons.figma112.importantStepTodo;
+    final defaultNumber = currentLanguange == 'en'
+        ? Assets.icons.figma112.defaultNumberEng
+        : Assets.icons.figma112.defaultNumber;
+    final facetimeImessage = currentLanguange == 'en'
+        ? Assets.icons.figma112.facetimeImessageEng
+        : Assets.icons.figma112.facetimeImessage;
+    final chooseMobileData = currentLanguange == 'en'
+        ? Assets.icons.figma112.chooseMobileDataEng
+        : Assets.icons.figma112.chooseMobileData;
+    final dataRouming = currentLanguange == 'en'
+        ? Assets.icons.figma112.dataRoumingEng
+        : Assets.icons.figma112.dataRouming;
+    final importantStepTodo = currentLanguange == 'en'
+        ? Assets.icons.figma112.importantStepTodoEng
+        : Assets.icons.figma112.importantStepTodo;
 
     return Column(
       children: [
@@ -108,103 +102,98 @@ class FastSelectedBody extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 30.0),
             child: GestureDetector(
-              onTap:
-                  isLoading
-                      ? null
-                      : () async {
-                        debugPrint('Button tapped! isLoading: $isLoading');
+              onTap: isLoading
+                  ? null
+                  : () async {
+                      debugPrint('Button tapped! isLoading: $isLoading');
+                      debugPrint(
+                        'smdpServer: $smdpServer, activationCode: $activationCode',
+                      );
+
+                      if (smdpServer == null || activationCode == null) {
                         debugPrint(
-                          'smdpServer: $smdpServer, activationCode: $activationCode',
+                          'Missing required data - smdpServer or activationCode is null',
                         );
-
-                        if (smdpServer == null || activationCode == null) {
-                          debugPrint(
-                            'Missing required data - smdpServer or activationCode is null',
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Missing eSIM configuration data',
+                              ),
+                              backgroundColor: Colors.orange,
+                            ),
                           );
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Missing eSIM configuration data',
-                                ),
-                                backgroundColor: Colors.orange,
-                              ),
-                            );
-                          }
-                          return;
                         }
+                        return;
+                      }
 
-                        try {
-                          if (PlatformDetector.isIos) {
-                            debugPrint('iOS detected - launching eSIM setup');
+                      try {
+                        if (PlatformDetector.isIos) {
+                          debugPrint('iOS detected - launching eSIM setup');
+                          await _installEsim();
+                        } else if (PlatformDetector.isAndroid) {
+                          debugPrint(
+                            'Android detected - requesting storage permission',
+                          );
+                          final permission = await Permission.storage.request();
+                          if (permission.isGranted) {
                             await _installEsim();
-                          } else if (PlatformDetector.isAndroid) {
+                          } else {
                             debugPrint(
-                              'Android detected - requesting storage permission',
+                              'Storage permission denied for Android eSIM setup',
                             );
-                            final permission =
-                                await Permission.storage.request();
-                            if (permission.isGranted) {
-                              await _installEsim();
-                            } else {
-                              debugPrint(
-                                'Storage permission denied for Android eSIM setup',
-                              );
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Storage permission is required for eSIM setup',
-                                    ),
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Storage permission is required for eSIM setup',
                                   ),
-                                );
-                              }
+                                ),
+                              );
                             }
-                          } else if (PlatformDetector.isWeb) {
-                            debugPrint('Web detected - eSIM setup via link not fully supported');
                           }
-                        } catch (e) {
-                          debugPrint('Error during eSIM setup: $e');
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Failed to setup eSIM: $e'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          }
+                        } else if (PlatformDetector.isWeb) {
+                          debugPrint(
+                              'Web detected - eSIM setup via link not fully supported');
                         }
-                      },
+                      } catch (e) {
+                        debugPrint('Error during eSIM setup: $e');
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Failed to setup eSIM: $e'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      }
+                    },
               child: Container(
                 alignment: Alignment.center,
                 height: 52,
                 decoration: BoxDecoration(
-                  gradient:
-                      isLoading
-                          ? LinearGradient(colors: [Colors.grey, Colors.grey])
-                          : AppColors.containerGradientPrimary,
+                  gradient: isLoading
+                      ? LinearGradient(colors: [Colors.grey, Colors.grey])
+                      : AppColors.containerGradientPrimary,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child:
-                    isLoading
-                        ? const CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
-                          ),
-                        )
-                        : LocalizedText(
-                          SimLocalizations.of(context)!.download,
-                          style: FlexTypography.label.medium.copyWith(
-                            color: AppColors.textColorLight,
-                          ),
+                child: isLoading
+                    ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.white,
                         ),
+                      )
+                    : LocalizedText(
+                        SimLocalizations.of(context)!.download,
+                        style: FlexTypography.label.medium.copyWith(
+                          color: AppColors.textColorLight,
+                        ),
+                      ),
               ),
             ),
           ),
         ),
-
         const SizedBox(height: 15),
-
         BodyContainer(
           args: ['2'],
           description: SimLocalizations.of(context)!.fast_description_step2,
@@ -240,9 +229,7 @@ class FastSelectedBody extends StatelessWidget {
             ),
           ),
         ),
-
         const SizedBox(height: 15),
-
         BodyContainer(
           args: ['3'],
           description: SimLocalizations.of(context)!.fast_description_step3,
@@ -261,9 +248,7 @@ class FastSelectedBody extends StatelessWidget {
             ),
           ),
         ),
-
         const SizedBox(height: 15),
-
         BodyContainer(
           args: ['4'],
           description: SimLocalizations.of(context)!.fast_description_step4,
@@ -282,15 +267,13 @@ class FastSelectedBody extends StatelessWidget {
             ),
           ),
         ),
-
         SizedBox(height: 15),
-
         BodyContainer(
           stepTitle: SimLocalizations.of(context)!.important,
-          description:
-              SimLocalizations.of(
-                context,
-              )!.another_device_description_important,
+          description: SimLocalizations.of(
+            context,
+          )!
+              .another_device_description_important,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Center(

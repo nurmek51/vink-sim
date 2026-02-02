@@ -2,7 +2,8 @@ import 'package:vink_sim/core/platform_device/platform_detector.dart';
 import 'package:flutter/services.dart';
 
 class EsimService {
-  static const MethodChannel _channel = MethodChannel('com.flexunion.FlexSim/esim');
+  static const MethodChannel _channel =
+      MethodChannel('com.flexunion.FlexSim/esim');
 
   static Future<String> installEsimProfile({
     required String smdpServer,
