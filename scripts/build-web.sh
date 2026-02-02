@@ -37,8 +37,8 @@ EOF
 echo "📝 Generating .env file for Flutter..."
 # Use Vercel environment variables if available, otherwise fallback to defaults
 cat > .env << EOF
-API_URL=${API_URL:-"http://35.207.158.51/"}
-API_URL_DEVELOPMENT=${API_URL_DEVELOPMENT:-"http://35.207.158.51/"}
+API_URL=${API_URL:-"https://nurmek.site/"}
+API_URL_DEVELOPMENT=${API_URL_DEVELOPMENT:-"https://nurmek.site/"}
 
 FIREBASE_API_KEY_WEB=${FIREBASE_API_KEY_WEB}
 FIREBASE_APP_ID_WEB=${FIREBASE_APP_ID_WEB}
