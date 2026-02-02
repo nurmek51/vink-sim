@@ -30,8 +30,10 @@ class SettingsScreen extends StatelessWidget {
           // as the shell will likely unmount this feature module.
           print('SettingsScreen: Shell mode logout triggered');
         } else {
-          // Standalone mode: Redirect within vink_sim
-          context.go(AppRoutes.welcome);
+          // Standalone mode: Force redirect within vink_sim
+          // We use GoRouter to go to the root path which is the Welcome Screen in standalone
+          // Using push/go to ensure previous history is cleared if possible, or just go.
+          GoRouter.of(context).go(AppRoutes.welcome);
         }
       }
     } catch (e) {
