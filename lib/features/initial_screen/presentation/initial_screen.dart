@@ -39,7 +39,7 @@ class _InitialScreenState extends State<InitialScreen> {
   Future<void> _bootstrap() async {
     final tokenManager = sl.get<TokenManager>();
     final isAuthenticated = await tokenManager.isTokenValid();
-    
+
     if (kDebugMode) print('Initial: User authenticated: $isAuthenticated');
 
     if (!mounted) return;
@@ -58,6 +58,17 @@ class _InitialScreenState extends State<InitialScreen> {
     }
 
     if (!_subscribed) {
+      _subscribed = true;
+      _subscriberSub = subscriberBloc.stream.listen((state) {
+        if (_navigated) return;
+
+        if (state is SubscriberLoaded) {
+          _decideAndNavigate(state);
+        } else if (state is SubscriberError) {
+          _safeGo(AppRoutes.welcome);
+        }
+      });
+    }
 
     if (subscriberBloc.state is SubscriberInitial ||
         subscriberBloc.state is SubscriberError) {

@@ -7,6 +7,7 @@ import 'package:vink_sim/core/styles/flex_typography.dart';
 import 'package:vink_sim/shared/widgets/localized_text.dart';
 import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 class LogOutWidget extends StatelessWidget {
@@ -133,23 +134,13 @@ class LogOutWidget extends StatelessWidget {
       },
     );
   }
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   Future<void> _logout(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
-    final localizations = SimLocalizations.of(context);
-    
+
     try {
       if (kDebugMode) debugPrint('LogOutWidget: Starting logout process');
-      
+
       final authRepository = sl.get<AuthRepository>();
       final config =
           sl.isRegistered<FeatureConfig>() ? sl.get<FeatureConfig>() : null;
@@ -162,21 +153,22 @@ class LogOutWidget extends StatelessWidget {
       if (context.mounted) {
         if (config?.isShellMode == true) {
           // If in shell mode, the shell app's onLogout callback handles global state
-          if (kDebugMode) debugPrint('LogOutWidget: Shell mode logout triggered');
+          if (kDebugMode)
+            debugPrint('LogOutWidget: Shell mode logout triggered');
         } else {
           // Standalone mode: Force redirect within vink_sim
-          if (kDebugMode) debugPrint('LogOutWidget: Standalone mode logout redirecting to welcome');
+          if (kDebugMode)
+            debugPrint(
+                'LogOutWidget: Standalone mode logout redirecting to welcome');
           GoRouter.of(context).go(AppRoutes.welcome);
         }
       }
     } catch (e) {
       debugPrint('LogOutWidget: Logout error: $e');
-      
-      final errorMessage = localizations?.logout_fail ?? 'Log Out Error';
-      
+
       messenger.showSnackBar(
         SnackBar(
-          content: Text('$errorMessage: ${e.toString()}'),
+          content: Text('Log Out Error: ${e.toString()}'),
           backgroundColor: Colors.red,
         ),
       );
