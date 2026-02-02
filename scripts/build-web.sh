@@ -35,9 +35,12 @@ EOF
 
 # Also generate .env for the Flutter app (used in firebase_options.dart)
 echo "📝 Generating .env file for Flutter..."
-# Use Vercel environment variables if available, otherwise fallback to defaults
+# Hardcode the production URL as a default to ensure it works even if dashboard is empty
+FINAL_API_URL=${API_URL:-"https://nurmek.site/"}
+echo "📍 Using API_URL: $FINAL_API_URL"
+
 cat > .env << EOF
-API_URL=${API_URL:-"https://nurmek.site/"}
+API_URL=$FINAL_API_URL
 API_URL_DEVELOPMENT=${API_URL_DEVELOPMENT:-"https://nurmek.site/"}
 
 FIREBASE_API_KEY_WEB=${FIREBASE_API_KEY_WEB}
