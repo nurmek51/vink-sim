@@ -1,6 +1,7 @@
 import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:vink_sim/core/styles/flex_typography.dart';
 import 'package:vink_sim/shared/widgets/localized_text.dart';
+import 'package:vink_sim/config/feature_config.dart';
 import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:vink_sim/features/auth/domain/repo/auth_repository.dart';
 import 'package:vink_sim/core/router/app_router.dart';
@@ -16,10 +17,22 @@ class SettingsScreen extends StatelessWidget {
 
     try {
       final authRepository = sl.get<AuthRepository>();
+      final config =
+          sl.isRegistered<FeatureConfig>() ? sl.get<FeatureConfig>() : null;
+
+      // Perform logout (this will clear tokens and call onLogout if in shell mode)
       await authRepository.logout();
 
       if (context.mounted) {
-        context.go(AppRoutes.welcome);
+        if (config?.isShellMode == true) {
+          // If in shell mode, the shell app's onLogout callback handles global state
+          // and should handle navigation. We don't need to do internal redirect
+          // as the shell will likely unmount this feature module.
+          print('SettingsScreen: Shell mode logout triggered');
+        } else {
+          // Standalone mode: Redirect within vink_sim
+          context.go(AppRoutes.welcome);
+        }
       }
     } catch (e) {
       if (context.mounted) {
