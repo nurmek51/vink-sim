@@ -177,8 +177,7 @@ class _OtpTileState extends State<OtpTile> {
             builder: (context, otpState) {
               return BlocBuilder<SubscriberBloc, SubscriberState>(
                 builder: (context, subscriberState) {
-                  final isLoading =
-                      otpState is OtpVerificationLoading ||
+                  final isLoading = otpState is OtpVerificationLoading ||
                       subscriberState is SubscriberLoading;
 
                   return _buildBody(context, otpState, isLoading);
@@ -214,7 +213,8 @@ class _OtpTileState extends State<OtpTile> {
           LocalizedText(
             SimLocalizations.of(
               context,
-            )!.sended_six_digit_code(widget.phoneNumber),
+            )!
+                .sended_six_digit_code(widget.phoneNumber),
             style: const TextStyle(
               fontSize: 16,
               color: AppColors.textColorLight,
@@ -256,18 +256,15 @@ class _OtpTileState extends State<OtpTile> {
           const SizedBox(height: 20),
           RegistrationContainer(
             onTap: _isValidCode && !isLoading ? _verifyOtp : null,
-            buttonText:
-                isLoading
-                    ? SimLocalizations.of(context)!.loading
-                    : SimLocalizations.of(context)!.confirm_code,
-            buttonTextColor:
-                _isValidCode && !isLoading
-                    ? AppColors.textColorDark
-                    : const Color(0x4DFFFFFF),
-            color:
-                _isValidCode && !isLoading
-                    ? const Color(0xFFB3F242)
-                    : const Color(0x4D808080),
+            buttonText: isLoading
+                ? SimLocalizations.of(context)!.loading
+                : SimLocalizations.of(context)!.confirm_code,
+            buttonTextColor: _isValidCode && !isLoading
+                ? AppColors.textColorDark
+                : const Color(0x4DFFFFFF),
+            color: _isValidCode && !isLoading
+                ? const Color(0xFFB3F242)
+                : const Color(0x4D808080),
           ),
           const Spacer(),
           Row(
@@ -282,10 +279,9 @@ class _OtpTileState extends State<OtpTile> {
                 child: LocalizedText(
                   SimLocalizations.of(context)!.send_again,
                   style: TextStyle(
-                    color:
-                        otpState is OtpSmsLoading
-                            ? AppColors.textColorLight.withValues(alpha: 0.5)
-                            : AppColors.accentBlue,
+                    color: otpState is OtpSmsLoading
+                        ? AppColors.textColorLight.withValues(alpha: 0.5)
+                        : AppColors.accentBlue,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),

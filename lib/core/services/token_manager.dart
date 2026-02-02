@@ -39,19 +39,19 @@ class TokenManager {
     final token = await _authLocalDataSource.getToken();
     return token != null && token.isNotEmpty;
   }
-  
+
   Future<String?> refreshIdTokenManually() async {
-     // TODO: Implement backend refresh logic if API supports it
-     return getCurrentIdToken();
+    // TODO: Implement backend refresh logic if API supports it
+    return getCurrentIdToken();
   }
 
   Future<Map<String, dynamic>> getTokenInfo() async {
-      final storedToken = await _authLocalDataSource.getToken();
-      return {
-        'hasCurrentUser': storedToken != null,
-        'tokenLength': storedToken?.length ?? 0,
-        'storedTokenLength': storedToken?.length ?? 0,
-      };
+    final storedToken = await _authLocalDataSource.getToken();
+    return {
+      'hasCurrentUser': storedToken != null,
+      'tokenLength': storedToken?.length ?? 0,
+      'storedTokenLength': storedToken?.length ?? 0,
+    };
   }
 
   void dispose() {

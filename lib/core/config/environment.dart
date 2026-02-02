@@ -51,36 +51,41 @@ class Environment {
   static String _overrideApiUrl = '';
   static String get apiUrl {
     if (kDebugMode) {
-      print('Debug: Getting API URL. Override: $_overrideApiUrl, Env: ${dotenv.env['API_URL']}');
+      print(
+          'Debug: Getting API URL. Override: $_overrideApiUrl, Env: ${dotenv.env['API_URL']}');
     }
-    
-    String baseUrl = _overrideApiUrl.isNotEmpty ? _overrideApiUrl : (dotenv.env['API_URL'] ?? '');
-    
+
+    String baseUrl = _overrideApiUrl.isNotEmpty
+        ? _overrideApiUrl
+        : (dotenv.env['API_URL'] ?? '');
+
     // Strip quotes and whitespace that might come from shell/dotenv parsing errors
     baseUrl = baseUrl.replaceAll('"', '').replaceAll("'", "").trim();
-    
+
     // Safety check for empty or legacy IP values
     if (baseUrl.isEmpty || baseUrl.contains('35.207.158.51')) {
       baseUrl = 'https://nurmek.site';
     }
-    
+
     // Force HTTPS for production domains to avoid Mixed Content errors on Web
     if (baseUrl.contains('nurmek.site') && baseUrl.startsWith('http:')) {
       baseUrl = baseUrl.replaceFirst('http:', 'https:');
     }
-    
+
     // Ensure API version path is included
     if (!baseUrl.contains('/api/v1') && !baseUrl.endsWith('/api/v1')) {
-      final cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
+      final cleanBaseUrl = baseUrl.endsWith('/')
+          ? baseUrl.substring(0, baseUrl.length - 1)
+          : baseUrl;
       // Check if it already has /api but not version
       if (cleanBaseUrl.endsWith('/api')) {
-         return '$cleanBaseUrl/v1';
+        return '$cleanBaseUrl/v1';
       }
       return '$cleanBaseUrl/api/v1';
     }
     return baseUrl;
   }
-  
+
   static void setApiUrl(String url) {
     _overrideApiUrl = url;
   }
