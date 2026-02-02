@@ -199,7 +199,10 @@ class TokenManager {
 
     try {
       final user = _firebaseAuth!.currentUser;
-      if (user == null) return null;
+      if (user == null) {
+        // Fallback to local storage if Firebase has no user (using custom OTP)
+        return await _authLocalDataSource.getToken();
+      }
 
       final token = await user.getIdToken(forceRefresh);
 
