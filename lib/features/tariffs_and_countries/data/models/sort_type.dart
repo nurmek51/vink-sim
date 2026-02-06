@@ -6,6 +6,19 @@ enum CountrySortType {
 }
 
 extension CountrySortTypeExtension on CountrySortType {
+  static const popularCountries = [
+    'Turkey',
+    'United Arab Emirates',
+    'France',
+    'Armenia',
+    'Thailand',
+    'Georgia',
+    'United States',
+    'Egypt',
+    'Kazakhstan',
+    'Cyprus',
+  ];
+
   String get displayName {
     switch (this) {
       case CountrySortType.byOperatorCount:

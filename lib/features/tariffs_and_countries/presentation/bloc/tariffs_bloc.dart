@@ -217,18 +217,7 @@ class TariffsBloc extends Bloc<TariffsEvent, TariffsState> {
         break;
 
       case CountrySortType.byPopularity:
-        final popularOrder = [
-          'Turkey',
-          'United Arab Emirates',
-          'France',
-          'Armenia',
-          'Thailand',
-          'Georgia',
-          'United States',
-          'Egypt',
-          'Kazakhstan',
-          'Cyprus',
-        ];
+        final popularOrder = CountrySortTypeExtension.popularCountries;
 
         countries.sort((a, b) {
           final indexA = popularOrder.indexOf(a);

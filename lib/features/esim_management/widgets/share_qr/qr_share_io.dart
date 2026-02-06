@@ -7,10 +7,8 @@ Future<void> sharePng(Uint8List bytes, {String? text}) async {
   final tempDir = await getTemporaryDirectory();
   final file = File('${tempDir.path}/qr_code.png');
   await file.writeAsBytes(bytes);
-  await SharePlus.instance.share(
-    ShareParams(
-      files: [XFile(file.path)],
-      text: text ?? '',
-    ),
+  await Share.shareXFiles(
+    [XFile(file.path)],
+    text: text ?? '',
   );
 }

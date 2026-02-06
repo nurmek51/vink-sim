@@ -71,7 +71,6 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
             top: MediaQuery.of(context).size.height * 0.43 - _circleSize / 2,
             child: PulsingCircle(animation: _scaleAnimation, size: _circleSize),
           ),
-
           Column(
             children: [
               Padding(
@@ -104,9 +103,7 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 20),
-
                       Align(
                         alignment: Alignment.topLeft,
                         child: HelveticaneueFont(
@@ -116,9 +113,7 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
                       const SizedBox(height: 30),
-
                       BenefitTile(
                         icon: Assets.icons.figma149.column1.path,
                         title:
@@ -140,13 +135,11 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
                         title:
                             SimLocalizations.of(context)!.high_speed_low_cost,
                       ),
-
                       const SizedBox(height: 15),
                     ],
                   ),
                 ),
               ),
-
               Flexible(
                 fit: FlexFit.loose,
                 child: Align(
@@ -162,12 +155,11 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
                     ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 5, 16, 30),
-                      child:
-                          isEsimEntryScreenScrollable(context)
-                              ? SingleChildScrollView(
-                                child: BuildContainerBody(),
-                              )
-                              : BuildContainerBody(),
+                      child: isEsimEntryScreenScrollable(context)
+                          ? SingleChildScrollView(
+                              child: BuildContainerBody(),
+                            )
+                          : BuildContainerBody(),
                     ),
                   ),
                 ),
@@ -185,17 +177,23 @@ class BuildContainerBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final subscriberState = context.watch<SubscriberBloc>().state;
+    final bool hasEsim = subscriberState is SubscriberLoaded &&
+        subscriberState.subscriber.imsiList.isNotEmpty;
+
     return Column(
       children: [
         const SizedBox(height: 25),
         Row(
           children: [
-            ExpandedContainer(
-              title: SimLocalizations.of(context)!.how_to_install_esim2,
-              icon: Assets.icons.figma149.blueIcon11.path,
-              onTap: () => openEsimSetupPage(context),
-            ),
-            const SizedBox(width: 16),
+            if (hasEsim) ...[
+              ExpandedContainer(
+                title: SimLocalizations.of(context)!.how_to_install_esim2,
+                icon: Assets.icons.figma149.blueIcon11.path,
+                onTap: () => openEsimSetupPage(context),
+              ),
+              const SizedBox(width: 16),
+            ],
             ExpandedContainer(
               title: SimLocalizations.of(context)!.support_chat,
               icon: Assets.icons.figma149.blueIcon22.path,
@@ -208,16 +206,15 @@ class BuildContainerBody extends StatelessWidget {
                       top: Radius.circular(16),
                     ),
                   ),
-                  builder:
-                      (context) => Padding(
-                        padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom,
-                        ),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: BottomSheetContent(),
-                        ),
-                      ),
+                  builder: (context) => Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: BottomSheetContent(),
+                    ),
+                  ),
                 );
               },
             ),
@@ -239,21 +236,18 @@ class BuildContainerBody extends StatelessWidget {
             ),
           ],
         ),
-
         isEsimEntryScreenScrollable(context)
             ? const SizedBox(height: 20)
             : Spacer(),
-
         GestureDetector(
           onTap: () {
-            final subscriberState = context.read<SubscriberBloc>().state;
-            final bool hasEsim =
-                subscriberState is SubscriberLoaded &&
-                subscriberState.subscriber.imsiList.isNotEmpty;
-
             if (hasEsim) {
               // If user has eSIM, go to top-up with existing IMSI
-              final firstImsi = subscriberState.subscriber.imsiList.first.imsi;
+              final firstImsi = (subscriberState as SubscriberLoaded)
+                  .subscriber
+                  .imsiList
+                  .first
+                  .imsi;
               openTopUpBalanceScreen(context, imsi: firstImsi);
             } else {
               // If user hasn't eSIM, go to top-up screen in "New eSIM" mode

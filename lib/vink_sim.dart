@@ -7,6 +7,7 @@ import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.
 
 export 'config/feature_config.dart';
 export 'ui/feature_root.dart';
+export 'l10n/app_localizations.dart';
 
 Future<void> initVinkSim(FeatureConfig config) =>
     DependencyInjection.initForFeature(config);

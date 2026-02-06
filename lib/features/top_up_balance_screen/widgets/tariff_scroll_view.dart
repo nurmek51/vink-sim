@@ -1,4 +1,5 @@
 import 'package:vink_sim/l10n/app_localizations.dart';
+import 'package:vink_sim/features/tariffs_and_countries/data/models/sort_type.dart';
 import 'package:vink_sim/features/tariffs_and_countries/presentation/bloc/tariffs_event.dart';
 import 'package:vink_sim/features/top_up_balance_screen/widgets/scroll_container_shimmer.dart';
 import 'package:vink_sim/features/top_up_balance_screen/widgets/scroll_container.dart';
@@ -21,8 +22,27 @@ class TariffScrollView extends StatelessWidget {
         return BlocBuilder<TariffsBloc, TariffsState>(
           builder: (context, tariffsState) {
             if (tariffsState is TariffsLoaded) {
-              final entries =
-                  tariffsState.cheapestPricesByCountryOrdered.entries.toList();
+              final entries = tariffsState.pricePerGbByCountry.entries.toList();
+
+              // Sort by popularity
+              entries.sort((a, b) {
+                final popularOrder = CountrySortTypeExtension.popularCountries;
+                final indexA = popularOrder.indexOf(a.key);
+                final indexB = popularOrder.indexOf(b.key);
+
+                if (indexA == -1 && indexB == -1) {
+                  // Fallback to operator count if available, otherwise alphabetical
+                  final countA =
+                      tariffsState.operatorsByCountry[a.key]?.length ?? 0;
+                  final countB =
+                      tariffsState.operatorsByCountry[b.key]?.length ?? 0;
+                  if (countA != countB) return countB.compareTo(countA);
+                  return a.key.compareTo(b.key);
+                }
+                if (indexA == -1) return 1;
+                if (indexB == -1) return -1;
+                return indexA.compareTo(indexB);
+              });
 
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -72,8 +92,8 @@ class TariffScrollView extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     context.read<TariffsBloc>().add(
-                      const RefreshTariffsEvent(),
-                    );
+                          const RefreshTariffsEvent(),
+                        );
                   },
                   child: const Text('Retry'),
                 ),

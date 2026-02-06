@@ -27,6 +27,25 @@ class _FeatureRootState extends State<FeatureRoot> {
     _init();
   }
 
+  @override
+  void didUpdateWidget(FeatureRoot oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.config != oldWidget.config) {
+      _updateConfig();
+    }
+  }
+
+  Future<void> _updateConfig() async {
+    try {
+      if (sl.isRegistered<FeatureConfig>()) {
+        await sl.unregister<FeatureConfig>();
+      }
+      sl.registerSingleton<FeatureConfig>(widget.config);
+    } catch (e) {
+      debugPrint('FeatureRoot config update error: $e');
+    }
+  }
+
   Future<void> _init() async {
     try {
       if (widget.config.apiBaseUrl == null) {

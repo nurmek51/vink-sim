@@ -28,7 +28,7 @@ class RouteGuard {
     final userIsAuthenticated = await isAuthenticated;
 
     if (isOnInitialScreen) return null;
-        
+
     // If user is not authenticated and trying to access protected routes
     if (!userIsAuthenticated && isProtectedRoute(currentPath)) {
       return AppRoutes.welcome;
@@ -42,7 +42,7 @@ class RouteGuard {
   static const List<String> publicRoutes = [
     AppRoutes.welcome,
     AppRoutes.auth,
-    AppRoutes.initial,    
+    AppRoutes.initial,
   ];
 
   /// Check if a route is public

@@ -14,8 +14,21 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = const Locale('en');
+
+  void _changeLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +39,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
+      locale: _locale,
       localizationsDelegates: const [
         SimLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -33,7 +47,12 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: SimLocalizations.supportedLocales,
-      home: const FeatureRoot(config: FeatureConfig(isShellMode: false)),
+      home: FeatureRoot(
+        config: FeatureConfig(
+          isShellMode: false,
+          onLocaleChanged: _changeLocale,
+        ),
+      ),
     );
   }
 }

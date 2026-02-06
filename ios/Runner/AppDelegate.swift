@@ -1,6 +1,5 @@
 import Flutter
 import UIKit
-import Firebase
 import CoreTelephony
 
 @main
@@ -9,13 +8,10 @@ import CoreTelephony
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    // Инициализируем Firebase
-    FirebaseApp.configure()
-    
     GeneratedPluginRegistrant.register(with: self)
     
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
-    let esimChannel = FlutterMethodChannel(name: "com.flexunion.FlexSim/esim",
+    let esimChannel = FlutterMethodChannel(name: "vink.sim/esim",
                                          binaryMessenger: controller.binaryMessenger)
     
     esimChannel.setMethodCallHandler({
