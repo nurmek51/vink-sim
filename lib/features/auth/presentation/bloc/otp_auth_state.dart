@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'package:vink_sim/features/auth/domain/entities/auth_token.dart';
+
 abstract class OtpAuthState extends Equatable {
   const OtpAuthState();
 
@@ -29,16 +31,16 @@ class OtpVerificationLoading extends OtpAuthState {
 }
 
 class OtpVerificationSuccess extends OtpAuthState {
-  final String token;
+  final AuthToken authToken;
   final String phone;
 
   const OtpVerificationSuccess({
-    required this.token,
+    required this.authToken,
     required this.phone,
   });
 
   @override
-  List<Object> get props => [token, phone];
+  List<Object> get props => [authToken, phone];
 }
 
 class OtpAuthError extends OtpAuthState {

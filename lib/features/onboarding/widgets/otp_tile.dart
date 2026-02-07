@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:vink_sim/core/router/app_router.dart';
 import 'package:vink_sim/features/auth/domain/repo/auth_repository.dart';
@@ -43,6 +45,8 @@ class _OtpTileState extends State<OtpTile> {
   String _otpCode = '';
   late OtpAuthBloc _otpAuthBloc;
   late SubscriberBloc _subscriberBloc;
+  Timer? _resendTimer;
+  int _timerSeconds = 90;
 
   final defaultPinTheme = PinTheme(
     width: 56,
@@ -61,6 +65,34 @@ class _OtpTileState extends State<OtpTile> {
     ),
   );
 
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _resendTimer?.cancel();
+    _timerSeconds = 90;
+    _resendTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_timerSeconds == 0) {
+        timer.cancel();
+      } else {
+        setState(() {
+          _timerSeconds--;
+        });
+      }
+    });
+  }
+
+  bool get _canResend => _timerSeconds == 0;
+
+  String _getTimerText() {
+    final minutes = _timerSeconds ~/ 60;
+    final seconds = _timerSeconds % 60;
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+
   bool get _isValidCode => _otpCode.length == 6;
 
   void _verifyOtp() {
@@ -72,12 +104,16 @@ class _OtpTileState extends State<OtpTile> {
   }
 
   void _resendOtp() {
-    _otpAuthBloc.add(SendOtpSmsEvent(phone: widget.phoneNumber));
+    if (_canResend) {
+      _otpAuthBloc.add(SendOtpSmsEvent(phone: widget.phoneNumber));
+      _startTimer();
+    }
   }
 
   @override
   void dispose() {
     _pinController.dispose();
+    _resendTimer?.cancel();
     super.dispose();
   }
 
@@ -117,14 +153,18 @@ class _OtpTileState extends State<OtpTile> {
                   final authLocalDataSource = sl.get<AuthLocalDataSource>();
 
                   try {
-                    await authLocalDataSource.saveToken(state.token);
+                    await authLocalDataSource.saveTokens(
+                      accessToken: state.authToken.token,
+                      refreshToken: state.authToken.refreshToken,
+                    );
 
                     if (sl.isRegistered<FeatureConfig>()) {
                       final config = sl.get<FeatureConfig>();
                       config.onAuthSuccess?.call(
-                        state.token,
-                        604800,
-                      ); // 1 week default
+                        accessToken: state.authToken.token,
+                        refreshToken: state.authToken.refreshToken,
+                        expiresIn: state.authToken.expiresIn,
+                      );
                     }
 
                     if (kDebugMode) {
@@ -267,52 +307,36 @@ class _OtpTileState extends State<OtpTile> {
                 : const Color(0x4D808080),
           ),
           const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LocalizedText(
-                SimLocalizations.of(context)!.did_not_receive_the_code,
-                style: TextStyle(color: AppColors.textColorLight, fontSize: 16),
-              ),
-              TextButton(
-                onPressed: otpState is OtpSmsLoading ? null : _resendOtp,
-                child: LocalizedText(
-                  SimLocalizations.of(context)!.send_again,
-                  style: TextStyle(
-                    color: otpState is OtpSmsLoading
-                        ? AppColors.textColorLight.withValues(alpha: 0.5)
-                        : AppColors.accentBlue,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
           Center(
-            child: Container(
-              height: 40,
-              width: 231,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              alignment: Alignment.center,
-              child: GestureDetector(
-                onTap: widget.onTap,
-                child: LocalizedText(
-                  SimLocalizations.of(context)!.login_another_way,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.textColorLight,
-                    fontWeight: FontWeight.w600,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LocalizedText(
+                  SimLocalizations.of(context)!.did_not_receive_the_code,
+                  style:
+                      TextStyle(color: AppColors.textColorLight, fontSize: 16),
+                ),
+                TextButton(
+                  onPressed: otpState is OtpSmsLoading || !_canResend
+                      ? null
+                      : _resendOtp,
+                  child: LocalizedText(
+                    _canResend
+                        ? SimLocalizations.of(context)!.send_again
+                        : '${SimLocalizations.of(context)!.send_again} (${_getTimerText()})',
+                    style: TextStyle(
+                      color: otpState is OtpSmsLoading || !_canResend
+                          ? AppColors.textColorLight.withValues(alpha: 0.5)
+                          : AppColors.accentBlue,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
+          const SizedBox(height: 20),
         ],
       ),
     );

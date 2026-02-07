@@ -19,6 +19,13 @@ class TravelSimApiService {
     );
   }
 
+  Future<Map<String, dynamic>> refreshToken(String refreshToken) async {
+    return await _apiClient.post(
+      '/token/refresh',
+      body: {'refresh_token': refreshToken},
+    );
+  }
+
   Future<Map<String, dynamic>> getSubscriberInfo() async {
     return await _apiClient.get('/subscriber');
   }

@@ -5,16 +5,18 @@ import 'package:vink_sim/features/auth/data/data_sources/auth_local_data_source.
 class TokenManager {
   final AuthLocalDataSource _authLocalDataSource;
   String? _externalToken;
+  String? _externalRefreshToken;
 
   TokenManager({
     required AuthLocalDataSource authLocalDataSource,
   }) : _authLocalDataSource = authLocalDataSource;
 
-  void setExternalToken(String? token) {
-    _externalToken = token;
-    if (token != null) {
+  void setExternalTokens({String? accessToken, String? refreshToken}) {
+    _externalToken = accessToken;
+    _externalRefreshToken = refreshToken;
+    if (accessToken != null) {
       if (kDebugMode) {
-        print('TokenManager: Using external token');
+        print('TokenManager: Using external tokens');
       }
     }
   }
@@ -32,6 +34,18 @@ class TokenManager {
     }
     // Return stored token
     return await _authLocalDataSource.getToken();
+  }
+
+  Future<String?> getRefreshToken() async {
+    if (_externalRefreshToken != null) {
+      return _externalRefreshToken;
+    }
+    return await _authLocalDataSource.getRefreshToken();
+  }
+
+  Future<void> saveTokens(String accessToken, String refreshToken) async {
+    await _authLocalDataSource.saveToken(accessToken);
+    await _authLocalDataSource.saveRefreshToken(refreshToken);
   }
 
   Future<bool> isTokenValid() async {

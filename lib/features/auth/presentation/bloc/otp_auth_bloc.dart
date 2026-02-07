@@ -7,8 +7,8 @@ class OtpAuthBloc extends Bloc<OtpAuthEvent, OtpAuthState> {
   final AuthRepository _authRepository;
 
   OtpAuthBloc({required AuthRepository authRepository})
-    : _authRepository = authRepository,
-      super(const OtpAuthInitial()) {
+      : _authRepository = authRepository,
+        super(const OtpAuthInitial()) {
     on<SendOtpSmsEvent>(_onSendOtpSms);
     on<VerifyOtpEvent>(_onVerifyOtp);
     on<ResetOtpStateEvent>(_onResetOtpState);
@@ -38,8 +38,8 @@ class OtpAuthBloc extends Bloc<OtpAuthEvent, OtpAuthState> {
 
     result.fold(
       (error) => emit(OtpAuthError(message: error.toString())),
-      (authToken) => emit(
-        OtpVerificationSuccess(token: authToken.token, phone: event.phone),
+      (token) => emit(
+        OtpVerificationSuccess(authToken: token, phone: event.phone),
       ),
     );
   }

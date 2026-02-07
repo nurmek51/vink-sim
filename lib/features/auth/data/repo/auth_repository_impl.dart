@@ -26,14 +26,25 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Result<AuthToken>> verifyOtp(String phone, String otp) async {
     return ResultHelper.safeCall(() async {
       final response = await otpDataSource.verifyOtp(phone, otp);
-      await localDataSource.saveToken(response.token);
+      await localDataSource.saveTokens(
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+      );
 
       // Notify host app via FeatureConfig if available
       if (sl.isRegistered<FeatureConfig>()) {
-        sl.get<FeatureConfig>().onAuthSuccess?.call(response.token, 604800);
+        sl.get<FeatureConfig>().onAuthSuccess?.call(
+              accessToken: response.accessToken,
+              refreshToken: response.refreshToken,
+              expiresIn: response.expiresIn,
+            );
       }
 
-      return AuthToken(response.token);
+      return AuthToken(
+        token: response.accessToken,
+        refreshToken: response.refreshToken,
+        expiresIn: response.expiresIn,
+      );
     });
   }
 

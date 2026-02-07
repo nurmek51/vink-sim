@@ -66,7 +66,10 @@ class DependencyInjection {
   static Future<void> initForFeature(FeatureConfig config) async {
     await init(config: config);
     if (sl.isRegistered<TokenManager>()) {
-      sl<TokenManager>().setExternalToken(config.authToken);
+      sl<TokenManager>().setExternalTokens(
+        accessToken: config.authToken,
+        refreshToken: config.refreshToken,
+      );
     }
     if (config.apiBaseUrl != null) {
       Environment.setApiUrl(config.apiBaseUrl!);
@@ -90,12 +93,7 @@ class DependencyInjection {
       () => TokenManager(authLocalDataSource: sl<AuthLocalDataSource>()),
     );
 
-    // Auth Interceptor
-    sl.registerLazySingleton<AuthInterceptor>(
-      () => AuthInterceptor(tokenManager: sl<TokenManager>()),
-    );
-
-    // API Clients
+    // Determine API URL first
     String apiUrl;
     if (config?.apiBaseUrl != null) {
       apiUrl = config!.apiBaseUrl!;
@@ -106,6 +104,14 @@ class DependencyInjection {
         apiUrl = '';
       }
     }
+
+    // Auth Interceptor
+    sl.registerLazySingleton<AuthInterceptor>(
+      () => AuthInterceptor(
+        tokenManager: sl<TokenManager>(),
+        baseUrl: apiUrl,
+      ),
+    );
 
     sl.registerLazySingleton<ApiClient>(
       () => ApiClient(

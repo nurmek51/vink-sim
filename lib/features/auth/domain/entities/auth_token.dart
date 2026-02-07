@@ -1,5 +1,11 @@
 class AuthToken {
   final String token;
+  final String refreshToken;
+  final int expiresIn;
 
-  AuthToken(this.token);
+  AuthToken({
+    required this.token,
+    required this.refreshToken,
+    required this.expiresIn,
+  });
 }
