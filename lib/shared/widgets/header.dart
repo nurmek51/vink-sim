@@ -34,10 +34,15 @@ class Header extends StatelessWidget {
           ),
           const SizedBox(width: 12),
         ],
-        SvgPicture.asset(
-          Assets.icons.mainIcon.path,
-          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-          package: AssetUtils.package,
+        Transform.translate(
+          offset: const Offset(-10, 3),
+          child: Assets.icons.mainIcon.image(
+            color: color,
+            package: AssetUtils.package,
+            width: 60,
+            height: 46,
+            fit: BoxFit.contain,
+          ),
         ),
         Spacer(),
         GestureDetector(

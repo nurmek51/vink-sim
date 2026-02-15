@@ -107,7 +107,7 @@ abstract class SimLocalizations {
   /// No description provided for @storage_header_title.
   ///
   /// In en, this message translates to:
-  /// **'Flex Travel Sim'**
+  /// **'Vink Sim'**
   String get storage_header_title;
 
   /// No description provided for @frame_globus_title.
@@ -653,7 +653,7 @@ abstract class SimLocalizations {
   /// No description provided for @enter_amount_description.
   ///
   /// In en, this message translates to:
-  /// **'Enter amount to connect\nFlex Travel eSIM'**
+  /// **'Enter amount to connect\nVink Sim'**
   String get enter_amount_description;
 
   /// No description provided for @balance_15_description.
@@ -803,13 +803,13 @@ abstract class SimLocalizations {
   /// No description provided for @enter_amount_top_up_description.
   ///
   /// In en, this message translates to:
-  /// **'Enter the amount to activate\nFlex Travel eSIM'**
+  /// **'Enter the amount to activate\nVink Sim'**
   String get enter_amount_top_up_description;
 
   /// No description provided for @flex_travel_esim_works_worldwide.
   ///
   /// In en, this message translates to:
-  /// **'Flex Travel eSIM works worldwide, according to the tariffs of the country of presence.'**
+  /// **'Vink Sim works worldwide, according to the tariffs of the country of presence.'**
   String get flex_travel_esim_works_worldwide;
 
   /// No description provided for @loading.

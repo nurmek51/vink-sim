@@ -1,3 +1,5 @@
+// dart format width=80
+
 /// GENERATED CODE - DO NOT MODIFY BY HAND
 /// *****************************************************
 ///  FlutterGen
@@ -5,13 +7,12 @@
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
+// ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart' as _svg;
 import 'package:vector_graphics/vector_graphics.dart' as _vg;
-import 'package:vink_sim/core/utils/asset_utils.dart';
 
 class $AssetsIconsGen {
   const $AssetsIconsGen();
@@ -136,6 +137,10 @@ class $AssetsIconsGen {
   SvgGenImage get guideTableView4 =>
       const SvgGenImage('assets/icons/guide_table_view4.svg');
 
+  /// File path: assets/icons/image-Photoroom-_1_.svg
+  SvgGenImage get imagePhotoroom1 =>
+      const SvgGenImage('assets/icons/image-Photoroom-_1_.svg');
+
   /// File path: assets/icons/infinity.svg
   SvgGenImage get infinity => const SvgGenImage('assets/icons/infinity.svg');
 
@@ -150,8 +155,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/mail_icon.svg
   SvgGenImage get mailIcon => const SvgGenImage('assets/icons/mail_icon.svg');
 
-  /// File path: assets/icons/main_icon.svg
-  SvgGenImage get mainIcon => const SvgGenImage('assets/icons/main_icon.svg');
+  /// File path: assets/icons/main_icon.png
+  AssetGenImage get mainIcon =>
+      const AssetGenImage('assets/icons/main_icon.png');
 
   /// File path: assets/icons/purchase_history.svg
   SvgGenImage get purchaseHistory =>
@@ -196,53 +202,54 @@ class $AssetsIconsGen {
       const SvgGenImage('assets/icons/whatsapp_icon.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [
-    telegramLogo,
-    accountSettings,
-    appLanguage,
-    appleLogo,
-    applePayLogo,
-    arrowComeback,
-    arrowDown,
-    arrowRight,
-    attentionCircle,
-    avatarIcon,
-    card,
-    check,
-    checkbox,
-    chinaFlag,
-    credCard,
-    crypto,
-    emailLogo,
-    englandFlag,
-    faqIcon,
-    faqIconFull,
-    globus,
-    globusIcon,
-    globusWithBackground,
-    googleLogo,
-    greenWhatsappIcon,
-    guideTableView1,
-    guideTableView2,
-    guideTableView3,
-    guideTableView4,
-    infinity,
-    infoQrCircle,
-    leftVector,
-    mailIcon,
-    mainIcon,
-    purchaseHistory,
-    qrCodeImage,
-    rightVector,
-    russianFlag,
-    selectedCardIcon,
-    simContainer,
-    simIcon,
-    telegramIcon,
-    trafficUsage,
-    usaFlag,
-    whatsappIcon,
-  ];
+  List<dynamic> get values => [
+        telegramLogo,
+        accountSettings,
+        appLanguage,
+        appleLogo,
+        applePayLogo,
+        arrowComeback,
+        arrowDown,
+        arrowRight,
+        attentionCircle,
+        avatarIcon,
+        card,
+        check,
+        checkbox,
+        chinaFlag,
+        credCard,
+        crypto,
+        emailLogo,
+        englandFlag,
+        faqIcon,
+        faqIconFull,
+        globus,
+        globusIcon,
+        globusWithBackground,
+        googleLogo,
+        greenWhatsappIcon,
+        guideTableView1,
+        guideTableView2,
+        guideTableView3,
+        guideTableView4,
+        imagePhotoroom1,
+        infinity,
+        infoQrCircle,
+        leftVector,
+        mailIcon,
+        mainIcon,
+        purchaseHistory,
+        qrCodeImage,
+        rightVector,
+        russianFlag,
+        selectedCardIcon,
+        simContainer,
+        simIcon,
+        telegramIcon,
+        trafficUsage,
+        usaFlag,
+        whatsappIcon
+      ];
 }
 
 class $AssetsTranslationsGen {
@@ -381,7 +388,7 @@ class $AssetsIconsFigma112Gen {
   AssetGenImage get mobileCommunication =>
       const AssetGenImage('assets/icons/figma112/mobile_communication.png');
 
-  /// File path: assets/icons/figma112/mobile_communication_en.jpg
+  /// File path: assets/icons/figma112/mobile_communication_eng.jpg
   AssetGenImage get mobileCommunicationEng =>
       const AssetGenImage('assets/icons/figma112/mobile_communication_eng.jpg');
 
@@ -435,50 +442,50 @@ class $AssetsIconsFigma112Gen {
 
   /// List of all assets
   List<dynamic> get values => [
-    activationCode,
-    addEsim,
-    anotherStep11,
-    anotherStep12,
-    anotherStep13,
-    anotherStep14,
-    anotherStep31,
-    anotherStep32,
-    anotherStep2,
-    anotherStep5,
-    chooseMobileData,
-    dataRouming,
-    defaultNumber,
-    facetimeImessage,
-    flexPlan,
-    forTravels,
-    importantStep,
-    importantStepTodo,
-    manualStep14,
-    manualStep15,
-    mobileCommunication,
-    qrManual,
-    qrMobileTariff,
-    scanQr,
-    settingsByQr,
-    step21121,
-    step21122,
-    step3Jpg112,
-    step4Jpg112,
-    successIcon,
-    mobileCommunicationEng,
-    addEsimEng,
-    settingsByQrEng,
-    qrMobileTariffEng,
-    flexPlanEng,
-    forTravels,
-    defaultNumberEng,
-    facetimeImessageEng,
-    chooseMobileDataEng,
-    dataRoumingEng,
-    importantStepTodoEng,
-    scanQrEng,
-    activationCodeEng,
-  ];
+        activationCode,
+        activationCodeEng,
+        addEsim,
+        addEsimEng,
+        anotherStep11,
+        anotherStep12,
+        anotherStep13,
+        anotherStep14,
+        anotherStep31,
+        anotherStep32,
+        anotherStep2,
+        anotherStep5,
+        chooseMobileData,
+        chooseMobileDataEng,
+        dataRouming,
+        dataRoumingEng,
+        defaultNumber,
+        defaultNumberEng,
+        facetimeImessage,
+        facetimeImessageEng,
+        flexPlan,
+        flexPlanEng,
+        forTravels,
+        forTravelsEng,
+        importantStep,
+        importantStepTodo,
+        importantStepTodoEng,
+        manualStep14,
+        manualStep15,
+        mobileCommunication,
+        mobileCommunicationEng,
+        qrManual,
+        qrMobileTariff,
+        qrMobileTariffEng,
+        scanQr,
+        scanQrEng,
+        settingsByQr,
+        settingsByQrEng,
+        step21121,
+        step21122,
+        step3Jpg112,
+        step4Jpg112,
+        successIcon
+      ];
 }
 
 class $AssetsIconsFigma141Gen {
@@ -580,32 +587,32 @@ class $AssetsIconsFigma149Gen {
   SvgGenImage get profileIcon =>
       const SvgGenImage('assets/icons/figma149/profile_icon.svg');
 
-  /// File path: assets/icons/figma149/white_logo.svg
-  SvgGenImage get whiteLogo =>
-      const SvgGenImage('assets/icons/figma149/white_logo.svg');
+  /// File path: assets/icons/figma149/white_logo.png
+  AssetGenImage get whiteLogo =>
+      const AssetGenImage('assets/icons/figma149/white_logo.png');
 
   /// List of all assets
-  List<SvgGenImage> get values => [
-    blueIcon1,
-    blueIcon11,
-    blueIcon2,
-    blueIcon22,
-    blueIcon3,
-    blueIcon33,
-    blueIcon4,
-    blueIcon44,
-    column1,
-    column2,
-    column3,
-    column4,
-    moneyIcon,
-    profileIcon,
-    whiteLogo,
-  ];
+  List<dynamic> get values => [
+        blueIcon1,
+        blueIcon11,
+        blueIcon2,
+        blueIcon22,
+        blueIcon3,
+        blueIcon33,
+        blueIcon4,
+        blueIcon44,
+        column1,
+        column2,
+        column3,
+        column4,
+        moneyIcon,
+        profileIcon,
+        whiteLogo
+      ];
 }
 
 class Assets {
-  Assets._();
+  const Assets._();
 
   static const String aEnv = '.env';
   static const $AssetsIconsGen icons = $AssetsIconsGen();
@@ -616,12 +623,18 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+    this.animation,
+  });
 
   final String _assetName;
 
   final Size? size;
   final Set<String> flavors;
+  final AssetGenImageAnimation? animation;
 
   Image image({
     Key? key,
@@ -644,7 +657,7 @@ class AssetGenImage {
     bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.low,
+    FilterQuality filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
   }) {
@@ -669,18 +682,21 @@ class AssetGenImage {
       matchTextDirection: matchTextDirection,
       gaplessPlayback: gaplessPlayback,
       isAntiAlias: isAntiAlias,
-      package: package ?? AssetUtils.package,
+      package: package,
       filterQuality: filterQuality,
       cacheWidth: cacheWidth,
       cacheHeight: cacheHeight,
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
     return AssetImage(
       _assetName,
       bundle: bundle,
-      package: package ?? AssetUtils.package,
+      package: package,
     );
   }
 
@@ -689,12 +705,30 @@ class AssetGenImage {
   String get keyName => _assetName;
 }
 
-class SvgGenImage {
-  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = false;
+class AssetGenImageAnimation {
+  const AssetGenImageAnimation({
+    required this.isAnimation,
+    required this.duration,
+    required this.frames,
+  });
 
-  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = true;
+  final bool isAnimation;
+  final Duration duration;
+  final int frames;
+}
+
+class SvgGenImage {
+  const SvgGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = false;
+
+  const SvgGenImage.vec(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -705,7 +739,7 @@ class SvgGenImage {
     Key? key,
     bool matchTextDirection = false,
     AssetBundle? bundle,
-    String? package, // Removed default here
+    String? package,
     double? width,
     double? height,
     BoxFit fit = BoxFit.contain,
@@ -715,6 +749,7 @@ class SvgGenImage {
     String? semanticsLabel,
     bool excludeFromSemantics = false,
     _svg.SvgTheme? theme,
+    _svg.ColorMapper? colorMapper,
     ColorFilter? colorFilter,
     Clip clipBehavior = Clip.hardEdge,
     @deprecated Color? color,
@@ -722,19 +757,19 @@ class SvgGenImage {
     @deprecated bool cacheColorFilter = false,
   }) {
     final _svg.BytesLoader loader;
-    final String? effectivePackage = package ?? AssetUtils.package;
     if (_isVecFormat) {
       loader = _vg.AssetBytesLoader(
         _assetName,
         assetBundle: bundle,
-        packageName: effectivePackage,
+        packageName: package,
       );
     } else {
       loader = _svg.SvgAssetLoader(
         _assetName,
         assetBundle: bundle,
-        packageName: effectivePackage,
+        packageName: package,
         theme: theme,
+        colorMapper: colorMapper,
       );
     }
     return _svg.SvgPicture(
@@ -749,8 +784,7 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter:
-          colorFilter ??
+      colorFilter: colorFilter ??
           (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,

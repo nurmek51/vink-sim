@@ -7,8 +7,13 @@ import 'package:flutter/material.dart';
 
 class TableViewCells extends StatelessWidget {
   final bool isAuthorized;
+  final bool hasEsims;
 
-  const TableViewCells({super.key, this.isAuthorized = false});
+  const TableViewCells({
+    super.key,
+    this.isAuthorized = false,
+    this.hasEsims = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +40,15 @@ class TableViewCells extends StatelessWidget {
           );
         },
       ),
-      CustomListTile(
-        imagePath: 'guide_table_view3',
-        containerColor: AppColors.guideTable3,
-        listText: SimLocalizations.of(context)!.smth_more,
-        onTap: () {
-          openEsimSetupPage(context);
-        },
-      ),
+      if (hasEsims)
+        CustomListTile(
+          imagePath: 'guide_table_view3',
+          containerColor: AppColors.guideTable3,
+          listText: SimLocalizations.of(context)!.smth_more,
+          onTap: () {
+            openEsimSetupPage(context);
+          },
+        ),
       CustomListTile(
         imagePath: 'guide_table_view4',
         containerColor: AppColors.guideTable4,
@@ -54,16 +60,15 @@ class TableViewCells extends StatelessWidget {
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
             ),
-            builder:
-                (context) => Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: BottomSheetContent(),
-                  ),
-                ),
+            builder: (context) => Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                child: BottomSheetContent(),
+              ),
+            ),
           );
         },
       ),

@@ -12,7 +12,7 @@ class SimLocalizationsRu extends SimLocalizations {
   String get frame_title => 'Одна eSim для всех\nпоездок';
 
   @override
-  String get storage_header_title => 'Flex Travel Sim';
+  String get storage_header_title => 'Vink Sim';
 
   @override
   String get frame_globus_title => 'Одна карта для всех направлении';
@@ -309,7 +309,7 @@ class SimLocalizationsRu extends SimLocalizations {
 
   @override
   String get enter_amount_description =>
-      'Введите сумму, чтобы подключить\nFlex Travel eSIM';
+      'Введите сумму, чтобы подключить\nVink Sim';
 
   @override
   String balance_15_description(Object amount) {
@@ -396,11 +396,11 @@ class SimLocalizationsRu extends SimLocalizations {
 
   @override
   String get enter_amount_top_up_description =>
-      'Введите сумму, чтобы подключить\nFlex Travel eSIM';
+      'Введите сумму, чтобы подключить\nVink Sim';
 
   @override
   String get flex_travel_esim_works_worldwide =>
-      'Flex Travel eSIM работает по всему миру, согласно тарифам страны присутствия.';
+      'Vink Sim работает по всему миру, согласно тарифам страны присутствия.';
 
   @override
   String get loading => 'Загрузка...';

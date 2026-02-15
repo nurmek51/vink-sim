@@ -12,7 +12,7 @@ class SimLocalizationsEn extends SimLocalizations {
   String get frame_title => 'One eSIM for all\nyour trips';
 
   @override
-  String get storage_header_title => 'Flex Travel Sim';
+  String get storage_header_title => 'Vink Sim';
 
   @override
   String get frame_globus_title => 'One card for all destinations';
@@ -308,8 +308,7 @@ class SimLocalizationsEn extends SimLocalizations {
   String get high_level => 'High — 15 GB';
 
   @override
-  String get enter_amount_description =>
-      'Enter amount to connect\nFlex Travel eSIM';
+  String get enter_amount_description => 'Enter amount to connect\nVink Sim';
 
   @override
   String balance_15_description(Object amount) {
@@ -396,11 +395,11 @@ class SimLocalizationsEn extends SimLocalizations {
 
   @override
   String get enter_amount_top_up_description =>
-      'Enter the amount to activate\nFlex Travel eSIM';
+      'Enter the amount to activate\nVink Sim';
 
   @override
   String get flex_travel_esim_works_worldwide =>
-      'Flex Travel eSIM works worldwide, according to the tariffs of the country of presence.';
+      'Vink Sim works worldwide, according to the tariffs of the country of presence.';
 
   @override
   String get loading => 'Loading...';

@@ -59,8 +59,6 @@ flutter:
     - assets/icons/figma142/
     - assets/icons/figma143/
     - assets/icons/figma149/
-    - assets/translations/
-
   fonts:
     - family: HelveticaNeue
       fonts:

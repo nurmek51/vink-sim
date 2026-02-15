@@ -1,6 +1,6 @@
 {
   "frame_title": "One eSIM for all\nyour trips",
-  "storage_header_title": "Flex Travel Sim",
+  "storage_header_title": "Vink Sim",
   "frame_globus_title": "One card for all destinations",
   "frame_check_title": "Pay only for what you spend",
   "infinity_title": "No expiration date",
@@ -91,7 +91,7 @@
   "low_level": "Low — 0 GB",
   "medium_level": "Medium — 0.6 GB",
   "high_level": "High — 15 GB",
-  "enter_amount_description": "Enter amount to connect\nFlex Travel eSIM",
+  "enter_amount_description": "Enter amount to connect\nVink Sim",
   "balance_15_description": "{amount}$ on balance, that's:",
   "@balance_15_description": {
     "placeholders": {
@@ -141,8 +141,8 @@
   "language": "Language",
   "russian": "Russian",
   "chinese": "Chinese",
-  "enter_amount_top_up_description": "Enter the amount to activate\nFlex Travel eSIM",
-  "flex_travel_esim_works_worldwide": "Flex Travel eSIM works worldwide, according to the tariffs of the country of presence.",
+  "enter_amount_top_up_description": "Enter the amount to activate\nVink Sim",
+  "flex_travel_esim_works_worldwide": "Vink Sim works worldwide, according to the tariffs of the country of presence.",
   "loading": "Loading...",
   "pay_money": "Pay ${amount}",
   "@pay_money": {

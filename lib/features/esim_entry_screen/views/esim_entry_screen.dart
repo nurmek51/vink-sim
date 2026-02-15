@@ -1,6 +1,7 @@
 import 'package:vink_sim/components/widgets/helvetica_neue_font.dart';
 import 'package:vink_sim/constants/app_colors.dart';
 import 'package:vink_sim/core/layout/screen_utils.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
 import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:vink_sim/features/dashboard/widgets/bottom_sheet_content.dart';
 import 'package:vink_sim/features/dashboard/widgets/expanded_container.dart';
@@ -81,9 +82,14 @@ class _EsimEntryScreenState extends State<EsimEntryScreen>
                       const SizedBox(height: 45),
                       Row(
                         children: [
-                          Assets.icons.figma149.whiteLogo.svg(
-                            width: 39.5,
-                            height: 25.06,
+                          Transform.translate(
+                            offset: const Offset(-10, 5),
+                            child: Assets.icons.figma149.whiteLogo.image(
+                              width: 66,
+                              height: 50,
+                              package: AssetUtils.package,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                           Spacer(),
                           GestureDetector(

@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_EMBEDDED_SUBSCRIPTIONS"/>
 
     <application
-        android:label="FLEX SIM"
+        android:label="Vink Sim"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
