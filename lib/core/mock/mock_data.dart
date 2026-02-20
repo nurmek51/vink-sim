@@ -1,4 +1,4 @@
-/// Mock Data for FlexTravelSIM Application
+/// Mock Data for Vink SIM Application
 ///
 /// This file contains all mock data used for testing UI when the backend is unavailable.
 /// To integrate real API, replace the mock implementations in data sources with actual API calls.
@@ -37,7 +37,7 @@ class MockConfig {
 /// Mock User Data
 class MockUserData {
   static const String mockUserId = 'mock_user_001';
-  static const String mockEmail = 'test@flextravelsim.com';
+  static const String mockEmail = 'test@vinksim.com';
   static const String mockPhone = '+1234567890';
 
   static UserModel get currentUser => UserModel(
@@ -119,7 +119,7 @@ class MockSubscriberData {
           balance: 25.00,
           country: 'Germany',
           iso: 'DE',
-          brand: 'FlexSIM',
+          brand: 'Vink SIM',
           rate: 0.05,
           qr: 'LPA:1\$smdp.example.com\$ACTIVATION_CODE_GERMANY',
           smdpServer: 'smdp.example.com',
@@ -131,7 +131,7 @@ class MockSubscriberData {
           balance: 15.00,
           country: 'United Kingdom',
           iso: 'GB',
-          brand: 'FlexSIM',
+          brand: 'Vink SIM',
           rate: 0.06,
           qr: 'LPA:1\$smdp.example.com\$ACTIVATION_CODE_UK',
           smdpServer: 'smdp.example.com',
@@ -143,7 +143,7 @@ class MockSubscriberData {
           balance: 10.00,
           country: 'Japan',
           iso: 'JP',
-          brand: 'FlexSIM',
+          brand: 'Vink SIM',
           rate: 0.08,
           qr: 'LPA:1\$smdp.example.com\$ACTIVATION_CODE_JP',
           smdpServer: 'smdp.example.com',
@@ -160,7 +160,7 @@ class MockEsimData {
         EsimModel(
           id: 'esim_001',
           name: 'Germany Travel eSIM',
-          provider: 'FlexSIM',
+          provider: 'Vink SIM',
           country: 'Germany',
           region: 'Europe',
           isActive: true,
@@ -178,7 +178,7 @@ class MockEsimData {
         EsimModel(
           id: 'esim_002',
           name: 'UK Travel eSIM',
-          provider: 'FlexSIM',
+          provider: 'Vink SIM',
           country: 'United Kingdom',
           region: 'Europe',
           isActive: false,
@@ -196,7 +196,7 @@ class MockEsimData {
         EsimModel(
           id: 'esim_003',
           name: 'Japan Travel eSIM',
-          provider: 'FlexSIM',
+          provider: 'Vink SIM',
           country: 'Japan',
           region: 'Asia',
           isActive: false,

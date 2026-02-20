@@ -126,7 +126,7 @@ class SimLocalizationsEn extends SimLocalizations {
 
   @override
   String get fast_description_step4 =>
-      'Go to Settings > Cellular > Flex eSIM.\n\nEnable \"Data Roaming\"';
+      'Go to Settings > Cellular > Vink eSIM.\n\nEnable \"Data Roaming\"';
 
   @override
   String get fast_selected_row => 'Fast';
@@ -162,7 +162,7 @@ class SimLocalizationsEn extends SimLocalizations {
 
   @override
   String get another_device_description_warning =>
-      'The actions described below need to be\nperformed on the device where you\nwant to activate the Flex eSIM plan';
+      'The actions described below need to be\nperformed on the device where you\nwant to activate the Vink eSIM plan';
 
   @override
   String get another_device_description1 =>
@@ -174,19 +174,19 @@ class SimLocalizationsEn extends SimLocalizations {
 
   @override
   String get another_device_description3 =>
-      'Set a label for the new plan \"Flex Plan\"';
+      'Set a label for the new plan \"Vink Plan\"';
 
   @override
   String get another_device_description5 =>
-      'Select the recently added Flex eSIM plan for cellular data';
+      'Select the recently added Vink eSIM plan for cellular data';
 
   @override
   String get another_device_description_important =>
-      'If you don\'t want to use eSIM right now, go to Settings > Cellular > Cellular Data and select Primary number.\n\nLater, when you want to use Flex eSIM again – select it on this screen.';
+      'If you don\'t want to use eSIM right now, go to Settings > Cellular > Cellular Data and select Primary number.\n\nLater, when you want to use Vink eSIM again – select it on this screen.';
 
   @override
   String get manual_description1 =>
-      'Go to Settings > Cellular > Flex eSIM. Install the plan by entering the \"SM-DP+ Address\" and \"Activation Code\".';
+      'Go to Settings > Cellular > Vink eSIM. Install the plan by entering the \"SM-DP+ Address\" and \"Activation Code\".';
 
   @override
   String get adress_sm_dp => 'SM-DP+ Address';
@@ -398,7 +398,7 @@ class SimLocalizationsEn extends SimLocalizations {
       'Enter the amount to activate\nVink Sim';
 
   @override
-  String get flex_travel_esim_works_worldwide =>
+  String get vink_travel_esim_works_worldwide =>
       'Vink Sim works worldwide, according to the tariffs of the country of presence.';
 
   @override
@@ -524,4 +524,8 @@ class SimLocalizationsEn extends SimLocalizations {
 
   @override
   String get esim_is_activating => 'eSIM is activating...';
+
+  @override
+  String get flex_travel_esim_works_worldwide =>
+      'Flex Travel eSIM works worldwide!';
 }

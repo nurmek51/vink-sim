@@ -126,7 +126,7 @@ class SimLocalizationsRu extends SimLocalizations {
 
   @override
   String get fast_description_step4 =>
-      'Зайдите в Настройки > Сотовая связь > Flex eSIM.\n\nВключите \"Роуминг данных\"';
+      'Зайдите в Настройки > Сотовая связь > Vink eSIM.\n\nВключите \"Роуминг данных\"';
 
   @override
   String get fast_selected_row => 'Быстрая';
@@ -162,7 +162,7 @@ class SimLocalizationsRu extends SimLocalizations {
 
   @override
   String get another_device_description_warning =>
-      'Описанные ниже действия нужно\nпроизводить на том устройстве, на\nкотором вы хотите активировать план\nFlex eSIM';
+      'Описанные ниже действия нужно\nпроизводить на том устройстве, на\nкотором вы хотите активировать план\nVink eSIM';
 
   @override
   String get another_device_description1 =>
@@ -174,19 +174,19 @@ class SimLocalizationsRu extends SimLocalizations {
 
   @override
   String get another_device_description3 =>
-      'Установите этикетку для нового тарифа \"Flex Plan\"';
+      'Установите этикетку для нового тарифа \"Vink Plan\"';
 
   @override
   String get another_device_description5 =>
-      'Выберите недавно добавленный план Flex eSIM для передачи сотовых данных';
+      'Выберите недавно добавленный план Vink eSIM для передачи сотовых данных';
 
   @override
   String get another_device_description_important =>
-      'Если вы не хотите пользоваться eSIM прямо сейчас, зайдите в Настройки > Сотовая связь > Сотовые данные и выберите Основной номер.\n\nВ дальнейшем, когда вы вновь захотите использовать Flex eSIM – выберите его на этом экране.';
+      'Если вы не хотите пользоваться eSIM прямо сейчас, зайдите в Настройки > Сотовая связь > Сотовые данные и выберите Основной номер.\n\nВ дальнейшем, когда вы вновь захотите использовать Vink eSIM – выберите его на этом экране.';
 
   @override
   String get manual_description1 =>
-      'Зайдите в Настройки > Сотовая связь > Flex eSIM. Установите план, введя «Адрес SM-DP+» и «Код активации».';
+      'Зайдите в Настройки > Сотовая связь > Vink eSIM. Установите план, введя «Адрес SM-DP+» и «Код активации».';
 
   @override
   String get adress_sm_dp => 'Адрес SM-DP+';
@@ -399,7 +399,7 @@ class SimLocalizationsRu extends SimLocalizations {
       'Введите сумму, чтобы подключить\nVink Sim';
 
   @override
-  String get flex_travel_esim_works_worldwide =>
+  String get vink_travel_esim_works_worldwide =>
       'Vink Sim работает по всему миру, согласно тарифам страны присутствия.';
 
   @override
@@ -525,4 +525,8 @@ class SimLocalizationsRu extends SimLocalizations {
 
   @override
   String get esim_is_activating => 'eSIM активируется...';
+
+  @override
+  String get flex_travel_esim_works_worldwide =>
+      'Flex Travel eSIM работает по всему миру!';
 }

@@ -323,7 +323,7 @@ abstract class SimLocalizations {
   /// No description provided for @fast_description_step4.
   ///
   /// In en, this message translates to:
-  /// **'Go to Settings > Cellular > Flex eSIM.\n\nEnable \"Data Roaming\"'**
+  /// **'Go to Settings > Cellular > Vink eSIM.\n\nEnable \"Data Roaming\"'**
   String get fast_description_step4;
 
   /// No description provided for @fast_selected_row.
@@ -389,7 +389,7 @@ abstract class SimLocalizations {
   /// No description provided for @another_device_description_warning.
   ///
   /// In en, this message translates to:
-  /// **'The actions described below need to be\nperformed on the device where you\nwant to activate the Flex eSIM plan'**
+  /// **'The actions described below need to be\nperformed on the device where you\nwant to activate the Vink eSIM plan'**
   String get another_device_description_warning;
 
   /// No description provided for @another_device_description1.
@@ -407,25 +407,25 @@ abstract class SimLocalizations {
   /// No description provided for @another_device_description3.
   ///
   /// In en, this message translates to:
-  /// **'Set a label for the new plan \"Flex Plan\"'**
+  /// **'Set a label for the new plan \"Vink Plan\"'**
   String get another_device_description3;
 
   /// No description provided for @another_device_description5.
   ///
   /// In en, this message translates to:
-  /// **'Select the recently added Flex eSIM plan for cellular data'**
+  /// **'Select the recently added Vink eSIM plan for cellular data'**
   String get another_device_description5;
 
   /// No description provided for @another_device_description_important.
   ///
   /// In en, this message translates to:
-  /// **'If you don\'t want to use eSIM right now, go to Settings > Cellular > Cellular Data and select Primary number.\n\nLater, when you want to use Flex eSIM again – select it on this screen.'**
+  /// **'If you don\'t want to use eSIM right now, go to Settings > Cellular > Cellular Data and select Primary number.\n\nLater, when you want to use Vink eSIM again – select it on this screen.'**
   String get another_device_description_important;
 
   /// No description provided for @manual_description1.
   ///
   /// In en, this message translates to:
-  /// **'Go to Settings > Cellular > Flex eSIM. Install the plan by entering the \"SM-DP+ Address\" and \"Activation Code\".'**
+  /// **'Go to Settings > Cellular > Vink eSIM. Install the plan by entering the \"SM-DP+ Address\" and \"Activation Code\".'**
   String get manual_description1;
 
   /// No description provided for @adress_sm_dp.
@@ -806,11 +806,11 @@ abstract class SimLocalizations {
   /// **'Enter the amount to activate\nVink Sim'**
   String get enter_amount_top_up_description;
 
-  /// No description provided for @flex_travel_esim_works_worldwide.
+  /// No description provided for @vink_travel_esim_works_worldwide.
   ///
   /// In en, this message translates to:
   /// **'Vink Sim works worldwide, according to the tariffs of the country of presence.'**
-  String get flex_travel_esim_works_worldwide;
+  String get vink_travel_esim_works_worldwide;
 
   /// No description provided for @loading.
   ///
@@ -1051,6 +1051,12 @@ abstract class SimLocalizations {
   /// In en, this message translates to:
   /// **'eSIM is activating...'**
   String get esim_is_activating;
+
+  /// No description provided for @flex_travel_esim_works_worldwide.
+  ///
+  /// In en, this message translates to:
+  /// **'Flex Travel eSIM works worldwide!'**
+  String get flex_travel_esim_works_worldwide;
 }
 
 class _SimLocalizationsDelegate

@@ -1,8 +1,8 @@
-# FlexTravelSIM API Integration Documentation
+# Vink SIM API Integration Documentation
 
 ## Overview
 
-This document provides comprehensive API integration details for the FlexTravelSIM application.
+This document provides comprehensive API integration details for the Vink SIM application.
 Use this as a reference when integrating the real backend API.
 
 **Current Status:** Backend returning 503 - Using Mock Data
@@ -16,7 +16,7 @@ Use this as a reference when integrating the real backend API.
 
 | Environment | URL                                    |
 |-------------|----------------------------------------|
-| Development | `https://dev-api.flextravelsim.com`    |
+| Development | `https://dev-api.vinksim.com`    |
 | Production  | From `Environment.apiUrl` (.env file)  |
 
 ### Authentication
@@ -157,7 +157,7 @@ Authorization: Bearer <token>
       "balance": 25.00,
       "country": "Germany",
       "iso": "DE",
-      "brand": "FlexSIM",
+      "brand": "Vink SIM",
       "rate": 0.05,
       "qr": "LPA:1$smdp.example.com$ACTIVATION_CODE",
       "smdpServer": "smdp.example.com",
@@ -372,7 +372,7 @@ Authorization: Bearer <token>
     {
       "id": "esim_001",
       "name": "Germany Travel eSIM",
-      "provider": "FlexSIM",
+      "provider": "Vink SIM",
       "country": "Germany",
       "region": "Europe",
       "is_active": true,
