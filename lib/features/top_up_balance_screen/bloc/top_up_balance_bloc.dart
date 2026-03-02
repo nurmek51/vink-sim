@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:vink_sim/core/models/imsi_model.dart';
+import 'package:vink_sim/features/payment/domain/repositories/payment_repository.dart';
 
 // Events
 abstract class TopUpBalanceEvent extends Equatable {
@@ -68,18 +69,39 @@ class InitializeWithImsi extends TopUpBalanceEvent {
   List<Object?> get props => [imsi, simCards];
 }
 
+class LoadSavedCards extends TopUpBalanceEvent {
+  const LoadSavedCards();
+}
+
+class SelectSavedCard extends TopUpBalanceEvent {
+  final SavedCard savedCard;
+
+  const SelectSavedCard(this.savedCard);
+
+  @override
+  List<Object?> get props => [savedCard];
+}
+
 // State
 class TopUpBalanceState extends Equatable {
   final int amount;
   final bool autoTopUpEnabled;
   final String selectedPaymentMethod;
   final ImsiModel? selectedSimCard;
+  final List<SavedCard> savedCards;
+  final SavedCard? selectedSavedCard;
+  final bool isSavedCardsLoading;
+  final bool hasSavedCardsLoaded;
 
   const TopUpBalanceState({
     this.amount = 15,
     this.autoTopUpEnabled = false,
-    this.selectedPaymentMethod = 'apple_pay',
+    this.selectedPaymentMethod = 'credit_card',
     this.selectedSimCard,
+    this.savedCards = const [],
+    this.selectedSavedCard,
+    this.isSavedCardsLoading = false,
+    this.hasSavedCardsLoaded = false,
   });
 
   TopUpBalanceState copyWith({
@@ -87,6 +109,10 @@ class TopUpBalanceState extends Equatable {
     bool? autoTopUpEnabled,
     String? selectedPaymentMethod,
     ImsiModel? selectedSimCard,
+    List<SavedCard>? savedCards,
+    SavedCard? selectedSavedCard,
+    bool? isSavedCardsLoading,
+    bool? hasSavedCardsLoaded,
   }) {
     return TopUpBalanceState(
       amount: amount ?? this.amount,
@@ -94,21 +120,33 @@ class TopUpBalanceState extends Equatable {
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
       selectedSimCard: selectedSimCard ?? this.selectedSimCard,
+      savedCards: savedCards ?? this.savedCards,
+      selectedSavedCard: selectedSavedCard ?? this.selectedSavedCard,
+      isSavedCardsLoading: isSavedCardsLoading ?? this.isSavedCardsLoading,
+      hasSavedCardsLoaded: hasSavedCardsLoaded ?? this.hasSavedCardsLoaded,
     );
   }
 
   @override
   List<Object?> get props => [
-    amount,
-    autoTopUpEnabled,
-    selectedPaymentMethod,
-    selectedSimCard,
-  ];
+        amount,
+        autoTopUpEnabled,
+        selectedPaymentMethod,
+        selectedSimCard,
+        savedCards,
+        selectedSavedCard,
+        isSavedCardsLoading,
+        hasSavedCardsLoaded,
+      ];
 }
 
 // Bloc
 class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
-  TopUpBalanceBloc() : super(const TopUpBalanceState()) {
+  final PaymentRepository _paymentRepository;
+
+  TopUpBalanceBloc({required PaymentRepository paymentRepository})
+      : _paymentRepository = paymentRepository,
+        super(const TopUpBalanceState()) {
     on<SetAmount>(_onSetAmount);
     on<IncrementAmount>(_onIncrementAmount);
     on<DecrementAmount>(_onDecrementAmount);
@@ -117,6 +155,8 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
     on<SelectSimCard>(_onSelectSimCard);
     on<ResetState>(_onResetState);
     on<InitializeWithImsi>(_onInitializeWithImsi);
+    on<LoadSavedCards>(_onLoadSavedCards);
+    on<SelectSavedCard>(_onSelectSavedCard);
   }
 
   void _onSetAmount(SetAmount event, Emitter<TopUpBalanceState> emit) {
@@ -151,6 +191,12 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
     Emitter<TopUpBalanceState> emit,
   ) {
     emit(state.copyWith(selectedPaymentMethod: event.method));
+
+    if (event.method == 'credit_card' &&
+        !state.hasSavedCardsLoaded &&
+        !state.isSavedCardsLoading) {
+      add(const LoadSavedCards());
+    }
   }
 
   void _onSelectSimCard(SelectSimCard event, Emitter<TopUpBalanceState> emit) {
@@ -172,5 +218,54 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
       );
       emit(state.copyWith(selectedSimCard: simCard));
     }
+  }
+
+  Future<void> _onLoadSavedCards(
+    LoadSavedCards event,
+    Emitter<TopUpBalanceState> emit,
+  ) async {
+    if (state.isSavedCardsLoading) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        isSavedCardsLoading: true,
+      ),
+    );
+
+    try {
+      final cards = await _paymentRepository.getSavedCards();
+      final selectedCard = state.selectedSavedCard != null &&
+              cards.any((card) => card.id == state.selectedSavedCard!.id)
+          ? cards.firstWhere(
+              (card) => card.id == state.selectedSavedCard!.id,
+            )
+          : (cards.isNotEmpty ? cards.first : null);
+
+      emit(
+        state.copyWith(
+          savedCards: cards,
+          selectedSavedCard: selectedCard,
+          isSavedCardsLoading: false,
+          hasSavedCardsLoaded: true,
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(
+          savedCards: const [],
+          isSavedCardsLoading: false,
+          hasSavedCardsLoaded: true,
+        ),
+      );
+    }
+  }
+
+  void _onSelectSavedCard(
+    SelectSavedCard event,
+    Emitter<TopUpBalanceState> emit,
+  ) {
+    emit(state.copyWith(selectedSavedCard: event.savedCard));
   }
 }

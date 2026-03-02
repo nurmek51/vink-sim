@@ -8,43 +8,177 @@ class PaymentRepositoryImpl implements PaymentRepository {
   PaymentRepositoryImpl(this._apiService);
 
   @override
-  Future<bool> topUpBalance(int amount, String imsi) async {
+  Future<PaymentInitiateResult> initiatePayment({
+    required int amount,
+    String? esimId,
+    bool saveCard = false,
+    String language = 'rus',
+  }) async {
     try {
-      final response = await _apiService.topUpBalance(
+      final response = await _apiService.initiatePayment(
         amount: amount,
-        imsi: imsi,
+        esimId: esimId,
+        saveCard: saveCard,
+        language: language,
       );
 
       if (kDebugMode) {
-        print('PaymentRepository: Top up response: $response');
+        print('PaymentRepository: Initiate response: $response');
       }
 
-      return response['success'] == true;
+      final data = response['data'];
+      if (data is! Map<String, dynamic>) {
+        throw Exception('Invalid initiate payment response');
+      }
+
+      final paymentId = data['payment_id']?.toString();
+      final checkoutUrl = data['checkout_url']?.toString();
+      final invoiceId = data['invoice_id']?.toString();
+
+      if (paymentId == null || paymentId.isEmpty) {
+        throw Exception('Missing payment_id in initiate response');
+      }
+      if (checkoutUrl == null || checkoutUrl.isEmpty) {
+        throw Exception('Missing checkout_url in initiate response');
+      }
+
+      return PaymentInitiateResult(
+        paymentId: paymentId,
+        checkoutUrl: checkoutUrl,
+        invoiceId: invoiceId,
+      );
     } catch (e) {
       if (kDebugMode) {
-        print('PaymentRepository: Top up failed: $e');
+        print('PaymentRepository: Initiate failed: $e');
       }
       rethrow;
     }
   }
 
   @override
-  Future<bool> purchaseEsim({String? tariffId, int? amount}) async {
+  Future<PaymentStatusResult> getPaymentStatus(
+    String paymentId, {
+    bool sync = true,
+  }) async {
     try {
-      final response = await _apiService.purchaseEsim(
-        tariffId: tariffId,
-        amount: amount,
-      );
+      final response =
+          await _apiService.getPaymentStatus(paymentId, sync: sync);
 
       if (kDebugMode) {
-        print('PaymentRepository: Purchase response: $response');
+        print('PaymentRepository: Status response: $response');
       }
 
-      // Check if success or if it returns data. Usually /purchase returns 200 with data.
-      return response != null;
+      final data = response['data'];
+      if (data is! Map<String, dynamic>) {
+        throw Exception('Invalid payment status response');
+      }
+
+      final status = data['status']?.toString();
+      final responsePaymentId = data['payment_id']?.toString() ?? paymentId;
+      final invoiceId = data['invoice_id']?.toString();
+
+      if (status == null || status.isEmpty) {
+        throw Exception('Missing status in payment status response');
+      }
+
+      return PaymentStatusResult(
+        paymentId: responsePaymentId,
+        status: status,
+        invoiceId: invoiceId,
+      );
     } catch (e) {
       if (kDebugMode) {
-        print('PaymentRepository: Purchase failed: $e');
+        print('PaymentRepository: Status failed: $e');
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<SavedCard>> getSavedCards() async {
+    try {
+      final response = await _apiService.getSavedCards();
+      final data = response['data'];
+
+      if (data is! List) {
+        return const [];
+      }
+
+      return data
+          .whereType<Map<String, dynamic>>()
+          .map(
+            (card) => SavedCard(
+              id: card['id']?.toString() ?? '',
+              cardMask: card['card_mask']?.toString() ?? '',
+              cardType: card['card_type']?.toString(),
+              payerName: card['payer_name']?.toString(),
+              createdDate: card['created_date']?.toString(),
+            ),
+          )
+          .where((card) => card.id.isNotEmpty)
+          .toList(growable: false);
+    } catch (e) {
+      if (kDebugMode) {
+        print('PaymentRepository: Get saved cards failed: $e');
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteSavedCard(String cardId) async {
+    try {
+      await _apiService.deleteSavedCard(cardId);
+    } catch (e) {
+      if (kDebugMode) {
+        print('PaymentRepository: Delete saved card failed: $e');
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<RecurrentPaymentResult> recurrentPayment({
+    required String esimId,
+    required String cardId,
+    required int amount,
+    String currency = 'KZT',
+  }) async {
+    try {
+      final response = await _apiService.recurrentPayment(
+        esimId: esimId,
+        cardId: cardId,
+        amount: amount,
+        currency: currency,
+      );
+
+      final data = response['data'];
+      if (data is! Map<String, dynamic>) {
+        throw Exception('Invalid recurrent payment response');
+      }
+
+      final paymentId = data['payment_id']?.toString();
+      final status = data['status']?.toString();
+      final invoiceId = data['invoice_id']?.toString();
+      final requires3ds = data['requires_3ds'] == true;
+
+      if (paymentId == null || paymentId.isEmpty) {
+        throw Exception('Missing payment_id in recurrent response');
+      }
+
+      if (status == null || status.isEmpty) {
+        throw Exception('Missing status in recurrent response');
+      }
+
+      return RecurrentPaymentResult(
+        paymentId: paymentId,
+        invoiceId: invoiceId,
+        status: status,
+        requires3ds: requires3ds,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('PaymentRepository: Recurrent payment failed: $e');
       }
       rethrow;
     }

@@ -24,10 +24,9 @@ class TopUpBalanceWidget extends StatelessWidget {
       builder: (context, paymentState) {
         final isLoading = paymentState is PaymentLoading;
         return BlueGradientButton(
-          title:
-              isLoading
-                  ? SimLocalizations.of(context)!.loading
-                  : SimLocalizations.of(context)!.top_up_balance,
+          title: isLoading
+              ? SimLocalizations.of(context)!.loading
+              : SimLocalizations.of(context)!.top_up_balance,
           onTap: isLoading ? null : () => _handleTopUpTap(context),
         );
       },
@@ -52,7 +51,7 @@ class TopUpBalanceWidget extends StatelessWidget {
       // and allow the refresh event to be processed by the bloc
       Future.delayed(const Duration(milliseconds: 800), () {
         if (context.mounted) {
-          if (imsi != null) {
+          if (!isNewEsim) {
             NavigationService.goToMainFlow(context);
           } else {
             NavigationService.openActivatedEsimScreen(context);
@@ -60,9 +59,11 @@ class TopUpBalanceWidget extends StatelessWidget {
         }
       });
     } else if (state is PaymentFailure) {
-      AppNotifier.error(
-        SimLocalizations.of(context)!.payment_fail,
-      ).showAppToast(context);
+      AppNotifier.error(state.error).showAppToast(context);
+    } else if (state is PaymentCancelled) {
+      AppNotifier.info(SimLocalizations.of(context)!.payment_fail).showAppToast(
+        context,
+      );
     } else if (state is PaymentNotImplemented) {
       AppNotifier.info(state.message).showAppToast(context);
     }
@@ -125,6 +126,13 @@ class TopUpBalanceWidget extends StatelessWidget {
       return false;
     }
 
+    if (!isNewEsim && (state.selectedSimCard?.imsi ?? imsi) == null) {
+      AppNotifier.info(
+        SimLocalizations.of(context)!.select_sim_card,
+      ).showAppToast(context);
+      return false;
+    }
+
     return true;
   }
 
@@ -135,44 +143,44 @@ class TopUpBalanceWidget extends StatelessWidget {
     final operationType =
         isTopUp ? PaymentOperationType.addFunds : PaymentOperationType.newImsi;
 
+    if (state.selectedPaymentMethod == 'crypto') {
+      AppNotifier.info(
+        SimLocalizations.of(context)!.not_available,
+      ).showAppToast(context);
+      return;
+    }
+
     switch (state.selectedPaymentMethod) {
-      case 'credit_card':
-        context.read<PaymentBloc>().add(
-          PaymentRequested(
-            amount: state.amount,
-            context: context,
-            operationType: operationType,
-            imsi: isTopUp ? selectedImsi : null,
-          ),
-        );
-        break;
-      case 'crypto':
-        AppNotifier.info(
-          SimLocalizations.of(context)!.not_available,
-        ).showAppToast(context);
-        break;
       case 'apple_pay':
         context.read<PaymentBloc>().add(
-          ApplePayRequested(
-            amount: state.amount,
-            context: context,
-            operationType: operationType,
-            imsi: isTopUp ? selectedImsi : null,
-          ),
-        );
+              ApplePayRequested(
+                amount: state.amount,
+                context: context,
+                operationType: operationType,
+                imsi: isTopUp ? selectedImsi : null,
+              ),
+            );
         break;
       case 'google_pay':
         context.read<PaymentBloc>().add(
-          GooglePayRequested(
-            amount: state.amount,
-            context: context,
-            operationType: operationType,
-            imsi: isTopUp ? selectedImsi : null,
-          ),
-        );
+              GooglePayRequested(
+                amount: state.amount,
+                context: context,
+                operationType: operationType,
+                imsi: isTopUp ? selectedImsi : null,
+              ),
+            );
         break;
       default:
-        AppNotifier.info("Unknown payment method").showAppToast(context);
+        context.read<PaymentBloc>().add(
+              PaymentRequested(
+                amount: state.amount,
+                context: context,
+                operationType: operationType,
+                imsi: isTopUp ? selectedImsi : null,
+                preferredCardId: state.selectedSavedCard?.id,
+              ),
+            );
     }
   }
 }

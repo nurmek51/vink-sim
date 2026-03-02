@@ -52,4 +52,57 @@ class TravelSimApiService {
       },
     );
   }
+
+  Future<Map<String, dynamic>> initiatePayment({
+    required int amount,
+    String? esimId,
+    bool saveCard = false,
+    String language = 'rus',
+  }) async {
+    return await _apiClient.post(
+      '/payments/initiate',
+      body: {
+        'amount': amount,
+        if (esimId != null) 'esim_id': esimId,
+        'save_card': saveCard,
+        'language': language,
+      },
+    );
+  }
+
+  Future<Map<String, dynamic>> getPaymentStatus(
+    String paymentId, {
+    bool sync = true,
+  }) async {
+    return await _apiClient.get(
+      '/payments/status/$paymentId',
+      queryParameters: {'sync': sync},
+    );
+  }
+
+  Future<Map<String, dynamic>> getSavedCards() async {
+    return await _apiClient.get('/payments/saved-cards');
+  }
+
+  Future<Map<String, dynamic>> deleteSavedCard(String cardId) async {
+    return await _apiClient.delete('/payments/saved-cards/$cardId');
+  }
+
+  Future<Map<String, dynamic>> recurrentPayment({
+    required String esimId,
+    required String cardId,
+    required int amount,
+    String currency = 'KZT',
+  }) async {
+    return await _apiClient.post(
+      '/payments/recurrent',
+      body: {
+        'esim_id': esimId,
+        'card_id': cardId,
+        'amount': amount,
+        'description': 'Subscription',
+        'currency': currency,
+      },
+    );
+  }
 }

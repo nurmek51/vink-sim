@@ -15,8 +15,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vink_sim/constants/app_colors.dart';
 import 'package:vink_sim/features/top_up_balance_screen/widgets/counter_widget.dart';
 import 'package:vink_sim/features/top_up_balance_screen/widgets/payment_type_selector.dart';
+import 'package:vink_sim/features/top_up_balance_screen/widgets/saved_card_selection_modal.dart';
+import 'package:vink_sim/features/top_up_balance_screen/widgets/saved_card_selector.dart';
 import 'package:vink_sim/features/top_up_balance_screen/widgets/sim_card_selection_modal.dart';
 import 'package:vink_sim/features/top_up_balance_screen/widgets/sim_card_shimmer_widget.dart';
+import 'package:vink_sim/features/payment/domain/repositories/payment_repository.dart';
 import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
 import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
@@ -42,14 +45,17 @@ class TopUpBalanceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => TopUpBalanceBloc()),
         BlocProvider(
-          create:
-              (_) => TariffsBloc(
-                dataSource: TariffsRemoteDataSourceImpl(
-                  apiClient: sl.get<ApiClient>(),
-                ),
-              )..add(const LoadTariffsEvent()),
+          create: (_) => TopUpBalanceBloc(
+            paymentRepository: sl.get<PaymentRepository>(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => TariffsBloc(
+            dataSource: TariffsRemoteDataSourceImpl(
+              apiClient: sl.get<ApiClient>(),
+            ),
+          )..add(const LoadTariffsEvent()),
         ),
         BlocProvider(
           create: (_) {
@@ -133,16 +139,34 @@ class TopUpBalanceContent extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder:
-          (modalContext) => SimCardSelectionModal(
-            simCards: simCards,
-            selectedImsi: selectedImsi,
-            onSimCardSelected: (selectedSimCard) {
-              context.read<TopUpBalanceBloc>().add(
+      builder: (modalContext) => SimCardSelectionModal(
+        simCards: simCards,
+        selectedImsi: selectedImsi,
+        onSimCardSelected: (selectedSimCard) {
+          context.read<TopUpBalanceBloc>().add(
                 SelectSimCard(selectedSimCard),
               );
-            },
-          ),
+        },
+      ),
+    );
+  }
+
+  void _showSavedCardSelectionModal(
+    BuildContext context,
+    List<SavedCard> savedCards,
+    SavedCard? selectedCard,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (modalContext) => SavedCardSelectionModal(
+        savedCards: savedCards,
+        selectedCardId: selectedCard?.id,
+        onCardSelected: (savedCard) {
+          context.read<TopUpBalanceBloc>().add(SelectSavedCard(savedCard));
+        },
+      ),
     );
   }
 
@@ -152,19 +176,28 @@ class TopUpBalanceContent extends StatelessWidget {
       builder: (context, subscriberState) {
         return BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
           builder: (context, topUpState) {
-            final simCards =
-                subscriberState is SubscriberLoaded
-                    ? subscriberState.subscriber.imsiList
-                    : <ImsiModel>[];
+            final simCards = subscriberState is SubscriberLoaded
+                ? subscriberState.subscriber.imsiList
+                : <ImsiModel>[];
             if (imsi != null &&
                 simCards.isNotEmpty &&
                 topUpState.selectedSimCard == null) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 context.read<TopUpBalanceBloc>().add(
-                  InitializeWithImsi(imsi, simCards),
-                );
+                      InitializeWithImsi(imsi, simCards),
+                    );
               });
             }
+
+            if (!isNewEsim &&
+                topUpState.selectedPaymentMethod == 'credit_card' &&
+                !topUpState.hasSavedCardsLoaded &&
+                !topUpState.isSavedCardsLoading) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.read<TopUpBalanceBloc>().add(const LoadSavedCards());
+              });
+            }
+
             final selectedSimCard = topUpState.selectedSimCard;
 
             return Column(
@@ -193,12 +226,11 @@ class TopUpBalanceContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     GestureDetector(
-                      onTap:
-                          () => _showSimCardSelectionModal(
-                            context,
-                            simCards,
-                            selectedSimCard?.imsi ?? simCards.first.imsi,
-                          ),
+                      onTap: () => _showSimCardSelectionModal(
+                        context,
+                        simCards,
+                        selectedSimCard?.imsi ?? simCards.first.imsi,
+                      ),
                       child: Container(
                         height: 56,
                         padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -222,7 +254,8 @@ class TopUpBalanceContent extends StatelessWidget {
                                       : null) ??
                                   SimLocalizations.of(
                                     context,
-                                  )!.sim_card_default,
+                                  )!
+                                      .sim_card_default,
                               style: const TextStyle(
                                 fontFamily: 'Helvetica Neue',
                                 fontSize: 16,
@@ -257,18 +290,16 @@ class TopUpBalanceContent extends StatelessWidget {
                   builder: (context, state) {
                     return CounterWidget(
                       value: state.amount,
-                      onIncrement:
-                          () => context.read<TopUpBalanceBloc>().add(
+                      onIncrement: () => context.read<TopUpBalanceBloc>().add(
                             const IncrementAmount(),
                           ),
-                      onDecrement:
-                          () => context.read<TopUpBalanceBloc>().add(
+                      onDecrement: () => context.read<TopUpBalanceBloc>().add(
                             const DecrementAmount(),
                           ),
-                      onAmountChanged:
-                          (newAmount) => context.read<TopUpBalanceBloc>().add(
-                            SetAmount(newAmount),
-                          ),
+                      onAmountChanged: (newAmount) =>
+                          context.read<TopUpBalanceBloc>().add(
+                                SetAmount(newAmount),
+                              ),
                     );
                   },
                 ),
@@ -285,6 +316,19 @@ class TopUpBalanceContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 const PaymentTypeSelector(),
+                if (!isNewEsim &&
+                    topUpState.selectedPaymentMethod == 'credit_card' &&
+                    topUpState.savedCards.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  SavedCardSelector(
+                    selectedCard: topUpState.selectedSavedCard,
+                    onTap: () => _showSavedCardSelectionModal(
+                      context,
+                      topUpState.savedCards,
+                      topUpState.selectedSavedCard,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 16),
                 AutoTopUpContainer(),
               ],
