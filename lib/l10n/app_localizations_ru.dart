@@ -464,6 +464,10 @@ class SimLocalizationsRu extends SimLocalizations {
   String get payment_fail => 'Ошибка оплаты';
 
   @override
+  String get processing_payment_please_wait =>
+      'Обрабатываем платеж, пожалуйста подождите';
+
+  @override
   String get enter_top_up_amount => 'Укажите сумму пополнения';
 
   @override
@@ -525,6 +529,9 @@ class SimLocalizationsRu extends SimLocalizations {
 
   @override
   String get esim_is_activating => 'eSIM активируется...';
+
+  @override
+  String get unknown => 'Неизвестно';
 
   @override
   String get flex_travel_esim_works_worldwide =>

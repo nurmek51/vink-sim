@@ -23,6 +23,7 @@ dependencies:
   pinput: ^4.0.0
   # easy_localization: ^3.0.7+1
   url_launcher: ^6.3.2
+  webview_flutter: ^4.8.0
   fluttertoast: ^8.2.12
   country_flags: ^3.2.0
   web: ^1.0.0

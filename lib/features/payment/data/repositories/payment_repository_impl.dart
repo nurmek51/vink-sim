@@ -10,14 +10,14 @@ class PaymentRepositoryImpl implements PaymentRepository {
   @override
   Future<PaymentInitiateResult> initiatePayment({
     required int amount,
-    String? esimId,
+    String? imsi,
     bool saveCard = false,
     String language = 'rus',
   }) async {
     try {
       final response = await _apiService.initiatePayment(
         amount: amount,
-        esimId: esimId,
+        imsi: imsi,
         saveCard: saveCard,
         language: language,
       );
@@ -34,6 +34,8 @@ class PaymentRepositoryImpl implements PaymentRepository {
       final paymentId = data['payment_id']?.toString();
       final checkoutUrl = data['checkout_url']?.toString();
       final invoiceId = data['invoice_id']?.toString();
+      final backLink = data['back_link']?.toString();
+      final failureBackLink = data['failure_back_link']?.toString();
 
       if (paymentId == null || paymentId.isEmpty) {
         throw Exception('Missing payment_id in initiate response');
@@ -46,6 +48,8 @@ class PaymentRepositoryImpl implements PaymentRepository {
         paymentId: paymentId,
         checkoutUrl: checkoutUrl,
         invoiceId: invoiceId,
+        backLink: backLink,
+        failureBackLink: failureBackLink,
       );
     } catch (e) {
       if (kDebugMode) {
@@ -139,14 +143,14 @@ class PaymentRepositoryImpl implements PaymentRepository {
 
   @override
   Future<RecurrentPaymentResult> recurrentPayment({
-    required String esimId,
+    required String imsi,
     required String cardId,
     required int amount,
     String currency = 'KZT',
   }) async {
     try {
       final response = await _apiService.recurrentPayment(
-        esimId: esimId,
+        imsi: imsi,
         cardId: cardId,
         amount: amount,
         currency: currency,

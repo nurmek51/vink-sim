@@ -492,7 +492,7 @@ Authorization: Bearer <token>
 ```json
 {
   "data": {
-    "esim_id": "esim_001",
+    "imsi": "esim_001",
     "period": {
       "start": "2024-11-20T00:00:00Z",
       "end": "2024-11-27T00:00:00Z"
@@ -510,7 +510,7 @@ Authorization: Bearer <token>
 }
 ```
 
-**Mock Implementation:** `MockEsimData.getUsageData(id)`
+**Mock Implementation:** `MockEsimData.getUsageData(imsi)`
 
 **Data Source:** `EsimRemoteDataSourceImpl.getEsimUsageData()`
 

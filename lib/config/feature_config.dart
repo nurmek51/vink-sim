@@ -13,6 +13,7 @@ class FeatureConfig {
     required int expiresIn,
   })? onAuthSuccess;
   final VoidCallback? onLogout;
+  final String paymentReturnDeepLinkBase;
 
   const FeatureConfig({
     this.authToken,
@@ -23,5 +24,6 @@ class FeatureConfig {
     this.onLocaleChanged,
     this.onAuthSuccess,
     this.onLogout,
+    this.paymentReturnDeepLinkBase = 'vinksim://payment-return',
   });
 }

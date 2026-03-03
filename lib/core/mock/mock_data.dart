@@ -221,8 +221,8 @@ class MockEsimData {
   }
 
   /// Mock usage data
-  static Map<String, dynamic> getUsageData(String esimId) => {
-        'esim_id': esimId,
+    static Map<String, dynamic> getUsageData(String imsi) => {
+      'imsi': imsi,
         'period': {
           'start': DateTime.now()
               .subtract(const Duration(days: 7))

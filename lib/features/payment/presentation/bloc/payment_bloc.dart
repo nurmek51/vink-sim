@@ -3,8 +3,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:vink_sim/config/feature_config.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:vink_sim/features/payment/domain/repositories/payment_repository.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:vink_sim/features/payment/presentation/widgets/payment_checkout_webview_screen.dart';
 
 /// Payment operation types for future payment integration
 enum PaymentOperationType {
@@ -38,6 +40,7 @@ class PaymentRequested extends PaymentEvent {
   final PaymentOperationType operationType;
   final String? imsi;
   final String? preferredCardId;
+  final bool autoTopUpEnabled;
 
   const PaymentRequested({
     required this.amount,
@@ -45,10 +48,17 @@ class PaymentRequested extends PaymentEvent {
     required this.operationType,
     this.imsi,
     this.preferredCardId,
+    this.autoTopUpEnabled = false,
   });
 
   @override
-  List<Object?> get props => [amount, operationType, imsi, preferredCardId];
+  List<Object?> get props => [
+        amount,
+        operationType,
+        imsi,
+        preferredCardId,
+        autoTopUpEnabled,
+      ];
 }
 
 class ApplePayRequested extends PaymentEvent {
@@ -101,6 +111,8 @@ class PaymentInitial extends PaymentState {}
 
 class PaymentLoading extends PaymentState {}
 
+class PaymentStatusChecking extends PaymentState {}
+
 class PaymentCancelled extends PaymentState {}
 
 class PaymentSuccess extends PaymentState {
@@ -141,11 +153,16 @@ class PaymentFailure extends PaymentState {
 /// but uses the backend API directly to simulate payment success for credits.
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   final PaymentRepository _paymentRepository;
+  final String _paymentReturnDeepLinkBase;
   static const Duration _pollInterval = Duration(seconds: 3);
   static const Duration _pollTimeout = Duration(minutes: 10);
 
   PaymentBloc({required PaymentRepository paymentRepository})
       : _paymentRepository = paymentRepository,
+        _paymentReturnDeepLinkBase =
+            sl.isRegistered<FeatureConfig>()
+                ? sl<FeatureConfig>().paymentReturnDeepLinkBase
+                : 'vinksim://payment-return',
         super(PaymentInitial()) {
     on<PaymentRequested>(_onPaymentRequested);
     on<GooglePayRequested>(_onGooglePayRequested);
@@ -161,8 +178,9 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       amount: event.amount,
       imsi: event.imsi,
       operationType: event.operationType,
-      preferRecurrent: true,
+      preferRecurrent: event.autoTopUpEnabled,
       preferredCardId: event.preferredCardId,
+      saveCardOnInitiate: event.autoTopUpEnabled,
       context: event.context,
       emit: emit,
     );
@@ -178,6 +196,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       operationType: event.operationType,
       preferRecurrent: false,
       preferredCardId: null,
+      saveCardOnInitiate: false,
       context: event.context,
       emit: emit,
     );
@@ -193,6 +212,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       operationType: event.operationType,
       preferRecurrent: false,
       preferredCardId: null,
+      saveCardOnInitiate: false,
       context: event.context,
       emit: emit,
     );
@@ -204,6 +224,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     required PaymentOperationType operationType,
     required bool preferRecurrent,
     required String? preferredCardId,
+    required bool saveCardOnInitiate,
     required BuildContext context,
     required Emitter<PaymentState> emit,
   }) async {
@@ -211,19 +232,19 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
 
     try {
       final language = _resolveLanguage(context);
-      final esimId =
+      final requestImsi =
           operationType == PaymentOperationType.addFunds ? imsi : null;
 
       if (kDebugMode) {
         print('PaymentBloc: Initiating payment for amount=$amount');
-        print('PaymentBloc: esim_id=$esimId');
+        print('PaymentBloc: imsi=$requestImsi');
         print('PaymentBloc: operation=$operationType');
         print('PaymentBloc: language=$language');
       }
 
-      if (preferRecurrent && esimId != null) {
+      if (preferRecurrent && requestImsi != null && preferredCardId != null) {
         final recurrentResult = await _tryRecurrentTopUp(
-          esimId: esimId,
+          imsi: requestImsi,
           amount: amount,
           preferredCardId: preferredCardId,
         );
@@ -248,8 +269,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
 
       final initiateResult = await _paymentRepository.initiatePayment(
         amount: amount,
-        esimId: esimId,
-        saveCard: false,
+        imsi: requestImsi,
+        saveCard: saveCardOnInitiate,
         language: language,
       );
 
@@ -259,17 +280,26 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         return;
       }
 
-      final opened = await launchUrl(
-        checkoutUri,
-        mode: kIsWeb
-            ? LaunchMode.platformDefault
-            : LaunchMode.externalApplication,
-      );
-
-      if (!opened) {
+      if (!context.mounted) {
         emit(const PaymentFailure('Unable to open checkout page'));
         return;
       }
+
+      final checkoutCloseReason = await PaymentCheckoutWebViewScreen.open(
+        context,
+        checkoutUrl: checkoutUri.toString(),
+        paymentId: initiateResult.paymentId,
+        paymentReturnDeepLinkBase: _paymentReturnDeepLinkBase,
+        backLink: initiateResult.backLink,
+        failureBackLink: initiateResult.failureBackLink,
+      );
+
+      if (checkoutCloseReason == PaymentCheckoutCloseReason.userCancelled) {
+        emit(PaymentCancelled());
+        return;
+      }
+
+      emit(PaymentStatusChecking());
 
       final pollResult = await _pollFinalStatus(initiateResult.paymentId);
       if (pollResult == null) {
@@ -303,29 +333,18 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   }
 
   Future<RecurrentPaymentResult?> _tryRecurrentTopUp({
-    required String esimId,
+    required String imsi,
     required int amount,
     String? preferredCardId,
   }) async {
     try {
-      final cards = await _paymentRepository.getSavedCards();
-      if (cards.isEmpty) {
+      if (preferredCardId == null || preferredCardId.isEmpty) {
         return null;
       }
 
-      SavedCard? selectedCard;
-      if (preferredCardId != null) {
-        for (final card in cards) {
-          if (card.id == preferredCardId) {
-            selectedCard = card;
-            break;
-          }
-        }
-      }
-      final cardToUse = selectedCard ?? cards.first;
       final recurrentResult = await _paymentRepository.recurrentPayment(
-        esimId: esimId,
-        cardId: cardToUse.id,
+        imsi: imsi,
+        cardId: preferredCardId,
         amount: amount,
       );
 

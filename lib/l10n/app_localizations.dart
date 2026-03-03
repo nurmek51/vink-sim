@@ -926,6 +926,12 @@ abstract class SimLocalizations {
   /// **'Payment Fail'**
   String get payment_fail;
 
+  /// No description provided for @processing_payment_please_wait.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing payment, please wait'**
+  String get processing_payment_please_wait;
+
   /// No description provided for @enter_top_up_amount.
   ///
   /// In en, this message translates to:
@@ -1051,6 +1057,12 @@ abstract class SimLocalizations {
   /// In en, this message translates to:
   /// **'eSIM is activating...'**
   String get esim_is_activating;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
 
   /// No description provided for @flex_travel_esim_works_worldwide.
   ///

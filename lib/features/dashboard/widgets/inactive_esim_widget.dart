@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:vink_sim/constants/app_colors.dart';
 import 'package:vink_sim/core/layout/screen_utils.dart';
 import 'package:vink_sim/core/styles/flex_typography.dart';
@@ -40,11 +41,11 @@ class InactiveEsimWidget extends StatelessWidget {
         ),
         Column(
           children: [
-            const SizedBox(height: 80),
+            const SizedBox(height: 70),
             Icon(Icons.credit_card_off, size: 64, color: Colors.grey.shade400),
             const SizedBox(height: 16),
             Text(
-              'eSIM Inactive',
+              SimLocalizations.of(context)!.esim_is_activating,
               style: FlexTypography.label.large.copyWith(
                 color: Colors.grey.shade600,
                 fontWeight: FontWeight.w600,
@@ -52,7 +53,7 @@ class InactiveEsimWidget extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Activate to start using',
+              SimLocalizations.of(context)!.how_to_install_esim,
               style: FlexTypography.paragraph.medium.copyWith(
                 color: Colors.grey.shade500,
               ),
@@ -67,7 +68,7 @@ class InactiveEsimWidget extends StatelessWidget {
                 ),
               ),
             ],
-            SizedBox(height: 12),
+            SizedBox(height: 6),
             if (onActivate != null && imsi != null)
               ElevatedButton(
                 onPressed: onActivate,
@@ -80,7 +81,7 @@ class InactiveEsimWidget extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Activate',
+                  SimLocalizations.of(context)!.install_esim,
                   style: FlexTypography.label.medium.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,

@@ -55,7 +55,7 @@ class TravelSimApiService {
 
   Future<Map<String, dynamic>> initiatePayment({
     required int amount,
-    String? esimId,
+    String? imsi,
     bool saveCard = false,
     String language = 'rus',
   }) async {
@@ -63,7 +63,7 @@ class TravelSimApiService {
       '/payments/initiate',
       body: {
         'amount': amount,
-        if (esimId != null) 'esim_id': esimId,
+        if (imsi != null) 'imsi': imsi,
         'save_card': saveCard,
         'language': language,
       },
@@ -89,7 +89,7 @@ class TravelSimApiService {
   }
 
   Future<Map<String, dynamic>> recurrentPayment({
-    required String esimId,
+    required String imsi,
     required String cardId,
     required int amount,
     String currency = 'KZT',
@@ -97,7 +97,7 @@ class TravelSimApiService {
     return await _apiClient.post(
       '/payments/recurrent',
       body: {
-        'esim_id': esimId,
+        'imsi': imsi,
         'card_id': cardId,
         'amount': amount,
         'description': 'Subscription',

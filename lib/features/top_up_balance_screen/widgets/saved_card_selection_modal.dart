@@ -6,7 +6,7 @@ import 'package:vink_sim/shared/widgets/blue_gradient_button.dart';
 class SavedCardSelectionModal extends StatefulWidget {
   final List<SavedCard> savedCards;
   final String? selectedCardId;
-  final ValueChanged<SavedCard> onCardSelected;
+  final ValueChanged<SavedCard?> onCardSelected;
 
   const SavedCardSelectionModal({
     super.key,
@@ -69,10 +69,52 @@ class _SavedCardSelectionModalState extends State<SavedCardSelectionModal> {
             child: ListView.separated(
               shrinkWrap: true,
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: widget.savedCards.length,
+              itemCount: widget.savedCards.length + 1,
               separatorBuilder: (_, __) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
-                final card = widget.savedCards[index];
+                if (index == 0) {
+                  final isSelected = _selectedCardId == null;
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedCardId = null;
+                      });
+                      widget.onCardSelected(null);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isSelected
+                              ? const Color(0xFF15BAAA)
+                              : Colors.grey[200]!,
+                          width: 2,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.add_card_rounded, color: Colors.black),
+                          const SizedBox(width: 12),
+                          const Expanded(
+                            child: Text(
+                              'Other card',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          if (isSelected) Assets.icons.selectedCardIcon.svg(),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
+                final card = widget.savedCards[index - 1];
                 final isSelected = card.id == _selectedCardId;
 
                 return GestureDetector(
@@ -142,10 +184,15 @@ class _SavedCardSelectionModalState extends State<SavedCardSelectionModal> {
             child: BlueGradientButton(
               title: 'Use selected card',
               onTap: () {
-                final selectedCard = widget.savedCards.firstWhere(
-                  (card) => card.id == _selectedCardId,
-                  orElse: () => widget.savedCards.first,
-                );
+                SavedCard? selectedCard;
+                if (_selectedCardId != null) {
+                  for (final card in widget.savedCards) {
+                    if (card.id == _selectedCardId) {
+                      selectedCard = card;
+                      break;
+                    }
+                  }
+                }
                 widget.onCardSelected(selectedCard);
                 Navigator.of(context).pop();
               },

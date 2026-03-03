@@ -74,7 +74,7 @@ class LoadSavedCards extends TopUpBalanceEvent {
 }
 
 class SelectSavedCard extends TopUpBalanceEvent {
-  final SavedCard savedCard;
+  final SavedCard? savedCard;
 
   const SelectSavedCard(this.savedCard);
 
@@ -84,6 +84,7 @@ class SelectSavedCard extends TopUpBalanceEvent {
 
 // State
 class TopUpBalanceState extends Equatable {
+  static const _unset = Object();
   final int amount;
   final bool autoTopUpEnabled;
   final String selectedPaymentMethod;
@@ -110,7 +111,7 @@ class TopUpBalanceState extends Equatable {
     String? selectedPaymentMethod,
     ImsiModel? selectedSimCard,
     List<SavedCard>? savedCards,
-    SavedCard? selectedSavedCard,
+    Object? selectedSavedCard = _unset,
     bool? isSavedCardsLoading,
     bool? hasSavedCardsLoaded,
   }) {
@@ -121,7 +122,9 @@ class TopUpBalanceState extends Equatable {
           selectedPaymentMethod ?? this.selectedPaymentMethod,
       selectedSimCard: selectedSimCard ?? this.selectedSimCard,
       savedCards: savedCards ?? this.savedCards,
-      selectedSavedCard: selectedSavedCard ?? this.selectedSavedCard,
+      selectedSavedCard: identical(selectedSavedCard, _unset)
+          ? this.selectedSavedCard
+          : selectedSavedCard as SavedCard?,
       isSavedCardsLoading: isSavedCardsLoading ?? this.isSavedCardsLoading,
       hasSavedCardsLoaded: hasSavedCardsLoaded ?? this.hasSavedCardsLoaded,
     );
@@ -190,13 +193,13 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
     SelectPaymentMethod event,
     Emitter<TopUpBalanceState> emit,
   ) {
-    emit(state.copyWith(selectedPaymentMethod: event.method));
-
-    if (event.method == 'credit_card' &&
-        !state.hasSavedCardsLoaded &&
-        !state.isSavedCardsLoading) {
-      add(const LoadSavedCards());
-    }
+    emit(
+      state.copyWith(
+        selectedPaymentMethod: event.method,
+        autoTopUpEnabled:
+            event.method == 'credit_card' ? state.autoTopUpEnabled : false,
+      ),
+    );
   }
 
   void _onSelectSimCard(SelectSimCard event, Emitter<TopUpBalanceState> emit) {
@@ -241,7 +244,7 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
           ? cards.firstWhere(
               (card) => card.id == state.selectedSavedCard!.id,
             )
-          : (cards.isNotEmpty ? cards.first : null);
+          : null;
 
       emit(
         state.copyWith(
@@ -255,6 +258,7 @@ class TopUpBalanceBloc extends Bloc<TopUpBalanceEvent, TopUpBalanceState> {
       emit(
         state.copyWith(
           savedCards: const [],
+          selectedSavedCard: null,
           isSavedCardsLoading: false,
           hasSavedCardsLoaded: true,
         ),

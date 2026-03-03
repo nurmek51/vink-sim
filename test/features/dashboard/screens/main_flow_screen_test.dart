@@ -104,14 +104,14 @@ void main() {
     group('processImsiList', () {
       testWidgets('WHEN loaded state '
           'THEN displays IMSI list', (tester) async {
-        const imsiList = [
-          ImsiModel(
+        final imsiList = [
+          const ImsiModel(
             imsi: 'test123',
             balance: 50.0,
             country: 'USA',
             rate: 1024.0,
           ),
-          ImsiModel(
+          const ImsiModel(
             imsi: 'test456',
             balance: 100.0,
             country: 'Canada',
@@ -119,7 +119,7 @@ void main() {
           ),
         ];
         final state = SubscriberLoaded(
-          subscriber: const SubscriberModel(balance: 150.0, imsiList: imsiList),
+          subscriber: SubscriberModel(balance: 150.0, imsiList: imsiList),
         );
         final result = MainFlowDataProcessor.processImsiList(
           state,
@@ -210,8 +210,8 @@ void main() {
       testWidgets('WHEN loading with non-empty list '
           'THEN returns false', (tester) async {
         final state = SubscriberLoading();
-        const imsiList = [
-          ImsiModel(
+        final imsiList = [
+          const ImsiModel(
             imsi: 'test123',
             balance: 50.0,
             country: 'USA',

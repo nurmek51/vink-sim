@@ -4,11 +4,15 @@ class PaymentInitiateResult {
   final String paymentId;
   final String checkoutUrl;
   final String? invoiceId;
+  final String? backLink;
+  final String? failureBackLink;
 
   const PaymentInitiateResult({
     required this.paymentId,
     required this.checkoutUrl,
     this.invoiceId,
+    this.backLink,
+    this.failureBackLink,
   });
 }
 
@@ -60,7 +64,7 @@ class RecurrentPaymentResult {
 abstract class PaymentRepository {
   Future<PaymentInitiateResult> initiatePayment({
     required int amount,
-    String? esimId,
+    String? imsi,
     bool saveCard = false,
     String language = 'rus',
   });
@@ -75,7 +79,7 @@ abstract class PaymentRepository {
   Future<void> deleteSavedCard(String cardId);
 
   Future<RecurrentPaymentResult> recurrentPayment({
-    required String esimId,
+    required String imsi,
     required String cardId,
     required int amount,
     String currency = 'KZT',

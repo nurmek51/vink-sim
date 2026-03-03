@@ -4,18 +4,21 @@ import 'package:vink_sim/gen/assets.gen.dart';
 
 class SavedCardSelector extends StatelessWidget {
   final SavedCard? selectedCard;
+  final bool isLoading;
   final VoidCallback onTap;
 
   const SavedCardSelector({
     super.key,
     required this.selectedCard,
+    this.isLoading = false,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final cardMask = selectedCard?.cardMask ?? '**** **** **** ****';
-    final cardType = selectedCard?.cardType ?? 'Card';
+    final selectedText = selectedCard == null
+        ? 'Choose from saved card'
+        : '${selectedCard!.cardType ?? 'Card'} • ${selectedCard!.cardMask}';
 
     return GestureDetector(
       onTap: onTap,
@@ -37,17 +40,26 @@ class SavedCardSelector extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(
-                '$cardType • $cardMask',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontFamily: 'Helvetica Neue',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
+              child: isLoading
+                  ? const SizedBox(
+                      height: 18,
+                      child: LinearProgressIndicator(
+                        minHeight: 2,
+                        backgroundColor: Color(0xFFD9E2EC),
+                        color: Color(0xFF15BAAA),
+                      ),
+                    )
+                  : Text(
+                      selectedText,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontFamily: 'Helvetica Neue',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
             ),
             Icon(
               Icons.keyboard_arrow_down_rounded,

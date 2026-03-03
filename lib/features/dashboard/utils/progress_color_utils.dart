@@ -6,6 +6,7 @@ class ProgressColorUtils {
 
   static bool isInactiveEsim(String? country) {
     return country == null || country == 'N/A' || country.isEmpty;
+    // country == 'Global';
   }
 
   static Color getProgressColor(double value, {String? country}) {

@@ -137,6 +137,7 @@
   "otp_fail": "Ошибка OTP",
   "otp_success": "OTP прошел проверку",
   "payment_fail": "Ошибка оплаты",
+  "processing_payment_please_wait": "Обрабатываем платеж, пожалуйста подождите",
   "enter_top_up_amount": "Укажите сумму пополнения",
   "select_level_title": "Выберите уровень",
   "low_level_balance": "Low — 0 GB",
@@ -158,5 +159,6 @@
   "select_for_top_up": "Выбрать для пополнения",
   "sim_card_default": "SIM-карта 1",
   "esim_is_activating": "eSIM активируется...",
+  "unknown": "Неизвестно",
   "flex_travel_esim_works_worldwide": "Flex Travel eSIM работает по всему миру!"
 }

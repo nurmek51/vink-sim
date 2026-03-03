@@ -65,7 +65,6 @@ class PercentageWidget extends StatelessWidget {
               valueColor: AlwaysStoppedAnimation<Color>(AppColors.deepBlueGray),
             ),
           ),
-
           Transform.rotate(
             angle: -0.017,
             child: SizedBox(
@@ -80,7 +79,6 @@ class PercentageWidget extends StatelessWidget {
               ),
             ),
           ),
-
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -138,10 +136,9 @@ class PercentageWidget extends StatelessWidget {
                 const SizedBox(height: 80),
                 Container(
                   decoration: BoxDecoration(
-                    color:
-                        isRedCircle
-                            ? AppColors.redCircleColor
-                            : AppColors.limeGreen,
+                    color: isRedCircle
+                        ? AppColors.redCircleColor
+                        : AppColors.limeGreen,
                     borderRadius: BorderRadius.circular(9),
                   ),
                   child: Padding(
@@ -150,13 +147,14 @@ class PercentageWidget extends StatelessWidget {
                       vertical: 4,
                     ),
                     child: Text(
-                      country ?? SimLocalizations.of(context)!.not_available,
+                      (country == 'Global' || country == null)
+                          ? SimLocalizations.of(context)!.unknown
+                          : country!,
                       style: FlexTypography.paragraph.medium.copyWith(
                         fontWeight: FontWeight.bold,
-                        color:
-                            isRedCircle
-                                ? AppColors.backgroundColorLight
-                                : AppColors.grayBlue,
+                        color: isRedCircle
+                            ? AppColors.backgroundColorLight
+                            : AppColors.grayBlue,
                       ),
                       textAlign: TextAlign.center,
                       maxLines: 2,
@@ -172,14 +170,12 @@ class PercentageWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-
                 Text(
                   '\$${_formatBalance(balance)} ${SimLocalizations.of(context)!.balance_prefix} ',
                   style: FlexTypography.label.small.copyWith(
                     color: AppColors.grayBlue.withValues(alpha: 0.5),
                   ),
                 ),
-
                 if (iccid != null) ...[
                   const SizedBox(height: 4),
                   Text(
@@ -190,37 +186,34 @@ class PercentageWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-
                 const SizedBox(height: 13),
-
                 !isBlueCircle
                     ? GestureDetector(
-                      onTap: () {
-                        // Pass subscriber data to TopUp screen to avoid re-fetching
-                        final subscriberState =
-                            context.read<SubscriberBloc>().state;
-                        final subscriber =
-                            subscriberState is SubscriberLoaded
-                                ? subscriberState.subscriber
-                                : null;
+                        onTap: () {
+                          // Pass subscriber data to TopUp screen to avoid re-fetching
+                          final subscriberState =
+                              context.read<SubscriberBloc>().state;
+                          final subscriber = subscriberState is SubscriberLoaded
+                              ? subscriberState.subscriber
+                              : null;
 
-                        NavigationService.openTopUpBalanceScreen(
-                          context,
-                          imsi: imsi,
-                          subscriber: subscriber,
-                        );
-                      },
-                      child: Text(
-                        SimLocalizations.of(context)!.top_up,
-                        textAlign: TextAlign.center,
-                        style: FlexTypography.label.medium.copyWith(
-                          color: AppColors.accentBlue,
-                          decoration: TextDecoration.underline,
-                          decorationStyle: TextDecorationStyle.solid,
-                          decorationColor: AppColors.accentBlue,
+                          NavigationService.openTopUpBalanceScreen(
+                            context,
+                            imsi: imsi,
+                            subscriber: subscriber,
+                          );
+                        },
+                        child: Text(
+                          SimLocalizations.of(context)!.top_up,
+                          textAlign: TextAlign.center,
+                          style: FlexTypography.label.medium.copyWith(
+                            color: AppColors.accentBlue,
+                            decoration: TextDecoration.underline,
+                            decorationStyle: TextDecorationStyle.solid,
+                            decorationColor: AppColors.accentBlue,
+                          ),
                         ),
-                      ),
-                    )
+                      )
                     : SizedBox.shrink(),
               ],
             ),

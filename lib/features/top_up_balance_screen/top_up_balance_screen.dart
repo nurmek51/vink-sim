@@ -19,6 +19,7 @@ import 'package:vink_sim/features/top_up_balance_screen/widgets/saved_card_selec
 import 'package:vink_sim/features/top_up_balance_screen/widgets/saved_card_selector.dart';
 import 'package:vink_sim/features/top_up_balance_screen/widgets/sim_card_selection_modal.dart';
 import 'package:vink_sim/features/top_up_balance_screen/widgets/sim_card_shimmer_widget.dart';
+import 'package:vink_sim/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:vink_sim/features/payment/domain/repositories/payment_repository.dart';
 import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.dart';
 import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
@@ -91,32 +92,103 @@ class _TopUpBalanceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20.0,
-        ).copyWith(bottom: 30, top: 12),
-        child: TopUpBalanceWidget(imsi: imsi, isNewEsim: isNewEsim),
-      ),
-      resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.backgroundColorLight,
-      body: CustomScrollView(
-        physics: ClampingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            backgroundColor: AppColors.backgroundColorLight,
-            surfaceTintColor: AppColors.backgroundColorLight,
-            elevation: 0,
-            leading: BackButton(
-              color: Colors.black,
-              onPressed: () => Navigator.of(context).pop(),
+    return BlocBuilder<PaymentBloc, PaymentState>(
+      builder: (context, paymentState) {
+        final isStatusChecking = paymentState is PaymentStatusChecking;
+
+        return Stack(
+          children: [
+            Scaffold(
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                ).copyWith(bottom: 30, top: 12),
+                child: TopUpBalanceWidget(imsi: imsi, isNewEsim: isNewEsim),
+              ),
+              resizeToAvoidBottomInset: false,
+              backgroundColor: AppColors.backgroundColorLight,
+              body: CustomScrollView(
+                physics: const ClampingScrollPhysics(),
+                slivers: [
+                  SliverAppBar(
+                    pinned: true,
+                    backgroundColor: AppColors.backgroundColorLight,
+                    surfaceTintColor: AppColors.backgroundColorLight,
+                    elevation: 0,
+                    leading: BackButton(
+                      color: Colors.black,
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    sliver: SliverToBoxAdapter(
+                      child: TopUpBalanceContent(imsi: imsi, isNewEsim: isNewEsim),
+                    ),
+                  ),
+                ],
+              ),
             ),
+            if (isStatusChecking) const _PaymentStatusBlockingOverlay(),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _PaymentStatusBlockingOverlay extends StatelessWidget {
+  const _PaymentStatusBlockingOverlay();
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Stack(
+        children: [
+          const ModalBarrier(
+            dismissible: false,
+            color: Color(0x66000000),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            sliver: SliverToBoxAdapter(
-              child: TopUpBalanceContent(imsi: imsi, isNewEsim: isNewEsim),
+          Center(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              decoration: BoxDecoration(
+                color: AppColors.containerGray,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: AppColors.accentBlue.withValues(alpha: 0.12),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    width: 34,
+                    height: 34,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      color: AppColors.accentBlue,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    SimLocalizations.of(context)!.processing_payment_please_wait,
+                    textAlign: TextAlign.center,
+                    style: FlexTypography.paragraph.medium.copyWith(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -317,11 +389,11 @@ class TopUpBalanceContent extends StatelessWidget {
                 const SizedBox(height: 16),
                 const PaymentTypeSelector(),
                 if (!isNewEsim &&
-                    topUpState.selectedPaymentMethod == 'credit_card' &&
-                    topUpState.savedCards.isNotEmpty) ...[
+                    topUpState.selectedPaymentMethod == 'credit_card') ...[
                   const SizedBox(height: 16),
                   SavedCardSelector(
                     selectedCard: topUpState.selectedSavedCard,
+                    isLoading: topUpState.isSavedCardsLoading,
                     onTap: () => _showSavedCardSelectionModal(
                       context,
                       topUpState.savedCards,

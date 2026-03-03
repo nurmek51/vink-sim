@@ -22,7 +22,9 @@ class TopUpBalanceWidget extends StatelessWidget {
     return BlocConsumer<PaymentBloc, PaymentState>(
       listener: _handlePaymentStateChange,
       builder: (context, paymentState) {
-        final isLoading = paymentState is PaymentLoading;
+        final isLoading =
+            paymentState is PaymentLoading ||
+            paymentState is PaymentStatusChecking;
         return BlueGradientButton(
           title: isLoading
               ? SimLocalizations.of(context)!.loading
@@ -179,6 +181,7 @@ class TopUpBalanceWidget extends StatelessWidget {
                 operationType: operationType,
                 imsi: isTopUp ? selectedImsi : null,
                 preferredCardId: state.selectedSavedCard?.id,
+                autoTopUpEnabled: state.autoTopUpEnabled,
               ),
             );
     }
