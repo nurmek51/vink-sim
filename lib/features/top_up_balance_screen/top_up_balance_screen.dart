@@ -144,56 +144,62 @@ class _PaymentStatusBlockingOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned.fill(
-      child: Stack(
-        children: [
-          const ModalBarrier(
-            dismissible: false,
-            color: Color(0x66000000),
-          ),
-          Center(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              decoration: BoxDecoration(
-                color: AppColors.containerGray,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: AppColors.accentBlue.withValues(alpha: 0.12),
+      child: Material(
+        type: MaterialType.transparency,
+        child: Stack(
+          children: [
+            const ModalBarrier(
+              dismissible: false,
+              color: Color(0x66000000),
+            ),
+            Center(
+              child: Container(
+                constraints: const BoxConstraints(minHeight: 150),
+                margin: const EdgeInsets.symmetric(horizontal: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                decoration: BoxDecoration(
+                  color: AppColors.containerGray,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: AppColors.accentBlue.withValues(alpha: 0.12),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 16,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(
-                    width: 34,
-                    height: 34,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      color: AppColors.accentBlue,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 34,
+                      height: 34,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3,
+                        color: AppColors.accentBlue,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    SimLocalizations.of(context)!
-                        .processing_payment_please_wait,
-                    textAlign: TextAlign.center,
-                    style: FlexTypography.paragraph.medium.copyWith(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
+                    const SizedBox(height: 14),
+                    Text(
+                      SimLocalizations.of(context)!
+                          .processing_payment_please_wait,
+                      textAlign: TextAlign.center,
+                      style: FlexTypography.paragraph.medium.copyWith(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -26,8 +26,7 @@ class _SavedCardSelectionModalState extends State<SavedCardSelectionModal> {
   @override
   void initState() {
     super.initState();
-    _selectedCardId = widget.selectedCardId ??
-        (widget.savedCards.isNotEmpty ? widget.savedCards.first.id : null);
+    _selectedCardId = widget.selectedCardId;
   }
 
   @override
@@ -184,19 +183,21 @@ class _SavedCardSelectionModalState extends State<SavedCardSelectionModal> {
             padding: const EdgeInsets.all(20.0),
             child: BlueGradientButton(
               title: 'Use selected card',
-              onTap: () {
-                SavedCard? selectedCard;
-                if (_selectedCardId != null) {
-                  for (final card in widget.savedCards) {
-                    if (card.id == _selectedCardId) {
-                      selectedCard = card;
-                      break;
-                    }
-                  }
-                }
-                widget.onCardSelected(selectedCard);
-                Navigator.of(context).pop();
-              },
+              onTap: _selectedCardId == null && widget.selectedCardId == null
+                  ? null
+                  : () {
+                      SavedCard? selectedCard;
+                      if (_selectedCardId != null) {
+                        for (final card in widget.savedCards) {
+                          if (card.id == _selectedCardId) {
+                            selectedCard = card;
+                            break;
+                          }
+                        }
+                      }
+                      widget.onCardSelected(selectedCard);
+                      Navigator.of(context).pop();
+                    },
             ),
           ),
           const SizedBox(height: 30),
