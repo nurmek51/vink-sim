@@ -84,7 +84,9 @@ class AutoTopUpContainer extends StatelessWidget {
                   value: enabled,
                   activeColor: const Color(0xFF15BAAA),
                   onChanged: (value) {
-                    context.read<TopUpBalanceBloc>().add(ToggleAutoTopUp(value));
+                    context
+                        .read<TopUpBalanceBloc>()
+                        .add(ToggleAutoTopUp(value));
                   },
                 ),
               ],

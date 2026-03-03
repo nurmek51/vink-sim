@@ -95,7 +95,8 @@ class _SavedCardSelectionModalState extends State<SavedCardSelectionModal> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.add_card_rounded, color: Colors.black),
+                          const Icon(Icons.add_card_rounded,
+                              color: Colors.black),
                           const SizedBox(width: 12),
                           const Expanded(
                             child: Text(

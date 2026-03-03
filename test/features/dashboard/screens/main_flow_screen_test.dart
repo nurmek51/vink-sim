@@ -30,7 +30,8 @@ class FakeSimLocalizations extends Fake implements SimLocalizations {
 void main() {
   group('GIVEN $MainFlowScreen', () {
     group('calculateAvailableGB', () {
-      testWidgets('WHEN valid balance and rate '
+      testWidgets(
+          'WHEN valid balance and rate '
           'THEN calculates correct GB', (tester) async {
         const balance = 1024.0 * 1024.0;
         const rate = 1024.0;
@@ -44,7 +45,8 @@ void main() {
         expect(find.text('1.0 GB'), findsOneWidget);
       });
 
-      testWidgets('WHEN large balance '
+      testWidgets(
+          'WHEN large balance '
           'THEN calculates correct GB value', (tester) async {
         const balance = 5.0 * 1024.0 * 1024.0;
         const rate = 1024.0;
@@ -58,7 +60,8 @@ void main() {
         expect(find.text('5.0 GB'), findsOneWidget);
       });
 
-      testWidgets('WHEN different rate '
+      testWidgets(
+          'WHEN different rate '
           'THEN calculates proportional result', (tester) async {
         const balance = 2048.0 * 1024.0;
         const rate = 2048.0;
@@ -72,7 +75,8 @@ void main() {
         expect(find.text('1.0 GB'), findsOneWidget);
       });
 
-      testWidgets('WHEN rate is zero '
+      testWidgets(
+          'WHEN rate is zero '
           'THEN returns 0', (tester) async {
         const balance = 1024.0;
         const rate = 0.0;
@@ -86,7 +90,8 @@ void main() {
         expect(find.text('0.0 GB'), findsOneWidget);
       });
 
-      testWidgets('WHEN balance is zero '
+      testWidgets(
+          'WHEN balance is zero '
           'THEN returns 0', (tester) async {
         const balance = 0.0;
         const rate = 1024.0;
@@ -102,7 +107,8 @@ void main() {
     });
 
     group('processImsiList', () {
-      testWidgets('WHEN loaded state '
+      testWidgets(
+          'WHEN loaded state '
           'THEN displays IMSI list', (tester) async {
         final imsiList = [
           const ImsiModel(
@@ -132,7 +138,8 @@ void main() {
         expect(find.text('Canada'), findsOneWidget);
       });
 
-      testWidgets('WHEN empty list '
+      testWidgets(
+          'WHEN empty list '
           'THEN displays default IMSI', (tester) async {
         final state = SubscriberLoaded(
           subscriber: const SubscriberModel(balance: 100.0, imsiList: []),
@@ -149,7 +156,8 @@ void main() {
         expect(find.text('100.0'), findsOneWidget);
       });
 
-      testWidgets('WHEN loading state '
+      testWidgets(
+          'WHEN loading state '
           'THEN displays loading country', (tester) async {
         final state = SubscriberLoading();
         final result = MainFlowDataProcessor.processImsiList(
@@ -163,7 +171,8 @@ void main() {
         expect(find.text('loading'), findsOneWidget);
       });
 
-      testWidgets('WHEN error state '
+      testWidgets(
+          'WHEN error state '
           'THEN displays error country', (tester) async {
         final state = SubscriberError(message: 'Test error');
         final result = MainFlowDataProcessor.processImsiList(
@@ -177,7 +186,8 @@ void main() {
         expect(find.text('error'), findsOneWidget);
       });
 
-      testWidgets('WHEN initial state '
+      testWidgets(
+          'WHEN initial state '
           'THEN displays N/A country', (tester) async {
         final state = SubscriberInitial();
         final result = MainFlowDataProcessor.processImsiList(
@@ -193,7 +203,8 @@ void main() {
     });
 
     group('isLoadingWithNoData', () {
-      testWidgets('WHEN loading with empty list '
+      testWidgets(
+          'WHEN loading with empty list '
           'THEN returns true', (tester) async {
         final state = SubscriberLoading();
         const imsiList = <ImsiModel>[];
@@ -207,7 +218,8 @@ void main() {
         expect(find.text('Loading: true'), findsOneWidget);
       });
 
-      testWidgets('WHEN loading with non-empty list '
+      testWidgets(
+          'WHEN loading with non-empty list '
           'THEN returns false', (tester) async {
         final state = SubscriberLoading();
         final imsiList = [
@@ -228,7 +240,8 @@ void main() {
         expect(find.text('Loading: false'), findsOneWidget);
       });
 
-      testWidgets('WHEN not loading state '
+      testWidgets(
+          'WHEN not loading state '
           'THEN returns false', (tester) async {
         final state = SubscriberLoaded(
           subscriber: const SubscriberModel(balance: 0.0, imsiList: []),
@@ -252,24 +265,24 @@ extension on WidgetTester {
       MaterialApp(home: Scaffold(body: Text('${value.toStringAsFixed(1)} GB')));
 
   Widget buildImsiListWidget(List<ImsiModel> imsiList) => MaterialApp(
-    home: Scaffold(
-      body: Column(
-        children: imsiList.map((imsi) => Text(imsi.country ?? '')).toList(),
-      ),
-    ),
-  );
+        home: Scaffold(
+          body: Column(
+            children: imsiList.map((imsi) => Text(imsi.country ?? '')).toList(),
+          ),
+        ),
+      );
 
   Widget buildSingleImsiWidget(ImsiModel imsi) => MaterialApp(
-    home: Scaffold(
-      body: Column(
-        children: [
-          Text(imsi.imsi),
-          Text(imsi.country ?? ''),
-          Text(imsi.balance.toString()),
-        ],
-      ),
-    ),
-  );
+        home: Scaffold(
+          body: Column(
+            children: [
+              Text(imsi.imsi),
+              Text(imsi.country ?? ''),
+              Text(imsi.balance.toString()),
+            ],
+          ),
+        ),
+      );
 
   Widget buildLoadingWidget(bool isLoading) =>
       MaterialApp(home: Scaffold(body: Text('Loading: $isLoading')));

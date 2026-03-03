@@ -159,10 +159,9 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
 
   PaymentBloc({required PaymentRepository paymentRepository})
       : _paymentRepository = paymentRepository,
-        _paymentReturnDeepLinkBase =
-            sl.isRegistered<FeatureConfig>()
-                ? sl<FeatureConfig>().paymentReturnDeepLinkBase
-                : 'vinksim://payment-return',
+        _paymentReturnDeepLinkBase = sl.isRegistered<FeatureConfig>()
+            ? sl<FeatureConfig>().paymentReturnDeepLinkBase
+            : 'vinksim://payment-return',
         super(PaymentInitial()) {
     on<PaymentRequested>(_onPaymentRequested);
     on<GooglePayRequested>(_onGooglePayRequested);

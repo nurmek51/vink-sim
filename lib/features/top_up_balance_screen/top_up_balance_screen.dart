@@ -123,7 +123,8 @@ class _TopUpBalanceView extends StatelessWidget {
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     sliver: SliverToBoxAdapter(
-                      child: TopUpBalanceContent(imsi: imsi, isNewEsim: isNewEsim),
+                      child:
+                          TopUpBalanceContent(imsi: imsi, isNewEsim: isNewEsim),
                     ),
                   ),
                 ],
@@ -180,7 +181,8 @@ class _PaymentStatusBlockingOverlay extends StatelessWidget {
                   ),
                   const SizedBox(height: 14),
                   Text(
-                    SimLocalizations.of(context)!.processing_payment_please_wait,
+                    SimLocalizations.of(context)!
+                        .processing_payment_please_wait,
                     textAlign: TextAlign.center,
                     style: FlexTypography.paragraph.medium.copyWith(
                       color: Colors.black87,
