@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vink_sim/config/feature_config.dart';
 import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:vink_sim/features/payment/domain/repositories/payment_repository.dart';
@@ -279,23 +280,38 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         return;
       }
 
-      if (!context.mounted) {
-        emit(const PaymentFailure('Unable to open checkout page'));
-        return;
-      }
+      if (kIsWeb) {
+        if (kDebugMode) {
+          print('PaymentBloc: Web checkout opened in new tab: $checkoutUri');
+        }
+        final opened = await launchUrl(
+          checkoutUri,
+          mode: LaunchMode.platformDefault,
+          webOnlyWindowName: '_blank',
+        );
+        if (!opened) {
+          emit(const PaymentFailure('Unable to open checkout page'));
+          return;
+        }
+      } else {
+        if (!context.mounted) {
+          emit(const PaymentFailure('Unable to open checkout page'));
+          return;
+        }
 
-      final checkoutCloseReason = await PaymentCheckoutWebViewScreen.open(
-        context,
-        checkoutUrl: checkoutUri.toString(),
-        paymentId: initiateResult.paymentId,
-        paymentReturnDeepLinkBase: _paymentReturnDeepLinkBase,
-        backLink: initiateResult.backLink,
-        failureBackLink: initiateResult.failureBackLink,
-      );
+        final checkoutCloseReason = await PaymentCheckoutWebViewScreen.open(
+          context,
+          checkoutUrl: checkoutUri.toString(),
+          paymentId: initiateResult.paymentId,
+          paymentReturnDeepLinkBase: _paymentReturnDeepLinkBase,
+          backLink: initiateResult.backLink,
+          failureBackLink: initiateResult.failureBackLink,
+        );
 
-      if (checkoutCloseReason == PaymentCheckoutCloseReason.userCancelled) {
-        emit(PaymentCancelled());
-        return;
+        if (checkoutCloseReason == PaymentCheckoutCloseReason.userCancelled) {
+          emit(PaymentCancelled());
+          return;
+        }
       }
 
       emit(PaymentStatusChecking());
