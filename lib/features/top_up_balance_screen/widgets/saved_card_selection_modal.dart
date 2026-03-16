@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
 import 'package:vink_sim/features/payment/domain/repositories/payment_repository.dart';
 import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:vink_sim/shared/widgets/blue_gradient_button.dart';
@@ -107,7 +108,10 @@ class _SavedCardSelectionModalState extends State<SavedCardSelectionModal> {
                               ),
                             ),
                           ),
-                          if (isSelected) Assets.icons.selectedCardIcon.svg(),
+                          if (isSelected)
+                            Assets.icons.selectedCardIcon.svg(
+                              package: AssetUtils.package,
+                            ),
                         ],
                       ),
                     ),
@@ -142,7 +146,9 @@ class _SavedCardSelectionModalState extends State<SavedCardSelectionModal> {
                             Colors.black,
                             BlendMode.srcIn,
                           ),
-                          child: Assets.icons.credCard.svg(),
+                          child: Assets.icons.credCard.svg(
+                            package: AssetUtils.package,
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -170,7 +176,10 @@ class _SavedCardSelectionModalState extends State<SavedCardSelectionModal> {
                             ],
                           ),
                         ),
-                        if (isSelected) Assets.icons.selectedCardIcon.svg(),
+                        if (isSelected)
+                          Assets.icons.selectedCardIcon.svg(
+                            package: AssetUtils.package,
+                          ),
                       ],
                     ),
                   ),

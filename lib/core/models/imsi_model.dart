@@ -57,15 +57,15 @@ class ImsiModel extends Equatable {
 
   @override
   List<Object?> get props => [
-    imsi,
-    balance,
-    country,
-    iso,
-    brand,
-    rate,
-    qr,
-    smdpServer,
-    activationCode,
-    iccid,
-  ];
+        imsi,
+        balance,
+        country,
+        iso,
+        brand,
+        rate,
+        qr,
+        smdpServer,
+        activationCode,
+        iccid,
+      ];
 }

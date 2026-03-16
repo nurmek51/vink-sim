@@ -25,11 +25,13 @@ import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.d
 import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_state.dart';
 import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_event.dart';
 import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/config/feature_config.dart';
 import 'package:vink_sim/core/models/subscriber_model.dart';
 import 'package:vink_sim/core/models/imsi_model.dart';
 import 'package:vink_sim/features/subscriber/data/data_sources/subscriber_remote_data_source.dart';
 import 'package:vink_sim/core/network/travel_sim_api_service.dart';
 import 'package:vink_sim/core/network/api_client.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
 
 class TopUpBalanceScreen extends StatelessWidget {
   final String? imsi;
@@ -44,6 +46,10 @@ class TopUpBalanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(
+      '[DEBUG] [TopUpBalanceScreen] build imsi=$imsi isNewEsim=$isNewEsim featureConfigRegistered=${sl.isRegistered<FeatureConfig>()} paymentRepoRegistered=${sl.isRegistered<PaymentRepository>()} apiClientRegistered=${sl.isRegistered<ApiClient>()} travelServiceRegistered=${sl.isRegistered<TravelSimApiService>()}',
+    );
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -92,6 +98,8 @@ class _TopUpBalanceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
+
     return BlocBuilder<PaymentBloc, PaymentState>(
       builder: (context, paymentState) {
         final isStatusChecking = paymentState is PaymentStatusChecking;
@@ -102,7 +110,10 @@ class _TopUpBalanceView extends StatelessWidget {
               bottomNavigationBar: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20.0,
-                ).copyWith(bottom: 30, top: 12),
+                ).copyWith(
+                  bottom: keyboardInset > 0 ? keyboardInset + 12 : 30,
+                  top: 12,
+                ),
                 child: TopUpBalanceWidget(imsi: imsi, isNewEsim: isNewEsim),
               ),
               resizeToAvoidBottomInset: false,
@@ -321,6 +332,7 @@ class TopUpBalanceContent extends StatelessWidget {
                         child: Row(
                           children: [
                             Assets.icons.simIcon.svg(
+                              package: AssetUtils.package,
                               colorFilter: const ColorFilter.mode(
                                 Colors.black,
                                 BlendMode.srcIn,
@@ -347,7 +359,8 @@ class TopUpBalanceContent extends StatelessWidget {
                             Icon(
                               Icons.keyboard_arrow_down_rounded,
                               size: 24,
-                              color: const Color(0xFF363C45).withOpacity(0.4),
+                              color: const Color(0xFF363C45)
+                                  .withValues(alpha: 0.4),
                             ),
                           ],
                         ),

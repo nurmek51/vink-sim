@@ -181,6 +181,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       preferRecurrent: event.autoTopUpEnabled,
       preferredCardId: event.preferredCardId,
       saveCardOnInitiate: event.autoTopUpEnabled,
+      paymentMethod: null,
       context: event.context,
       emit: emit,
     );
@@ -197,6 +198,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       preferRecurrent: false,
       preferredCardId: null,
       saveCardOnInitiate: false,
+      paymentMethod: 'google_pay',
       context: event.context,
       emit: emit,
     );
@@ -213,6 +215,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       preferRecurrent: false,
       preferredCardId: null,
       saveCardOnInitiate: false,
+      paymentMethod: 'apple_pay',
       context: event.context,
       emit: emit,
     );
@@ -225,6 +228,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     required bool preferRecurrent,
     required String? preferredCardId,
     required bool saveCardOnInitiate,
+    required String? paymentMethod,
     required BuildContext context,
     required Emitter<PaymentState> emit,
   }) async {
@@ -271,6 +275,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         amount: amount,
         imsi: requestImsi,
         saveCard: saveCardOnInitiate,
+        paymentMethod: paymentMethod,
         language: language,
       );
 

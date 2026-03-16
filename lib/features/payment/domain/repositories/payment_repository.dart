@@ -66,6 +66,7 @@ abstract class PaymentRepository {
     required int amount,
     String? imsi,
     bool saveCard = false,
+    String? paymentMethod,
     String language = 'rus',
   });
 

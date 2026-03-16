@@ -82,6 +82,8 @@ class _WhatsappTileState extends State<WhatsappTile> {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColorDark,
@@ -98,8 +100,8 @@ class _WhatsappTileState extends State<WhatsappTile> {
         backgroundColor: Colors.transparent,
       ),
       body: BlocProvider<OtpAuthBloc>(
-        create:
-            (context) => OtpAuthBloc(authRepository: sl.get<AuthRepository>()),
+        create: (context) =>
+            OtpAuthBloc(authRepository: sl.get<AuthRepository>()),
         child: BlocConsumer<OtpAuthBloc, OtpAuthState>(
           listener: (context, state) {
             if (state is OtpSmsSent) {
@@ -120,11 +122,11 @@ class _WhatsappTileState extends State<WhatsappTile> {
             final isLoading = state is OtpSmsLoading;
 
             return Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 left: 20,
                 right: 20,
                 top: 5,
-                bottom: 50,
+                bottom: keyboardInset > 0 ? keyboardInset + 20 : 50,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,12 +142,10 @@ class _WhatsappTileState extends State<WhatsappTile> {
                     children: [
                       LocalizedText(
                         SimLocalizations.of(context)!.whats_app,
-
                         style: FlexTypography.headline.large.copyWith(
                           color: AppColors.whatsAppColor,
                         ),
                       ),
-
                       const SizedBox(width: 10),
                       SvgPicture.asset(
                         Assets.icons.whatsappIcon.path,
@@ -161,7 +161,8 @@ class _WhatsappTileState extends State<WhatsappTile> {
                   LocalizedText(
                     SimLocalizations.of(
                       context,
-                    )!.mobile_num_whats_app_description,
+                    )!
+                        .mobile_num_whats_app_description,
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.backgroundColorLight,
@@ -183,23 +184,21 @@ class _WhatsappTileState extends State<WhatsappTile> {
 
                       final internationalNumber =
                           PhoneUtils.getInternationalNumber(
-                            _phoneDigits,
-                            _selectedCountry,
-                          );
-                      context.read<OtpAuthBloc>().add(
-                        SendOtpSmsEvent(phone: internationalNumber),
+                        _phoneDigits,
+                        _selectedCountry,
                       );
+                      context.read<OtpAuthBloc>().add(
+                            SendOtpSmsEvent(phone: internationalNumber),
+                          );
                     },
                     buttonText:
                         SimLocalizations.of(context)!.auth_and_registration,
-                    buttonTextColor:
-                        _isValidPhone
-                            ? AppColors.backgroundColorLight
-                            : const Color(0x4DFFFFFF),
-                    color:
-                        _isValidPhone
-                            ? AppColors.accentBlue
-                            : const Color(0x4D808080),
+                    buttonTextColor: _isValidPhone
+                        ? AppColors.backgroundColorLight
+                        : const Color(0x4DFFFFFF),
+                    color: _isValidPhone
+                        ? AppColors.accentBlue
+                        : const Color(0x4D808080),
                     arrowForward: _isValidPhone,
                   ),
                   // const Spacer(),

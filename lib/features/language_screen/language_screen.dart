@@ -61,12 +61,30 @@ class _LanguageScreenState extends State<LanguageScreen> {
   }
 
   void _changeLanguage(String languageCode) async {
-    debugPrint('Language change requested: $languageCode');
+    if (currentLanguage == languageCode) {
+      debugPrint(
+        '[DEBUG] [LanguageScreen] Language unchanged: $languageCode',
+      );
+      return;
+    }
+
+    debugPrint(
+      '[DEBUG] [LanguageScreen] Language change requested: $currentLanguage -> $languageCode',
+    );
+    final locale = Locale(languageCode);
+
     if (sl.isRegistered<FeatureConfig>()) {
       final config = sl<FeatureConfig>();
-      config.onLocaleChanged?.call(Locale(languageCode));
+      config.onLocaleChanged?.call(locale);
+      debugPrint(
+        '[DEBUG] [LanguageScreen] onLocaleChanged callback invoked for: $languageCode',
+      );
     } else {
-      debugPrint('FeatureConfig not registered');
+      debugPrint('[ERROR] [LanguageScreen] FeatureConfig not registered');
+    }
+
+    if (mounted) {
+      setState(() {});
     }
   }
 }

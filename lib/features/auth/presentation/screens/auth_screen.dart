@@ -8,7 +8,6 @@ import 'package:vink_sim/features/auth/presentation/widgets/mobile_number_field.
 import 'package:vink_sim/features/onboarding/widgets/pulsing_circle.dart';
 import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:vink_sim/shared/widgets/localized_text.dart';
-import 'package:vink_sim/utils/navigation_utils.dart';
 import 'package:vink_sim/core/utils/asset_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,60 +58,60 @@ class _AuthScreenState extends State<AuthScreen>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.black,
-      builder:
-          (context) => Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-              left: 20,
-              right: 20,
-              top: 20,
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Enter OTP sent to $phone',
+              style: FlexTypography.headline.medium.copyWith(
+                color: Colors.white,
+              ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Enter OTP sent to $phone',
-                  style: FlexTypography.headline.medium.copyWith(
-                    color: Colors.white,
-                  ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _otpController,
+              keyboardType: TextInputType.number,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintText: 'OTP Code',
+                hintStyle: TextStyle(color: Colors.grey),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
                 ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: _otpController,
-                  keyboardType: TextInputType.number,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    hintText: 'OTP Code',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.accentBlue),
-                    ),
-                  ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.accentBlue),
                 ),
-                const SizedBox(height: 20),
-                RegistrationContainer(
-                  buttonText: 'Verify',
-                  color: AppColors.accentBlue,
-                  buttonTextColor: AppColors.backgroundColorLight,
-                  onTap: () {
-                    blocContext.read<OtpAuthBloc>().add(
+              ),
+            ),
+            const SizedBox(height: 20),
+            RegistrationContainer(
+              buttonText: 'Verify',
+              color: AppColors.accentBlue,
+              buttonTextColor: AppColors.backgroundColorLight,
+              onTap: () {
+                blocContext.read<OtpAuthBloc>().add(
                       VerifyOtpEvent(phone: phone, code: _otpController.text),
                     );
-                    Navigator.pop(context); // Close sheet
-                  },
-                ),
-              ],
+                Navigator.pop(context); // Close sheet
+              },
             ),
-          ),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final mediaHeight = MediaQuery.of(context).size.height;
+    final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
 
     return BlocProvider(
       create: (_) => sl<OtpAuthBloc>(),
@@ -146,11 +145,11 @@ class _AuthScreenState extends State<AuthScreen>
                   scaleAnimation: _scaleAnimation,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
+                  padding: EdgeInsets.only(
                     left: 30,
                     right: 30,
                     top: 10,
-                    bottom: 40,
+                    bottom: keyboardInset > 0 ? keyboardInset + 16 : 40,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,11 +220,10 @@ class _AuthScreenState extends State<AuthScreen>
                               return;
                             }
                             context.read<OtpAuthBloc>().add(
-                              SendOtpSmsEvent(phone: _phoneNumber),
-                            );
+                                  SendOtpSmsEvent(phone: _phoneNumber),
+                                );
                           },
-                          buttonText:
-                              SimLocalizations.of(
+                          buttonText: SimLocalizations.of(
                                 context,
                               )?.auth_and_registration ??
                               'Continue',
@@ -253,8 +251,8 @@ class FrameContent extends StatelessWidget {
     required double circleSize,
     required this.mediaHeight,
     required Animation<double> scaleAnimation,
-  }) : _circleSize = circleSize,
-       _scaleAnimation = scaleAnimation;
+  })  : _circleSize = circleSize,
+        _scaleAnimation = scaleAnimation;
 
   final double _circleSize;
   final double mediaHeight;
@@ -269,7 +267,6 @@ class FrameContent extends StatelessWidget {
           top: mediaHeight / 2 - _circleSize / 2,
           child: PulsingCircle(animation: _scaleAnimation, size: _circleSize),
         ),
-
         Positioned(
           left: -_circleSize / 2,
           bottom: -_circleSize / 2,

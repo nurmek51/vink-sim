@@ -57,6 +57,7 @@ class TravelSimApiService {
     required int amount,
     String? imsi,
     bool saveCard = false,
+    String? paymentMethod,
     String language = 'rus',
   }) async {
     return await _apiClient.post(
@@ -65,6 +66,7 @@ class TravelSimApiService {
         'amount': amount,
         if (imsi != null) 'imsi': imsi,
         'save_card': saveCard,
+        if (paymentMethod != null) 'payment_method': paymentMethod,
         'language': language,
       },
     );

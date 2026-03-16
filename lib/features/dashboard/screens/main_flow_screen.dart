@@ -272,6 +272,8 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
               final isSmall = isSmallScreen(context);
               final isSmallOrDesktop =
                   isSmallScreen(context) || isDesktop(context);
+              final featureConfig =
+                  sl.isRegistered<FeatureConfig>() ? sl<FeatureConfig>() : null;
 
               double calculateAvailableGB(double balance, double rate) {
                 if (rate == 0) return 0.0;
@@ -321,7 +323,7 @@ class _MainFlowScreenState extends State<MainFlowScreen> {
                               color: AppColors.grayBlue,
                               faqOnTap: () => openGuidePage(context),
                               avatarOnTap: () => openMyAccountScreen(context),
-                              onBack: sl<FeatureConfig>().onExit,
+                              onBack: featureConfig?.onExit,
                             ),
                             SizedBox(height: isSmallOrDesktop ? 0 : 15),
                             SizedBox(

@@ -37,10 +37,11 @@ class _FeatureRootState extends State<FeatureRoot> {
 
   Future<void> _updateConfig() async {
     try {
-      if (sl.isRegistered<FeatureConfig>()) {
-        await sl.unregister<FeatureConfig>();
-      }
+      sl.allowReassignment = true;
       sl.registerSingleton<FeatureConfig>(widget.config);
+      debugPrint(
+        '[DEBUG] [FeatureRoot] FeatureConfig updated (shell=${widget.config.isShellMode}, hasLocaleCallback=${widget.config.onLocaleChanged != null})',
+      );
     } catch (e) {
       debugPrint('FeatureRoot config update error: $e');
     }
@@ -57,6 +58,9 @@ class _FeatureRootState extends State<FeatureRoot> {
       }
 
       await DependencyInjection.initForFeature(widget.config);
+      debugPrint(
+        '[DEBUG] [FeatureRoot] initForFeature completed (featureConfigRegistered=${sl.isRegistered<FeatureConfig>()})',
+      );
     } catch (e) {
       debugPrint('FeatureRoot init error: $e');
     }

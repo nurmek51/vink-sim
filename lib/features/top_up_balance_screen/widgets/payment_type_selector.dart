@@ -1,5 +1,6 @@
 import 'package:vink_sim/constants/app_colors.dart';
-import 'package:vink_sim/core/platform_device/platform_detector.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
+import 'package:vink_sim/features/payment/presentation/wallet_payment_availability.dart';
 import 'package:vink_sim/features/top_up_balance_screen/bloc/top_up_balance_bloc.dart';
 import 'package:vink_sim/features/top_up_balance_screen/widgets/coming_soon_modal.dart';
 import 'package:vink_sim/gen/assets.gen.dart';
@@ -9,56 +10,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PaymentTypeSelector extends StatelessWidget {
   const PaymentTypeSelector({super.key});
 
-  static List<Map<String, dynamic>> get paymentMethods {
-    List<Map<String, dynamic>> methods = [
-      {'logo': 'credCard', 'method': 'credit_card', 'enabled': true},
-    ];
-
-    if (PlatformDetector.isIos) {
-      methods.insert(0, {
-        'logo': 'apple_pay_logo',
-        'method': 'apple_pay',
-        'enabled': true,
-      });
-    } else if (PlatformDetector.isAndroid) {
-      methods.insert(0, {
-        'logo': 'google_pay_logo',
-        'method': 'google_pay',
-        'enabled': true,
-      });
-    }
-
-    methods.add({'logo': 'crypto', 'method': 'crypto', 'enabled': false});
-
-    return methods;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
-      builder: (context, state) {
-        return Row(
-          children: List.generate(paymentMethods.length, (index) {
-            final payment = paymentMethods[index];
-            final isSelected =
-                state.selectedPaymentMethod == payment['method'] ||
-                (state.selectedPaymentMethod.isEmpty && index == 0);
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: WalletPaymentAvailability.paymentMethodsFuture,
+      initialData: const [
+        {'logo': 'credCard', 'method': 'credit_card', 'enabled': true},
+        {'logo': 'crypto', 'method': 'crypto', 'enabled': false},
+      ],
+      builder: (context, snapshot) {
+        final paymentMethods = snapshot.data ?? const [];
 
-            return PaymentTypeWidget(
-              logo: payment['logo']!,
-              isSelected: isSelected,
-              enabled: payment['enabled'] ?? true,
-              onTap: () {
-                if (payment['enabled'] == false) {
-                  ComingSoonModal.show(context, payment['method']!);
-                } else {
-                  context.read<TopUpBalanceBloc>().add(
-                    SelectPaymentMethod(payment['method']!),
-                  );
-                }
-              },
+        return BlocBuilder<TopUpBalanceBloc, TopUpBalanceState>(
+          builder: (context, state) {
+            return Row(
+              children: List.generate(paymentMethods.length, (index) {
+                final payment = paymentMethods[index];
+                final isSelected =
+                    state.selectedPaymentMethod == payment['method'] ||
+                        (state.selectedPaymentMethod.isEmpty && index == 0);
+
+                return PaymentTypeWidget(
+                  logo: payment['logo']!,
+                  isSelected: isSelected,
+                  enabled: payment['enabled'] ?? true,
+                  onTap: () {
+                    if (payment['enabled'] == false) {
+                      ComingSoonModal.show(context, payment['method']!);
+                    } else {
+                      context.read<TopUpBalanceBloc>().add(
+                            SelectPaymentMethod(payment['method']!),
+                          );
+                    }
+                  },
+                );
+              }),
             );
-          }),
+          },
         );
       },
     );
@@ -102,7 +90,9 @@ class PaymentTypeWidget extends StatelessWidget {
               Positioned(
                 top: -6,
                 right: -1,
-                child: Assets.icons.selectedCardIcon.svg(),
+                child: Assets.icons.selectedCardIcon.svg(
+                  package: AssetUtils.package,
+                ),
               ),
             if (!enabled)
               Positioned(
@@ -147,33 +137,33 @@ class PaymentTypeWidget extends StatelessWidget {
     switch (assetName) {
       case 'apple_pay_logo':
         return Assets.icons.applePayLogo.svg(
-          colorFilter:
-              isSelected
-                  ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-                  : const ColorFilter.mode(
-                    AppColors.lightSteelBlue,
-                    BlendMode.srcIn,
-                  ),
+          package: AssetUtils.package,
+          colorFilter: isSelected
+              ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+              : const ColorFilter.mode(
+                  AppColors.lightSteelBlue,
+                  BlendMode.srcIn,
+                ),
         );
       case 'google_pay_logo':
         return Assets.icons.googleLogo.svg(
-          colorFilter:
-              isSelected
-                  ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-                  : const ColorFilter.mode(
-                    AppColors.lightSteelBlue,
-                    BlendMode.srcIn,
-                  ),
+          package: AssetUtils.package,
+          colorFilter: isSelected
+              ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+              : const ColorFilter.mode(
+                  AppColors.lightSteelBlue,
+                  BlendMode.srcIn,
+                ),
         );
       case 'crypto':
         return Assets.icons.crypto.svg(
-          colorFilter:
-              isSelected
-                  ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-                  : const ColorFilter.mode(
-                    AppColors.lightSteelBlue,
-                    BlendMode.srcIn,
-                  ),
+          package: AssetUtils.package,
+          colorFilter: isSelected
+              ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+              : const ColorFilter.mode(
+                  AppColors.lightSteelBlue,
+                  BlendMode.srcIn,
+                ),
         );
       case 'credCard':
         return ColorFiltered(
@@ -181,7 +171,7 @@ class PaymentTypeWidget extends StatelessWidget {
             isSelected ? Colors.white : AppColors.lightSteelBlue,
             BlendMode.srcIn,
           ),
-          child: Assets.icons.credCard.svg(),
+          child: Assets.icons.credCard.svg(package: AssetUtils.package),
         );
       default:
         return Container();

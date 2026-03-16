@@ -12,6 +12,7 @@ class PaymentRepositoryImpl implements PaymentRepository {
     required int amount,
     String? imsi,
     bool saveCard = false,
+    String? paymentMethod,
     String language = 'rus',
   }) async {
     try {
@@ -19,6 +20,7 @@ class PaymentRepositoryImpl implements PaymentRepository {
         amount: amount,
         imsi: imsi,
         saveCard: saveCard,
+        paymentMethod: paymentMethod,
         language: language,
       );
 

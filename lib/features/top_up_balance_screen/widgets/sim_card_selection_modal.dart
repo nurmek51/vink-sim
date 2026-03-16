@@ -1,5 +1,6 @@
 import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:vink_sim/core/models/imsi_model.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
 import 'package:vink_sim/gen/assets.gen.dart';
 import 'package:vink_sim/shared/widgets/blue_gradient_button.dart';
 import 'package:vink_sim/shared/widgets/localized_text.dart';
@@ -86,29 +87,30 @@ class _SimCardSelectionModalState extends State<SimCardSelectionModal> {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      border:
-                          isSelected
-                              ? Border.all(
-                                color: const Color(0xFF15BAAA),
-                                width: 2,
-                              )
-                              : Border.all(color: Colors.grey[200]!, width: 2),
+                      border: isSelected
+                          ? Border.all(
+                              color: const Color(0xFF15BAAA),
+                              width: 2,
+                            )
+                          : Border.all(color: Colors.grey[200]!, width: 2),
                     ),
                     child: Row(
                       children: [
                         isSelected
-                            ? Assets.icons.checkbox.svg()
+                            ? Assets.icons.checkbox.svg(
+                                package: AssetUtils.package,
+                              )
                             : Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.grey[400]!,
-                                  width: 2,
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.grey[400]!,
+                                    width: 2,
+                                  ),
                                 ),
                               ),
-                            ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(

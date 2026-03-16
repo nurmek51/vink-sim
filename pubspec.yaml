@@ -55,6 +55,7 @@ flutter:
     - .env
     - assets/
     - assets/icons/
+    - assets/payments/
     - assets/icons/figma112/
     - assets/icons/figma141/
     - assets/icons/figma142/

@@ -33,6 +33,7 @@ import 'package:vink_sim/features/subscriber/presentation/bloc/subscriber_bloc.d
 import 'package:vink_sim/core/services/token_manager.dart';
 import 'package:vink_sim/core/utils/asset_utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 
 final GetIt sl = GetIt.asNewInstance();
 
@@ -43,10 +44,11 @@ class DependencyInjection {
     // Always register/update config if provided
     if (config != null) {
       AssetUtils.package = config.isShellMode ? 'vink_sim' : null;
-      if (sl.isRegistered<FeatureConfig>()) {
-        await sl.unregister<FeatureConfig>();
-      }
+      sl.allowReassignment = true;
       sl.registerSingleton<FeatureConfig>(config);
+      debugPrint(
+        '[DEBUG] [DependencyInjection] FeatureConfig registered (shell=${config.isShellMode}, hasLocaleCallback=${config.onLocaleChanged != null})',
+      );
     }
 
     if (_initialized) return;

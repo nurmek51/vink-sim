@@ -53,6 +53,7 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
   @override
   Widget build(BuildContext context) {
     const paddingSettings = EdgeInsets.only(left: 20, right: 20);
+    final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -75,7 +76,10 @@ class _TariffsAndCountriesViewState extends State<_TariffsAndCountriesView> {
           ? Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20.0,
-              ).copyWith(bottom: 30, top: 12),
+              ).copyWith(
+                bottom: keyboardInset > 0 ? keyboardInset + 12 : 30,
+                top: 12,
+              ),
               child: StartRegistrationButton(),
             )
           : null,

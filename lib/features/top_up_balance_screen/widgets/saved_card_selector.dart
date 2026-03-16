@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vink_sim/core/utils/asset_utils.dart';
 import 'package:vink_sim/features/payment/domain/repositories/payment_repository.dart';
 import 'package:vink_sim/gen/assets.gen.dart';
 
@@ -36,7 +37,7 @@ class SavedCardSelector extends StatelessWidget {
                 Colors.black,
                 BlendMode.srcIn,
               ),
-              child: Assets.icons.credCard.svg(),
+              child: Assets.icons.credCard.svg(package: AssetUtils.package),
             ),
             const SizedBox(width: 12),
             Expanded(

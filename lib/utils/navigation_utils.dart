@@ -1,5 +1,7 @@
 import 'package:vink_sim/core/router/app_router.dart';
 import 'package:vink_sim/core/models/subscriber_model.dart';
+import 'package:vink_sim/core/di/injection_container.dart';
+import 'package:vink_sim/config/feature_config.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +39,9 @@ class NavigationService {
     bool isNewEsim = false,
     SubscriberModel? subscriber,
   }) {
+    debugPrint(
+      '[DEBUG] [NavigationService] openTopUpBalanceScreen imsi=$imsi isNewEsim=$isNewEsim hasSubscriber=${subscriber != null} featureConfigRegistered=${sl.isRegistered<FeatureConfig>()}',
+    );
     context.push(
       AppRoutes.topUpBalance,
       extra: {'imsi': imsi, 'isNewEsim': isNewEsim, 'subscriber': subscriber},
@@ -141,12 +146,13 @@ void openTopUpBalanceScreen(
   String? imsi,
   bool isNewEsim = false,
   SubscriberModel? subscriber,
-}) => NavigationService.openTopUpBalanceScreen(
-  context,
-  imsi: imsi,
-  isNewEsim: isNewEsim,
-  subscriber: subscriber,
-);
+}) =>
+    NavigationService.openTopUpBalanceScreen(
+      context,
+      imsi: imsi,
+      isNewEsim: isNewEsim,
+      subscriber: subscriber,
+    );
 void openMainFlowScreen(BuildContext context) =>
     NavigationService.openMainFlowScreen(context);
 void openAuthScreen(BuildContext context) =>
