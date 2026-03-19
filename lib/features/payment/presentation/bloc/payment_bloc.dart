@@ -364,7 +364,6 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
 
       final recurrentResult = await _paymentRepository.recurrentPayment(
         imsi: imsi,
-        esimId: imsi,
         cardId: preferredCardId,
         amount: amount,
       );

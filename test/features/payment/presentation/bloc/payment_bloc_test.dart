@@ -25,7 +25,6 @@ void main() {
         when(
           () => paymentRepository.recurrentPayment(
             imsi: any(named: 'imsi'),
-            esimId: any(named: 'esimId'),
             cardId: any(named: 'cardId'),
             amount: any(named: 'amount'),
           ),
@@ -59,7 +58,6 @@ void main() {
         verify(
           () => paymentRepository.recurrentPayment(
             imsi: 'imsi-001',
-            esimId: 'imsi-001',
             cardId: 'saved-card-11',
             amount: 5,
           ),
