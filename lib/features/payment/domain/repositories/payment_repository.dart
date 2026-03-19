@@ -80,9 +80,11 @@ abstract class PaymentRepository {
   Future<void> deleteSavedCard(String cardId);
 
   Future<RecurrentPaymentResult> recurrentPayment({
-    required String imsi,
+    String? imsi,
+    String? esimId,
     required String cardId,
     required int amount,
-    String currency = 'KZT',
+    String currency = 'USD',
+    String description = 'Subscription',
   });
 }

@@ -145,17 +145,21 @@ class PaymentRepositoryImpl implements PaymentRepository {
 
   @override
   Future<RecurrentPaymentResult> recurrentPayment({
-    required String imsi,
+    String? imsi,
+    String? esimId,
     required String cardId,
     required int amount,
-    String currency = 'KZT',
+    String currency = 'USD',
+    String description = 'Subscription',
   }) async {
     try {
       final response = await _apiService.recurrentPayment(
         imsi: imsi,
+        esimId: esimId,
         cardId: cardId,
         amount: amount,
         currency: currency,
+        description: description,
       );
 
       final data = response['data'];

@@ -178,7 +178,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       amount: event.amount,
       imsi: event.imsi,
       operationType: event.operationType,
-      preferRecurrent: event.autoTopUpEnabled,
+      preferRecurrent: event.preferredCardId != null,
       preferredCardId: event.preferredCardId,
       saveCardOnInitiate: event.autoTopUpEnabled,
       paymentMethod: null,
@@ -364,6 +364,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
 
       final recurrentResult = await _paymentRepository.recurrentPayment(
         imsi: imsi,
+        esimId: imsi,
         cardId: preferredCardId,
         amount: amount,
       );
@@ -421,9 +422,13 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   }
 
   String _resolveLanguage(BuildContext context) {
-    final code = Localizations.localeOf(context).languageCode.toLowerCase();
-    if (code == 'ru') return 'rus';
-    if (code == 'kk' || code == 'kz') return 'kaz';
-    return 'eng';
+    try {
+      final code = Localizations.localeOf(context).languageCode.toLowerCase();
+      if (code == 'ru') return 'rus';
+      if (code == 'kk' || code == 'kz') return 'kaz';
+      return 'eng';
+    } catch (_) {
+      return 'eng';
+    }
   }
 }

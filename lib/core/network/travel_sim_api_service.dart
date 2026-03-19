@@ -91,18 +91,25 @@ class TravelSimApiService {
   }
 
   Future<Map<String, dynamic>> recurrentPayment({
-    required String imsi,
+    String? imsi,
+    String? esimId,
     required String cardId,
     required int amount,
-    String currency = 'KZT',
+    String currency = 'USD',
+    String description = 'Subscription',
   }) async {
+    if ((imsi == null || imsi.isEmpty) && (esimId == null || esimId.isEmpty)) {
+      throw ArgumentError('Either imsi or esimId must be provided');
+    }
+
     return await _apiClient.post(
       '/payments/recurrent',
       body: {
-        'imsi': imsi,
+        if (imsi != null && imsi.isNotEmpty) 'imsi': imsi,
+        if (esimId != null && esimId.isNotEmpty) 'esim_id': esimId,
         'card_id': cardId,
         'amount': amount,
-        'description': 'Subscription',
+        'description': description,
         'currency': currency,
       },
     );
