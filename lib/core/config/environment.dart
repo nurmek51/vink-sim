@@ -3,6 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 enum EnvironmentType { development, production }
 
+const String kDefaultApiBaseUrl =
+    'https://vink-backend-721515706470.europe-west1.run.app';
+
 class Environment {
   static EnvironmentType get current {
     if (kReleaseMode) {
@@ -64,7 +67,7 @@ class Environment {
 
     // Safety check for empty or legacy IP values
     if (baseUrl.isEmpty || baseUrl.contains('35.207.158.51')) {
-      baseUrl = 'https://nurmek.site';
+      baseUrl = kDefaultApiBaseUrl;
     }
 
     // Force HTTPS for production domains to avoid Mixed Content errors on Web

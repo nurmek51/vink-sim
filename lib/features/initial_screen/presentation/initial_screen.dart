@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:vink_sim/config/feature_config.dart';
 import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:vink_sim/core/router/app_router.dart';
 import 'package:vink_sim/core/services/token_manager.dart';
@@ -37,6 +38,15 @@ class _InitialScreenState extends State<InitialScreen> {
   }
 
   Future<void> _bootstrap() async {
+    final allowsGuestAccess = sl.isRegistered<FeatureConfig>() &&
+        sl<FeatureConfig>().allowGuestAccess;
+
+    if (allowsGuestAccess) {
+      if (kDebugMode) print('Initial: Guest access enabled -> go(mainFlow)');
+      _safeGo(AppRoutes.mainFlow);
+      return;
+    }
+
     final tokenManager = sl.get<TokenManager>();
     final isAuthenticated = await tokenManager.isTokenValid();
 

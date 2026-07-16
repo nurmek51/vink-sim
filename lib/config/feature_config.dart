@@ -6,6 +6,7 @@ class FeatureConfig {
   final VoidCallback? onExit;
   final String? apiBaseUrl;
   final bool isShellMode;
+  final bool allowGuestAccess;
   final void Function(Locale locale)? onLocaleChanged;
   final void Function({
     required String accessToken,
@@ -21,6 +22,7 @@ class FeatureConfig {
     this.onExit,
     this.apiBaseUrl,
     this.isShellMode = false,
+    this.allowGuestAccess = false,
     this.onLocaleChanged,
     this.onAuthSuccess,
     this.onLogout,

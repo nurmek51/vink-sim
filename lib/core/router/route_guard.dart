@@ -1,3 +1,4 @@
+import 'package:vink_sim/config/feature_config.dart';
 import 'package:vink_sim/core/router/app_router.dart';
 import 'package:vink_sim/core/di/injection_container.dart';
 import 'package:vink_sim/core/services/token_manager.dart';
@@ -25,9 +26,13 @@ class RouteGuard {
   static Future<String?> redirectLogic(GoRouterState state) async {
     final currentPath = state.uri.path;
     final isOnInitialScreen = currentPath == AppRoutes.initial;
+    final allowsGuestAccess = sl.isRegistered<FeatureConfig>() &&
+        sl<FeatureConfig>().allowGuestAccess;
     final userIsAuthenticated = await isAuthenticated;
 
     if (isOnInitialScreen) return null;
+
+    if (allowsGuestAccess) return null;
 
     // If user is not authenticated and trying to access protected routes
     if (!userIsAuthenticated && isProtectedRoute(currentPath)) {

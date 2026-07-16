@@ -1,12 +1,13 @@
 import 'package:vink_sim/core/config/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:vink_sim/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:vink_sim/vink_sim.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setUrlStrategy(const HashUrlStrategy());
 
   // Load environment variables based on build mode
   await Environment.load();
@@ -50,6 +51,7 @@ class _MyAppState extends State<MyApp> {
       home: FeatureRoot(
         config: FeatureConfig(
           isShellMode: false,
+          allowGuestAccess: kIsWeb,
           onLocaleChanged: _changeLocale,
         ),
       ),
